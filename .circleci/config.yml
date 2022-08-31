@@ -33,4 +33,3 @@ workflows:
       - python/test:
           pkg-manager: poetry
           test-tool: pytest
-          args: './tests'
