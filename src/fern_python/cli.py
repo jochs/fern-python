@@ -22,7 +22,7 @@ def main(path_to_config_json: str) -> None:
     parsedContainer = TypeReference.parse_raw(
         """
     {
-        "type": "contaner",
+        "type": "container",
         "container": {
             "type": "map",
             "keyType": {

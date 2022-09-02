@@ -64,10 +64,6 @@ class Type(pydantic.BaseModel):
         def union(self, value: UnionTypeDeclaration) -> _Result:
             ...
 
-        @abstractmethod
-        def _unknown(self) -> _Result:
-            ...
-
     def _visit(self, visitor: _Visitor[_Result]) -> _Result:
         if self.__root__.type == "alias":
             return visitor.alias(self.__root__)
@@ -77,4 +73,3 @@ class Type(pydantic.BaseModel):
             return visitor.object(self.__root__)
         if self.__root__.type == "union":
             return visitor.union(self.__root__)
-        return visitor._unknown()

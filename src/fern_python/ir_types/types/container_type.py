@@ -67,10 +67,6 @@ class ContainerType(pydantic.BaseModel):
         def set(self, value: TypeReference) -> _Result:
             ...
 
-        @abstractmethod
-        def _unknown(self) -> _Result:
-            ...
-
     def _visit(self, visitor: _Visitor[_Result]) -> _Result:
         if self.__root__.type == "list":
             return visitor.list(self.__root__.list)
@@ -80,7 +76,6 @@ class ContainerType(pydantic.BaseModel):
             return visitor.optional(self.__root__.optional)
         if self.__root__.type == "set":
             return visitor.set(self.__root__.set)
-        return visitor._unknown()
 
 
 from .type_reference import TypeReference  # noqa E402

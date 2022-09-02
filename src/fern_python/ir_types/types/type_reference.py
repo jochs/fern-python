@@ -84,10 +84,6 @@ class TypeReference(pydantic.BaseModel):
         def void(self) -> _Result:
             ...
 
-        @abstractmethod
-        def _unknown(self) -> _Result:
-            ...
-
     def _visit(self, visitor: _Visitor[_Result]) -> _Result:
         if self.__root__.type == "container":
             return visitor.container(self.__root__.container)
@@ -99,7 +95,6 @@ class TypeReference(pydantic.BaseModel):
             return visitor.unknown()
         if self.__root__.type == "void":
             return visitor.void()
-        return visitor._unknown()
 
 
 from .container_type import ContainerType  # noqa E402
