@@ -1,5 +1,13 @@
 import typer
-from fern_python.ir_types import TypeReference, ContainerType, MapType, Type, AliasTypeDeclaration
+from fern_python.ir_types import (
+    TypeReference,
+    ContainerType,
+    MapType,
+    Type,
+    AliasTypeDeclaration,
+    IntermediateRepresentation,
+)
+import pydantic
 
 
 def main(path_to_config_json: str) -> None:
@@ -36,6 +44,10 @@ def main(path_to_config_json: str) -> None:
     """
     )
     print(parsedContainer.json(by_alias=True))
+
+    parsed = pydantic.parse_file_as(IntermediateRepresentation, "ir.json")
+    with open("parsed_ir.json", "w") as f:
+        f.write(parsed.json(by_alias=True))
 
 
 def processTypeReference(x: TypeReference) -> None:

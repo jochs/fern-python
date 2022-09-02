@@ -17,6 +17,7 @@ from .types import (
     ContainerType,
     PrimitiveType,
 )
+from .errors import DeclaredErrorName, HttpErrorConfiguration, ErrorDeclaration
 from . import services
 
 __all__ = [
@@ -45,4 +46,7 @@ __all__ = [
     "MapType",
     "ContainerType",
     "PrimitiveType",
+    "DeclaredErrorName",
+    "HttpErrorConfiguration",
+    "ErrorDeclaration",
 ]
