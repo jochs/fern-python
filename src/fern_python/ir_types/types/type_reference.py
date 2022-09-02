@@ -2,6 +2,7 @@ from __future__ import annotations
 import pydantic
 import typing
 from abc import ABC, abstractmethod
+import typing_extensions
 from .declared_type_name import DeclaredTypeName
 from .primitive_type import PrimitiveType
 
@@ -27,9 +28,6 @@ class _TypeReference:
     class Void(pydantic.BaseModel):
         type: typing.Literal["void"]
 
-    class _Unknown(pydantic.BaseModel, extra=pydantic.Extra.allow):
-        type: str
-
 
 class TypeReference(pydantic.BaseModel):
     @staticmethod
@@ -53,6 +51,17 @@ class TypeReference(pydantic.BaseModel):
     @staticmethod
     def void() -> TypeReference:
         return TypeReference(__root__=_TypeReference.Void(type="void"))
+
+    __root__: typing_extensions.Annotated[
+        typing.Union[
+            _TypeReference.Container,
+            _TypeReference.Named,
+            _TypeReference.Primitive,
+            _TypeReference.Unknown,
+            _TypeReference.Void,
+        ],
+        pydantic.Field(discriminator="type"),
+    ]
 
     class _Visitor(ABC, typing.Generic[_Result]):
         @abstractmethod
@@ -81,25 +90,16 @@ class TypeReference(pydantic.BaseModel):
 
     def _visit(self, visitor: _Visitor[_Result]) -> _Result:
         if self.__root__.type == "container":
-            return visitor.container(typing.cast(_TypeReference.Container, self.__root__).container)
+            return visitor.container(self.__root__.container)
         if self.__root__.type == "named":
-            return visitor.named(typing.cast(_TypeReference.Named, self.__root__))
+            return visitor.named(self.__root__)
         if self.__root__.type == "primitive":
-            return visitor.primitive(typing.cast(_TypeReference.Primitive, self.__root__).primitive)
+            return visitor.primitive(self.__root__.primitive)
         if self.__root__.type == "unknown":
             return visitor.unknown()
         if self.__root__.type == "void":
             return visitor.void()
         return visitor._unknown()
-
-    __root__: typing.Union[
-        _TypeReference.Container,
-        _TypeReference.Named,
-        _TypeReference.Primitive,
-        _TypeReference.Unknown,
-        _TypeReference.Void,
-        _TypeReference._Unknown,
-    ]
 
 
 from .container_type import ContainerType  # noqa E402

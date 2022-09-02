@@ -2,6 +2,7 @@ from __future__ import annotations
 import pydantic
 import typing
 from abc import ABC, abstractmethod
+import typing_extensions
 from .alias_type_declaration import AliasTypeDeclaration
 from .enum_type_declaration import EnumTypeDeclaration
 from .object_type_declaration import ObjectTypeDeclaration
@@ -23,9 +24,6 @@ class _Type:
     class Union(UnionTypeDeclaration):
         type: typing.Literal["union"]
 
-    class _Unknown(pydantic.BaseModel, extra=pydantic.Extra.allow):
-        type: str
-
 
 class Type(pydantic.BaseModel):
     @staticmethod
@@ -43,6 +41,11 @@ class Type(pydantic.BaseModel):
     @staticmethod
     def union(value: UnionTypeDeclaration) -> Type:
         return Type(__root__=_Type.Union(type="union", discriminant=value.discriminant, types=value.types))
+
+    __root__: typing_extensions.Annotated[
+        typing.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union],
+        pydantic.Field(discriminator="type"),
+    ]
 
     class _Visitor(ABC, typing.Generic[_Result]):
         @abstractmethod
@@ -67,13 +70,11 @@ class Type(pydantic.BaseModel):
 
     def _visit(self, visitor: _Visitor[_Result]) -> _Result:
         if self.__root__.type == "alias":
-            return visitor.alias(typing.cast(_Type.Alias, self.__root__))
+            return visitor.alias(self.__root__)
         if self.__root__.type == "enum":
-            return visitor.enum(typing.cast(_Type.Enum, self.__root__))
+            return visitor.enum(self.__root__)
         if self.__root__.type == "object":
-            return visitor.object(typing.cast(_Type.Object, self.__root__))
+            return visitor.object(self.__root__)
         if self.__root__.type == "union":
-            return visitor.union(typing.cast(_Type.Union, self.__root__))
+            return visitor.union(self.__root__)
         return visitor._unknown()
-
-    __root__: typing.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union, _Type._Unknown]

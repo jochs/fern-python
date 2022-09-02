@@ -3,6 +3,7 @@ import pydantic
 from .map_type import MapType
 import typing
 from abc import ABC, abstractmethod
+import typing_extensions
 
 _Result = typing.TypeVar("_Result")
 
@@ -23,11 +24,14 @@ class _ContainerType:
         type: typing.Literal["set"]
         set: TypeReference
 
-    class _Unknown(pydantic.BaseModel, extra=pydantic.Extra.allow):
-        type: str
-
 
 class ContainerType(pydantic.BaseModel):
+
+    __root__: typing_extensions.Annotated[
+        typing.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set],
+        pydantic.Field(discriminator="type"),
+    ]
+
     @staticmethod
     def list(value: TypeReference) -> ContainerType:
         return ContainerType(__root__=_ContainerType.List(type="list", list=value))
@@ -69,18 +73,14 @@ class ContainerType(pydantic.BaseModel):
 
     def _visit(self, visitor: _Visitor[_Result]) -> _Result:
         if self.__root__.type == "list":
-            return visitor.list(typing.cast(_ContainerType.List, self.__root__).list)
+            return visitor.list(self.__root__.list)
         if self.__root__.type == "map":
-            return visitor.map(typing.cast(_ContainerType.Map, self.__root__))
+            return visitor.map(self.__root__)
         if self.__root__.type == "optional":
-            return visitor.optional(typing.cast(_ContainerType.Optional, self.__root__).optional)
+            return visitor.optional(self.__root__.optional)
         if self.__root__.type == "set":
-            return visitor.set(typing.cast(_ContainerType.Set, self.__root__).set)
+            return visitor.set(self.__root__.set)
         return visitor._unknown()
-
-    __root__: typing.Union[
-        _ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set, _ContainerType._Unknown
-    ]
 
 
 from .type_reference import TypeReference  # noqa E402
