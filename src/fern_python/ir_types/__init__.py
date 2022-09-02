@@ -1,7 +1,22 @@
 from .auth import ApiAuth, AuthScheme, AuthSchemesRequirement
 from .commons import WithDocs, FernFilepath, StringWithAllCasings, WireStringWithAllCasings
 from .ir import IntermediateRepresentation, Services, FernConstants
-from .types import TypeDeclaration, DeclaredTypeName, Type
+from .types import (
+    TypeDeclaration,
+    DeclaredTypeName,
+    Type,
+    AliasTypeDeclaration,
+    EnumTypeDeclaration,
+    EnumValue,
+    ObjectTypeDeclaration,
+    ObjectProperty,
+    UnionTypeDeclaration,
+    SingleUnionType,
+    TypeReference,
+    MapType,
+    ContainerType,
+    PrimitiveType,
+)
 from . import services
 
 __all__ = [
@@ -19,4 +34,15 @@ __all__ = [
     "TypeDeclaration",
     "DeclaredTypeName",
     "Type",
+    "AliasTypeDeclaration",
+    "EnumTypeDeclaration",
+    "EnumValue",
+    "ObjectTypeDeclaration",
+    "ObjectProperty",
+    "UnionTypeDeclaration",
+    "SingleUnionType",
+    "TypeReference",
+    "MapType",
+    "ContainerType",
+    "PrimitiveType",
 ]

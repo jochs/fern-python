@@ -7,13 +7,13 @@ from .. import services
 
 class AuthScheme(BaseModel):
     class Bearer(WithDocs):
-        type: Literal["bearer"] = Field(alias="_type")
+        type: Literal["bearer"]
 
     class Basic(WithDocs):
-        type: Literal["basic"] = Field(alias="_type")
+        type: Literal["basic"]
 
     class Header(services.HttpHeader):
-        type: Literal["header"] = Field(alias="_type")
+        type: Literal["header"]
 
     __root__: Annotated[
         Union[Bearer, Basic, Header],
