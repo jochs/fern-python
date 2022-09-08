@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import shutil
 from types import TracebackType
-from typing import Optional, Type
+from typing import Generator, Optional, Type
 
 from . import AST
 from .filepath import Filepath
@@ -67,5 +67,10 @@ class Project:
 
 
 def convert_filepath_to_module_path(filepath: Filepath) -> AST.ModulePath:
-    parts = list[Filepath.FilepathPart](filepath.directories) + [filepath.file]
-    return tuple(part.module_name for part in parts)
+    return tuple(get_module_names_from_filepath(filepath))
+
+
+def get_module_names_from_filepath(filepath: Filepath) -> Generator[str, None, None]:
+    for directory in filepath.directories:
+        yield directory.module_name
+    yield filepath.file.module_name
