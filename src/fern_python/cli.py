@@ -1,7 +1,7 @@
 import pydantic
 import typer
 
-from fern_python.codegen import AST, Project, Filepath, ExportStrategy
+from fern_python.codegen import AST, ExportStrategy, Filepath, Project
 from fern_python.ir_types import (
     AliasTypeDeclaration,
     ContainerType,

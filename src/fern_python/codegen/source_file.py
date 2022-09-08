@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from types import TracebackType
-from typing import List, Optional, Type, Callable, Set
+from typing import Callable, List, Optional, Set, Type
 
 from . import AST
 from .imports_manager import ImportsManager

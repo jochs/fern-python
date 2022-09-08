@@ -1,12 +1,14 @@
 from __future__ import annotations
-from . import AST
+
 import os
-from .filepath import Filepath
-from .source_file import SourceFile, SourceFileImpl
-from .module_manager import ModuleManager
+import shutil
 from types import TracebackType
 from typing import Optional, Type
-import shutil
+
+from . import AST
+from .filepath import Filepath
+from .module_manager import ModuleManager
+from .source_file import SourceFile, SourceFileImpl
 
 
 class Project:

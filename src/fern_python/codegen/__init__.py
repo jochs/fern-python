@@ -1,6 +1,6 @@
 from . import ast as AST
-from .source_file import SourceFile
+from .filepath import ExportStrategy, Filepath
 from .project import Project
-from .filepath import Filepath, ExportStrategy
+from .source_file import SourceFile
 
 __all__ = ["AST", "SourceFile", "Project", "Filepath", "ExportStrategy"]

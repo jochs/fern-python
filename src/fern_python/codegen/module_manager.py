@@ -1,12 +1,11 @@
-from collections import defaultdict
 import os
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import DefaultDict, Set, Tuple
-from .source_file import SourceFileImpl
-from .filepath import Filepath, ExportStrategy
-
 
 from . import AST
+from .filepath import ExportStrategy, Filepath
+from .source_file import SourceFileImpl
 
 RelativeModulePath = Tuple[str, ...]
 

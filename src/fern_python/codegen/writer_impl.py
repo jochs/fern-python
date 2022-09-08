@@ -1,7 +1,7 @@
 from __future__ import annotations
-import os
-import errno
 
+import errno
+import os
 from types import TracebackType
 from typing import IO, Any, Optional, Type
 
