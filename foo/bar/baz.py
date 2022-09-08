@@ -1,0 +1,3 @@
+class ZachClass:
+	foo	
+
