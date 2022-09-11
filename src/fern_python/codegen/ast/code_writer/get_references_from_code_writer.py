@@ -1,7 +1,7 @@
 from typing import Set
 
-from ...ast_node import ReferenceResolver
-from ...reference import Reference
+from ..ast_node import ReferenceResolver
+from ..reference import Reference
 from .code_writer import CodeWriter
 
 

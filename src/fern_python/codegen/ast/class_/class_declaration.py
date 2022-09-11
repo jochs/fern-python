@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import List, Optional, Set, Union
 
-from ...ast_node import AstNode, NodeWriter, ReferenceResolver
-from ...reference import Reference
+from ..ast_node import AstNode, NodeWriter, ReferenceResolver
 from ..code_writer import CodeWriterFunction
 from ..function import FunctionDeclaration, FunctionParameter
+from ..reference import Reference
 from ..type_hint import TypeHint
 from ..variable_declaration import VariableDeclaration
 from .class_constructor import ClassConstructor

@@ -1,4 +1,4 @@
-from ...ast_node import ReferenceResolver
+from ..ast_node import ReferenceResolver
 from .code_writer import CodeWriter
 
 

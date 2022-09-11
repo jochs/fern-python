@@ -1,6 +1,6 @@
 from typing import Protocol, Union
 
-from ...ast_node import ReferenceResolver
+from ..ast_node import ReferenceResolver
 
 
 class CodeWriterFunction(Protocol):
