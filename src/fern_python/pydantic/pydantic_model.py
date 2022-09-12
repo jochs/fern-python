@@ -1,5 +1,3 @@
-from typing import Union
-
 from ..codegen import AST
 
 
@@ -25,11 +23,9 @@ class PydanticModel:
             extends=[PYDANTIC_BASE_MODEL_REFERENCE],
         )
 
-    def add_field(self, name: str, type_hint: AST.TypeHint, json_field_name: str = None) -> None:
+    def add_field(self, name: str, type_hint: AST.TypeHint, json_field_name: str) -> None:
         initializer = (
-            get_initializer(json_field_name=json_field_name)
-            if json_field_name is not None and json_field_name != name
-            else None
+            AST.CodeWriter(FieldNameInitializer(json_field_name=json_field_name)) if json_field_name != name else None
         )
 
         if initializer is not None:
@@ -38,6 +34,9 @@ class PydanticModel:
         self._class_declaration.add_attribute(
             AST.VariableDeclaration(name=name, type_hint=type_hint, initializer=initializer)
         )
+
+    def add_root_type(self, root_type: AST.TypeHint) -> None:
+        self._class_declaration.add_attribute(AST.VariableDeclaration(name="__root__", type_hint=root_type))
 
     def finish(self) -> AST.ClassDeclaration:
         if self._has_aliases:
@@ -49,12 +48,16 @@ class PydanticModel:
                 )
             )
             self._class_declaration.add_class(declaration=config)
+
         return self._class_declaration
 
 
-def get_initializer(json_field_name: str) -> Union[AST.CodeWriter, None]:
-    class Initializer(AST.ReferencingCodeWriter):
-        def write(self, reference_resolver: AST.ReferenceResolver) -> str:
-            return f'{reference_resolver.resolve_reference(PYDANTIC_FIELD_REFERENCE)}(alias="{json_field_name}")'
+class FieldNameInitializer(AST.ReferencingCodeWriter):
+    _json_field_name: str
 
-    return AST.CodeWriter(Initializer())
+    def __init__(self, json_field_name: str):
+        super().__init__()
+        self._json_field_name = json_field_name
+
+    def write(self, reference_resolver: AST.ReferenceResolver) -> str:
+        return f'{reference_resolver.resolve_reference(PYDANTIC_FIELD_REFERENCE)}(alias="{self._json_field_name}")'
