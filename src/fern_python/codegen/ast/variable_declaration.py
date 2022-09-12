@@ -1,7 +1,7 @@
 from typing import Optional, Set
 
 from .ast_node import AstNode, NodeWriter, ReferenceResolver
-from .code_writer import CodeWriter, get_references_from_code_writer, run_code_writer
+from .code_writer import CodeWriter
 from .reference import Reference
 from .type_hint import TypeHint
 
@@ -21,7 +21,7 @@ class VariableDeclaration(AstNode):
         if self.type_hint is not None:
             references = references.union(self.type_hint.get_references())
         if self.initializer is not None:
-            references = references.union(get_references_from_code_writer(self.initializer))
+            references = references.union(self.initializer.get_references())
         return references
 
     def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:
@@ -30,5 +30,5 @@ class VariableDeclaration(AstNode):
             writer.write(": ")
             writer.write_node(self.type_hint)
         if self.initializer is not None:
-            initializer_str = run_code_writer(code_writer=self.initializer, reference_resolver=reference_resolver)
-            writer.write(" = " + initializer_str)
+            writer.write(" = ")
+            self.initializer.write(writer=writer, reference_resolver=reference_resolver)

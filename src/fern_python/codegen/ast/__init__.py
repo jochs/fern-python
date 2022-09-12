@@ -1,5 +1,6 @@
 from .ast_node import AstNode, IndentableWriter, NodeWriter, ReferenceResolver, Writer
 from .class_ import ClassConstructor, ClassDeclaration, ClassReference
+from .code_writer import CodeWriter, CodeWriterFunction
 from .dependency import Dependency, DependencyName, DependencyVersion
 from .function import FunctionDeclaration, FunctionParameter
 from .reference import ModulePath, Reference
@@ -24,4 +25,6 @@ __all__ = [
     "Dependency",
     "DependencyName",
     "DependencyVersion",
+    "CodeWriter",
+    "CodeWriterFunction",
 ]

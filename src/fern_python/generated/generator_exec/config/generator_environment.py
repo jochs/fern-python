@@ -6,7 +6,6 @@ from abc import ABC, abstractmethod
 import pydantic
 import typing_extensions
 
-from ..logging.task_id import TaskId
 from .remote_generator_environment import RemoteGeneratorEnvironment
 
 _Result = typing.TypeVar("_Result")
@@ -26,10 +25,13 @@ class GeneratorEnvironment(pydantic.BaseModel):
         return GeneratorEnvironment(__root__=_GeneratorEnvironment.Local(type="local"))
 
     @staticmethod
-    def remote(coordinator_url: str, coordinator_url_v2: str, id: TaskId) -> GeneratorEnvironment:
+    def remote(value: RemoteGeneratorEnvironment) -> GeneratorEnvironment:
         return GeneratorEnvironment(
             __root__=_GeneratorEnvironment.Remote(
-                type="remote", coordinator_url=coordinator_url, coordinator_url_v2=coordinator_url_v2, id=id
+                type="remote",
+                coordinator_url=value.coordinator_url,
+                coordinator_url_v2=value.coordinator_url_v2,
+                id=value.id,
             )
         )
 
