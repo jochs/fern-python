@@ -10,7 +10,7 @@ class ReferenceLoader(ReferenceResolver):
     encountered.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._references: Set[Reference] = set()
 
     def resolve_reference(self, reference: Reference) -> str:

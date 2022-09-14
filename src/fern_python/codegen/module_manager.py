@@ -27,7 +27,7 @@ class ModuleManager:
 
     _module_infos: DefaultDict[AST.ModulePath, ModuleInfo]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._module_infos = defaultdict(create_empty_module_info)
 
     def register_source_file(self, filepath: Filepath, source_file: SourceFileImpl) -> None:
