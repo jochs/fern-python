@@ -1,8 +1,8 @@
 from typing import Set
 
-from ...ast_node import AstNode, NodeWriter, ReferenceResolver
-from ...references import Reference
-from ..type_hint import TypeHint
+from ....ast_node import AstNode, NodeWriter, ReferenceResolver
+from ....references import Reference
+from ...type_hint import TypeHint
 
 
 class FunctionParameter(AstNode):

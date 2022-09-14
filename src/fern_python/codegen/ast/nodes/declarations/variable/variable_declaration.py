@@ -1,13 +1,13 @@
 from typing import Set
 
-from ...ast_node import AstNode, NodeWriter, ReferenceResolver
-from ...references import Reference
-from ..code_writer import CodeWriter
-from ..type_hint import TypeHint
+from ....ast_node import AstNode, NodeWriter, ReferenceResolver
+from ....references import Reference
+from ...expressions import Expression
+from ...type_hint import TypeHint
 
 
 class VariableDeclaration(AstNode):
-    def __init__(self, name: str, type_hint: TypeHint = None, initializer: CodeWriter = None):
+    def __init__(self, name: str, type_hint: TypeHint = None, initializer: Expression = None):
         self.name = name
         self.type_hint = type_hint
         self.initializer = initializer
@@ -28,3 +28,4 @@ class VariableDeclaration(AstNode):
         if self.initializer is not None:
             writer.write(" = ")
             self.initializer.write(writer=writer, reference_resolver=reference_resolver)
+        writer.write("\n")

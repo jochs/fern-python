@@ -1,14 +1,14 @@
-from typing import List, Set
+from typing import Sequence, Set
 
-from ...ast_node import AstNode, NodeWriter, ReferenceResolver
-from ...references import Reference
-from ..code_writer import CodeWriter
-from ..type_hint import TypeHint
+from ....ast_node import AstNode, NodeWriter, ReferenceResolver
+from ....references import Reference
+from ...code_writer import CodeWriter
+from ...type_hint import TypeHint
 from .function_parameter import FunctionParameter
 
 
 class FunctionDeclaration(AstNode):
-    def __init__(self, name: str, return_type: TypeHint, parameters: List[FunctionParameter], body: CodeWriter):
+    def __init__(self, name: str, return_type: TypeHint, parameters: Sequence[FunctionParameter], body: CodeWriter):
         self.name = name
         self.parameters = parameters
         self.return_type = return_type

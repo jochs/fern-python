@@ -1,8 +1,8 @@
 from typing import List, Set
 
-from ...ast_node import AstNode, NodeWriter, ReferenceResolver
-from ...references import Reference
-from ..code_writer import CodeWriter
+from ....ast_node import AstNode, NodeWriter, ReferenceResolver
+from ....references import Reference
+from ...code_writer import CodeWriter
 from ..function import FunctionParameter
 
 

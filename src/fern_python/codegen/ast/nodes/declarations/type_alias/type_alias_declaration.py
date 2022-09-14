@@ -1,11 +1,11 @@
 from typing import Set
 
-from ...ast_node import AstNode, NodeWriter, ReferenceResolver
-from ...references import Reference
-from ..type_hint import TypeHint
+from ....ast_node import AstNode, NodeWriter, ReferenceResolver
+from ....references import Reference
+from ...type_hint import TypeHint
 
 
-class TypeAlias(AstNode):
+class TypeAliasDeclaration(AstNode):
     def __init__(self, name: str, type_hint: TypeHint):
         self.name = name
         self.type_hint = type_hint

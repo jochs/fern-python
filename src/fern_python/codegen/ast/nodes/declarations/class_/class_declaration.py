@@ -1,18 +1,18 @@
 from __future__ import annotations
 
-from typing import List, Set
+from typing import List, Sequence, Set
 
-from ...ast_node import AstNode, NodeWriter, ReferenceResolver
-from ...references import ClassReference, Reference
-from ..code_writer import CodeWriter
+from ....ast_node import AstNode, NodeWriter, ReferenceResolver
+from ....references import ClassReference, Reference
+from ...code_writer import CodeWriter
+from ...type_hint import TypeHint
 from ..function import FunctionDeclaration, FunctionParameter
-from ..type_hint import TypeHint
-from ..variable_declaration import VariableDeclaration
+from ..variable import VariableDeclaration
 from .class_constructor import ClassConstructor
 
 
 class ClassDeclaration(AstNode):
-    def __init__(self, name: str, extends: List[ClassReference] = None, constructor: ClassConstructor = None):
+    def __init__(self, name: str, extends: Sequence[ClassReference] = None, constructor: ClassConstructor = None):
         self.name = name
         self.extends = extends or []
         self.constructor = constructor
@@ -54,6 +54,5 @@ class ClassDeclaration(AstNode):
         with writer.indent():
             for statement in self.statements:
                 writer.write_node(statement)
-                writer.write("\n")
             if len(self.statements) == 0:
-                writer.write_line("pass")
+                writer.write_line("pass\n")
