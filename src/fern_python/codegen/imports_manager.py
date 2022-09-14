@@ -30,14 +30,10 @@ def create_empty_module_imports() -> ModuleImports:
 
 
 class ImportsManager:
-    _project_name: str
-    _top_imports: Imports
-    _bottom_imports: Imports
-
     def __init__(self, project_name: str):
         self._project_name = project_name
-        self._top_imports = defaultdict(create_empty_module_imports)
-        self._bottom_imports = defaultdict(create_empty_module_imports)
+        self._top_imports: Imports = defaultdict(create_empty_module_imports)
+        self._bottom_imports: Imports = defaultdict(create_empty_module_imports)
 
     def register_import(self, reference: AST.Reference) -> None:
         if reference.at_bottom_of_file:

@@ -5,8 +5,6 @@ from fern_python.generated.ir_types import TypeReference
 
 
 class DeclarationHandlerContext(ABC):
-    source_file: SourceFile
-
     def __init__(self, source_file: SourceFile) -> None:
         self.source_file = source_file
 

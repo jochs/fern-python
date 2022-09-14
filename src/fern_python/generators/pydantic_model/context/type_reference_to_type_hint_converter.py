@@ -5,8 +5,6 @@ from ..filepaths import get_filepath_for_type
 
 
 class TypeReferenceToTypeHintConverter:
-    _api_name: str
-
     def __init__(self, api_name: str):
         self._api_name = api_name
 

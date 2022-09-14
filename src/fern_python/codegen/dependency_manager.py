@@ -4,11 +4,8 @@ from . import AST
 
 
 class DependencyManager:
-
-    _dependencies: Dict[AST.DependencyName, AST.DependencyVersion]
-
     def __init__(self):
-        self._dependencies = {}
+        self._dependencies: Dict[AST.DependencyName, AST.DependencyVersion] = {}
 
     def add_dependency(self, dependency: AST.Dependency) -> None:
         self._dependencies[dependency.name] = dependency.version

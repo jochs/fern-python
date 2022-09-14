@@ -36,7 +36,7 @@ class Type(pydantic.BaseModel):
         **data: typing.Any,
     ):
         super().__init__(**data)
-        self._value = data["__root__"]  # type: ignore
+        self._value = data["__root__"]
 
     @staticmethod
     def alias(value: AliasTypeDeclaration) -> Type:

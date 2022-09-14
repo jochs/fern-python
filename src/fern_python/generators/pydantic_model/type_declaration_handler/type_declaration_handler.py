@@ -17,9 +17,6 @@ class TypeDeclarationHandler(DeclarationHandler[ir_types.TypeDeclaration]):
 
 
 class ShapeGenerator(ir_types.Type._Visitor[None]):
-    _declaration: ir_types.TypeDeclaration
-    _context: DeclarationHandlerContext
-
     def __init__(self, declaration: ir_types.TypeDeclaration, context: DeclarationHandlerContext) -> None:
         self._declaration = declaration
         self._context = context

@@ -12,14 +12,10 @@ class LoggerImpl(Logger):
 
 
 class PydanticModelGenerator:
-    _intermediate_representation: ir_types.IntermediateRepresentation
-    _output_filepath: str
-    _logger: LoggerImpl
-
     def __init__(self, intermediate_representation: ir_types.IntermediateRepresentation, output_filepath: str):
         self._intermediate_representation = intermediate_representation
         self._output_filepath = output_filepath
-        self._logger = LoggerImpl
+        self._logger = LoggerImpl()
 
     def run(self) -> None:
         with Project(

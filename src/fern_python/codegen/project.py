@@ -20,11 +20,6 @@ class Project:
         ...
     """
 
-    _filepath: str
-    _project_name: str
-    _module_manager: ModuleManager
-    _dependency_manager: DependencyManager
-
     def __init__(self, filepath: str, project_name: str):
         self._filepath = os.path.join(filepath, project_name)
         self._project_name = project_name

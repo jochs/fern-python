@@ -56,15 +56,6 @@ class SourceFile(ABC):
 
 
 class SourceFileImpl(SourceFile):
-    _filepath: str
-    _module_path: AST.ModulePath
-    _imports_manager: ImportsManager
-    _reference_resolver: ReferenceResolverImpl
-    _statements: List[AST.AstNode]
-    _statements_after_bottom_imports: List[AST.AstNode]
-    _exports: Set[str]
-    _completion_listener: Optional[Callable[[SourceFileImpl], None]]
-
     def __init__(
         self,
         filepath: str,
@@ -77,10 +68,10 @@ class SourceFileImpl(SourceFile):
         self._module_path = module_path
         self._imports_manager = imports_manager
         self._reference_resolver = reference_resolver
-        self._statements = []
-        self._statements_after_bottom_imports = []
-        self._exports = set()
         self._completion_listener = completion_listener
+        self._statements: List[AST.AstNode] = []
+        self._statements_after_bottom_imports: List[AST.AstNode] = []
+        self._exports: Set[str] = set()
 
     def add_class(
         self,

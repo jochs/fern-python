@@ -6,8 +6,6 @@ from .type_reference_to_type_hint_converter import TypeReferenceToTypeHintConver
 
 
 class DeclarationHandlerContextImpl(DeclarationHandlerContext):
-    _type_reference_to_type_hint_converter: TypeReferenceToTypeHintConverter
-
     def __init__(self, source_file: SourceFile, intermediate_representation: ir_types.IntermediateRepresentation):
         super().__init__(source_file=source_file)
         self._type_reference_to_type_hint_converter = TypeReferenceToTypeHintConverter(

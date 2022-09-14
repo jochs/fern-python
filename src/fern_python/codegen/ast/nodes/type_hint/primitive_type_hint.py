@@ -14,8 +14,6 @@ class PrimitiveType(str, Enum):
 
 
 class PrimitiveTypeHint(AstNode):
-    _primitive: PrimitiveType
-
     def __init__(self, primitive: PrimitiveType):
         self._primitive = primitive
 

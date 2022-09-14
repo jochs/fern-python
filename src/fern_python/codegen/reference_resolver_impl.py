@@ -7,15 +7,13 @@ QualifiedName = Tuple[str, ...]
 
 
 class ReferenceResolverImpl(AST.ReferenceResolver):
-    _project_name: str
-    _module_path_of_source_file: AST.ModulePath
-    _default_name_to_original_references: DefaultDict[QualifiedName, Set[AST.Reference]]
-    _original_reference_to_resolved_reference: Dict[AST.Reference, AST.Reference]
-
     def __init__(self, project_name: str, module_path_of_source_file: AST.ModulePath):
         self._project_name = project_name
         self._module_path_of_source_file = module_path_of_source_file
-        self._default_name_to_original_references = defaultdict(lambda: set())
+        self._default_name_to_original_references: DefaultDict[QualifiedName, Set[AST.Reference]] = defaultdict(
+            lambda: set()
+        )
+        self._original_reference_to_resolved_reference: Dict[AST.Reference, AST.Reference]
 
     def register_reference(self, reference: AST.Reference) -> None:
         default_name = construct_qualified_name_of_reference(reference)

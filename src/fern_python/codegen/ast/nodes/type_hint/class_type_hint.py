@@ -5,9 +5,6 @@ from ...references import ClassReference, Reference
 
 
 class ClassTypeHint(AstNode):
-    _reference: ClassReference
-    _type_parameters: List[AstNode]
-
     def __init__(self, reference: ClassReference, type_parameters: List[AstNode] = []):
         self._reference = reference
         self._type_parameters = type_parameters

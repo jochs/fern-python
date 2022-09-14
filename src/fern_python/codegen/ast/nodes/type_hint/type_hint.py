@@ -19,8 +19,6 @@ def get_reference_to_typing_import(name: str) -> ClassReference:
 
 
 class TypeHint(AstNode):
-    _type_hint: Union[PrimitiveTypeHint, ClassTypeHint]
-
     def __init__(
         self,
         type_hint: Union[PrimitiveTypeHint, ClassTypeHint],
