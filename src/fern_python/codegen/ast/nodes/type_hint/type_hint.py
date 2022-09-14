@@ -50,6 +50,15 @@ class TypeHint(AstNode):
         )
 
     @staticmethod
+    def set(wrapped_type: TypeHint) -> TypeHint:
+        return TypeHint(
+            ClassTypeHint(
+                reference=get_reference_to_typing_import("Set"),
+                type_parameters=[wrapped_type],
+            )
+        )
+
+    @staticmethod
     def dict(key_type: TypeHint, value_type: TypeHint) -> TypeHint:
         return TypeHint(
             ClassTypeHint(
@@ -57,6 +66,10 @@ class TypeHint(AstNode):
                 type_parameters=[key_type, value_type],
             )
         )
+
+    @staticmethod
+    def any() -> TypeHint:
+        return TypeHint(ClassTypeHint(reference=get_reference_to_typing_import("Optional")))
 
     @staticmethod
     def annotated(type: TypeHint, annotation: CodeWriter) -> TypeHint:

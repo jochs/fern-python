@@ -13,7 +13,11 @@ class ClassTypeHint(AstNode):
         self._type_parameters = type_parameters
 
     def get_references(self) -> Set[Reference]:
-        return {self._reference}
+        references: Set[Reference] = set()
+        references.add(self._reference)
+        for type_parameter in self._type_parameters:
+            references.update(type_parameter.get_references())
+        return references
 
     def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:
         writer.write(reference_resolver.resolve_reference(self._reference))
