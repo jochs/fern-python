@@ -100,7 +100,7 @@ class SourceFileImpl(SourceFile):
                 self._imports_manager.register_import(reference.import_)
 
     def _add_generics_declarations(self) -> None:
-        generics_declarations = [
+        generics_declarations: List[AST.AstNode] = [
             AST.VariableDeclaration(
                 name=generic.name,
                 initializer=AST.FunctionInvocation(
