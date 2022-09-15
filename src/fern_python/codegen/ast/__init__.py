@@ -1,4 +1,11 @@
-from .ast_node import AstNode, IndentableWriter, NodeWriter, ReferenceResolver, Writer
+from .ast_node import (
+    AstNode,
+    GenericTypeVar,
+    IndentableWriter,
+    NodeWriter,
+    ReferenceResolver,
+    Writer,
+)
 from .dependency import Dependency, DependencyName, DependencyVersion
 from .nodes import (
     ClassConstructor,
@@ -41,4 +48,5 @@ __all__ = [
     "ReferenceImport",
     "Expression",
     "FunctionInvocation",
+    "GenericTypeVar",
 ]

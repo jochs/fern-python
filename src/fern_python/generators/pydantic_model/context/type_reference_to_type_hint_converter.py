@@ -40,7 +40,7 @@ class TypeReferenceToTypeHintConverter:
             ),
             qualified_name_excluding_import=(),
         )
-        return AST.TypeHint(reference=reference)
+        return AST.TypeHint(type=reference)
 
     def _get_type_hint_for_primitive(self, primitive: ir_types.PrimitiveType) -> AST.TypeHint:
         return primitive._visit(

@@ -72,6 +72,24 @@ class SourceFileImpl(SourceFile):
             self._statements.append(code)
 
     def finish(self) -> None:
+        self._add_generics_declarations()
+        self._register_imports()
+
+        with NodeWriterImpl(filepath=self._filepath, reference_resolver=self._reference_resolver) as writer:
+            self._imports_manager.write_top_imports(writer=writer)
+
+            for statement in self._statements:
+                writer.write_node(statement)
+
+            self._imports_manager.write_bottom_imports(writer=writer)
+
+            for statement in self._statements_after_bottom_imports:
+                writer.write_node(statement)
+
+        if self._completion_listener is not None:
+            self._completion_listener(self)
+
+    def _register_imports(self) -> None:
         for statement in self._statements:
             for reference in statement.get_references():
                 self._reference_resolver.register_reference(reference)
@@ -81,16 +99,27 @@ class SourceFileImpl(SourceFile):
             if reference.import_ is not None and reference.import_.module != self._module_path:
                 self._imports_manager.register_import(reference.import_)
 
-        with NodeWriterImpl(filepath=self._filepath, reference_resolver=self._reference_resolver) as writer:
-            self._imports_manager.write_top_imports(writer=writer)
-            for statement in self._statements:
-                writer.write_node(statement)
-            self._imports_manager.write_bottom_imports(writer=writer)
-            for statement in self._statements_after_bottom_imports:
-                writer.write_node(statement)
+    def _add_generics_declarations(self) -> None:
+        generics_declarations = [
+            AST.VariableDeclaration(
+                name=generic.name,
+                initializer=AST.FunctionInvocation(
+                    function_definition=AST.Reference(
+                        import_=AST.ReferenceImport(module=("typing",)),
+                        qualified_name_excluding_import=("TypeVar",),
+                    ),
+                    args=[AST.CodeWriter(f'"{generic.name}"')],
+                ),
+            )
+            for generic in self._get_generics()
+        ]
+        self._statements = generics_declarations + self._statements
 
-        if self._completion_listener is not None:
-            self._completion_listener(self)
+    def _get_generics(self) -> Set[AST.GenericTypeVar]:
+        generics: Set[AST.GenericTypeVar] = set()
+        for statement in self._statements:
+            generics.update(statement.get_generics())
+        return generics
 
     def get_exports(self) -> Set[str]:
         return self._exports

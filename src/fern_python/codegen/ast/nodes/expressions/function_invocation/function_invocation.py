@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Sequence, Set, Tuple
 
-from ....ast_node import AstNode, NodeWriter, ReferenceResolver
+from ....ast_node import AstNode, GenericTypeVar, NodeWriter, ReferenceResolver
 from ....references import Reference
 
 
@@ -18,13 +18,21 @@ class FunctionInvocation(AstNode):
         self.kwargs = kwargs or []
 
     def get_references(self) -> Set[Reference]:
-        references = set()
+        references: Set[Reference] = set()
         references.add(self.function_definition)
         for arg in self.args:
             references.update(arg.get_references())
         for kwarg in self.kwargs:
             references.update(kwarg[1].get_references())
         return references
+
+    def get_generics(self) -> Set[GenericTypeVar]:
+        generics: Set[GenericTypeVar] = set()
+        for arg in self.args:
+            generics.update(arg.get_generics())
+        for kwarg in self.kwargs:
+            generics.update(kwarg[1].get_generics())
+        return generics
 
     def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:
         writer.write(f"{reference_resolver.resolve_reference(self.function_definition)}(")
