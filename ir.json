@@ -146,6 +146,14 @@
       },
       "shape": {
         "discriminant": "_type",
+        "discriminantV2": {
+          "originalValue": "type",
+          "camelCase": "type",
+          "snakeCase": "type",
+          "pascalCase": "Type",
+          "screamingSnakeCase": "TYPE",
+          "wireValue": "_type"
+        },
         "types": [
           {
             "discriminantValue": {
@@ -3214,6 +3222,14 @@
       },
       "shape": {
         "discriminant": "_type",
+        "discriminantV2": {
+          "originalValue": "type",
+          "camelCase": "type",
+          "snakeCase": "type",
+          "pascalCase": "Type",
+          "screamingSnakeCase": "TYPE",
+          "wireValue": "_type"
+        },
         "types": [
           {
             "discriminantValue": {
@@ -3444,6 +3460,14 @@
       },
       "shape": {
         "discriminant": "_type",
+        "discriminantV2": {
+          "originalValue": "type",
+          "camelCase": "type",
+          "snakeCase": "type",
+          "pascalCase": "Type",
+          "screamingSnakeCase": "TYPE",
+          "wireValue": "_type"
+        },
         "types": [
           {
             "discriminantValue": {
@@ -4210,6 +4234,14 @@
       },
       "shape": {
         "discriminant": "_type",
+        "discriminantV2": {
+          "originalValue": "propertiesType",
+          "camelCase": "propertiesType",
+          "snakeCase": "properties_type",
+          "pascalCase": "PropertiesType",
+          "screamingSnakeCase": "PROPERTIES_TYPE",
+          "wireValue": "_type"
+        },
         "types": [
           {
             "discriminantValue": {
@@ -4384,6 +4416,14 @@
       },
       "shape": {
         "discriminant": "_type",
+        "discriminantV2": {
+          "originalValue": "type",
+          "camelCase": "type",
+          "snakeCase": "type",
+          "pascalCase": "Type",
+          "screamingSnakeCase": "TYPE",
+          "wireValue": "_type"
+        },
         "types": [
           {
             "discriminantValue": {
@@ -4566,6 +4606,14 @@
       },
       "shape": {
         "discriminant": "_type",
+        "discriminantV2": {
+          "originalValue": "type",
+          "camelCase": "type",
+          "snakeCase": "type",
+          "pascalCase": "Type",
+          "screamingSnakeCase": "TYPE",
+          "wireValue": "_type"
+        },
         "types": [
           {
             "discriminantValue": {

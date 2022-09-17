@@ -1,7 +1,6 @@
-import pydantic
+from __future__ import annotations
 
-from .resolved_type_reference import ResolvedTypeReference
-from .type_reference import TypeReference
+import pydantic
 
 
 class AliasTypeDeclaration(pydantic.BaseModel):
@@ -10,3 +9,9 @@ class AliasTypeDeclaration(pydantic.BaseModel):
 
     class Config:
         allow_population_by_field_name = True
+
+
+from .resolved_type_reference import ResolvedTypeReference  # noqa: E402
+from .type_reference import TypeReference  # noqa: E402
+
+AliasTypeDeclaration.update_forward_refs()

@@ -70,7 +70,12 @@ class Type(pydantic.BaseModel):
     @staticmethod
     def union(value: UnionTypeDeclaration) -> Type:
         return Type(
-            __root__=_Type.Union(type="union", discriminant=value.discriminant, types=value.types),
+            __root__=_Type.Union(
+                type="union",
+                discriminant=value.discriminant,
+                discriminant_v2=value.discriminant_v2,
+                types=value.types,
+            ),
         )
 
     __root__: typing_extensions.Annotated[

@@ -5,7 +5,6 @@ import typing
 import pydantic
 import typing_extensions
 
-from .container_type import ContainerType
 from .primitive_type import PrimitiveType
 from .resolved_named_type import ResolvedNamedType
 
@@ -100,4 +99,7 @@ class _ResolvedTypeReference:
             allow_population_by_field_name = True
 
 
+from .container_type import ContainerType  # noqa: E402
+
 ResolvedTypeReference.update_forward_refs()
+_ResolvedTypeReference.Container.update_forward_refs()
