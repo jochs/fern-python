@@ -11,25 +11,6 @@ from .primitive_type import PrimitiveType
 _Result = typing.TypeVar("_Result")
 
 
-class _TypeReference:
-    class Container(pydantic.BaseModel):
-        type: typing.Literal["container"]
-        container: ContainerType
-
-    class Named(DeclaredTypeName):
-        type: typing.Literal["named"]
-
-    class Primitive(pydantic.BaseModel):
-        type: typing.Literal["primitive"]
-        primitive: PrimitiveType
-
-    class Unknown(pydantic.BaseModel):
-        type: typing.Literal["unknown"]
-
-    class Void(pydantic.BaseModel):
-        type: typing.Literal["void"]
-
-
 class TypeReference(pydantic.BaseModel):
     @staticmethod
     def container(value: ContainerType) -> TypeReference:
@@ -84,6 +65,41 @@ class TypeReference(pydantic.BaseModel):
             return void()
 
 
+class _TypeReference:
+    class Container(pydantic.BaseModel):
+        type: typing.Literal["container"] = pydantic.Field(alias="_type")
+        container: ContainerType
+
+        class Config:
+            allow_population_by_field_name = True
+
+    class Named(DeclaredTypeName):
+        type: typing.Literal["named"] = pydantic.Field(alias="_type")
+
+        class Config:
+            allow_population_by_field_name = True
+
+    class Primitive(pydantic.BaseModel):
+        type: typing.Literal["primitive"] = pydantic.Field(alias="_type")
+        primitive: PrimitiveType
+
+        class Config:
+            allow_population_by_field_name = True
+
+    class Unknown(pydantic.BaseModel):
+        type: typing.Literal["unknown"] = pydantic.Field(alias="_type")
+
+        class Config:
+            allow_population_by_field_name = True
+
+    class Void(pydantic.BaseModel):
+        type: typing.Literal["void"] = pydantic.Field(alias="_type")
+
+        class Config:
+            allow_population_by_field_name = True
+
+
 from .container_type import ContainerType  # noqa: E402
 
+TypeReference.update_forward_refs()
 _TypeReference.Container.update_forward_refs()

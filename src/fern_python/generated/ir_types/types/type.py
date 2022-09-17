@@ -15,16 +15,28 @@ _Result = typing.TypeVar("_Result")
 
 class _Type:
     class Alias(AliasTypeDeclaration):
-        type: typing.Literal["alias"]
+        type: typing.Literal["alias"] = pydantic.Field(alias="_type")
+
+        class Config:
+            allow_population_by_field_name = True
 
     class Enum(EnumTypeDeclaration):
-        type: typing.Literal["enum"]
+        type: typing.Literal["enum"] = pydantic.Field(alias="_type")
+
+        class Config:
+            allow_population_by_field_name = True
 
     class Object(ObjectTypeDeclaration):
-        type: typing.Literal["object"]
+        type: typing.Literal["object"] = pydantic.Field(alias="_type")
+
+        class Config:
+            allow_population_by_field_name = True
 
     class Union(UnionTypeDeclaration):
-        type: typing.Literal["union"]
+        type: typing.Literal["union"] = pydantic.Field(alias="_type")
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 class Type(pydantic.BaseModel):
@@ -40,7 +52,7 @@ class Type(pydantic.BaseModel):
     @staticmethod
     def alias(value: AliasTypeDeclaration) -> Type:
         return Type(
-            __root__=_Type.Alias(type="alias", alias_of=value.alias_of),
+            __root__=_Type.Alias(type="alias", alias_of=value.alias_of, resolved_type=value.resolved_type),
         )
 
     @staticmethod
