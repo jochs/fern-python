@@ -1,22 +1,17 @@
 from collections import defaultdict
-from dataclasses import dataclass
-from typing import DefaultDict, Optional, Sequence, Set
+from typing import DefaultDict, Sequence, Set
 
 from . import AST
 from .reference_resolver_impl import ReferenceResolverImpl
 from .top_level_statement import StatementId, TopLevelStatement
 
 
-@dataclass(frozen=True)
-class StatementIdAndConstraint:
-    statement_id: StatementId
-    constraint: AST.ImportConstraint
-
-
 class ImportsManager:
     def __init__(self, project_name: str):
         self._project_name = project_name
-        self._import_to_constraints: DefaultDict[AST.ReferenceImport, Set[StatementIdAndConstraint]] = defaultdict(set)
+        self._import_to_statements_that_must_precede_it: DefaultDict[
+            AST.ReferenceImport, Set[StatementId]
+        ] = defaultdict(set)
 
         self._postponed_annotations = False
 
@@ -27,26 +22,13 @@ class ImportsManager:
         for statement in statements:
             for reference in statement.references:
                 if reference.import_ is not None:
-                    constraint = (
-                        reference.import_.constraint
-                        if reference.is_annotation
-                        else AST.ImportConstraint.BEFORE_CURRENT_DECLARATION
-                    )
-                    if constraint is not None:
-                        self._import_to_constraints[reference.import_].add(
-                            StatementIdAndConstraint(
-                                statement_id=statement.id,
-                                constraint=constraint,
-                            )
-                        )
-
-                        if reference.is_annotation and constraint == AST.ImportConstraint.AFTER_CURRENT_DECLARATION:
-                            self._postponed_annotations = True
-
-                    elif reference.import_ not in self._import_to_constraints:
+                    if reference.import_.must_import_after_current_declaration:
+                        self._import_to_statements_that_must_precede_it[reference.import_].add(statement.id)
+                        self._postponed_annotations = True
+                    elif reference.import_ not in self._import_to_statements_that_must_precede_it:
                         # even if there's no constraints, we still store the import
                         # so that we write it to the file.
-                        self._import_to_constraints[reference.import_] = set()
+                        self._import_to_statements_that_must_precede_it[reference.import_] = set()
 
         self._has_resolved_constraints = True
 
@@ -63,43 +45,19 @@ class ImportsManager:
         if not self._has_written_top_imports:
             raise RuntimeError("Top imports haven't been written yet")
 
-        # write (and forget) all imports without any "after" constraints
+        # write (and forget) all imports that have no constraints
         written_imports: Set[AST.ReferenceImport] = set()
-        for import_, constraints in self._import_to_constraints.items():
-            # if there's both a "before {this statement}" and "after {any statement}" constraint,
-            # then the constraints are unresolvable
-            must_be_before_this_statement = False
-            must_be_after_statement: Optional[StatementId] = None
-            for constraint in constraints:
-                if constraint.constraint == AST.ImportConstraint.BEFORE_CURRENT_DECLARATION:
-                    must_be_before_this_statement |= constraint.statement_id == statement.id
-                elif constraint.constraint == AST.ImportConstraint.AFTER_CURRENT_DECLARATION:
-                    must_be_after_statement = constraint.statement_id
-
-            if must_be_after_statement is None:
+        for import_, statements_that_must_precede_it in self._import_to_statements_that_must_precede_it.items():
+            if len(statements_that_must_precede_it) == 0:
                 self._write_import(import_=import_, writer=writer, reference_resolver=reference_resolver)
                 written_imports.add(import_)
-            elif must_be_before_this_statement:
-                raise RuntimeError(
-                    f"Unresolvable constraint: import is constrained to be before {statement.id}"
-                    + f" but after {must_be_after_statement}:"
-                    + "\n\t"
-                    + self._get_import_as_string(import_=import_, reference_resolver=reference_resolver)
-                )
+            else:
+                statements_that_must_precede_it.remove(statement.id)
         for import_ in written_imports:
-            del self._import_to_constraints[import_]
-
-        # delete "must be after {statement} constraints"
-        constraint_to_delete = StatementIdAndConstraint(
-            statement_id=statement.id,
-            constraint=AST.ImportConstraint.AFTER_CURRENT_DECLARATION,
-        )
-        for import_, constraints in self._import_to_constraints.items():
-            if constraint_to_delete in constraints:
-                constraints.remove(constraint_to_delete)
+            del self._import_to_statements_that_must_precede_it[import_]
 
     def write_remaining_imports(self, writer: AST.Writer, reference_resolver: ReferenceResolverImpl) -> None:
-        for import_ in self._import_to_constraints:
+        for import_ in self._import_to_statements_that_must_precede_it:
             self._write_import(import_=import_, writer=writer, reference_resolver=reference_resolver)
 
     def _write_import(

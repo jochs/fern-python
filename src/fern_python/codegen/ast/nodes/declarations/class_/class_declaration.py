@@ -34,13 +34,7 @@ class ClassDeclaration(AstNode):
         )
 
         decorators = (
-            list(declaration.decorators)
-            + [
-                Reference(
-                    is_annotation=False,
-                    qualified_name_excluding_import=("staticmethod",),
-                )
-            ]
+            list(declaration.decorators) + [Reference(qualified_name_excluding_import=("staticmethod",))]
             if is_static
             else declaration.decorators
         )

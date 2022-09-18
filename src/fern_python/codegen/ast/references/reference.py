@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from .import_contraint import ImportConstraint
 from .module import Module
 from .qualfied_name import QualifiedName
 
@@ -14,7 +13,7 @@ class ReferenceImport:
     named_import: Optional[str] = None
     alias: Optional[str] = None
 
-    constraint: Optional[ImportConstraint] = None
+    must_import_after_current_declaration: bool = False
     """
     in Python 3.7+, annotations can be imported after they're used, with:
       from __future__ import annotations.
@@ -24,8 +23,6 @@ class ReferenceImport:
 
 @dataclass(frozen=True)
 class Reference:
-    is_annotation: bool
-
     qualified_name_excluding_import: QualifiedName
     """
     the qualfied name of the reference "inside" the import.

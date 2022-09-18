@@ -99,7 +99,6 @@ class SourceFileImpl(SourceFile):
                     name=generic.name,
                     initializer=AST.FunctionInvocation(
                         function_definition=AST.Reference(
-                            is_annotation=False,
                             import_=AST.ReferenceImport(module=AST.Module.built_in("typing")),
                             qualified_name_excluding_import=("TypeVar",),
                         ),

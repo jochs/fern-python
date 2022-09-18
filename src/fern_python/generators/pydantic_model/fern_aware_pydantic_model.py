@@ -30,9 +30,7 @@ class FernAwarePydanticModel:
             name=name,
             type_hint=self._context.get_type_hint_for_type_reference(
                 type_reference,
-                import_constraint=AST.ImportConstraint.AFTER_CURRENT_DECLARATION
-                if self._is_type_reference_circular(type_reference)
-                else None,
+                must_import_after_current_declaration=self._is_type_reference_circular(type_reference),
             ),
             json_field_name=json_field_name,
         )

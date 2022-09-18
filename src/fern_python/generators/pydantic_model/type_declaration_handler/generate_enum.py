@@ -9,11 +9,9 @@ def generate_enum(name: ir_types.DeclaredTypeName, enum: ir_types.EnumTypeDeclar
         name=name.name,
         extends=[
             AST.ClassReference(
-                is_annotation=False,
                 qualified_name_excluding_import=("str",),
             ),
             AST.ClassReference(
-                is_annotation=False,
                 import_=AST.ReferenceImport(module=AST.Module.built_in("enum")),
                 qualified_name_excluding_import=("Enum",),
             ),

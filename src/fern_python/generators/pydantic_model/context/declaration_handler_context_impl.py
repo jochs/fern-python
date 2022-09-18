@@ -31,11 +31,11 @@ class DeclarationHandlerContextImpl(DeclarationHandlerContext):
     def get_type_hint_for_type_reference(
         self,
         type_reference: ir_types.TypeReference,
-        import_constraint: AST.ImportConstraint = None,
+        must_import_after_current_declaration: bool = False,
     ) -> AST.TypeHint:
         return self._type_reference_to_type_hint_converter.get_type_hint_for_type_reference(
             type_reference,
-            import_constraint=import_constraint,
+            must_import_after_current_declaration=must_import_after_current_declaration,
         )
 
     def get_class_reference_for_type_name(

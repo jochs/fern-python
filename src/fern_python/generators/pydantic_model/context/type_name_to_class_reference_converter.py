@@ -17,7 +17,6 @@ class TypeNameToClassReferenceConverter:
             api_name=self._api_name,
         )
         return AST.ClassReference(
-            is_annotation=False,
             import_=AST.ReferenceImport(
                 module=filepath.to_module(),
                 named_import=type_name.name,

@@ -87,7 +87,6 @@ class TypeHint(AstNode):
     def annotated(type: TypeHint, annotation: CodeWriter) -> TypeHint:
         return TypeHint(
             type=ClassReference(
-                is_annotation=True,
                 import_=ReferenceImport(
                     module=Module.built_in(
                         "typing_extensions",
@@ -131,7 +130,6 @@ class TypeHint(AstNode):
 
 def get_reference_to_typing_import(name: str) -> ClassReference:
     return ClassReference(
-        is_annotation=True,
         import_=ReferenceImport(
             module=Module.built_in("typing"),
         ),
@@ -141,6 +139,5 @@ def get_reference_to_typing_import(name: str) -> ClassReference:
 
 def get_reference_to_built_in_primitive(name: str) -> ClassReference:
     return ClassReference(
-        is_annotation=True,
         qualified_name_excluding_import=(name,),
     )

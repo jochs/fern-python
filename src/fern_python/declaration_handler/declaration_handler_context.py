@@ -16,7 +16,7 @@ class DeclarationHandlerContext(ABC):
     def get_type_hint_for_type_reference(
         self,
         type_reference: ir_types.TypeReference,
-        import_constraint: AST.ImportConstraint = None,
+        must_import_after_current_declaration: bool = False,
     ) -> AST.TypeHint:
         ...
 
