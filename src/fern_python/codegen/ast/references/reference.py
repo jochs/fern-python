@@ -13,11 +13,18 @@ class ReferenceImport:
     module: Module
     named_import: Optional[str] = None
     alias: Optional[str] = None
-    constaint: Optional[ImportConstraint] = None
+
+    constraint: Optional[ImportConstraint] = None
+    """
+    in Python 3.7+, annotations can be imported after they're used, with:
+      from __future__ import annotations.
+    from non-annotation references, this field is ignored.
+    """
 
 
 @dataclass(frozen=True)
 class Reference:
+    is_annotation: bool
 
     qualified_name_excluding_import: QualifiedName
     """

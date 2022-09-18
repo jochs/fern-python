@@ -75,6 +75,7 @@ class SourceFileImpl(SourceFile):
         self._imports_manager.resolve_constraints(statements=self._statements)
 
         with NodeWriterImpl(filepath=self._filepath, reference_resolver=self._reference_resolver) as writer:
+            self._imports_manager.write_top_imports_for_file(writer=writer)
             for statement in self._statements:
                 self._imports_manager.write_top_imports_for_statement(
                     statement=statement,
@@ -93,16 +94,18 @@ class SourceFileImpl(SourceFile):
     def _prepend_generics_declarations_to_statements(self) -> None:
         generics_declarations: List[TopLevelStatement] = [
             TopLevelStatement(
+                id=generic.name,
                 node=AST.VariableDeclaration(
                     name=generic.name,
                     initializer=AST.FunctionInvocation(
                         function_definition=AST.Reference(
+                            is_annotation=False,
                             import_=AST.ReferenceImport(module=AST.Module.built_in("typing")),
                             qualified_name_excluding_import=("TypeVar",),
                         ),
                         args=[AST.CodeWriter(f'"{generic.name}"')],
                     ),
-                )
+                ),
             )
             for generic in self._get_generics()
         ]

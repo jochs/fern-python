@@ -5,6 +5,7 @@ from fern_python.codegen import AST
 
 def get_reference_to_pydantic_export(export: str) -> AST.ClassReference:
     return AST.ClassReference(
+        is_annotation=False,
         import_=AST.ReferenceImport(
             module=AST.Module.external(
                 dependency=AST.Dependency(name="pydantic", version="^1.9.2"),
@@ -46,17 +47,11 @@ class PydanticModel:
 
     def add_method(
         self,
-        name: str,
-        parameters: Sequence[AST.FunctionParameter],
-        return_type: AST.TypeHint,
-        body: AST.CodeWriter,
+        declaration: AST.FunctionDeclaration,
         is_static: bool = False,
     ) -> AST.FunctionDeclaration:
         return self._class_declaration.add_method(
-            name=name,
-            parameters=parameters,
-            return_type=return_type,
-            body=body,
+            declaration=declaration,
             is_static=is_static,
         )
 

@@ -8,12 +8,16 @@ class TypeNameToClassReferenceConverter:
     def __init__(self, api_name: str):
         self._api_name = api_name
 
-    def get_class_reference_for_type_name(self, type_name: ir_types.DeclaredTypeName) -> AST.ClassReference:
+    def get_class_reference_for_type_name(
+        self,
+        type_name: ir_types.DeclaredTypeName,
+    ) -> AST.ClassReference:
         filepath = get_filepath_for_type(
             type_name=type_name,
             api_name=self._api_name,
         )
         return AST.ClassReference(
+            is_annotation=False,
             import_=AST.ReferenceImport(
                 module=filepath.to_module(),
                 named_import=type_name.name,
