@@ -29,7 +29,7 @@ class Module:
 
     def get_fully_qualfied_module_path(self, project_name: str) -> ModulePath:
         if self.is_local():
-            return (project_name,) + self.path
+            raise RuntimeError("")
         return self.path
 
     @staticmethod
