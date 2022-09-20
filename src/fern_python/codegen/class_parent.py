@@ -5,6 +5,9 @@ from typing import TYPE_CHECKING
 
 from . import AST
 
+if TYPE_CHECKING:
+    from .local_class_reference import LocalClassReference
+
 
 class ClassParent(ABC):
     @abstractmethod
@@ -14,7 +17,3 @@ class ClassParent(ABC):
         do_not_export: bool = False,
     ) -> LocalClassReference:
         ...
-
-
-if TYPE_CHECKING:
-    from .local_class_reference import LocalClassReference
