@@ -61,7 +61,7 @@ class PydanticModel:
             config.add_attribute(
                 AST.VariableDeclaration(
                     name="allow_population_by_field_name",
-                    initializer=AST.Expression(AST.CodeWriter("True")),
+                    initializer=AST.Expression("True"),
                 )
             )
             self._class_declaration.add_class(declaration=config)

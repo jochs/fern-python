@@ -13,10 +13,10 @@ from .function_invocation import FunctionInvocation
 class Expression(AstNode):
     def __init__(
         self,
-        expression: Union[FunctionInvocation, CodeWriter, ClassInstantiation],
+        expression: Union[FunctionInvocation, CodeWriter, ClassInstantiation, str],
         spread: Optional[ExpressionSpread] = None,
     ):
-        self.expression = expression
+        self.expression = CodeWriter(expression) if isinstance(expression, str) else expression
         self.spread = spread
 
     def get_references(self) -> Set[Reference]:

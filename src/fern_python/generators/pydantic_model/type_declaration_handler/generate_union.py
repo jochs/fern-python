@@ -13,6 +13,7 @@ from ..fern_aware_pydantic_model import FernAwarePydanticModel
 from .get_visit_method import VisitableItem, VisitorArgument, get_visit_method
 
 VISITOR_RETURN_TYPE = AST.GenericTypeVar(name="T_Result")
+BUILDER_ARGUMENT_NAME = "value"
 
 
 def generate_union(
@@ -55,7 +56,7 @@ def generate_union(
                 if shape.properties_type == "singleProperty":
                     internal_pydantic_model_for_single_union_type.add_field(
                         PydanticField(
-                            name=shape.name.camel_case,
+                            name=shape.name.snake_case,
                             type_hint=context.get_type_hint_for_type_reference(type_reference=shape.type),
                             json_field_name=shape.name.wire_value,
                         )
@@ -65,7 +66,7 @@ def generate_union(
                     name=single_union_type.discriminant_value.snake_case,
                     parameters=single_union_type.shape._visit(
                         same_properties_as_object=lambda type_name: [
-                            ("value", ir_types.TypeReference.named(type_name))
+                            (BUILDER_ARGUMENT_NAME, ir_types.TypeReference.named(type_name))
                         ],
                         single_property=lambda property: [(property.name.snake_case, property.type)],
                         no_properties=lambda: [],
@@ -92,13 +93,13 @@ def generate_union(
                         expected_value=single_union_type.discriminant_value.wire_value,
                         visitor_argument=single_union_type.shape._visit(
                             same_properties_as_object=lambda type_name: VisitorArgument(
-                                expression=AST.Expression(AST.CodeWriter("self.__root__")),
+                                expression=AST.Expression("self.__root__"),
                                 type=external_pydantic_model.get_type_hint_for_type_reference(
                                     ir_types.TypeReference.named(type_name)
                                 ),
                             ),
                             single_property=lambda property: VisitorArgument(
-                                expression=AST.Expression(AST.CodeWriter(f"self.__root__.{property.name.snake_case}")),
+                                expression=AST.Expression(f"self.__root__.{property.name.snake_case}"),
                                 type=external_pydantic_model.get_type_hint_for_type_reference(property.type),
                             ),
                             no_properties=lambda: None,
@@ -126,7 +127,7 @@ def generate_union(
                             (
                                 "discriminator",
                                 AST.Expression(
-                                    AST.CodeWriter(f'"{get_discriminant_attr_name(union)}"'),
+                                    f'"{get_discriminant_attr_name(union)}"',
                                 ),
                             )
                         ],
@@ -153,7 +154,10 @@ def create_body_writer(
             args=properties._visit(
                 same_properties_as_object=lambda type_name: [
                     AST.Expression(
-                        AST.FunctionInvocation(AST.Reference(qualified_name_excluding_import=("value", "dict"))),
+                        AST.FunctionInvocation(
+                            function_definition=AST.Reference(qualified_name_excluding_import=("dict",)),
+                            args=[AST.Expression(BUILDER_ARGUMENT_NAME)],
+                        ),
                         spread=AST.ExpressionSpread.TWO_ASTERISKS,
                     )
                 ],
@@ -163,9 +167,7 @@ def create_body_writer(
             kwargs=[(discriminant_attr_name, discriminant_attr_value)]
             + properties._visit(
                 same_properties_as_object=lambda type_name: [],
-                single_property=lambda property: [
-                    (property.name.snake_case, AST.Expression(AST.CodeWriter(property.name.snake_case)))
-                ],
+                single_property=lambda property: [(property.name.snake_case, AST.Expression(property.name.snake_case))],
                 no_properties=lambda: [],
             ),
         )
@@ -196,4 +198,4 @@ def get_discriminant_attr_name(union: ir_types.UnionTypeDeclaration) -> str:
 
 
 def get_discriminant_value_for_single_union_type(single_union_type: ir_types.SingleUnionType) -> AST.Expression:
-    return AST.Expression(AST.CodeWriter(f'"{single_union_type.discriminant_value.wire_value}"'))
+    return AST.Expression(f'"{single_union_type.discriminant_value.wire_value}"')

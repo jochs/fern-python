@@ -73,7 +73,7 @@ class SourceFileImpl(SourceFile):
         do_not_export: bool = False,
     ) -> None:
         self._statements.append(TopLevelStatement(node=declaration, id=declaration.name))
-        if declaration.name is not None:
+        if declaration.name is not None and not do_not_export:
             self._exports.add(declaration.name)
 
     def add_class_declaration(
@@ -157,7 +157,7 @@ class SourceFileImpl(SourceFile):
                                 import_=AST.ReferenceImport(module=AST.Module.built_in("typing")),
                                 qualified_name_excluding_import=("TypeVar",),
                             ),
-                            args=[AST.Expression(AST.CodeWriter(f'"{generic.name}"'))],
+                            args=[AST.Expression(f'"{generic.name}"')],
                         ),
                     ),
                 ),

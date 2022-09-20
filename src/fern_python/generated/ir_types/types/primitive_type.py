@@ -26,15 +26,15 @@ class PrimitiveType(str, Enum):
         if self.value == "INTEGER":
             return integer()
         if self.value == "DOUBLE":
-            return integer()
+            return double()
         if self.value == "STRING":
-            return integer()
+            return string()
         if self.value == "BOOLEAN":
-            return integer()
+            return boolean()
         if self.value == "LONG":
-            return integer()
+            return long()
         if self.value == "DATE_TIME":
-            return integer()
+            return date_time()
         if self.value == "UUID":
             return uuid()
         raise RuntimeError("Unknown primitive_type:", self.value)
