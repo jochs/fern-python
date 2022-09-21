@@ -47,6 +47,9 @@ class FernAwarePydanticModel:
         self._pydantic_model.add_field(field)
         return field
 
+    def add_private_field(self, name: str, type_hint: AST.TypeHint, default_factory: AST.Expression = None) -> None:
+        self._pydantic_model.add_private_field(name=name, type_hint=type_hint, default_factory=default_factory)
+
     def get_type_hint_for_type_reference(self, type_reference: ir_types.TypeReference) -> AST.TypeHint:
         return self._context.get_type_hint_for_type_reference(
             type_reference,
@@ -70,7 +73,7 @@ class FernAwarePydanticModel:
         parameters: Sequence[Tuple[str, ir_types.TypeReference]],
         return_type: ir_types.TypeReference,
         body: AST.CodeWriter,
-        is_static: bool = False,
+        decorator: AST.ClassMethodDecorator = None,
     ) -> AST.FunctionDeclaration:
         return self._pydantic_model.add_method(
             declaration=AST.FunctionDeclaration(
@@ -84,10 +87,14 @@ class FernAwarePydanticModel:
                 return_type=self.get_type_hint_for_type_reference(return_type),
                 body=body,
             ),
-            is_static=is_static,
+            decorator=decorator,
         )
 
-    def add_method_unsafe(self, declaration: AST.FunctionDeclaration) -> None:
+    def add_method_unsafe(
+        self,
+        declaration: AST.FunctionDeclaration,
+        decorator: AST.ClassMethodDecorator = None,
+    ) -> None:
         """
         When generating a Pydantic model, certain type hints need to be
         imported below the class to avoid issues with circular references. For each
@@ -103,7 +110,7 @@ class FernAwarePydanticModel:
         convert TypeReference's to TypeHint's yourself!  Use the
         get_type_hint_for_type_reference method on this class.
         """
-        self._pydantic_model.add_method(declaration=declaration)
+        self._pydantic_model.add_method(declaration=declaration, decorator=decorator)
 
     def set_root_type(self, root_type: AST.TypeHint, is_forward_ref: bool = False) -> None:
         self._pydantic_model.set_root_type(root_type=root_type)

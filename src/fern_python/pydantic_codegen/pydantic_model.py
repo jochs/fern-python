@@ -5,7 +5,11 @@ from typing import Optional, Sequence, Type
 
 from fern_python.codegen import AST, ClassParent, LocalClassReference, SourceFile
 
-from .pydantic_exports import PYDANTIC_BASE_MODEL_REFERENCE, PYDANTIC_FIELD_REFERENCE
+from .pydantic_exports import (
+    PYDANTIC_BASE_MODEL_REFERENCE,
+    PYDANTIC_FIELD_REFERENCE,
+    PYDANTIC_PRIVATE_ATTR_REFERENCE,
+)
 from .pydantic_field import PydanticField
 
 
@@ -42,17 +46,31 @@ class PydanticModel:
             AST.VariableDeclaration(name=field.name, type_hint=field.type_hint, initializer=initializer)
         )
 
+    def add_private_field(self, name: str, type_hint: AST.TypeHint, default_factory: AST.Expression = None) -> None:
+        self._class_declaration.add_attribute(
+            AST.VariableDeclaration(
+                name=name,
+                type_hint=type_hint,
+                initializer=AST.Expression(
+                    AST.ClassInstantiation(
+                        PYDANTIC_PRIVATE_ATTR_REFERENCE,
+                        kwargs=[("default_factory", default_factory)] if default_factory is not None else None,
+                    )
+                ),
+            )
+        )
+
     def set_root_type(self, root_type: AST.TypeHint) -> None:
         self._class_declaration.add_attribute(AST.VariableDeclaration(name="__root__", type_hint=root_type))
 
     def add_method(
         self,
         declaration: AST.FunctionDeclaration,
-        is_static: bool = False,
+        decorator: AST.ClassMethodDecorator = None,
     ) -> AST.FunctionDeclaration:
         return self._class_declaration.add_method(
             declaration=declaration,
-            is_static=is_static,
+            decorator=decorator,
         )
 
     def finish(self) -> None:

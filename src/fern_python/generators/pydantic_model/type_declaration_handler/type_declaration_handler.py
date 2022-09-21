@@ -18,10 +18,11 @@ class TypeDeclarationHandler(DeclarationHandler[ir_types.TypeDeclaration]):
 
     def _generate_alias(self, alias: ir_types.AliasTypeDeclaration) -> None:
         self._context.source_file.add_declaration(
-            AST.TypeAliasDeclaration(
+            declaration=AST.TypeAliasDeclaration(
                 name=self._declaration.name.name,
                 type_hint=self._context.get_type_hint_for_type_reference(alias.alias_of),
-            )
+            ),
+            should_export=True,
         )
 
     def _generate_enum(self, enum: ir_types.EnumTypeDeclaration) -> None:

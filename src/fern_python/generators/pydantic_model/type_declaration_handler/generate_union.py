@@ -22,12 +22,27 @@ def generate_union(
     context: DeclarationHandlerContext,
 ) -> None:
 
+    factory_declaration = AST.ClassDeclaration(name="_Factory")
+    factory = context.source_file.add_class_declaration(factory_declaration)
+
     with FernAwarePydanticModel(type_name=name, context=context) as external_pydantic_model:
+        external_pydantic_model.add_private_field(
+            name="_factory", type_hint=AST.TypeHint(type=factory), default_factory=AST.Expression(factory)
+        )
+        external_pydantic_model.add_method_unsafe(
+            AST.FunctionDeclaration(
+                name="factory",
+                parameters=[],
+                return_type=AST.TypeHint(type=factory),
+                body=AST.CodeWriter("return cls._factory"),
+            ),
+            decorator=AST.ClassMethodDecorator.CLASS_METHOD,
+        )
+
         internal_single_union_types: List[LocalClassReference] = []
 
         internal_union = context.source_file.add_class_declaration(
             declaration=AST.ClassDeclaration(name="_" + external_pydantic_model.get_class_name()),
-            do_not_export=True,
         )
 
         for single_union_type in union.types:
@@ -35,7 +50,7 @@ def generate_union(
             with PydanticModel(
                 name=single_union_type.discriminant_value.pascal_case,
                 source_file=context.source_file,
-                base_models=single_union_type.shape._visit(
+                base_models=single_union_type.shape.visit(
                     same_properties_as_object=lambda type_name: [context.get_class_reference_for_type_name(type_name)],
                     single_property=lambda property_: None,
                     no_properties=lambda: None,
@@ -66,28 +81,55 @@ def generate_union(
                         )
                     )
 
-                external_pydantic_model.add_method(
-                    name=single_union_type.discriminant_value.snake_case,
-                    parameters=single_union_type.shape._visit(
-                        same_properties_as_object=lambda type_name: [
-                            (BUILDER_ARGUMENT_NAME, ir_types.TypeReference.named(type_name))
-                        ],
-                        single_property=lambda property: [(BUILDER_ARGUMENT_NAME, property.type)],
-                        no_properties=lambda: [],
+                factory_declaration.add_method(
+                    AST.FunctionDeclaration(
+                        name=single_union_type.discriminant_value.snake_case,
+                        parameters=single_union_type.shape.visit(
+                            same_properties_as_object=lambda type_name: [
+                                AST.FunctionParameter(
+                                    name=BUILDER_ARGUMENT_NAME,
+                                    type_hint=context.get_type_hint_for_type_reference(
+                                        ir_types.TypeReference.named(type_name)
+                                    ),
+                                )
+                            ],
+                            single_property=lambda property: [
+                                AST.FunctionParameter(
+                                    name=BUILDER_ARGUMENT_NAME,
+                                    type_hint=context.get_type_hint_for_type_reference(property.type),
+                                )
+                            ],
+                            no_properties=lambda: [],
+                        ),
+                        return_type=context.get_type_hint_for_type_reference(ir_types.TypeReference.named(name)),
+                        body=AST.CodeWriter(
+                            create_body_writer(
+                                single_union_type=single_union_type,
+                                internal_single_union_type=internal_single_union_type,
+                                external_union=external_pydantic_model.to_reference(),
+                                discriminant_attr_name=discriminant_field.name,
+                                discriminant_attr_value=get_discriminant_value_for_single_union_type(single_union_type),
+                                context=context,
+                            )
+                        ),
                     ),
-                    return_type=ir_types.TypeReference.named(name),
-                    body=AST.CodeWriter(
-                        create_body_writer(
-                            single_union_type=single_union_type,
-                            internal_single_union_type=internal_single_union_type,
-                            external_union=external_pydantic_model.to_reference(),
-                            discriminant_attr_name=discriminant_field.name,
-                            discriminant_attr_value=get_discriminant_value_for_single_union_type(single_union_type),
-                            context=context,
-                        )
-                    ),
-                    is_static=True,
                 )
+
+        root_type = AST.TypeHint.union(
+            *(
+                AST.TypeHint(type=internal_single_union_type)
+                for internal_single_union_type in internal_single_union_types
+            ),
+        )
+
+        external_pydantic_model.add_method_unsafe(
+            AST.FunctionDeclaration(
+                name="get_",
+                parameters=[],
+                return_type=root_type,
+                body=AST.CodeWriter("return self.__root__"),
+            )
+        )
 
         external_pydantic_model.add_method_unsafe(
             get_visit_method(
@@ -95,7 +137,7 @@ def generate_union(
                     VisitableItem(
                         parameter_name=single_union_type.discriminant_value.snake_case,
                         expected_value=single_union_type.discriminant_value.wire_value,
-                        visitor_argument=single_union_type.shape._visit(
+                        visitor_argument=single_union_type.shape.visit(
                             same_properties_as_object=lambda type_name: VisitorArgument(
                                 expression=AST.Expression("self.__root__"),
                                 type=external_pydantic_model.get_type_hint_for_type_reference(
@@ -120,12 +162,7 @@ def generate_union(
         external_pydantic_model.set_root_type(
             is_forward_ref=True,
             root_type=AST.TypeHint.annotated(
-                type=AST.TypeHint.union(
-                    *(
-                        AST.TypeHint(type=internal_single_union_type)
-                        for internal_single_union_type in internal_single_union_types
-                    ),
-                ),
+                type=root_type,
                 annotation=AST.Expression(
                     AST.FunctionInvocation(
                         function_definition=PYDANTIC_FIELD_REFERENCE,
@@ -157,7 +194,7 @@ def create_body_writer(
 
         internal_single_union_type_instantiation = AST.ClassInstantiation(
             class_=internal_single_union_type,
-            args=single_union_type.shape._visit(
+            args=single_union_type.shape.visit(
                 same_properties_as_object=lambda type_name: [
                     AST.Expression(
                         AST.FunctionInvocation(
@@ -171,7 +208,7 @@ def create_body_writer(
                 no_properties=lambda: no_expressions,
             ),
             kwargs=[(discriminant_attr_name, discriminant_attr_value)]
-            + single_union_type.shape._visit(
+            + single_union_type.shape.visit(
                 same_properties_as_object=lambda type_name: [],
                 # TODO change this name to be property.name.snake_case (i.e.
                 # "value") once we move to that new wire format for
