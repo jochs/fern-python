@@ -9,7 +9,7 @@ from .generate_union import generate_union
 
 class TypeDeclarationHandler(DeclarationHandler[ir_types.TypeDeclaration]):
     def run(self) -> None:
-        self._declaration.shape._visit(
+        self._declaration.shape.visit(
             alias=self._generate_alias,
             enum=self._generate_enum,
             object=self._generate_object,

@@ -46,7 +46,13 @@ class PydanticModel:
             AST.VariableDeclaration(name=field.name, type_hint=field.type_hint, initializer=initializer)
         )
 
-    def add_private_field(self, name: str, type_hint: AST.TypeHint, default_factory: AST.Expression = None) -> None:
+    def add_private_instance_field(
+        self, name: str, type_hint: AST.TypeHint, default_factory: AST.Expression = None
+    ) -> None:
+        if not name.startswith("_"):
+            raise RuntimeError(
+                f"Private pydantic field {name} in {self._class_declaration.name} does not start with an underscore"
+            )
         self._class_declaration.add_attribute(
             AST.VariableDeclaration(
                 name=name,
@@ -57,6 +63,15 @@ class PydanticModel:
                         kwargs=[("default_factory", default_factory)] if default_factory is not None else None,
                     )
                 ),
+            )
+        )
+
+    def add_class_var(self, name: str, type_hint: AST.TypeHint, initializer: AST.Expression = None) -> None:
+        self._class_declaration.add_attribute(
+            AST.VariableDeclaration(
+                name=name,
+                type_hint=AST.TypeHint.class_var(class_var_type=type_hint),
+                initializer=initializer,
             )
         )
 

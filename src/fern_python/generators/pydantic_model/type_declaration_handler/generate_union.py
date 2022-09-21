@@ -26,17 +26,10 @@ def generate_union(
     factory = context.source_file.add_class_declaration(factory_declaration)
 
     with FernAwarePydanticModel(type_name=name, context=context) as external_pydantic_model:
-        external_pydantic_model.add_private_field(
-            name="_factory", type_hint=AST.TypeHint(type=factory), default_factory=AST.Expression(factory)
-        )
-        external_pydantic_model.add_method_unsafe(
-            AST.FunctionDeclaration(
-                name="factory",
-                parameters=[],
-                return_type=AST.TypeHint(type=factory),
-                body=AST.CodeWriter("return cls._factory"),
-            ),
-            decorator=AST.ClassMethodDecorator.CLASS_METHOD,
+        external_pydantic_model.add_class_var_unsafe(
+            name="factory",
+            type_hint=AST.TypeHint(type=factory),
+            initializer=AST.Expression(factory),
         )
 
         internal_single_union_types: List[LocalClassReference] = []
@@ -89,7 +82,7 @@ def generate_union(
                                 AST.FunctionParameter(
                                     name=BUILDER_ARGUMENT_NAME,
                                     type_hint=context.get_type_hint_for_type_reference(
-                                        ir_types.TypeReference.named(type_name)
+                                        ir_types.TypeReference.factory.named(type_name)
                                     ),
                                 )
                             ],
@@ -101,7 +94,9 @@ def generate_union(
                             ],
                             no_properties=lambda: [],
                         ),
-                        return_type=context.get_type_hint_for_type_reference(ir_types.TypeReference.named(name)),
+                        return_type=context.get_type_hint_for_type_reference(
+                            ir_types.TypeReference.factory.named(name)
+                        ),
                         body=AST.CodeWriter(
                             create_body_writer(
                                 single_union_type=single_union_type,
@@ -124,7 +119,7 @@ def generate_union(
 
         external_pydantic_model.add_method_unsafe(
             AST.FunctionDeclaration(
-                name="get_",
+                name="get",
                 parameters=[],
                 return_type=root_type,
                 body=AST.CodeWriter("return self.__root__"),
@@ -141,7 +136,7 @@ def generate_union(
                             same_properties_as_object=lambda type_name: VisitorArgument(
                                 expression=AST.Expression("self.__root__"),
                                 type=external_pydantic_model.get_type_hint_for_type_reference(
-                                    ir_types.TypeReference.named(type_name)
+                                    ir_types.TypeReference.factory.named(type_name)
                                 ),
                             ),
                             single_property=lambda property: VisitorArgument(
@@ -237,12 +232,12 @@ def get_discriminant_field_for_single_union_type(
     return PydanticField(
         name=get_discriminant_attr_name(union),
         type_hint=AST.TypeHint.literal(get_discriminant_value_for_single_union_type(single_union_type)),
-        json_field_name=union.discriminant_v2.wire_value,
+        json_field_name=union.discriminant_v_2.wire_value,
     )
 
 
 def get_discriminant_attr_name(union: ir_types.UnionTypeDeclaration) -> str:
-    return union.discriminant_v2.snake_case
+    return union.discriminant_v_2.snake_case
 
 
 def get_discriminant_value_for_single_union_type(single_union_type: ir_types.SingleUnionType) -> AST.Expression:

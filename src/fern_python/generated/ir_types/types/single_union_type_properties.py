@@ -8,22 +8,20 @@ import typing_extensions
 from .declared_type_name import DeclaredTypeName
 from .single_union_type_property import SingleUnionTypeProperty
 
-_Result = typing.TypeVar("_Result")
+T_Result = typing.TypeVar("T_Result")
 
 
 class _Factory:
     def same_properties_as_object(self, value: DeclaredTypeName) -> SingleUnionTypeProperties:
         return SingleUnionTypeProperties(
             __root__=_SingleUnionTypeProperties.SamePropertiesAsObject(
-                properties_type="samePropertiesAsObject", fern_filepath=value.fern_filepath, name=value.name
+                **dict(value), properties_type="samePropertiesAsObject"
             )
         )
 
     def single_property(self, value: SingleUnionTypeProperty) -> SingleUnionTypeProperties:
         return SingleUnionTypeProperties(
-            __root__=_SingleUnionTypeProperties.SingleProperty(
-                properties_type="singleProperty", name=value.name, type=value.type
-            )
+            __root__=_SingleUnionTypeProperties.SingleProperty(**dict(value), properties_type="singleProperty")
         )
 
     def no_properties(self) -> SingleUnionTypeProperties:
@@ -33,11 +31,11 @@ class _Factory:
 
 
 class SingleUnionTypeProperties(pydantic.BaseModel):
-    _factory: _Factory = pydantic.PrivateAttr(default_factory=_Factory)
+    _factory = _Factory()
 
-    @classmethod
-    def factory(cls) -> _Factory:
-        return cls._factory
+    @staticmethod
+    def factory() -> _Factory:
+        return SingleUnionTypeProperties._factory
 
     def get(
         self,
@@ -48,27 +46,27 @@ class SingleUnionTypeProperties(pydantic.BaseModel):
     ]:
         return self.__root__
 
-    __root__: typing_extensions.Annotated[
-        typing.Union[
-            _SingleUnionTypeProperties.SamePropertiesAsObject,
-            _SingleUnionTypeProperties.SingleProperty,
-            _SingleUnionTypeProperties.NoProperties,
-        ],
-        pydantic.Field(discriminator="type"),
-    ]
-
     def visit(
         self,
-        same_properties_as_object: typing.Callable[[DeclaredTypeName], _Result],
-        single_property: typing.Callable[[SingleUnionTypeProperty], _Result],
-        no_properties: typing.Callable[[], _Result],
-    ) -> _Result:
+        same_properties_as_object: typing.Callable[[DeclaredTypeName], T_Result],
+        single_property: typing.Callable[[SingleUnionTypeProperty], T_Result],
+        no_properties: typing.Callable[[], T_Result],
+    ) -> T_Result:
         if self.__root__.properties_type == "samePropertiesAsObject":
             return same_properties_as_object(self.__root__)
         if self.__root__.properties_type == "singleProperty":
             return single_property(self.__root__)
         if self.__root__.properties_type == "noProperties":
             return no_properties()
+
+    __root__: typing_extensions.Annotated[
+        typing.Union[
+            _SingleUnionTypeProperties.SamePropertiesAsObject,
+            _SingleUnionTypeProperties.SingleProperty,
+            _SingleUnionTypeProperties.NoProperties,
+        ],
+        pydantic.Field(discriminator="properties_type"),
+    ]
 
 
 class _SingleUnionTypeProperties:
