@@ -29,7 +29,7 @@ def generate_union(
         external_pydantic_model.add_class_var_unsafe(
             name="factory",
             type_hint=AST.TypeHint(type=factory),
-            initializer=AST.Expression(factory),
+            initializer=AST.Expression(AST.ClassInstantiation(class_=factory)),
         )
 
         internal_single_union_types: List[LocalClassReference] = []
