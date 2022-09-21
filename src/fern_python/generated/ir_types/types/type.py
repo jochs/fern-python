@@ -50,8 +50,7 @@ class Type(pydantic.BaseModel):
             return union(self.__root__)
 
     __root__: typing_extensions.Annotated[
-        typing.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union],
-        pydantic.Field(discriminator="type"),
+        typing.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union], pydantic.Field(discriminator="type")
     ]
 
 

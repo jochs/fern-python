@@ -31,11 +31,7 @@ class _Factory:
 
 
 class SingleUnionTypeProperties(pydantic.BaseModel):
-    _factory = _Factory()
-
-    @staticmethod
-    def factory() -> _Factory:
-        return SingleUnionTypeProperties._factory
+    factory: typing.ClassVar[_Factory] = _Factory()
 
     def get(
         self,

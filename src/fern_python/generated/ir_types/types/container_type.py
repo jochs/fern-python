@@ -23,15 +23,9 @@ class _Factory:
 
 
 class ContainerType(pydantic.BaseModel):
-    _factory = _Factory()
+    factory: typing.ClassVar[_Factory] = _Factory()
 
-    @staticmethod
-    def factory() -> _Factory:
-        return ContainerType._factory
-
-    def get(
-        self,
-    ) -> typing.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set]:
+    def get(self) -> typing.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set]:
         return self.__root__
 
     def visit(
@@ -51,12 +45,7 @@ class ContainerType(pydantic.BaseModel):
             return set(self.__root__.set)
 
     __root__: typing_extensions.Annotated[
-        typing.Union[
-            _ContainerType.List,
-            _ContainerType.Map,
-            _ContainerType.Optional,
-            _ContainerType.Set,
-        ],
+        typing.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set],
         pydantic.Field(discriminator="type"),
     ]
 

@@ -30,11 +30,7 @@ class _Factory:
 
 
 class ResolvedTypeReference(pydantic.BaseModel):
-    _factory = _Factory()
-
-    @staticmethod
-    def factory() -> _Factory:
-        return ResolvedTypeReference._factory
+    factory: typing.ClassVar[_Factory] = _Factory()
 
     def get(
         self,
