@@ -40,7 +40,7 @@ class TypeDeclarationHandler(DeclarationHandler[ir_types.TypeDeclaration]):
             for property in object.properties:
                 pydantic_model.add_field(
                     name=property.name.snake_case,
-                    type_reference=property.valueType,
+                    type_reference=property.value_type,
                     json_field_name=property.name.wire_value,
                 )
 
