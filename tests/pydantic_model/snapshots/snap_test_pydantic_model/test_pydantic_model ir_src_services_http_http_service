@@ -1,5 +1,6 @@
+import typing
+
 import pydantic
-import typing_extensions
 
 from ...commons.with_docs import WithDocs
 from ..commons.declared_service_name import DeclaredServiceName
@@ -11,11 +12,11 @@ from .path_parameter import PathParameter
 
 class HttpService(WithDocs):
     name: DeclaredServiceName
-    base_path: typing_extensions.Optional[str] = pydantic.Field(alias="basePath")
-    base_path_v_2: typing_extensions.Optional[HttpPath] = pydantic.Field(alias="basePathV2")
-    endpoints: typing_extensions.List[HttpEndpoint]
-    headers: typing_extensions.List[HttpHeader]
-    path_parameters: typing_extensions.List[PathParameter] = pydantic.Field(alias="pathParameters")
+    base_path: typing.Optional[str] = pydantic.Field(alias="basePath")
+    base_path_v_2: typing.Optional[HttpPath] = pydantic.Field(alias="basePathV2")
+    endpoints: typing.List[HttpEndpoint]
+    headers: typing.List[HttpHeader]
+    path_parameters: typing.List[PathParameter] = pydantic.Field(alias="pathParameters")
 
     class Config:
         allow_population_by_field_name = True

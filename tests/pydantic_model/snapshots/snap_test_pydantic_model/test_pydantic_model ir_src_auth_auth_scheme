@@ -23,16 +23,16 @@ class _Factory:
 
 
 class AuthScheme(pydantic.BaseModel):
-    factory: typing_extensions.ClassVar[_Factory] = _Factory()
+    factory: typing.ClassVar[_Factory] = _Factory()
 
-    def get(self) -> typing_extensions.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header]:
+    def get(self) -> typing.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header]:
         return self.__root__
 
     def visit(
         self,
-        bearer: typing_extensions.Callable[[WithDocs], T_Result],
-        basic: typing_extensions.Callable[[WithDocs], T_Result],
-        header: typing_extensions.Callable[[HttpHeader], T_Result],
+        bearer: typing.Callable[[WithDocs], T_Result],
+        basic: typing.Callable[[WithDocs], T_Result],
+        header: typing.Callable[[HttpHeader], T_Result],
     ) -> T_Result:
         if self.__root__.type == "bearer":
             return bearer(self.__root__)
@@ -42,26 +42,25 @@ class AuthScheme(pydantic.BaseModel):
             return header(self.__root__)
 
     __root__: typing_extensions.Annotated[
-        typing_extensions.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header],
-        pydantic.Field(discriminator="type"),
+        typing.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header], pydantic.Field(discriminator="type")
     ]
 
 
 class _AuthScheme:
     class Bearer(WithDocs):
-        type: typing.Literal["bearer"] = pydantic.Field(alias="_type")
+        type: typing_extensions.Literal["bearer"] = pydantic.Field(alias="_type")
 
         class Config:
             allow_population_by_field_name = True
 
     class Basic(WithDocs):
-        type: typing.Literal["basic"] = pydantic.Field(alias="_type")
+        type: typing_extensions.Literal["basic"] = pydantic.Field(alias="_type")
 
         class Config:
             allow_population_by_field_name = True
 
     class Header(HttpHeader):
-        type: typing.Literal["header"] = pydantic.Field(alias="_type")
+        type: typing_extensions.Literal["header"] = pydantic.Field(alias="_type")
 
         class Config:
             allow_population_by_field_name = True

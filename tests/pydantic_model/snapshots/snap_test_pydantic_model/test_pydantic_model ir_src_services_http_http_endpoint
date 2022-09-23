@@ -1,5 +1,6 @@
+import typing
+
 import pydantic
-import typing_extensions
 
 from ...commons.string_with_all_casings import StringWithAllCasings
 from ...commons.with_docs import WithDocs
@@ -18,10 +19,10 @@ class HttpEndpoint(WithDocs):
     id: HttpEndpointId
     name: StringWithAllCasings
     method: HttpMethod
-    headers: typing_extensions.List[HttpHeader]
+    headers: typing.List[HttpHeader]
     path: HttpPath
-    path_parameters: typing_extensions.List[PathParameter] = pydantic.Field(alias="pathParameters")
-    query_parameters: typing_extensions.List[QueryParameter] = pydantic.Field(alias="queryParameters")
+    path_parameters: typing.List[PathParameter] = pydantic.Field(alias="pathParameters")
+    query_parameters: typing.List[QueryParameter] = pydantic.Field(alias="queryParameters")
     request: HttpRequest
     response: HttpResponse
     errors: ResponseErrors

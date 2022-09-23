@@ -152,15 +152,16 @@ class TypeHint(AstNode):
 def get_reference_to_typing_extensions_import(name: str) -> ClassReference:
     return ClassReference(
         import_=ReferenceImport(
-            module=Module.built_in("typing"),
+            module=Module.built_in("typing_extensions"),
         ),
         qualified_name_excluding_import=(name,),
     )
 
+
 def get_reference_to_typing_import(name: str) -> ClassReference:
     return ClassReference(
         import_=ReferenceImport(
-            module=Module.built_in("typing_extensions"),
+            module=Module.built_in("typing"),
         ),
         qualified_name_excluding_import=(name,),
     )

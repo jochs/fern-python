@@ -1,8 +1,9 @@
+import typing
+
 import pydantic
-import typing_extensions
 
 from .web_socket_operation import WebSocketOperation
 
 
 class WebSocketMessenger(pydantic.BaseModel):
-    operations: typing_extensions.List[WebSocketOperation]
+    operations: typing.List[WebSocketOperation]

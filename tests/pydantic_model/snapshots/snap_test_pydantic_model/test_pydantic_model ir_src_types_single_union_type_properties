@@ -31,11 +31,11 @@ class _Factory:
 
 
 class SingleUnionTypeProperties(pydantic.BaseModel):
-    factory: typing_extensions.ClassVar[_Factory] = _Factory()
+    factory: typing.ClassVar[_Factory] = _Factory()
 
     def get(
         self,
-    ) -> typing_extensions.Union[
+    ) -> typing.Union[
         _SingleUnionTypeProperties.SamePropertiesAsObject,
         _SingleUnionTypeProperties.SingleProperty,
         _SingleUnionTypeProperties.NoProperties,
@@ -44,9 +44,9 @@ class SingleUnionTypeProperties(pydantic.BaseModel):
 
     def visit(
         self,
-        same_properties_as_object: typing_extensions.Callable[[DeclaredTypeName], T_Result],
-        single_property: typing_extensions.Callable[[SingleUnionTypeProperty], T_Result],
-        no_properties: typing_extensions.Callable[[], T_Result],
+        same_properties_as_object: typing.Callable[[DeclaredTypeName], T_Result],
+        single_property: typing.Callable[[SingleUnionTypeProperty], T_Result],
+        no_properties: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self.__root__.properties_type == "samePropertiesAsObject":
             return same_properties_as_object(self.__root__)
@@ -56,7 +56,7 @@ class SingleUnionTypeProperties(pydantic.BaseModel):
             return no_properties()
 
     __root__: typing_extensions.Annotated[
-        typing_extensions.Union[
+        typing.Union[
             _SingleUnionTypeProperties.SamePropertiesAsObject,
             _SingleUnionTypeProperties.SingleProperty,
             _SingleUnionTypeProperties.NoProperties,
@@ -67,19 +67,19 @@ class SingleUnionTypeProperties(pydantic.BaseModel):
 
 class _SingleUnionTypeProperties:
     class SamePropertiesAsObject(DeclaredTypeName):
-        properties_type: typing.Literal["samePropertiesAsObject"] = pydantic.Field(alias="_type")
+        properties_type: typing_extensions.Literal["samePropertiesAsObject"] = pydantic.Field(alias="_type")
 
         class Config:
             allow_population_by_field_name = True
 
     class SingleProperty(SingleUnionTypeProperty):
-        properties_type: typing.Literal["singleProperty"] = pydantic.Field(alias="_type")
+        properties_type: typing_extensions.Literal["singleProperty"] = pydantic.Field(alias="_type")
 
         class Config:
             allow_population_by_field_name = True
 
     class NoProperties(pydantic.BaseModel):
-        properties_type: typing.Literal["noProperties"] = pydantic.Field(alias="_type")
+        properties_type: typing_extensions.Literal["noProperties"] = pydantic.Field(alias="_type")
 
         class Config:
             allow_population_by_field_name = True

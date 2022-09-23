@@ -1,8 +1,6 @@
 import enum
 import typing
 
-import typing_extensions
-
 T_Result = typing.TypeVar("T_Result")
 
 
@@ -13,9 +11,9 @@ class ShapeType(str, enum.Enum):
 
     def visit(
         self,
-        enum: typing_extensions.Callable[[], T_Result],
-        object: typing_extensions.Callable[[], T_Result],
-        union: typing_extensions.Callable[[], T_Result],
+        enum: typing.Callable[[], T_Result],
+        object: typing.Callable[[], T_Result],
+        union: typing.Callable[[], T_Result],
     ) -> T_Result:
         if self.value == "ENUM":
             return enum()

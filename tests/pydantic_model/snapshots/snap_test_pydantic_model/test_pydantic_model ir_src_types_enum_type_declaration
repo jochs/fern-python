@@ -1,8 +1,9 @@
+import typing
+
 import pydantic
-import typing_extensions
 
 from .enum_value import EnumValue
 
 
 class EnumTypeDeclaration(pydantic.BaseModel):
-    values: typing_extensions.List[EnumValue]
+    values: typing.List[EnumValue]
