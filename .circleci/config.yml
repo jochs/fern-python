@@ -27,7 +27,7 @@ jobs:
             projectVersion=$(./scripts/git-version.sh)
             docker build -f ./docker/pydantic-model/Dockerfile -t pydantic-model:${projectVersion}  .
             echo "$FERNAPI_DOCKER_HUB_PASSWORD" | docker login --username fernapi --password-stdin
-            docker tag fern-java:"$projectVersion" fernapi/fern-pydantic-model:"$projectVersion"
+            docker tag pydantic-model:"$projectVersion" fernapi/fern-pydantic-model:"$projectVersion"
             docker push fernapi/fern-pydantic-model:"$projectVersion"
 
 
