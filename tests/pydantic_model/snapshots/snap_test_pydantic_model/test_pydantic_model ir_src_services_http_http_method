@@ -1,6 +1,8 @@
 import enum
 import typing
 
+import typing_extensions
+
 T_Result = typing.TypeVar("T_Result")
 
 
@@ -13,11 +15,11 @@ class HttpMethod(str, enum.Enum):
 
     def visit(
         self,
-        get: typing.Callable[[], T_Result],
-        post: typing.Callable[[], T_Result],
-        put: typing.Callable[[], T_Result],
-        patch: typing.Callable[[], T_Result],
-        delete: typing.Callable[[], T_Result],
+        get: typing_extensions.Callable[[], T_Result],
+        post: typing_extensions.Callable[[], T_Result],
+        put: typing_extensions.Callable[[], T_Result],
+        patch: typing_extensions.Callable[[], T_Result],
+        delete: typing_extensions.Callable[[], T_Result],
     ) -> T_Result:
         if self.value == "GET":
             return get()

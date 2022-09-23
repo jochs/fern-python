@@ -23,17 +23,19 @@ class _Factory:
 
 
 class ContainerType(pydantic.BaseModel):
-    factory: typing.ClassVar[_Factory] = _Factory()
+    factory: typing_extensions.ClassVar[_Factory] = _Factory()
 
-    def get(self) -> typing.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set]:
+    def get(
+        self,
+    ) -> typing_extensions.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set]:
         return self.__root__
 
     def visit(
         self,
-        list: typing.Callable[[TypeReference], T_Result],
-        map: typing.Callable[[MapType], T_Result],
-        optional: typing.Callable[[TypeReference], T_Result],
-        set: typing.Callable[[TypeReference], T_Result],
+        list: typing_extensions.Callable[[TypeReference], T_Result],
+        map: typing_extensions.Callable[[MapType], T_Result],
+        optional: typing_extensions.Callable[[TypeReference], T_Result],
+        set: typing_extensions.Callable[[TypeReference], T_Result],
     ) -> T_Result:
         if self.__root__.type == "list":
             return list(self.__root__.list)
@@ -45,7 +47,7 @@ class ContainerType(pydantic.BaseModel):
             return set(self.__root__.set)
 
     __root__: typing_extensions.Annotated[
-        typing.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set],
+        typing_extensions.Union[_ContainerType.List, _ContainerType.Map, _ContainerType.Optional, _ContainerType.Set],
         pydantic.Field(discriminator="type"),
     ]
 

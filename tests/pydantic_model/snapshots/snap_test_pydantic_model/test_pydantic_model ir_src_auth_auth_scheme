@@ -23,16 +23,16 @@ class _Factory:
 
 
 class AuthScheme(pydantic.BaseModel):
-    factory: typing.ClassVar[_Factory] = _Factory()
+    factory: typing_extensions.ClassVar[_Factory] = _Factory()
 
-    def get(self) -> typing.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header]:
+    def get(self) -> typing_extensions.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header]:
         return self.__root__
 
     def visit(
         self,
-        bearer: typing.Callable[[WithDocs], T_Result],
-        basic: typing.Callable[[WithDocs], T_Result],
-        header: typing.Callable[[HttpHeader], T_Result],
+        bearer: typing_extensions.Callable[[WithDocs], T_Result],
+        basic: typing_extensions.Callable[[WithDocs], T_Result],
+        header: typing_extensions.Callable[[HttpHeader], T_Result],
     ) -> T_Result:
         if self.__root__.type == "bearer":
             return bearer(self.__root__)
@@ -42,7 +42,8 @@ class AuthScheme(pydantic.BaseModel):
             return header(self.__root__)
 
     __root__: typing_extensions.Annotated[
-        typing.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header], pydantic.Field(discriminator="type")
+        typing_extensions.Union[_AuthScheme.Bearer, _AuthScheme.Basic, _AuthScheme.Header],
+        pydantic.Field(discriminator="type"),
     ]
 
 

@@ -1,6 +1,5 @@
-import typing
-
 import pydantic
+import typing_extensions
 
 from ..auth.api_auth import ApiAuth
 from ..errors.error_declaration import ErrorDeclaration
@@ -12,9 +11,9 @@ from .services import Services
 class IntermediateRepresentation(pydantic.BaseModel):
     api_name: str = pydantic.Field(alias="apiName")
     auth: ApiAuth
-    types: typing.List[TypeDeclaration]
+    types: typing_extensions.List[TypeDeclaration]
     services: Services
-    errors: typing.List[ErrorDeclaration]
+    errors: typing_extensions.List[ErrorDeclaration]
     constants: FernConstants
 
     class Config:

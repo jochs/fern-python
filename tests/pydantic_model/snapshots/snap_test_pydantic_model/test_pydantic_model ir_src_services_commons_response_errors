@@ -1,5 +1,5 @@
-import typing
+import typing_extensions
 
 from .response_error import ResponseError
 
-ResponseErrors = typing.List[ResponseError]
+ResponseErrors = typing_extensions.List[ResponseError]

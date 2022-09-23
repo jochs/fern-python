@@ -107,7 +107,7 @@ class TypeHint(AstNode):
     @staticmethod
     def literal(value: Expression) -> TypeHint:
         return TypeHint(
-            type=get_reference_to_typing_import("Literal"),
+            type=get_reference_to_typing_extensions_import("Literal"),
             type_parameters=[TypeParameter(value)],
         )
 
@@ -149,10 +149,18 @@ class TypeHint(AstNode):
             writer.write("]")
 
 
-def get_reference_to_typing_import(name: str) -> ClassReference:
+def get_reference_to_typing_extensions_import(name: str) -> ClassReference:
     return ClassReference(
         import_=ReferenceImport(
             module=Module.built_in("typing"),
+        ),
+        qualified_name_excluding_import=(name,),
+    )
+
+def get_reference_to_typing_import(name: str) -> ClassReference:
+    return ClassReference(
+        import_=ReferenceImport(
+            module=Module.built_in("typing_extensions"),
         ),
         qualified_name_excluding_import=(name,),
     )

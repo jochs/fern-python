@@ -28,17 +28,17 @@ class _Factory:
 
 
 class Type(pydantic.BaseModel):
-    factory: typing.ClassVar[_Factory] = _Factory()
+    factory: typing_extensions.ClassVar[_Factory] = _Factory()
 
-    def get(self) -> typing.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union]:
+    def get(self) -> typing_extensions.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union]:
         return self.__root__
 
     def visit(
         self,
-        alias: typing.Callable[[AliasTypeDeclaration], T_Result],
-        enum: typing.Callable[[EnumTypeDeclaration], T_Result],
-        object: typing.Callable[[ObjectTypeDeclaration], T_Result],
-        union: typing.Callable[[UnionTypeDeclaration], T_Result],
+        alias: typing_extensions.Callable[[AliasTypeDeclaration], T_Result],
+        enum: typing_extensions.Callable[[EnumTypeDeclaration], T_Result],
+        object: typing_extensions.Callable[[ObjectTypeDeclaration], T_Result],
+        union: typing_extensions.Callable[[UnionTypeDeclaration], T_Result],
     ) -> T_Result:
         if self.__root__.type == "alias":
             return alias(self.__root__)
@@ -50,7 +50,8 @@ class Type(pydantic.BaseModel):
             return union(self.__root__)
 
     __root__: typing_extensions.Annotated[
-        typing.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union], pydantic.Field(discriminator="type")
+        typing_extensions.Union[_Type.Alias, _Type.Enum, _Type.Object, _Type.Union],
+        pydantic.Field(discriminator="type"),
     ]
 
 

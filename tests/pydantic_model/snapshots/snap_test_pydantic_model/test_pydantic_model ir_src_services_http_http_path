@@ -1,10 +1,9 @@
-import typing
-
 import pydantic
+import typing_extensions
 
 from .http_path_part import HttpPathPart
 
 
 class HttpPath(pydantic.BaseModel):
     head: str
-    parts: typing.List[HttpPathPart]
+    parts: typing_extensions.List[HttpPathPart]

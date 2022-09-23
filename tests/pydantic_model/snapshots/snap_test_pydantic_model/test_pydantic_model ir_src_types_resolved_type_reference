@@ -30,11 +30,11 @@ class _Factory:
 
 
 class ResolvedTypeReference(pydantic.BaseModel):
-    factory: typing.ClassVar[_Factory] = _Factory()
+    factory: typing_extensions.ClassVar[_Factory] = _Factory()
 
     def get(
         self,
-    ) -> typing.Union[
+    ) -> typing_extensions.Union[
         _ResolvedTypeReference.Container,
         _ResolvedTypeReference.Named,
         _ResolvedTypeReference.Primitive,
@@ -45,11 +45,11 @@ class ResolvedTypeReference(pydantic.BaseModel):
 
     def visit(
         self,
-        container: typing.Callable[[ContainerType], T_Result],
-        named: typing.Callable[[ResolvedNamedType], T_Result],
-        primitive: typing.Callable[[PrimitiveType], T_Result],
-        unknown: typing.Callable[[], T_Result],
-        void: typing.Callable[[], T_Result],
+        container: typing_extensions.Callable[[ContainerType], T_Result],
+        named: typing_extensions.Callable[[ResolvedNamedType], T_Result],
+        primitive: typing_extensions.Callable[[PrimitiveType], T_Result],
+        unknown: typing_extensions.Callable[[], T_Result],
+        void: typing_extensions.Callable[[], T_Result],
     ) -> T_Result:
         if self.__root__.type == "container":
             return container(self.__root__.container)
@@ -63,7 +63,7 @@ class ResolvedTypeReference(pydantic.BaseModel):
             return void()
 
     __root__: typing_extensions.Annotated[
-        typing.Union[
+        typing_extensions.Union[
             _ResolvedTypeReference.Container,
             _ResolvedTypeReference.Named,
             _ResolvedTypeReference.Primitive,
