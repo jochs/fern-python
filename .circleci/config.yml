@@ -18,7 +18,8 @@ jobs:
           command: poetry run pre-commit run --all-files
 
   publish-docker:
-    executor: python/default
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout
       - run:
