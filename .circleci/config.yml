@@ -16,13 +16,13 @@ jobs:
       - run:
           name: pre-commit
           command: poetry run pre-commit run --all-files
-  
+
   publish-docker:
     executor: python/default
     steps:
       - checkout
-      - run: 
-          command: | 
+      - run:
+          command: |
             projectVersion=$(./scripts/git-version.sh)
             docker build -f ./docker/pydantic-model/Dockerfile -t pydantic-model:${projectVersion}  .
             echo "$FERNAPI_DOCKER_HUB_PASSWORD" | docker login --username fernapi --password-stdin
