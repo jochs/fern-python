@@ -3,7 +3,7 @@ import shutil
 import subprocess
 from glob import glob
 from pathlib import Path
-from typing import List
+from typing import Set
 
 from snapshottest.file import FileSnapshot  # type: ignore
 from snapshottest.module import SnapshotTest  # type: ignore
@@ -51,15 +51,14 @@ def test_pydantic_model(snapshot: SnapshotTest, tmpdir: Path) -> None:
 
     # snapshot files
     written_filepaths = glob(os.path.join(path_to_output, "**/*.py"), recursive=True)
-    relative_filepaths: List[str] = []
+    relative_filepaths: Set[str] = set()
     for written_filepath in written_filepaths:
         relative_filepath = os.path.relpath(written_filepath, start=path_to_output)
-        relative_filepaths.append(relative_filepath)
+        relative_filepaths.add(relative_filepath)
         snapshot.assert_match(
             name=relative_filepath.replace("/", "_").replace(".py", ""), value=FileSnapshot(written_filepath)
         )
 
-    relative_filepaths.sort()
     snapshot.assert_match(
         name="filepaths",
         value=relative_filepaths,
