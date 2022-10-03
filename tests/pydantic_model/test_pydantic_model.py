@@ -58,6 +58,8 @@ def test_pydantic_model(snapshot: SnapshotTest, tmpdir: Path) -> None:
         snapshot.assert_match(
             name=relative_filepath.replace("/", "_").replace(".py", ""), value=FileSnapshot(written_filepath)
         )
+
+    relative_filepaths.sort()
     snapshot.assert_match(
         name="filepaths",
         value=relative_filepaths,
