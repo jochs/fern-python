@@ -41,7 +41,7 @@ def test_pydantic_model(snapshot: SnapshotTest, tmpdir: Path) -> None:
     os.symlink(path_to_output, symlink)
 
     subprocess.run(
-        ["fern", "ir", "--output", path_to_ir],
+        ["npx", "fern-api@0.0.207", "ir", "--output", path_to_ir],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=path_to_fixture,
