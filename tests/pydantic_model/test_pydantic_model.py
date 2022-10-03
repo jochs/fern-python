@@ -49,23 +49,15 @@ def test_pydantic_model(snapshot: SnapshotTest, tmpdir: Path) -> None:
     )
     cli(path_to_config_json)
 
-    snapshot_filepaths = glob(
-        os.path.join(os.path.join(os.path.dirname(__file__), "snapshots"), "**/*.py"), recursive=True
-    )
-
+    # snapshot files
+    written_filepaths = glob(os.path.join(path_to_output, "**/*.py"), recursive=True)
     relative_filepaths: List[str] = []
-    for written_filepath in snapshot_filepaths:
+    for written_filepath in written_filepaths:
         relative_filepath = os.path.relpath(written_filepath, start=path_to_output)
-
-        # don't use a .py extension. if we do, then the snapshots have .py
-        # extensions, and pytest tries to run them.
-        new_filepath = written_filepath.replace(".py", "")
-        os.rename(written_filepath, new_filepath)
-
+        relative_filepaths.append(relative_filepath)
         snapshot.assert_match(
-            name=relative_filepath.replace("/", "_").replace(".py", ""), value=FileSnapshot(new_filepath)
+            name=relative_filepath.replace("/", "_").replace(".py", ""), value=FileSnapshot(written_filepath)
         )
-
     snapshot.assert_match(
         name="filepaths",
         value=relative_filepaths,
