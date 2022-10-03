@@ -10,7 +10,7 @@ class HttpRequest(WithDocs):
     type: TypeReference
     type_v_2: typing.Optional[TypeReference] = pydantic.Field(alias="typeV2")
 
-    def json(self, **kwargs) -> str:  # type: ignore
+    def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 

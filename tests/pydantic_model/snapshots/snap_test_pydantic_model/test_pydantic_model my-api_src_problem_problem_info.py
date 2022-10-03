@@ -23,7 +23,7 @@ class ProblemInfo(pydantic.BaseModel):
     method_name: str = pydantic.Field(alias="methodName")
     supports_custom_test_cases: bool = pydantic.Field(alias="supportsCustomTestCases")
 
-    def json(self, **kwargs) -> str:  # type: ignore
+    def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 

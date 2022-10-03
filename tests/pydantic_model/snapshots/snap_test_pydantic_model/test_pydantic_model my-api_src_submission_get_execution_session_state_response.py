@@ -10,7 +10,7 @@ class GetExecutionSessionStateResponse(pydantic.BaseModel):
     num_warming_instances: typing.Optional[int] = pydantic.Field(alias="numWarmingInstances")
     warming_session_ids: typing.List[str] = pydantic.Field(alias="warmingSessionIds")
 
-    def json(self, **kwargs) -> str:  # type: ignore
+    def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 

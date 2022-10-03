@@ -65,13 +65,12 @@ class FunctionDeclaration(AstNode):
         if self.include_kwargs:
             if just_wrote_parameter:
                 writer.write(", ")
-            writer.write("**kwargs")
+            writer.write("**kwargs: ")
+            writer.write_node(TypeHint.any())
             just_wrote_parameter = True
         writer.write(") -> ")
         writer.write_node(self.return_type)
         writer.write(":")
-        if self.include_kwargs:
-            writer.write("  # type: ignore")
 
         with writer.indent():
             self.body.write(writer=writer, reference_resolver=reference_resolver)

@@ -8,7 +8,7 @@ class ExceptionInfo(pydantic.BaseModel):
     exception_message: str = pydantic.Field(alias="exceptionMessage")
     exception_stacktrace: str = pydantic.Field(alias="exceptionStacktrace")
 
-    def json(self, **kwargs) -> str:  # type: ignore
+    def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 

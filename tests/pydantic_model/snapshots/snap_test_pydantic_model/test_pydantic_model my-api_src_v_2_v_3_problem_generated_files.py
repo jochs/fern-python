@@ -11,7 +11,7 @@ class GeneratedFiles(pydantic.BaseModel):
     generated_template_files: typing.Dict[Language, Files] = pydantic.Field(alias="generatedTemplateFiles")
     other: typing.Dict[Language, Files]
 
-    def json(self, **kwargs) -> str:  # type: ignore
+    def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 

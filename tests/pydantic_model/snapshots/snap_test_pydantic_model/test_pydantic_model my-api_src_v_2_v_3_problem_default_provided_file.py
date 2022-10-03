@@ -10,7 +10,7 @@ class DefaultProvidedFile(pydantic.BaseModel):
     file: FileInfoV2
     related_types: typing.List[VariableType] = pydantic.Field(alias="relatedTypes")
 
-    def json(self, **kwargs) -> str:  # type: ignore
+    def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 

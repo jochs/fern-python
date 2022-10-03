@@ -18,7 +18,7 @@ class HttpService(WithDocs):
     headers: typing.List[HttpHeader]
     path_parameters: typing.List[PathParameter] = pydantic.Field(alias="pathParameters")
 
-    def json(self, **kwargs) -> str:  # type: ignore
+    def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().json(**kwargs_with_defaults)
 
