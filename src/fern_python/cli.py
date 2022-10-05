@@ -1,8 +1,8 @@
 import typer
+from generator_exec.resources.config import GeneratorConfig
 
 from fern_python.generated import ir_types
 from fern_python.generators import PydanticModelGenerator
-from generator_exec.resources.config import GeneratorConfig
 
 
 def main(path_to_config_json: str) -> None:

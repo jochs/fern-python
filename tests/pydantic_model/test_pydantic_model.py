@@ -5,11 +5,11 @@ from glob import glob
 from pathlib import Path
 from typing import Set
 
+from generator_exec.resources import config
 from snapshottest.file import FileSnapshot  # type: ignore
 from snapshottest.module import SnapshotTest  # type: ignore
 
 from fern_python.cli import main as cli
-from generator_exec.resources import config 
 
 
 def test_pydantic_model(snapshot: SnapshotTest, tmpdir: Path) -> None:

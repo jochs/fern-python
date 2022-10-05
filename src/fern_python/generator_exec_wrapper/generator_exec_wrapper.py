@@ -1,8 +1,8 @@
+import typing
+
 from generator_exec.client import GeneratorExecClient
 from generator_exec.resources.config import GeneratorConfig
-from generator_exec.resources.logging import TaskId
 from generator_exec.resources.logging import GeneratorUpdate
-import typing
 
 
 class GeneratorExecWrapper:
