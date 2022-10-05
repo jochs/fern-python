@@ -2,20 +2,16 @@ import typing
 
 from generator_exec.client import GeneratorExecClient
 from generator_exec.resources.config import GeneratorConfig, RemoteGeneratorEnvironment
-from generator_exec.resources.logging import GeneratorUpdate
+from generator_exec.resources.logging import GeneratorUpdate, TaskId
 
 
 class GeneratorExecWrapper:
     def __init__(self, generator_config: GeneratorConfig):
-        generator_config.environment.visit(
-            local=lambda: self.__init_local(), remote=lambda env: self.__init_remote(env)
-        )
+        self.generator_exec_client: typing.Optional[GeneratorExecClient] = None
+        self.task_id: typing.Optional[TaskId] = None
+        generator_config.environment.visit(local=lambda: (), remote=lambda env: self._init_remote(env))
 
-    def __init_local(self) -> None:
-        self.generator_exec_client = None
-        self.task_id = None
-
-    def __init_remote(self, env: RemoteGeneratorEnvironment) -> None:
+    def _init_remote(self, env: RemoteGeneratorEnvironment) -> None:
         self.generator_exec_client = GeneratorExecClient(env.coordinator_url_v_2)
         self.task_id = env.id
 
