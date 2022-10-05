@@ -7,12 +7,13 @@ import typing
 
 class GeneratorExecWrapper:
     def __init__(self, generator_config: GeneratorConfig):
-        if generator_config.environment.get().type == "local":
+        env = generator_config.environment.get()
+        if env.type == "local":
             self.generator_exec_client = None
             self.task_id = None
-        else:
-            self.generator_exec_client = GeneratorExecClient(generator_config.environment.get().coordinator_url_v_2)
-            self.task_id = TaskId(__root__=generator_config.environment.get().id)
+        elif env.type == "remote":
+            self.generator_exec_client = GeneratorExecClient(env.coordinator_url_v_2)
+            self.task_id = env.id
 
     def send_update(self, generator_update: GeneratorUpdate) -> None:
         self.send_updates(generator_updates=[generator_update])

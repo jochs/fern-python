@@ -21,11 +21,11 @@ def test_pydantic_model(snapshot: SnapshotTest, tmpdir: Path) -> None:
 
     generator_config = config.GeneratorConfig(
         ir_filepath=path_to_ir,
-        output=config.GeneratorOutputConfig(path=path_to_output),
+        output=config.GeneratorOutputConfig(path=path_to_output, mode=config.OutputMode.factory.download_files()),
         workspace_name="ir",
         organization="fern",
         custom_config=None,
-        environment=config.GeneratorEnvironment.local(),
+        environment=config.GeneratorEnvironment.factory.local(),
     )
 
     with open(path_to_config_json, "w") as f:
