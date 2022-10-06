@@ -30,6 +30,34 @@ class AliasGenerator(AbstractTypeGenerator):
                 return_type=self._alias.alias_of,
                 body=AST.CodeWriter("return self.__root__"),
             )
+            pydantic_model.add_method(
+                name=self._get_builder_name(self._alias.alias_of),
+                parameters=[("value", self._alias.alias_of)],
+                return_type=ir_types.TypeReference.factory.named(self._name),
+                body=AST.CodeWriter(f"return {pydantic_model.get_class_name()}(__root__=value)"),
+            )
+
+    def _get_builder_name(self, alias_of: ir_types.TypeReference) -> str:
+        return alias_of.visit(
+            container=lambda container: container.visit(
+                list=lambda x: "from_list",
+                map=lambda x: "from_map",
+                set=lambda x: "from_set",
+                optional=self._get_getter_name,
+            ),
+            named=lambda type_name: "from_" + type_name.name_v_2.camel_case,
+            primitive=lambda primitive: primitive.visit(
+                integer=lambda: "from_int",
+                double=lambda: "from_float",
+                string=lambda: "from_str",
+                boolean=lambda: "from_bool",
+                long=lambda: "from_int",
+                date_time=lambda: "from_datetime",
+                uuid=lambda: "from_uuid",
+            ),
+            unknown=lambda: "from",
+            void=lambda: "from",
+        )
 
     def _get_getter_name(self, alias_of: ir_types.TypeReference) -> str:
         return alias_of.visit(

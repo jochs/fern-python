@@ -4,6 +4,7 @@ from typing import List, Sequence, Set
 
 from ....ast_node import AstNode, GenericTypeVar, NodeWriter, ReferenceResolver
 from ....references import ClassReference, Reference
+from ...reference_node import ReferenceNode
 from ..function import FunctionDeclaration, FunctionParameter
 from ..variable import VariableDeclaration
 from .class_constructor import ClassConstructor
@@ -18,19 +19,15 @@ class ClassDeclaration(AstNode):
         self.statements: List[AstNode] = []
         self.ghost_references: Set[Reference] = set()
 
-    def add_attribute(self, variable_declaration: VariableDeclaration) -> None:
+    def add_class_var(self, variable_declaration: VariableDeclaration) -> None:
         self.statements.append(variable_declaration)
 
     def add_method(
         self,
         declaration: FunctionDeclaration,
         decorator: ClassMethodDecorator = None,
+        no_implicit_decorator: bool = False,
     ) -> FunctionDeclaration:
-        """
-            - adds 'self' parameter to signature if not static
-            - adds @staticmethod decorator if static
-        returns new declaration
-        """
         parameters = (
             declaration.parameters
             if decorator == ClassMethodDecorator.STATIC
@@ -40,8 +37,9 @@ class ClassDeclaration(AstNode):
         )
 
         decorators = (
-            list(declaration.decorators) + [Reference(qualified_name_excluding_import=(decorator.value,))]
-            if decorator is not None
+            list(declaration.decorators)
+            + [ReferenceNode(Reference(qualified_name_excluding_import=(decorator.value,)))]
+            if decorator is not None and not no_implicit_decorator
             else declaration.decorators
         )
 

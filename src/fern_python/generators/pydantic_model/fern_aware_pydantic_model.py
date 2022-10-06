@@ -11,6 +11,8 @@ from fern_python.declaration_handler import (
 from fern_python.generated import ir_types
 from fern_python.pydantic_codegen import PydanticField, PydanticModel
 
+from .validators import RootValidatorGenerator
+
 
 class FernAwarePydanticModel:
     """
@@ -126,17 +128,24 @@ class FernAwarePydanticModel:
     ) -> AST.FunctionDeclaration:
         return self._pydantic_model.add_method(declaration=declaration, decorator=decorator)
 
-    def set_root_type(self, root_type: ir_types.TypeReference, is_forward_ref: bool = False) -> None:
+    def set_root_type(
+        self,
+        root_type: ir_types.TypeReference,
+        annotation: Optional[AST.Expression] = None,
+        is_forward_ref: bool = False,
+    ) -> None:
         self.set_root_type_unsafe(
             root_type=self.get_type_hint_for_type_reference(root_type),
+            annotation=annotation,
             is_forward_ref=is_forward_ref,
         )
 
-    def set_root_type_unsafe(self, root_type: AST.TypeHint, is_forward_ref: bool = False) -> None:
-        self._pydantic_model.set_root_type(root_type=root_type)
+    def set_root_type_unsafe(
+        self, root_type: AST.TypeHint, annotation: Optional[AST.Expression] = None, is_forward_ref: bool = False
+    ) -> None:
+        self._pydantic_model.set_root_type(root_type=root_type, annotation=annotation)
         if is_forward_ref:
             self._model_contains_forward_refs = True
-        # always surface __root__ as value
 
     def add_ghost_reference(self, type_name: ir_types.DeclaredTypeName) -> None:
         self._pydantic_model.add_ghost_reference(
@@ -147,6 +156,32 @@ class FernAwarePydanticModel:
         self._pydantic_model.set_constructor(constructor)
 
     def finish(self) -> None:
+        self._add_validators()
+        self._override_json()
+        self._pydantic_model.finish()
+        if self._model_contains_forward_refs:
+            self._context.source_file.add_footer_expression(
+                AST.Expression(
+                    AST.FunctionInvocation(
+                        function_definition=AST.Reference(
+                            qualified_name_excluding_import=(
+                                self.get_class_name(),
+                                "update_forward_refs",
+                            )
+                        )
+                    )
+                )
+            )
+
+    def _add_validators(self) -> None:
+        root_type = self._pydantic_model.get_root_type()
+        if root_type is not None:
+            RootValidatorGenerator(
+                model=self._pydantic_model,
+                root_type=root_type,
+            ).add_validators()
+
+    def _override_json(self) -> None:
         def write_json_body(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
             writer.write("kwargs_with_defaults: ")
             writer.write_node(AST.TypeHint.any())
@@ -163,20 +198,6 @@ class FernAwarePydanticModel:
                 include_kwargs=True,
             )
         )
-        self._pydantic_model.finish()
-        if self._model_contains_forward_refs:
-            self._context.source_file.add_footer_expression(
-                AST.Expression(
-                    AST.FunctionInvocation(
-                        function_definition=AST.Reference(
-                            qualified_name_excluding_import=(
-                                self.get_class_name(),
-                                "update_forward_refs",
-                            )
-                        )
-                    )
-                )
-            )
 
     def __enter__(self) -> FernAwarePydanticModel:
         return self

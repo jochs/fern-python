@@ -17,7 +17,7 @@ class FunctionDeclaration(AstNode):
         include_kwargs: bool = False,
         return_type: TypeHint,
         body: CodeWriter,
-        decorators: Sequence[Reference] = None,
+        decorators: Sequence[AstNode] = None,
     ):
         self.name = name
         self.parameters = parameters
@@ -33,7 +33,8 @@ class FunctionDeclaration(AstNode):
             references.update(parameter.get_references())
         references.update(self.return_type.get_references())
         references.update(self.body.get_references())
-        references.update(self.decorators)
+        for decorator in self.decorators:
+            references.update(decorator.get_references())
         return references
 
     def get_generics(self) -> Set[GenericTypeVar]:
@@ -42,13 +43,17 @@ class FunctionDeclaration(AstNode):
             generics.update(parameter.get_generics())
         generics.update(self.return_type.get_generics())
         generics.update(self.body.get_generics())
+        for decorator in self.decorators:
+            generics.update(decorator.get_generics())
         return generics
 
     def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:
         # apply decorators in reverse order, since they are executed by Python
         # from bottom to top
         for decorator in reversed(self.decorators):
-            writer.write_line(f"@{reference_resolver.resolve_reference(decorator)}")
+            writer.write("@")
+            writer.write_node(decorator)
+            writer.write_line()
 
         writer.write(f"def {self.name}(")
         just_wrote_parameter = False

@@ -15,6 +15,7 @@ from .expressions import (
     ExpressionSpread,
     FunctionInvocation,
 )
+from .reference_node import ReferenceNode
 from .type_hint import TypeHint
 
 __all__ = [
@@ -34,4 +35,5 @@ __all__ = [
     "Declaration",
     "ClassInstantiation",
     "ClassMethodDecorator",
+    "ReferenceNode",
 ]

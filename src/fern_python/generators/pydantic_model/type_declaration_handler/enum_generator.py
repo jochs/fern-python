@@ -33,7 +33,7 @@ class EnumGenerator(AbstractTypeGenerator):
         self._context.source_file.add_class_declaration(enum_class)
 
         for value in self._enum.values:
-            enum_class.add_attribute(
+            enum_class.add_class_var(
                 AST.VariableDeclaration(
                     name=value.name.screaming_snake_case,
                     initializer=AST.Expression(f'"{value.value}"'),

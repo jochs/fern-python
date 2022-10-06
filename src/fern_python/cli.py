@@ -32,6 +32,7 @@ def main(path_to_config_json: str) -> None:
                 ExitStatusUpdate.factory.error(ErrorExitStatusUpdate(message=str(e)))
             )
         )
+        raise e
 
 
 if __name__ == "__main__":

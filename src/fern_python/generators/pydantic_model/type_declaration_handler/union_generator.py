@@ -170,21 +170,19 @@ class UnionGenerator(AbstractTypeGenerator):
 
             external_pydantic_model.set_root_type_unsafe(
                 is_forward_ref=True,
-                root_type=AST.TypeHint.annotated(
-                    type=root_type,
-                    annotation=AST.Expression(
-                        AST.FunctionInvocation(
-                            function_definition=PYDANTIC_FIELD_REFERENCE,
-                            kwargs=[
-                                (
-                                    "discriminator",
-                                    AST.Expression(
-                                        f'"{self._get_discriminant_attr_name()}"',
-                                    ),
-                                )
-                            ],
-                        )
-                    ),
+                root_type=root_type,
+                annotation=AST.Expression(
+                    AST.FunctionInvocation(
+                        function_definition=PYDANTIC_FIELD_REFERENCE,
+                        kwargs=[
+                            (
+                                "discriminator",
+                                AST.Expression(
+                                    f'"{self._get_discriminant_attr_name()}"',
+                                ),
+                            )
+                        ],
+                    )
                 ),
             )
 
