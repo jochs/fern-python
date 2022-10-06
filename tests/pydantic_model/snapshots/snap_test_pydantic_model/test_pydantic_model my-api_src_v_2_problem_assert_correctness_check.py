@@ -60,7 +60,7 @@ class AssertCorrectnessCheck(pydantic.BaseModel):
         ] = []
 
         @classmethod
-        def add_validator(
+        def validate(
             cls,
             validator: typing.Callable[
                 [typing.Union[_AssertCorrectnessCheck.DeepEquality, _AssertCorrectnessCheck.Custom]],

@@ -4,6 +4,8 @@ from fern_python.pydantic_codegen import PydanticModel
 
 
 class ValidatorGenerator(ABC):
+    _VALIDATOR_CLASS_NAME = "Validators"
+
     def __init__(self, model: PydanticModel):
         self._model = model
 

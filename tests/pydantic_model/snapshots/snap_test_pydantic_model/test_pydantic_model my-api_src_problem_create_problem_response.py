@@ -57,7 +57,7 @@ class CreateProblemResponse(pydantic.BaseModel):
         ] = []
 
         @classmethod
-        def add_validator(
+        def validate(
             cls,
             validator: typing.Callable[
                 [typing.Union[_CreateProblemResponse.Success, _CreateProblemResponse.Error]],

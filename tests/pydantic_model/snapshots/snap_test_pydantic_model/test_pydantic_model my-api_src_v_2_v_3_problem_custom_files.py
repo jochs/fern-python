@@ -58,7 +58,7 @@ class CustomFiles(pydantic.BaseModel):
         ] = []
 
         @classmethod
-        def add_validator(
+        def validate(
             cls,
             validator: typing.Callable[
                 [typing.Union[_CustomFiles.Basic, _CustomFiles.Custom]],

@@ -5,7 +5,7 @@ from typing import List, Sequence, Set
 from ....ast_node import AstNode, GenericTypeVar, NodeWriter, ReferenceResolver
 from ....references import ClassReference, Reference
 from ...reference_node import ReferenceNode
-from ..function import FunctionDeclaration, FunctionParameter
+from ..function import FunctionDeclaration, FunctionParameter, FunctionSignature
 from ..variable import VariableDeclaration
 from .class_constructor import ClassConstructor
 from .class_method_decorator import ClassMethodDecorator
@@ -29,11 +29,11 @@ class ClassDeclaration(AstNode):
         no_implicit_decorator: bool = False,
     ) -> FunctionDeclaration:
         parameters = (
-            declaration.parameters
+            declaration.signature.parameters
             if decorator == ClassMethodDecorator.STATIC
-            else [FunctionParameter(name="cls")] + list(declaration.parameters)
+            else [FunctionParameter(name="cls")] + list(declaration.signature.parameters)
             if decorator == ClassMethodDecorator.CLASS_METHOD
-            else [FunctionParameter(name="self")] + list(declaration.parameters)
+            else [FunctionParameter(name="self")] + list(declaration.signature.parameters)
         )
 
         decorators = (
@@ -45,12 +45,16 @@ class ClassDeclaration(AstNode):
 
         declaration = FunctionDeclaration(
             name=declaration.name,
-            parameters=parameters,
-            return_type=declaration.return_type,
+            signature=FunctionSignature(
+                parameters=parameters,
+                named_parameters=declaration.signature.named_parameters,
+                return_type=declaration.signature.return_type,
+                include_args=declaration.signature.include_args,
+                include_kwargs=declaration.signature.include_kwargs,
+            ),
             body=declaration.body,
             decorators=decorators,
-            include_args=declaration.include_args,
-            include_kwargs=declaration.include_kwargs,
+            overloads=declaration.overloads,
         )
 
         self.statements.append(declaration)

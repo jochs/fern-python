@@ -126,6 +126,7 @@ class PydanticModel:
         self,
         validator_name: str,
         field_name: str,
+        field_parameter_name: str,
         field_type: AST.TypeHint,
         body: AST.CodeWriter,
     ) -> None:
@@ -134,7 +135,10 @@ class PydanticModel:
             no_implicit_decorator=True,
             declaration=AST.FunctionDeclaration(
                 name=validator_name,
-                parameters=[AST.FunctionParameter(name=field_name, type_hint=field_type)],
+                signature=AST.FunctionSignature(
+                    parameters=[AST.FunctionParameter(name=field_parameter_name, type_hint=field_type)],
+                    return_type=field_type,
+                ),
                 body=body,
                 decorators=[
                     AST.FunctionInvocation(
@@ -142,7 +146,6 @@ class PydanticModel:
                         args=[AST.Expression(expression=f'"{field_name}"')],
                     )
                 ],
-                return_type=field_type,
             ),
         )
 
@@ -158,10 +161,12 @@ class PydanticModel:
             no_implicit_decorator=True,
             declaration=AST.FunctionDeclaration(
                 name=validator_name,
-                parameters=[AST.FunctionParameter(name=value_argument_name, type_hint=value_type)],
+                signature=AST.FunctionSignature(
+                    parameters=[AST.FunctionParameter(name=value_argument_name, type_hint=value_type)],
+                    return_type=value_type,
+                ),
                 body=body,
                 decorators=[AST.ReferenceNode(get_reference_to_pydantic_export("root_validator"))],
-                return_type=value_type,
             ),
         )
 

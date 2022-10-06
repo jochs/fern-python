@@ -68,7 +68,7 @@ class ActualResult(pydantic.BaseModel):
         ] = []
 
         @classmethod
-        def add_validator(
+        def validate(
             cls,
             validator: typing.Callable[
                 [typing.Union[_ActualResult.Value, _ActualResult.Exception, _ActualResult.ExceptionV2]],

@@ -54,7 +54,7 @@ class ExceptionV2(pydantic.BaseModel):
         ] = []
 
         @classmethod
-        def add_validator(
+        def validate(
             cls,
             validator: typing.Callable[
                 [typing.Union[_ExceptionV2.Generic, _ExceptionV2.Timeout]],

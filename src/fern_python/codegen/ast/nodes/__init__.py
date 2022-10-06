@@ -6,6 +6,7 @@ from .declarations import (
     Declaration,
     FunctionDeclaration,
     FunctionParameter,
+    FunctionSignature,
     TypeAliasDeclaration,
     VariableDeclaration,
 )
@@ -36,4 +37,5 @@ __all__ = [
     "ClassInstantiation",
     "ClassMethodDecorator",
     "ReferenceNode",
+    "FunctionSignature",
 ]

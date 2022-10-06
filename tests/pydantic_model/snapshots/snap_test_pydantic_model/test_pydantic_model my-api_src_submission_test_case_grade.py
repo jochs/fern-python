@@ -57,7 +57,7 @@ class TestCaseGrade(pydantic.BaseModel):
         ] = []
 
         @classmethod
-        def add_validator(
+        def validate(
             cls,
             validator: typing.Callable[
                 [typing.Union[_TestCaseGrade.Hidden, _TestCaseGrade.NonHidden]],

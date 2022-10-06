@@ -11,7 +11,8 @@ from fern_python.declaration_handler import (
 from fern_python.generated import ir_types
 from fern_python.pydantic_codegen import PydanticField, PydanticModel
 
-from .validators import RootValidatorGenerator
+from .custom_config import CustomConfig
+from .validators import FieldValidatorsGenerator, RootValidatorGenerator
 
 
 class FernAwarePydanticModel:
@@ -33,11 +34,13 @@ class FernAwarePydanticModel:
     def __init__(
         self,
         context: DeclarationHandlerContext,
+        custom_config: CustomConfig,
         type_name: ir_types.DeclaredTypeName,
         extends: Sequence[ir_types.DeclaredTypeName] = None,
     ):
         self._type_name = type_name
         self._context = context
+        self._custom_config = custom_config
         self._pydantic_model = PydanticModel(
             name=self.get_class_name(),
             source_file=context.source_file,
@@ -109,13 +112,15 @@ class FernAwarePydanticModel:
         return self.add_method_unsafe(
             declaration=AST.FunctionDeclaration(
                 name=name,
-                parameters=[
-                    AST.FunctionParameter(
-                        name=parameter_name, type_hint=self.get_type_hint_for_type_reference(parameter_type)
-                    )
-                    for parameter_name, parameter_type in parameters
-                ],
-                return_type=self.get_type_hint_for_type_reference(return_type),
+                signature=AST.FunctionSignature(
+                    parameters=[
+                        AST.FunctionParameter(
+                            name=parameter_name, type_hint=self.get_type_hint_for_type_reference(parameter_type)
+                        )
+                        for parameter_name, parameter_type in parameters
+                    ],
+                    return_type=self.get_type_hint_for_type_reference(return_type),
+                ),
                 body=body,
             ),
             decorator=decorator,
@@ -156,7 +161,8 @@ class FernAwarePydanticModel:
         self._pydantic_model.set_constructor(constructor)
 
     def finish(self) -> None:
-        self._add_validators()
+        if not self._custom_config.exclude_validators:
+            self._add_validators()
         self._override_json()
         self._pydantic_model.finish()
         if self._model_contains_forward_refs:
@@ -180,6 +186,8 @@ class FernAwarePydanticModel:
                 model=self._pydantic_model,
                 root_type=root_type,
             ).add_validators()
+        else:
+            FieldValidatorsGenerator(model=self._pydantic_model).add_validators()
 
     def _override_json(self) -> None:
         def write_json_body(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
@@ -192,10 +200,30 @@ class FernAwarePydanticModel:
         self._pydantic_model.add_method(
             AST.FunctionDeclaration(
                 name="json",
-                parameters=[],
-                return_type=AST.TypeHint.str_(),
+                signature=AST.FunctionSignature(
+                    return_type=AST.TypeHint.str_(),
+                    include_kwargs=True,
+                ),
                 body=AST.CodeWriter(write_json_body),
-                include_kwargs=True,
+            )
+        )
+
+    def _override_dict(self) -> None:
+        def write_dict_body(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
+            writer.write("kwargs_with_defaults: ")
+            writer.write_node(AST.TypeHint.any())
+            writer.write(' = { "by_alias": True, **kwargs }')
+            writer.write_line()
+            writer.write_line("return super().json(**kwargs_with_defaults)")
+
+        self._pydantic_model.add_method(
+            AST.FunctionDeclaration(
+                name="dict",
+                signature=AST.FunctionSignature(
+                    return_type=AST.TypeHint.dict(AST.TypeHint.str_(), AST.TypeHint.any()),
+                    include_kwargs=True,
+                ),
+                body=AST.CodeWriter(write_dict_body),
             )
         )
 

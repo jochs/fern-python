@@ -6,7 +6,6 @@ from .validator_generator import ValidatorGenerator
 
 class RootValidatorGenerator(ValidatorGenerator):
     _VALIDATOR_VALUE_ARGUMENT = "values"
-    _VALIDATOR_CLASS_NAME = "Validators"
     _VALIDATOR_CLASS_VALIDATORS_CLASS_VAR = "_validators"
 
     def __init__(self, model: PydanticModel, root_type: AST.TypeHint):
@@ -82,9 +81,11 @@ class RootValidatorGenerator(ValidatorGenerator):
         )
         validators_class.add_method(
             declaration=AST.FunctionDeclaration(
-                name="add_validator",
-                parameters=[AST.FunctionParameter(name=VALIDATOR_PARAMETER, type_hint=validator_type)],
-                return_type=AST.TypeHint.none(),
+                name="validate",
+                signature=AST.FunctionSignature(
+                    parameters=[AST.FunctionParameter(name=VALIDATOR_PARAMETER, type_hint=validator_type)],
+                    return_type=AST.TypeHint.none(),
+                ),
                 body=AST.CodeWriter(
                     f"cls.{RootValidatorGenerator._VALIDATOR_CLASS_VALIDATORS_CLASS_VAR}"
                     + f".append({VALIDATOR_PARAMETER})"

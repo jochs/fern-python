@@ -25,7 +25,7 @@ class SubmissionId(pydantic.BaseModel):
         _validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
 
         @classmethod
-        def add_validator(cls, validator: typing.Callable[[str], str]) -> None:
+        def validate(cls, validator: typing.Callable[[str], str]) -> None:
             cls._validators.append(validator)
 
     def json(self, **kwargs: typing.Any) -> str:

@@ -98,7 +98,7 @@ class InvalidRequestCause(pydantic.BaseModel):
         ] = []
 
         @classmethod
-        def add_validator(
+        def validate(
             cls,
             validator: typing.Callable[
                 [

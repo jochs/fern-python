@@ -2,6 +2,7 @@ from fern_python.codegen import AST
 from fern_python.declaration_handler import DeclarationHandlerContext
 from fern_python.generated import ir_types
 
+from ..custom_config import CustomConfig
 from .abstract_type_generator import AbstractTypeGenerator
 from .get_visit_method import VisitableItem, get_visit_method
 
@@ -12,8 +13,9 @@ class EnumGenerator(AbstractTypeGenerator):
         name: ir_types.DeclaredTypeName,
         enum: ir_types.EnumTypeDeclaration,
         context: DeclarationHandlerContext,
+        custom_config: CustomConfig,
     ):
-        super().__init__(name=name, context=context)
+        super().__init__(name=name, context=context, custom_config=custom_config)
         self._enum = enum
 
     def generate(self) -> None:
