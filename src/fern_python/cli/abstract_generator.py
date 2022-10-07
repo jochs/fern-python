@@ -15,9 +15,12 @@ class AbstractGenerator(ABC):
         ir: IntermediateRepresentation,
         generator_config: GeneratorConfig,
     ) -> None:
-        with Project(filepath=generator_config.output.path, project_name=f"{ir.api_name}") as project:
+        with Project(filepath=generator_config.output.path, project_name=ir.api_name) as project:
             self.run(
-                generator_exec_wrapper=generator_exec_wrapper, ir=ir, generator_config=generator_config, project=project
+                generator_exec_wrapper=generator_exec_wrapper,
+                ir=ir,
+                generator_config=generator_config,
+                project=project,
             )
 
     @abstractmethod
