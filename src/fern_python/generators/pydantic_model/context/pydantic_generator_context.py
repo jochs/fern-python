@@ -6,13 +6,10 @@ from typing import Callable, Optional, Set, Tuple
 
 import fern.ir.pydantic as ir_types
 
-from fern_python.codegen import AST, SourceFile
+from fern_python.codegen import AST, Filepath
 
 
-class DeclarationHandlerContext(ABC):
-    def __init__(self, source_file: SourceFile) -> None:
-        self.source_file = source_file
-
+class PydanticGeneratorContext(ABC):
     @abstractmethod
     def get_type_hint_for_type_reference(
         self,
@@ -39,6 +36,10 @@ class DeclarationHandlerContext(ABC):
 
     @abstractmethod
     def get_declaration_for_type_name(self, type_name: ir_types.DeclaredTypeName) -> ir_types.TypeDeclaration:
+        ...
+
+    @abstractmethod
+    def get_filepath_for_type_name(self, type_name: ir_types.DeclaredTypeName) -> Filepath:
         ...
 
 
