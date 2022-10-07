@@ -32,9 +32,9 @@ class Project:
         self,
         filepath: str,
         project_name: str,
-        python_version="3.7",
+        python_version: str = "3.7",
         pyproject_toml_config: PyProjectTomlConfig = None,
-    ):
+    ) -> None:
         self._root_filepath = filepath
         self._project_filepath = os.path.join(filepath, "src")
         self._project_name = project_name
