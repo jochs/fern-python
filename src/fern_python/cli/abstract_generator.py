@@ -6,7 +6,7 @@ from generator_exec.resources import logging
 from generator_exec.resources.config import GeneratorConfig, GeneratorPublishConfig
 
 from fern_python.codegen.project import Project, PyProjectTomlConfig
-from fern_python.generated.ir_types import IntermediateRepresentation
+from ir import IntermediateRepresentation
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 
 

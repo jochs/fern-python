@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Callable, Optional, Set, Tuple
 
 from fern_python.codegen import AST, SourceFile
-from fern_python.generated import ir_types
+import ir as ir_types
 
 
 class DeclarationHandlerContext(ABC):

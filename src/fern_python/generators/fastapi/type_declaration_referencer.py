@@ -1,5 +1,5 @@
 from fern_python.codegen import ExportStrategy, Filepath
-from fern_python.generated import ir_types
+import ir as ir_types
 
 from .abstract_fastapi_declaration_referencer import (
     AbstractFastApiDeclarationReferencer,

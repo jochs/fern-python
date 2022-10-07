@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Callable, Generic, Optional, Tuple, TypeVar
 
 from fern_python.codegen import AST, ExportStrategy, Filepath
-from fern_python.generated import ir_types
+import ir as ir_types
 
 T = TypeVar("T")
 

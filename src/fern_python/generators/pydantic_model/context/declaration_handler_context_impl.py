@@ -6,7 +6,7 @@ from fern_python.declaration_handler import (
     HashableDeclaredTypeName,
 )
 from fern_python.declaration_referencer import AbstractDeclarationReferencer
-from fern_python.generated import ir_types
+import ir as ir_types
 
 from .type_reference_to_type_hint_converter import TypeReferenceToTypeHintConverter
 
