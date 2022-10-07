@@ -1,4 +1,3 @@
-
 from generator_exec.resources.config import GeneratorConfig
 from generator_exec.resources.logging import GeneratorUpdate, LogLevel, LogUpdate
 
