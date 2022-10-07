@@ -7,7 +7,7 @@ import typing_extensions
 
 from .initialize_problem_request import InitializeProblemRequest
 from .stop_request import StopRequest
-from .submit_request_v2 import SubmitRequestV2
+from .submit_request_v_2 import SubmitRequestV2
 from .workspace_submit_request import WorkspaceSubmitRequest
 
 T_Result = typing.TypeVar("T_Result")
@@ -77,6 +77,70 @@ class SubmissionRequest(pydantic.BaseModel):
         ],
         pydantic.Field(discriminator="type"),
     ]
+
+    @pydantic.root_validator
+    def _validate(cls, values: typing.Dict[str, typing.Any]) -> typing.Dict[str, typing.Any]:
+        value = typing.cast(
+            typing.Union[
+                _SubmissionRequest.InitializeProblemRequest,
+                _SubmissionRequest.InitializeWorkspaceRequest,
+                _SubmissionRequest.SubmitV2,
+                _SubmissionRequest.WorkspaceSubmit,
+                _SubmissionRequest.Stop,
+            ],
+            values.get("__root__"),
+        )
+        for validator in SubmissionRequest.Validators._validators:
+            value = validator(value)
+        return {**values, "__root__": value}
+
+    class Validators:
+        _validators: typing.ClassVar[
+            typing.List[
+                typing.Callable[
+                    [
+                        typing.Union[
+                            _SubmissionRequest.InitializeProblemRequest,
+                            _SubmissionRequest.InitializeWorkspaceRequest,
+                            _SubmissionRequest.SubmitV2,
+                            _SubmissionRequest.WorkspaceSubmit,
+                            _SubmissionRequest.Stop,
+                        ]
+                    ],
+                    typing.Union[
+                        _SubmissionRequest.InitializeProblemRequest,
+                        _SubmissionRequest.InitializeWorkspaceRequest,
+                        _SubmissionRequest.SubmitV2,
+                        _SubmissionRequest.WorkspaceSubmit,
+                        _SubmissionRequest.Stop,
+                    ],
+                ]
+            ]
+        ] = []
+
+        @classmethod
+        def validate(
+            cls,
+            validator: typing.Callable[
+                [
+                    typing.Union[
+                        _SubmissionRequest.InitializeProblemRequest,
+                        _SubmissionRequest.InitializeWorkspaceRequest,
+                        _SubmissionRequest.SubmitV2,
+                        _SubmissionRequest.WorkspaceSubmit,
+                        _SubmissionRequest.Stop,
+                    ]
+                ],
+                typing.Union[
+                    _SubmissionRequest.InitializeProblemRequest,
+                    _SubmissionRequest.InitializeWorkspaceRequest,
+                    _SubmissionRequest.SubmitV2,
+                    _SubmissionRequest.WorkspaceSubmit,
+                    _SubmissionRequest.Stop,
+                ],
+            ],
+        ) -> None:
+            cls._validators.append(validator)
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

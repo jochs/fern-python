@@ -4,7 +4,6 @@ from abc import abstractmethod
 from types import TracebackType
 from typing import Callable, List, Optional, Set, Type, TypeVar
 
-from fern_python.codegen.ast.dependency.dependency import Dependency
 from fern_python.codegen.dependency_manager import DependencyManager
 
 from . import AST

@@ -2,15 +2,15 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from enum import Enum, auto
+from enum import Enum
 from typing import Optional, Tuple
 
 from . import AST
 
 
-class ExportStrategy(Enum):
-    EXPORT_ALL = auto()
-    EXPORT_AS_NAMESPACE = auto()
+class ExportStrategy(str, Enum):
+    EXPORT_ALL = "export_all"
+    EXPORT_AS_NAMESPACE = "export_as_namespace"
 
 
 @dataclass(frozen=True)
@@ -21,7 +21,7 @@ class Filepath:
     def to_module(self) -> AST.Module:
         return AST.Module.local(*(part.module_name for part in self.directories + (self.file,)))
 
-    def to_str(self) -> str:
+    def __str__(self) -> str:
         parts = [dir.module_name for dir in self.directories]
         parts.append(self.file.module_name + ".py")
         return os.path.join(*parts)

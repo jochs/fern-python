@@ -22,11 +22,9 @@ class GeneratorCli:
         generator_exec_wrapper = GeneratorExecWrapper(generator_config=config)
         try:
             ir = ir_types.IntermediateRepresentation.parse_file(config.ir_filepath)
-            generator_exec_wrapper.send_update(
-                GeneratorUpdate.factory.init(
-                    InitUpdate(packages_to_publish=[])
-                )
-            )
+
+            generator_exec_wrapper.send_update(GeneratorUpdate.factory.init(InitUpdate(packages_to_publish=[])))
+
             self.abstract_generator.generate(
                 generator_exec_wrapper=generator_exec_wrapper, ir=ir, generator_config=config
             )
@@ -39,3 +37,4 @@ class GeneratorCli:
                     ExitStatusUpdate.factory.error(ErrorExitStatusUpdate(message=str(e)))
                 )
             )
+            raise e
