@@ -86,8 +86,8 @@ class Project:
 
     def _get_root_module_filepath(self) -> str:
         return os.path.join(
-            self._project_filepath,
             "src",
+            self._project_filepath,
         )
 
     def __enter__(self) -> Project:
