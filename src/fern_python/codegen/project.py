@@ -30,7 +30,7 @@ class Project:
 
     def __init__(self, filepath: str, project_name: str, pyproject_toml_config: PyProjectTomlConfig = None):
         self._root_filepath = filepath
-        self._project_filepath = os.path.join(filepath, project_name)
+        self._project_filepath = os.path.join(filepath, "src")
         self._project_name = project_name
         self._pyproject_toml_config = pyproject_toml_config
         self._module_manager = ModuleManager()
@@ -86,8 +86,8 @@ class Project:
 
     def _get_root_module_filepath(self) -> str:
         return os.path.join(
-            "src",
             self._project_filepath,
+            self._project_name
         )
 
     def __enter__(self) -> Project:
