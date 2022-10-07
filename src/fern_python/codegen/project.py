@@ -85,10 +85,7 @@ class Project:
             py_project_toml.write()
 
     def _get_root_module_filepath(self) -> str:
-        return os.path.join(
-            self._project_filepath,
-            self._project_name
-        )
+        return os.path.join(self._project_filepath, self._project_name)
 
     def __enter__(self) -> Project:
         self.start()
