@@ -3,7 +3,6 @@ from typing import List
 from typing_extensions import Never
 
 from fern_python.codegen import AST, LocalClassReference
-from fern_python.declaration_handler import DeclarationHandlerContext
 from fern_python.generated import ir_types
 from fern_python.pydantic_codegen import (
     PYDANTIC_FIELD_REFERENCE,
@@ -11,6 +10,7 @@ from fern_python.pydantic_codegen import (
     PydanticModel,
 )
 
+from ..context import DeclarationHandlerContext
 from ..custom_config import CustomConfig
 from ..fern_aware_pydantic_model import FernAwarePydanticModel
 from .abstract_type_generator import AbstractTypeGenerator

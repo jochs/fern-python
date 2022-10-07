@@ -1,12 +1,10 @@
 from fern_python.codegen import ExportStrategy, Filepath
 from fern_python.generated import ir_types
 
-from .abstract_fastapi_declaration_referencer import (
-    AbstractFastApiDeclarationReferencer,
-)
+from .fastapi_declaration_referencer import FastApiDeclarationReferencer
 
 
-class TypeDeclarationReferencer(AbstractFastApiDeclarationReferencer[ir_types.DeclaredTypeName]):
+class TypeDeclarationReferencer(FastApiDeclarationReferencer[ir_types.DeclaredTypeName]):
     def get_filepath(self, *, name: ir_types.DeclaredTypeName) -> Filepath:
         return Filepath(
             directories=self._get_directories_for_fern_filepath(

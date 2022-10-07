@@ -1,7 +1,7 @@
 from fern_python.codegen import AST
-from fern_python.declaration_handler import DeclarationHandlerContext
 from fern_python.generated import ir_types
 
+from ..context import DeclarationHandlerContext
 from ..custom_config import CustomConfig
 from .abstract_type_generator import AbstractTypeGenerator
 from .get_visit_method import VisitableItem, get_visit_method

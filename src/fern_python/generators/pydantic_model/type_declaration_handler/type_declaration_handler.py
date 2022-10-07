@@ -1,9 +1,6 @@
-from fern_python.declaration_handler import (
-    DeclarationHandler,
-    DeclarationHandlerContext,
-)
 from fern_python.generated import ir_types
 
+from ..context import DeclarationHandlerContext
 from ..custom_config import CustomConfig
 from .alias_generator import AliasGenerator
 from .enum_generator import EnumGenerator
@@ -11,14 +8,15 @@ from .object_generator import ObjectGenerator
 from .union_generator import UnionGenerator
 
 
-class TypeDeclarationHandler(DeclarationHandler[ir_types.TypeDeclaration]):
+class TypeDeclarationHandler:
     def __init__(
         self,
         declaration: ir_types.TypeDeclaration,
         context: DeclarationHandlerContext,
         custom_config: CustomConfig,
     ):
-        super().__init__(declaration=declaration, context=context)
+        self._declaration = declaration
+        self._context = context
         self._custom_config = custom_config
 
     def run(self) -> None:
