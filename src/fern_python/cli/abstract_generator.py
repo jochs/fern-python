@@ -49,7 +49,7 @@ class AbstractGenerator(ABC):
         generator_exec_wrapper: GeneratorExecWrapper,
         publish_config: GeneratorPublishConfig,
         generator_config: GeneratorConfig,
-    ):
+    ) -> None:
         publisher = _Publisher(
             generator_exec_wrapper=generator_exec_wrapper,
             publish_config=publish_config,
