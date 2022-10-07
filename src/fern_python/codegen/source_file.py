@@ -4,6 +4,9 @@ from abc import abstractmethod
 from types import TracebackType
 from typing import Callable, List, Optional, Set, Type, TypeVar
 
+from fern_python.codegen.ast.dependency.dependency import Dependency
+from fern_python.codegen.dependency_manager import DependencyManager
+
 from . import AST
 from .class_parent import ClassParent
 from .imports_manager import ImportsManager
@@ -52,6 +55,7 @@ class SourceFileImpl(SourceFile):
         filepath: str,
         module_path: AST.ModulePath,
         reference_resolver: ReferenceResolverImpl,
+        dependency_manager: DependencyManager,
         completion_listener: Callable[[SourceFileImpl], None] = None,
     ):
         self._filepath = filepath
@@ -62,6 +66,7 @@ class SourceFileImpl(SourceFile):
         self._statements: List[TopLevelStatement] = []
         self._exports: Set[str] = set()
         self._footer_statements: List[TopLevelStatement] = []
+        self._dependency_manager = dependency_manager
 
     def add_declaration(
         self,
@@ -138,6 +143,8 @@ class SourceFileImpl(SourceFile):
         if self._completion_listener is not None:
             self._completion_listener(self)
 
+        self._update_dependencies()
+
     def get_exports(self) -> Set[str]:
         return self._exports
 
@@ -176,6 +183,14 @@ class SourceFileImpl(SourceFile):
             for reference in statement.references:
                 self._reference_resolver.register_reference(reference)
         self._reference_resolver.resolve_references()
+
+    def _update_dependencies(self) -> None:
+        for statement in self._get_all_statements():
+            for reference in statement.references:
+                if reference.import_ is not None:
+                    dependency = reference.import_.module.get_dependency()
+                    if dependency is not None:
+                        self._dependency_manager.add_dependency(dependency)
 
     def __enter__(self) -> SourceFile:
         return self

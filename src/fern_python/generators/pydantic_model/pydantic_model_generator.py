@@ -1,4 +1,6 @@
-from generator_exec.resources.config import GeneratorConfig
+from typing import Optional
+
+from generator_exec.resources.config import GeneratorConfig, GeneratorPublishConfig
 from generator_exec.resources.logging import GeneratorUpdate, LogLevel, LogUpdate
 
 from ...cli.abstract_generator import AbstractGenerator
@@ -26,12 +28,10 @@ class PydanticModelGenerator(AbstractGenerator):
         generator_exec_wrapper: GeneratorExecWrapper,
         ir: ir_types.IntermediateRepresentation,
         generator_config: GeneratorConfig,
+        project: Project,
     ) -> None:
-        with Project(filepath=generator_config.output.path, project_name=f"{ir.api_name}") as project:
-            for type_to_generate in ir.types:
-                self._generate_type(
-                    project, ir=ir, type=type_to_generate, generator_exec_wrapper=generator_exec_wrapper
-                )
+        for type_to_generate in ir.types:
+            self._generate_type(project, ir=ir, type=type_to_generate, generator_exec_wrapper=generator_exec_wrapper)
 
     def _generate_type(
         self,
@@ -60,3 +60,16 @@ class PydanticModelGenerator(AbstractGenerator):
                     LogUpdate(level=LogLevel.DEBUG, message=f"Generated file {filepath.to_str()}")
                 )
             )
+
+    def get_package_to_publish(
+        self,
+        *,
+        generator_config: GeneratorConfig,
+    ) -> Optional[str]:
+        return generator_config.output.mode.visit(
+            publish=lambda generator_publish_config: self._get_published_package_name(generator_publish_config),
+            download_files=lambda: None,
+        )
+
+    def _get_published_package_name(self, generator_publish_config: GeneratorPublishConfig) -> str:
+        return generator_publish_config.registries_v_2.pypi.package_name
