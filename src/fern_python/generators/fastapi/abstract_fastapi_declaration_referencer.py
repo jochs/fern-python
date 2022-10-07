@@ -1,10 +1,10 @@
 from typing import Generic, Tuple, TypeVar
 
+import ir as ir_types
 from generator_exec.resources.config import GeneratorConfig
 
 from fern_python.codegen import Filepath
 from fern_python.declaration_referencer import AbstractDeclarationReferencer
-import ir as ir_types
 
 T = TypeVar("T")
 

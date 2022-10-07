@@ -1,8 +1,9 @@
 from typing import Callable, Optional
 
+import ir as ir_types
+
 from fern_python.codegen import AST
 from fern_python.declaration_referencer import AbstractDeclarationReferencer
-import ir as ir_types
 
 
 class TypeReferenceToTypeHintConverter:

@@ -1,3 +1,4 @@
+import ir as ir_types
 from generator_exec.resources.config import GeneratorConfig
 from generator_exec.resources.logging import (
     ErrorExitStatusUpdate,
@@ -6,7 +7,6 @@ from generator_exec.resources.logging import (
     InitUpdate,
 )
 
-import ir as ir_types
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 
 from .abstract_generator import AbstractGenerator
