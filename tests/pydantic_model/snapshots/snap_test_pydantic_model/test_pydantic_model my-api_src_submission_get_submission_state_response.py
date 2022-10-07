@@ -38,48 +38,52 @@ class GetSubmissionStateResponse(pydantic.BaseModel):
         return submission_type_state
 
     class Validators:
-        _time_submitted: typing.ClassVar[typing.Optional[str]] = []
-        _submission: typing.ClassVar[str] = []
-        _language: typing.ClassVar[Language] = []
-        _submission_type_state: typing.ClassVar[SubmissionTypeState] = []
+        _time_submitted: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]
+        ] = []
+        _submission: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _language: typing.ClassVar[typing.List[typing.Callable[[Language], Language]]] = []
+        _submission_type_state: typing.ClassVar[
+            typing.List[typing.Callable[[SubmissionTypeState], SubmissionTypeState]]
+        ] = []
 
         @typing.overload
         @classmethod
-        def field(time_submitted: typing_extensions.Literal["time_submitted"]) -> typing.Optional[str]:
+        def field(cls, field_name: typing_extensions.Literal["time_submitted"]) -> typing.Optional[str]:
             ...
 
         @typing.overload
         @classmethod
-        def field(submission: typing_extensions.Literal["submission"]) -> str:
+        def field(cls, field_name: typing_extensions.Literal["submission"]) -> str:
             ...
 
         @typing.overload
         @classmethod
-        def field(language: typing_extensions.Literal["language"]) -> Language:
+        def field(cls, field_name: typing_extensions.Literal["language"]) -> Language:
             ...
 
         @typing.overload
         @classmethod
-        def field(submission_type_state: typing_extensions.Literal["submission_type_state"]) -> SubmissionTypeState:
+        def field(cls, field_name: typing_extensions.Literal["submission_type_state"]) -> SubmissionTypeState:
             ...
 
         @classmethod
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "time_submitted":
-                    cls._time_submitted.append(validator)  # type: ignore
+                    cls._time_submitted.append(validator)
                 elif field_name == "submission":
-                    cls._submission.append(validator)  # type: ignore
+                    cls._submission.append(validator)
                 elif field_name == "language":
-                    cls._language.append(validator)  # type: ignore
+                    cls._language.append(validator)
                 elif field_name == "submission_type_state":
-                    cls._submission_type_state.append(validator)  # type: ignore
+                    cls._submission_type_state.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GetSubmissionStateResponse: " + field_name)
 
                 return validator
 
-            return validator  # type: ignore
+            return decorator
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

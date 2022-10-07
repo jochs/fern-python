@@ -37,48 +37,48 @@ class BinaryTreeNodeValue(pydantic.BaseModel):
         return left
 
     class Validators:
-        _node_id: typing.ClassVar[NodeId] = []
-        _val: typing.ClassVar[float] = []
-        _right: typing.ClassVar[typing.Optional[NodeId]] = []
-        _left: typing.ClassVar[typing.Optional[NodeId]] = []
+        _node_id: typing.ClassVar[typing.List[typing.Callable[[NodeId], NodeId]]] = []
+        _val: typing.ClassVar[typing.List[typing.Callable[[float], float]]] = []
+        _right: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]] = []
+        _left: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]] = []
 
         @typing.overload
         @classmethod
-        def field(node_id: typing_extensions.Literal["node_id"]) -> NodeId:
+        def field(cls, field_name: typing_extensions.Literal["node_id"]) -> NodeId:
             ...
 
         @typing.overload
         @classmethod
-        def field(val: typing_extensions.Literal["val"]) -> float:
+        def field(cls, field_name: typing_extensions.Literal["val"]) -> float:
             ...
 
         @typing.overload
         @classmethod
-        def field(right: typing_extensions.Literal["right"]) -> typing.Optional[NodeId]:
+        def field(cls, field_name: typing_extensions.Literal["right"]) -> typing.Optional[NodeId]:
             ...
 
         @typing.overload
         @classmethod
-        def field(left: typing_extensions.Literal["left"]) -> typing.Optional[NodeId]:
+        def field(cls, field_name: typing_extensions.Literal["left"]) -> typing.Optional[NodeId]:
             ...
 
         @classmethod
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "node_id":
-                    cls._node_id.append(validator)  # type: ignore
+                    cls._node_id.append(validator)
                 elif field_name == "val":
-                    cls._val.append(validator)  # type: ignore
+                    cls._val.append(validator)
                 elif field_name == "right":
-                    cls._right.append(validator)  # type: ignore
+                    cls._right.append(validator)
                 elif field_name == "left":
-                    cls._left.append(validator)  # type: ignore
+                    cls._left.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on BinaryTreeNodeValue: " + field_name)
 
                 return validator
 
-            return validator  # type: ignore
+            return decorator
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
