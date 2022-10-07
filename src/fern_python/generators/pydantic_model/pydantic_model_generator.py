@@ -3,6 +3,7 @@ from generator_exec.resources.logging import GeneratorUpdate, LogLevel, LogUpdat
 
 from fern_python.cli.abstract_generator import AbstractGenerator
 from fern_python.codegen import Project
+from fern_python.declaration_referencer import AbstractDeclarationReferencer
 from fern_python.generated import ir_types
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 
@@ -22,7 +23,23 @@ class PydanticModelGenerator(AbstractGenerator):
         project: Project,
     ) -> None:
         custom_config = CustomConfig.parse_obj(generator_config.custom_config or {})
-        type_declaration_referencer = TypeDeclarationReferencer(api_name=ir.api_name)
+        self.generate_types(
+            generator_exec_wrapper=generator_exec_wrapper,
+            ir=ir,
+            custom_config=custom_config,
+            project=project,
+            type_declaration_referencer=TypeDeclarationReferencer(api_name=ir.api_name),
+        )
+
+    def generate_types(
+        self,
+        *,
+        generator_exec_wrapper: GeneratorExecWrapper,
+        ir: ir_types.IntermediateRepresentation,
+        custom_config: CustomConfig,
+        project: Project,
+        type_declaration_referencer: AbstractDeclarationReferencer[ir_types.DeclaredTypeName],
+    ) -> None:
         for type_to_generate in ir.types:
             self._generate_type(
                 project,
@@ -40,9 +57,9 @@ class PydanticModelGenerator(AbstractGenerator):
         type: ir_types.TypeDeclaration,
         generator_exec_wrapper: GeneratorExecWrapper,
         custom_config: CustomConfig,
-        type_declaration_referencer: TypeDeclarationReferencer,
+        type_declaration_referencer: AbstractDeclarationReferencer[ir_types.DeclaredTypeName],
     ) -> None:
-        filepath = type_declaration_referencer.get_filepath(type.name)
+        filepath = type_declaration_referencer.get_filepath(name=type.name)
         with project.source_file(filepath=filepath) as source_file:
             generator_exec_wrapper.send_update(
                 GeneratorUpdate.factory.log(LogUpdate(level=LogLevel.DEBUG, message=f"Generating {filepath}"))
