@@ -1,0 +1,2 @@
+class AbstractProblemCrudService:
+    pass

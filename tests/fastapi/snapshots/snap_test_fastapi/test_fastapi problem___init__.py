@@ -1,3 +1,4 @@
+from .service import AbstractProblemCrudService
 from .types import (
     CreateProblemError,
     CreateProblemRequest,
@@ -14,6 +15,7 @@ from .types import (
 )
 
 __all__ = [
+    "AbstractProblemCrudService",
     "CreateProblemError",
     "CreateProblemRequest",
     "CreateProblemResponse",

@@ -12,6 +12,8 @@ snapshots['test_fastapi __init__'] = FileSnapshot('snap_test_fastapi/test_fastap
 
 snapshots['test_fastapi admin___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi admin___init__.py')
 
+snapshots['test_fastapi admin_service'] = FileSnapshot('snap_test_fastapi/test_fastapi admin_service.py')
+
 snapshots['test_fastapi admin_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi admin_types___init__.py')
 
 snapshots['test_fastapi admin_types_store_traced_test_case_request'] = FileSnapshot('snap_test_fastapi/test_fastapi admin_types_store_traced_test_case_request.py')
@@ -77,6 +79,7 @@ snapshots['test_fastapi commons_types_variable_value'] = FileSnapshot('snap_test
 snapshots['test_fastapi filepaths'] = [
     '__init__.py',
     'admin/__init__.py',
+    'admin/service.py',
     'admin/types/__init__.py',
     'admin/types/store_traced_test_case_request.py',
     'admin/types/store_traced_workspace_request.py',
@@ -108,21 +111,26 @@ snapshots['test_fastapi filepaths'] = [
     'commons/types/user_id.py',
     'commons/types/variable_type.py',
     'commons/types/variable_value.py',
+    'homepage/__init__.py',
+    'homepage/service.py',
     'lang_server/__init__.py',
     'lang_server/types/__init__.py',
     'lang_server/types/lang_server_request.py',
     'lang_server/types/lang_server_response.py',
     'migration/__init__.py',
+    'migration/service.py',
     'migration/types/__init__.py',
     'migration/types/migration.py',
     'migration/types/migration_status.py',
     'playlist/__init__.py',
+    'playlist/service.py',
     'playlist/types/__init__.py',
     'playlist/types/playlist.py',
     'playlist/types/playlist_create_request.py',
     'playlist/types/playlist_id.py',
     'playlist/types/update_playlist_request.py',
     'problem/__init__.py',
+    'problem/service.py',
     'problem/types/__init__.py',
     'problem/types/create_problem_error.py',
     'problem/types/create_problem_request.py',
@@ -137,6 +145,7 @@ snapshots['test_fastapi filepaths'] = [
     'problem/types/update_problem_response.py',
     'problem/types/variable_type_and_name.py',
     'submission/__init__.py',
+    'submission/service.py',
     'submission/types/__init__.py',
     'submission/types/actual_result.py',
     'submission/types/building_executor_response.py',
@@ -218,8 +227,11 @@ snapshots['test_fastapi filepaths'] = [
     'submission/types/workspace_submission_update_info.py',
     'submission/types/workspace_submit_request.py',
     'submission/types/workspace_traced_update.py',
+    'sysprop/__init__.py',
+    'sysprop/service.py',
     'v_2/__init__.py',
     'v_2/problem/__init__.py',
+    'v_2/problem/service.py',
     'v_2/problem/types/__init__.py',
     'v_2/problem/types/assert_correctness_check.py',
     'v_2/problem/types/basic_custom_files.py',
@@ -264,6 +276,7 @@ snapshots['test_fastapi filepaths'] = [
     'v_2/problem/types/void_function_signature_that_takes_actual_result.py',
     'v_2/v_3/__init__.py',
     'v_2/v_3/problem/__init__.py',
+    'v_2/v_3/problem/service.py',
     'v_2/v_3/problem/types/__init__.py',
     'v_2/v_3/problem/types/assert_correctness_check.py',
     'v_2/v_3/problem/types/basic_custom_files.py',
@@ -308,6 +321,10 @@ snapshots['test_fastapi filepaths'] = [
     'v_2/v_3/problem/types/void_function_signature_that_takes_actual_result.py'
 ]
 
+snapshots['test_fastapi homepage___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi homepage___init__.py')
+
+snapshots['test_fastapi homepage_service'] = FileSnapshot('snap_test_fastapi/test_fastapi homepage_service.py')
+
 snapshots['test_fastapi lang_server___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi lang_server___init__.py')
 
 snapshots['test_fastapi lang_server_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi lang_server_types___init__.py')
@@ -318,6 +335,8 @@ snapshots['test_fastapi lang_server_types_lang_server_response'] = FileSnapshot(
 
 snapshots['test_fastapi migration___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi migration___init__.py')
 
+snapshots['test_fastapi migration_service'] = FileSnapshot('snap_test_fastapi/test_fastapi migration_service.py')
+
 snapshots['test_fastapi migration_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi migration_types___init__.py')
 
 snapshots['test_fastapi migration_types_migration'] = FileSnapshot('snap_test_fastapi/test_fastapi migration_types_migration.py')
@@ -325,6 +344,8 @@ snapshots['test_fastapi migration_types_migration'] = FileSnapshot('snap_test_fa
 snapshots['test_fastapi migration_types_migration_status'] = FileSnapshot('snap_test_fastapi/test_fastapi migration_types_migration_status.py')
 
 snapshots['test_fastapi playlist___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi playlist___init__.py')
+
+snapshots['test_fastapi playlist_service'] = FileSnapshot('snap_test_fastapi/test_fastapi playlist_service.py')
 
 snapshots['test_fastapi playlist_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi playlist_types___init__.py')
 
@@ -337,6 +358,8 @@ snapshots['test_fastapi playlist_types_playlist_id'] = FileSnapshot('snap_test_f
 snapshots['test_fastapi playlist_types_update_playlist_request'] = FileSnapshot('snap_test_fastapi/test_fastapi playlist_types_update_playlist_request.py')
 
 snapshots['test_fastapi problem___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi problem___init__.py')
+
+snapshots['test_fastapi problem_service'] = FileSnapshot('snap_test_fastapi/test_fastapi problem_service.py')
 
 snapshots['test_fastapi problem_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi problem_types___init__.py')
 
@@ -365,6 +388,8 @@ snapshots['test_fastapi problem_types_update_problem_response'] = FileSnapshot('
 snapshots['test_fastapi problem_types_variable_type_and_name'] = FileSnapshot('snap_test_fastapi/test_fastapi problem_types_variable_type_and_name.py')
 
 snapshots['test_fastapi submission___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi submission___init__.py')
+
+snapshots['test_fastapi submission_service'] = FileSnapshot('snap_test_fastapi/test_fastapi submission_service.py')
 
 snapshots['test_fastapi submission_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi submission_types___init__.py')
 
@@ -528,9 +553,15 @@ snapshots['test_fastapi submission_types_workspace_submit_request'] = FileSnapsh
 
 snapshots['test_fastapi submission_types_workspace_traced_update'] = FileSnapshot('snap_test_fastapi/test_fastapi submission_types_workspace_traced_update.py')
 
+snapshots['test_fastapi sysprop___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi sysprop___init__.py')
+
+snapshots['test_fastapi sysprop_service'] = FileSnapshot('snap_test_fastapi/test_fastapi sysprop_service.py')
+
 snapshots['test_fastapi v_2___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2___init__.py')
 
 snapshots['test_fastapi v_2_problem___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2_problem___init__.py')
+
+snapshots['test_fastapi v_2_problem_service'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2_problem_service.py')
 
 snapshots['test_fastapi v_2_problem_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2_problem_types___init__.py')
 
@@ -619,6 +650,8 @@ snapshots['test_fastapi v_2_problem_types_void_function_signature_that_takes_act
 snapshots['test_fastapi v_2_v_3___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2_v_3___init__.py')
 
 snapshots['test_fastapi v_2_v_3_problem___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2_v_3_problem___init__.py')
+
+snapshots['test_fastapi v_2_v_3_problem_service'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2_v_3_problem_service.py')
 
 snapshots['test_fastapi v_2_v_3_problem_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi v_2_v_3_problem_types___init__.py')
 

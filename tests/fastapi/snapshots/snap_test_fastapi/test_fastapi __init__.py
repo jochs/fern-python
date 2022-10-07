@@ -1,5 +1,5 @@
 from . import v_2
-from .admin import StoreTracedTestCaseRequest, StoreTracedWorkspaceRequest
+from .admin import AbstractAdminService, StoreTracedTestCaseRequest, StoreTracedWorkspaceRequest
 from .commons import (
     BinaryTreeNodeAndTreeValue,
     BinaryTreeNodeValue,
@@ -28,10 +28,12 @@ from .commons import (
     VariableType,
     VariableValue,
 )
+from .homepage import AbstractHomepageProblemService
 from .lang_server import LangServerRequest, LangServerResponse
-from .migration import Migration, MigrationStatus
-from .playlist import Playlist, PlaylistCreateRequest, PlaylistId, UpdatePlaylistRequest
+from .migration import AbstractMigrationInfoService, Migration, MigrationStatus
+from .playlist import AbstractPlaylistCrudService, Playlist, PlaylistCreateRequest, PlaylistId, UpdatePlaylistRequest
 from .problem import (
+    AbstractProblemCrudService,
     CreateProblemError,
     CreateProblemRequest,
     CreateProblemResponse,
@@ -46,6 +48,7 @@ from .problem import (
     VariableTypeAndName,
 )
 from .submission import (
+    AbstractExecutionSesssionManagementService,
     ActualResult,
     BuildingExecutorResponse,
     CodeExecutionUpdate,
@@ -127,8 +130,16 @@ from .submission import (
     WorkspaceSubmitRequest,
     WorkspaceTracedUpdate,
 )
+from .sysprop import AbstractSysPropCrudService
 
 __all__ = [
+    "AbstractAdminService",
+    "AbstractExecutionSesssionManagementService",
+    "AbstractHomepageProblemService",
+    "AbstractMigrationInfoService",
+    "AbstractPlaylistCrudService",
+    "AbstractProblemCrudService",
+    "AbstractSysPropCrudService",
     "ActualResult",
     "BinaryTreeNodeAndTreeValue",
     "BinaryTreeNodeValue",

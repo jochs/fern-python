@@ -1,0 +1,2 @@
+class AbstractHomepageProblemService:
+    pass

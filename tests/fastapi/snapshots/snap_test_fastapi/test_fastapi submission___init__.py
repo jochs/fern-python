@@ -1,3 +1,4 @@
+from .service import AbstractExecutionSesssionManagementService
 from .types import (
     ActualResult,
     BuildingExecutorResponse,
@@ -82,6 +83,7 @@ from .types import (
 )
 
 __all__ = [
+    "AbstractExecutionSesssionManagementService",
     "ActualResult",
     "BuildingExecutorResponse",
     "CodeExecutionUpdate",

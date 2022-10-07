@@ -24,3 +24,7 @@ class FastApiGeneratorContext(ABC):
     @abstractmethod
     def get_filepath_for_service(self, service_name: ir_types.services.DeclaredServiceName) -> Filepath:
         ...
+
+    @abstractmethod
+    def get_class_name_for_service(self, service_name: ir_types.services.DeclaredServiceName) -> str:
+        ...

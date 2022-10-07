@@ -1,5 +1,6 @@
 from . import v_3
 from .problem import (
+    AbstractProblemInfoServicV2,
     AssertCorrectnessCheck,
     BasicCustomFiles,
     BasicTestCaseTemplate,
@@ -44,6 +45,7 @@ from .problem import (
 )
 
 __all__ = [
+    "AbstractProblemInfoServicV2",
     "AssertCorrectnessCheck",
     "BasicCustomFiles",
     "BasicTestCaseTemplate",

@@ -50,4 +50,6 @@ class FastApiGenerator(AbstractGenerator):
         with self.source_file(
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
-            source_file.add_arbitrary_code(AST.CodeWriter("print('hi')"))
+            source_file.add_class_declaration(
+                declaration=AST.ClassDeclaration(name=context.get_class_name_for_service(service_name=service.name))
+            )

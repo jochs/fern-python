@@ -1,3 +1,4 @@
+from .service import AbstractProblemInfoServicV2
 from .types import (
     AssertCorrectnessCheck,
     BasicCustomFiles,
@@ -43,6 +44,7 @@ from .types import (
 )
 
 __all__ = [
+    "AbstractProblemInfoServicV2",
     "AssertCorrectnessCheck",
     "BasicCustomFiles",
     "BasicTestCaseTemplate",

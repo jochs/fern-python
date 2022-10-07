@@ -17,3 +17,6 @@ class FastApiGeneratorContextImpl(FastApiGeneratorContext):
 
     def get_filepath_for_service(self, service_name: ir_types.services.DeclaredServiceName) -> Filepath:
         return self._service_declaration_handler.get_filepath(name=service_name)
+
+    def get_class_name_for_service(self, service_name: ir_types.services.DeclaredServiceName) -> str:
+        return self._service_declaration_handler.get_class_name(name=service_name)
