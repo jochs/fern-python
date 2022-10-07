@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from fern_python.generated import ir_types
+import ir as ir_types
 
 from ..context import DeclarationHandlerContext
 from ..custom_config import CustomConfig

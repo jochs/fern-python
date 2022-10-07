@@ -1,10 +1,10 @@
+import ir as ir_types
 from generator_exec.resources.config import GeneratorConfig
 from generator_exec.resources.logging import GeneratorUpdate, LogLevel, LogUpdate
 
 from fern_python.cli.abstract_generator import AbstractGenerator
 from fern_python.codegen import Project
 from fern_python.declaration_referencer import AbstractDeclarationReferencer
-from fern_python.generated import ir_types
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 
 from .context import DeclarationHandlerContextImpl
@@ -76,6 +76,3 @@ class PydanticModelGenerator(AbstractGenerator):
                 declaration=type, context=context, custom_config=custom_config
             )
             type_declaration_handler.run()
-            generator_exec_wrapper.send_update(
-                GeneratorUpdate.factory.log(LogUpdate(level=LogLevel.DEBUG, message=f"Generated {filepath}"))
-            )

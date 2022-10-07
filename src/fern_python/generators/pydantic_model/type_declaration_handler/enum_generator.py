@@ -1,5 +1,6 @@
+import ir as ir_types
+
 from fern_python.codegen import AST
-from fern_python.generated import ir_types
 
 from ..context import DeclarationHandlerContext
 from ..custom_config import CustomConfig

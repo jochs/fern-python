@@ -1,3 +1,4 @@
+import ir as ir_types
 from generator_exec.resources.config import GeneratorConfig
 from generator_exec.resources.logging import (
     ErrorExitStatusUpdate,
@@ -6,7 +7,6 @@ from generator_exec.resources.logging import (
     InitUpdate,
 )
 
-from fern_python.generated import ir_types
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 
 from .abstract_generator import AbstractGenerator
@@ -23,7 +23,6 @@ class GeneratorCli:
         try:
             ir = ir_types.IntermediateRepresentation.parse_file(config.ir_filepath)
 
-            # TODO: if in publish mode, need to send name of published package
             generator_exec_wrapper.send_update(GeneratorUpdate.factory.init(InitUpdate(packages_to_publish=[])))
 
             self.abstract_generator.generate_project(

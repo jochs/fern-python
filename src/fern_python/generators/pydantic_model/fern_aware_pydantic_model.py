@@ -3,8 +3,9 @@ from __future__ import annotations
 from types import TracebackType
 from typing import Optional, Sequence, Tuple, Type
 
+import ir as ir_types
+
 from fern_python.codegen import AST, LocalClassReference
-from fern_python.generated import ir_types
 from fern_python.pydantic_codegen import PydanticField, PydanticModel
 
 from .context import DeclarationHandlerContext, HashableDeclaredTypeName
