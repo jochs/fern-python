@@ -31,7 +31,18 @@ class TestCaseImplementationDescription(pydantic.BaseModel):
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["boards"]
-        ) -> typing.List[TestCaseImplementationDescriptionBoard]:
+        ) -> typing.Callable[
+            [
+                typing.Callable[
+                    [typing.List[TestCaseImplementationDescriptionBoard]],
+                    typing.List[TestCaseImplementationDescriptionBoard],
+                ]
+            ],
+            typing.Callable[
+                [typing.List[TestCaseImplementationDescriptionBoard]],
+                typing.List[TestCaseImplementationDescriptionBoard],
+            ],
+        ]:
             ...
 
         @classmethod

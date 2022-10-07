@@ -39,17 +39,28 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["input_params"]) -> typing.List[VariableTypeAndName]:
+        def field(
+            cls, field_name: typing_extensions.Literal["input_params"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[VariableTypeAndName]], typing.List[VariableTypeAndName]]],
+            typing.Callable[[typing.List[VariableTypeAndName]], typing.List[VariableTypeAndName]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["output_type"]) -> VariableType:
+        def field(
+            cls, field_name: typing_extensions.Literal["output_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableType], VariableType]], typing.Callable[[VariableType], VariableType]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["method_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["method_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

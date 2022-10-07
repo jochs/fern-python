@@ -18,7 +18,9 @@ class LangServerRequest(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["request"]) -> typing.Any:
+        def field(
+            cls, field_name: typing_extensions.Literal["request"]
+        ) -> typing.Callable[[typing.Callable[[typing.Any], typing.Any]], typing.Callable[[typing.Any], typing.Any]]:
             ...
 
         @classmethod

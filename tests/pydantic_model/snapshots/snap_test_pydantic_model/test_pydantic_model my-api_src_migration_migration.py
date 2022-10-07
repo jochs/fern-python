@@ -28,12 +28,18 @@ class Migration(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["status"]) -> MigrationStatus:
+        def field(
+            cls, field_name: typing_extensions.Literal["status"]
+        ) -> typing.Callable[
+            [typing.Callable[[MigrationStatus], MigrationStatus]], typing.Callable[[MigrationStatus], MigrationStatus]
+        ]:
             ...
 
         @classmethod

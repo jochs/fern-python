@@ -28,12 +28,20 @@ class KeyValuePair(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["key"]) -> VariableValue:
+        def field(
+            cls, field_name: typing_extensions.Literal["key"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableValue], VariableValue]], typing.Callable[[VariableValue], VariableValue]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value"]) -> VariableValue:
+        def field(
+            cls, field_name: typing_extensions.Literal["value"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableValue], VariableValue]], typing.Callable[[VariableValue], VariableValue]
+        ]:
             ...
 
         @classmethod

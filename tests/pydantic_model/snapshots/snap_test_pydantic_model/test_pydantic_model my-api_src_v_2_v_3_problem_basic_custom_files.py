@@ -55,22 +55,39 @@ class BasicCustomFiles(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["method_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["method_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["signature"]) -> NonVoidFunctionSignature:
+        def field(
+            cls, field_name: typing_extensions.Literal["signature"]
+        ) -> typing.Callable[
+            [typing.Callable[[NonVoidFunctionSignature], NonVoidFunctionSignature]],
+            typing.Callable[[NonVoidFunctionSignature], NonVoidFunctionSignature],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["additional_files"]) -> typing.Dict[Language, Files]:
+        def field(
+            cls, field_name: typing_extensions.Literal["additional_files"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]]],
+            typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["basic_test_case_template"]) -> BasicTestCaseTemplate:
+        def field(
+            cls, field_name: typing_extensions.Literal["basic_test_case_template"]
+        ) -> typing.Callable[
+            [typing.Callable[[BasicTestCaseTemplate], BasicTestCaseTemplate]],
+            typing.Callable[[BasicTestCaseTemplate], BasicTestCaseTemplate],
+        ]:
             ...
 
         @classmethod

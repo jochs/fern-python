@@ -85,37 +85,65 @@ class CreateProblemRequest(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_description"]) -> ProblemDescription:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_description"]
+        ) -> typing.Callable[
+            [typing.Callable[[ProblemDescription], ProblemDescription]],
+            typing.Callable[[ProblemDescription], ProblemDescription],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["files"]) -> typing.Dict[Language, ProblemFiles]:
+        def field(
+            cls, field_name: typing_extensions.Literal["files"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, ProblemFiles]], typing.Dict[Language, ProblemFiles]]],
+            typing.Callable[[typing.Dict[Language, ProblemFiles]], typing.Dict[Language, ProblemFiles]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["input_params"]) -> typing.List[VariableTypeAndName]:
+        def field(
+            cls, field_name: typing_extensions.Literal["input_params"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[VariableTypeAndName]], typing.List[VariableTypeAndName]]],
+            typing.Callable[[typing.List[VariableTypeAndName]], typing.List[VariableTypeAndName]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["output_type"]) -> VariableType:
+        def field(
+            cls, field_name: typing_extensions.Literal["output_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableType], VariableType]], typing.Callable[[VariableType], VariableType]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["testcases"]) -> typing.List[TestCaseWithExpectedResult]:
+        def field(
+            cls, field_name: typing_extensions.Literal["testcases"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[TestCaseWithExpectedResult]], typing.List[TestCaseWithExpectedResult]]],
+            typing.Callable[[typing.List[TestCaseWithExpectedResult]], typing.List[TestCaseWithExpectedResult]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["method_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["method_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

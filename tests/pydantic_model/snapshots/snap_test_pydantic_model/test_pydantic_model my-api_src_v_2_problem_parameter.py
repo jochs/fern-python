@@ -37,17 +37,27 @@ class Parameter(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["parameter_id"]) -> ParameterId:
+        def field(
+            cls, field_name: typing_extensions.Literal["parameter_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[ParameterId], ParameterId]], typing.Callable[[ParameterId], ParameterId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["variable_type"]) -> VariableType:
+        def field(
+            cls, field_name: typing_extensions.Literal["variable_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableType], VariableType]], typing.Callable[[VariableType], VariableType]
+        ]:
             ...
 
         @classmethod

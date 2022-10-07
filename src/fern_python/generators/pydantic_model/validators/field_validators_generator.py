@@ -32,9 +32,7 @@ class FieldValidatorsGenerator(ValidatorGenerator):
             validators_class.add_class_var(
                 AST.VariableDeclaration(
                     name=self._get_validator_class_var(field),
-                    type_hint=AST.TypeHint.class_var(
-                        AST.TypeHint.list(AST.TypeHint.callable([field.type_hint], field.type_hint))
-                    ),
+                    type_hint=AST.TypeHint.class_var(AST.TypeHint.list(self._get_type_of_validator(field))),
                     initializer=AST.Expression("[]"),
                 )
             )
@@ -61,7 +59,9 @@ class FieldValidatorsGenerator(ValidatorGenerator):
                                 type_hint=AST.TypeHint.literal(AST.Expression(f'"{field.name}"')),
                             )
                         ],
-                        return_type=field.type_hint,
+                        return_type=AST.TypeHint.callable(
+                            [self._get_type_of_validator(field)], self._get_type_of_validator(field)
+                        ),
                     )
                     for field in self._model.get_public_fields()
                 ],
@@ -155,3 +155,6 @@ class FieldValidatorsGenerator(ValidatorGenerator):
 
         writer.write_node(decorator)
         writer.write(f"return {DECORATOR_FUNCTION_NAME}")
+
+    def _get_type_of_validator(self, field: PydanticField) -> AST.TypeHint:
+        return AST.TypeHint.callable([field.type_hint], field.type_hint)

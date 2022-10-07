@@ -50,22 +50,39 @@ class TestSubmissionState(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_id"]) -> ProblemId:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_id"]
+        ) -> typing.Callable[[typing.Callable[[ProblemId], ProblemId]], typing.Callable[[ProblemId], ProblemId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["default_test_cases"]) -> typing.List[TestCase]:
+        def field(
+            cls, field_name: typing_extensions.Literal["default_test_cases"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[TestCase]], typing.List[TestCase]]],
+            typing.Callable[[typing.List[TestCase]], typing.List[TestCase]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["custom_test_cases"]) -> typing.List[TestCase]:
+        def field(
+            cls, field_name: typing_extensions.Literal["custom_test_cases"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[TestCase]], typing.List[TestCase]]],
+            typing.Callable[[typing.List[TestCase]], typing.List[TestCase]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["status"]) -> TestSubmissionStatus:
+        def field(
+            cls, field_name: typing_extensions.Literal["status"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestSubmissionStatus], TestSubmissionStatus]],
+            typing.Callable[[TestSubmissionStatus], TestSubmissionStatus],
+        ]:
             ...
 
         @classmethod

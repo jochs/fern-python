@@ -20,7 +20,11 @@ class ExistingSubmissionExecuting(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @classmethod

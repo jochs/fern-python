@@ -30,12 +30,21 @@ class ListType(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value_type"]) -> VariableType:
+        def field(
+            cls, field_name: typing_extensions.Literal["value_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableType], VariableType]], typing.Callable[[VariableType], VariableType]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["is_fixed_length"]) -> typing.Optional[bool]:
+        def field(
+            cls, field_name: typing_extensions.Literal["is_fixed_length"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[bool]], typing.Optional[bool]]],
+            typing.Callable[[typing.Optional[bool]], typing.Optional[bool]],
+        ]:
             ...
 
         @classmethod

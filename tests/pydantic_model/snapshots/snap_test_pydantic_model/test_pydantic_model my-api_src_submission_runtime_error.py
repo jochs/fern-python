@@ -18,7 +18,9 @@ class RuntimeError(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["message"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["message"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

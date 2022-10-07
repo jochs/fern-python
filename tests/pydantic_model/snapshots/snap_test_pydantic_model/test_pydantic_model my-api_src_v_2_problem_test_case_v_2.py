@@ -60,22 +60,42 @@ class TestCaseV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["metadata"]) -> TestCaseMetadata:
+        def field(
+            cls, field_name: typing_extensions.Literal["metadata"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseMetadata], TestCaseMetadata]],
+            typing.Callable[[TestCaseMetadata], TestCaseMetadata],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["implementation"]) -> TestCaseImplementationReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["implementation"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseImplementationReference], TestCaseImplementationReference]],
+            typing.Callable[[TestCaseImplementationReference], TestCaseImplementationReference],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["arguments"]) -> typing.Dict[ParameterId, VariableValue]:
+        def field(
+            cls, field_name: typing_extensions.Literal["arguments"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[ParameterId, VariableValue]], typing.Dict[ParameterId, VariableValue]]],
+            typing.Callable[[typing.Dict[ParameterId, VariableValue]], typing.Dict[ParameterId, VariableValue]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["expects"]) -> typing.Optional[TestCaseExpects]:
+        def field(
+            cls, field_name: typing_extensions.Literal["expects"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[TestCaseExpects]], typing.Optional[TestCaseExpects]]],
+            typing.Callable[[typing.Optional[TestCaseExpects]], typing.Optional[TestCaseExpects]],
+        ]:
             ...
 
         @classmethod

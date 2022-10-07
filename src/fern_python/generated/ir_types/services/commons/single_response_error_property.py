@@ -29,12 +29,22 @@ class SingleResponseErrorProperty(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["error"]) -> DeclaredErrorName:
+        def field(
+            cls, field_name: typing_extensions.Literal["error"]
+        ) -> typing.Callable[
+            [typing.Callable[[DeclaredErrorName], DeclaredErrorName]],
+            typing.Callable[[DeclaredErrorName], DeclaredErrorName],
+        ]:
             ...
 
         @classmethod

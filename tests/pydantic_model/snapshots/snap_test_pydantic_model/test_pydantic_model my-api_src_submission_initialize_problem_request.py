@@ -30,12 +30,19 @@ class InitializeProblemRequest(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_id"]) -> ProblemId:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_id"]
+        ) -> typing.Callable[[typing.Callable[[ProblemId], ProblemId]], typing.Callable[[ProblemId], ProblemId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_version"]) -> typing.Optional[int]:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_version"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[int]], typing.Optional[int]]],
+            typing.Callable[[typing.Optional[int]], typing.Optional[int]],
+        ]:
             ...
 
         @classmethod

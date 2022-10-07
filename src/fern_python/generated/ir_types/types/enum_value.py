@@ -29,12 +29,19 @@ class EnumValue(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["value"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

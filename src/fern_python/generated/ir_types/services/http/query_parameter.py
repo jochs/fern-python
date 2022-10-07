@@ -30,12 +30,21 @@ class QueryParameter(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value_type"]) -> TypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["value_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[TypeReference], TypeReference]], typing.Callable[[TypeReference], TypeReference]
+        ]:
             ...
 
         @classmethod

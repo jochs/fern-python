@@ -18,7 +18,9 @@ class WorkspaceTracedUpdate(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["trace_responses_size"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["trace_responses_size"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @classmethod

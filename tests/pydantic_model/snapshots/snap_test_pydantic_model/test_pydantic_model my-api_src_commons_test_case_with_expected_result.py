@@ -29,12 +29,18 @@ class TestCaseWithExpectedResult(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["test_case"]) -> TestCase:
+        def field(
+            cls, field_name: typing_extensions.Literal["test_case"]
+        ) -> typing.Callable[[typing.Callable[[TestCase], TestCase]], typing.Callable[[TestCase], TestCase]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["expected_result"]) -> VariableValue:
+        def field(
+            cls, field_name: typing_extensions.Literal["expected_result"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableValue], VariableValue]], typing.Callable[[VariableValue], VariableValue]
+        ]:
             ...
 
         @classmethod

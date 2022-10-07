@@ -31,12 +31,19 @@ class GetGeneratedTestCaseFileRequest(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["template"]) -> typing.Optional[TestCaseTemplate]:
+        def field(
+            cls, field_name: typing_extensions.Literal["template"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[TestCaseTemplate]], typing.Optional[TestCaseTemplate]]],
+            typing.Callable[[typing.Optional[TestCaseTemplate]], typing.Optional[TestCaseTemplate]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["test_case"]) -> TestCaseV2:
+        def field(
+            cls, field_name: typing_extensions.Literal["test_case"]
+        ) -> typing.Callable[[typing.Callable[[TestCaseV2], TestCaseV2]], typing.Callable[[TestCaseV2], TestCaseV2]]:
             ...
 
         @classmethod

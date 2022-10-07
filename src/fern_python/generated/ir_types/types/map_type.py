@@ -28,12 +28,20 @@ class MapType(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["key_type"]) -> TypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["key_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[TypeReference], TypeReference]], typing.Callable[[TypeReference], TypeReference]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value_type"]) -> TypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["value_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[TypeReference], TypeReference]], typing.Callable[[TypeReference], TypeReference]
+        ]:
             ...
 
         @classmethod

@@ -48,22 +48,41 @@ class WebSocketOperation(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["request"]) -> WebSocketRequest:
+        def field(
+            cls, field_name: typing_extensions.Literal["request"]
+        ) -> typing.Callable[
+            [typing.Callable[[WebSocketRequest], WebSocketRequest]],
+            typing.Callable[[WebSocketRequest], WebSocketRequest],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["response"]) -> WebSocketResponse:
+        def field(
+            cls, field_name: typing_extensions.Literal["response"]
+        ) -> typing.Callable[
+            [typing.Callable[[WebSocketResponse], WebSocketResponse]],
+            typing.Callable[[WebSocketResponse], WebSocketResponse],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["errors"]) -> ResponseErrors:
+        def field(
+            cls, field_name: typing_extensions.Literal["errors"]
+        ) -> typing.Callable[
+            [typing.Callable[[ResponseErrors], ResponseErrors]], typing.Callable[[ResponseErrors], ResponseErrors]
+        ]:
             ...
 
         @classmethod

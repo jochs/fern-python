@@ -32,12 +32,22 @@ class ApiAuth(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["requirement"]) -> AuthSchemesRequirement:
+        def field(
+            cls, field_name: typing_extensions.Literal["requirement"]
+        ) -> typing.Callable[
+            [typing.Callable[[AuthSchemesRequirement], AuthSchemesRequirement]],
+            typing.Callable[[AuthSchemesRequirement], AuthSchemesRequirement],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["schemes"]) -> typing.List[AuthScheme]:
+        def field(
+            cls, field_name: typing_extensions.Literal["schemes"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[AuthScheme]], typing.List[AuthScheme]]],
+            typing.Callable[[typing.List[AuthScheme]], typing.List[AuthScheme]],
+        ]:
             ...
 
         @classmethod

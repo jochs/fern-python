@@ -28,12 +28,19 @@ class PlaylistCreateRequest(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problems"]) -> typing.List[ProblemId]:
+        def field(
+            cls, field_name: typing_extensions.Literal["problems"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[ProblemId]], typing.List[ProblemId]]],
+            typing.Callable[[typing.List[ProblemId]], typing.List[ProblemId]],
+        ]:
             ...
 
         @classmethod

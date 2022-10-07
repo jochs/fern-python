@@ -30,12 +30,19 @@ class TracedTestCase(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["result"]) -> TestCaseResultWithStdout:
+        def field(
+            cls, field_name: typing_extensions.Literal["result"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseResultWithStdout], TestCaseResultWithStdout]],
+            typing.Callable[[TestCaseResultWithStdout], TestCaseResultWithStdout],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["trace_responses_size"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["trace_responses_size"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @classmethod

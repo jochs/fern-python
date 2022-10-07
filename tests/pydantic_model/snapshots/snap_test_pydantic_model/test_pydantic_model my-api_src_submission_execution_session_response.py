@@ -47,22 +47,36 @@ class ExecutionSessionResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["session_id"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["session_id"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["execution_session_url"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["execution_session_url"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["language"]) -> Language:
+        def field(
+            cls, field_name: typing_extensions.Literal["language"]
+        ) -> typing.Callable[[typing.Callable[[Language], Language]], typing.Callable[[Language], Language]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["status"]) -> ExecutionSessionStatus:
+        def field(
+            cls, field_name: typing_extensions.Literal["status"]
+        ) -> typing.Callable[
+            [typing.Callable[[ExecutionSessionStatus], ExecutionSessionStatus]],
+            typing.Callable[[ExecutionSessionStatus], ExecutionSessionStatus],
+        ]:
             ...
 
         @classmethod

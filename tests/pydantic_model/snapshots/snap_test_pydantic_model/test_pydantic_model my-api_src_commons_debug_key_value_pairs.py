@@ -28,12 +28,22 @@ class DebugKeyValuePairs(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["key"]) -> DebugVariableValue:
+        def field(
+            cls, field_name: typing_extensions.Literal["key"]
+        ) -> typing.Callable[
+            [typing.Callable[[DebugVariableValue], DebugVariableValue]],
+            typing.Callable[[DebugVariableValue], DebugVariableValue],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value"]) -> DebugVariableValue:
+        def field(
+            cls, field_name: typing_extensions.Literal["value"]
+        ) -> typing.Callable[
+            [typing.Callable[[DebugVariableValue], DebugVariableValue]],
+            typing.Callable[[DebugVariableValue], DebugVariableValue],
+        ]:
             ...
 
         @classmethod

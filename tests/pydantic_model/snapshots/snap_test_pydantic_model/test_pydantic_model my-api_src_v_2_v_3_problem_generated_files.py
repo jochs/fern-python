@@ -49,19 +49,30 @@ class GeneratedFiles(pydantic.BaseModel):
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["generated_test_case_files"]
-        ) -> typing.Dict[Language, Files]:
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]]],
+            typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["generated_template_files"]
-        ) -> typing.Dict[Language, Files]:
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]]],
+            typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["other"]) -> typing.Dict[Language, Files]:
+        def field(
+            cls, field_name: typing_extensions.Literal["other"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]]],
+            typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]],
+        ]:
             ...
 
         @classmethod

@@ -33,12 +33,22 @@ class ObjectTypeDeclaration(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["extends"]) -> typing.List[DeclaredTypeName]:
+        def field(
+            cls, field_name: typing_extensions.Literal["extends"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[DeclaredTypeName]], typing.List[DeclaredTypeName]]],
+            typing.Callable[[typing.List[DeclaredTypeName]], typing.List[DeclaredTypeName]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["properties"]) -> typing.List[ObjectProperty]:
+        def field(
+            cls, field_name: typing_extensions.Literal["properties"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[ObjectProperty]], typing.List[ObjectProperty]]],
+            typing.Callable[[typing.List[ObjectProperty]], typing.List[ObjectProperty]],
+        ]:
             ...
 
         @classmethod

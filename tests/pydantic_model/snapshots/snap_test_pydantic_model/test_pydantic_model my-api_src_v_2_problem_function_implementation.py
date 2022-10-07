@@ -26,12 +26,19 @@ class FunctionImplementation(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["impl"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["impl"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["imports"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["imports"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @classmethod

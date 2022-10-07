@@ -31,12 +31,21 @@ class AliasTypeDeclaration(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["alias_of"]) -> TypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["alias_of"]
+        ) -> typing.Callable[
+            [typing.Callable[[TypeReference], TypeReference]], typing.Callable[[TypeReference], TypeReference]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["resolved_type"]) -> ResolvedTypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["resolved_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[ResolvedTypeReference], ResolvedTypeReference]],
+            typing.Callable[[ResolvedTypeReference], ResolvedTypeReference],
+        ]:
             ...
 
         @classmethod

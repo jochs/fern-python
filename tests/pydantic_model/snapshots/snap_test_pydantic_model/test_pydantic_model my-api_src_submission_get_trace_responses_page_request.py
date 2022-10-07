@@ -18,7 +18,12 @@ class GetTraceResponsesPageRequest(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["offset"]) -> typing.Optional[int]:
+        def field(
+            cls, field_name: typing_extensions.Literal["offset"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[int]], typing.Optional[int]]],
+            typing.Callable[[typing.Optional[int]], typing.Optional[int]],
+        ]:
             ...
 
         @classmethod

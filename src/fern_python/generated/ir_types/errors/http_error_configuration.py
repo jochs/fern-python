@@ -18,7 +18,9 @@ class HttpErrorConfiguration(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["status_code"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["status_code"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @classmethod

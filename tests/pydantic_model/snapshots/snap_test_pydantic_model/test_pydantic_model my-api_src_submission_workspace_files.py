@@ -30,12 +30,19 @@ class WorkspaceFiles(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["main_file"]) -> FileInfo:
+        def field(
+            cls, field_name: typing_extensions.Literal["main_file"]
+        ) -> typing.Callable[[typing.Callable[[FileInfo], FileInfo]], typing.Callable[[FileInfo], FileInfo]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["read_only_files"]) -> typing.List[FileInfo]:
+        def field(
+            cls, field_name: typing_extensions.Literal["read_only_files"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[FileInfo]], typing.List[FileInfo]]],
+            typing.Callable[[typing.List[FileInfo]], typing.List[FileInfo]],
+        ]:
             ...
 
         @classmethod

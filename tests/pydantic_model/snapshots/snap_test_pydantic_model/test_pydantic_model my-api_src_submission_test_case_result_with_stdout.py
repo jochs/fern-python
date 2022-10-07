@@ -28,12 +28,18 @@ class TestCaseResultWithStdout(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["result"]) -> TestCaseResult:
+        def field(
+            cls, field_name: typing_extensions.Literal["result"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseResult], TestCaseResult]], typing.Callable[[TestCaseResult], TestCaseResult]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stdout"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["stdout"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

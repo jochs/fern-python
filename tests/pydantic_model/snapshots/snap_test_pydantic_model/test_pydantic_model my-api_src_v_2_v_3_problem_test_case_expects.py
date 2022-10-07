@@ -20,7 +20,12 @@ class TestCaseExpects(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["expected_stdout"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["expected_stdout"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @classmethod

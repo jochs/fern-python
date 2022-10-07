@@ -26,12 +26,16 @@ class ExpressionLocation(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["start"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["start"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["offset"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["offset"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @classmethod

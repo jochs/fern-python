@@ -30,12 +30,16 @@ class Playlist(PlaylistCreateRequest):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["playlist_id"]) -> PlaylistId:
+        def field(
+            cls, field_name: typing_extensions.Literal["playlist_id"]
+        ) -> typing.Callable[[typing.Callable[[PlaylistId], PlaylistId]], typing.Callable[[PlaylistId], PlaylistId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["owner_id"]) -> UserId:
+        def field(
+            cls, field_name: typing_extensions.Literal["owner_id"]
+        ) -> typing.Callable[[typing.Callable[[UserId], UserId]], typing.Callable[[UserId], UserId]]:
             ...
 
         @classmethod

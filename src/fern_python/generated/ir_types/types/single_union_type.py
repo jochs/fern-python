@@ -43,17 +43,31 @@ class SingleUnionType(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["discriminant_value"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["discriminant_value"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value_type"]) -> TypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["value_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[TypeReference], TypeReference]], typing.Callable[[TypeReference], TypeReference]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["shape"]) -> SingleUnionTypeProperties:
+        def field(
+            cls, field_name: typing_extensions.Literal["shape"]
+        ) -> typing.Callable[
+            [typing.Callable[[SingleUnionTypeProperties], SingleUnionTypeProperties]],
+            typing.Callable[[SingleUnionTypeProperties], SingleUnionTypeProperties],
+        ]:
             ...
 
         @classmethod

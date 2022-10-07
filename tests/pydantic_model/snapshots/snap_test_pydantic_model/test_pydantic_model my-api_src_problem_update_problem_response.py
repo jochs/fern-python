@@ -18,7 +18,9 @@ class UpdateProblemResponse(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_version"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_version"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @classmethod

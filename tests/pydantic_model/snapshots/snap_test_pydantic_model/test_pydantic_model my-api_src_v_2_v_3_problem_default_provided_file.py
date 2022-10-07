@@ -31,12 +31,19 @@ class DefaultProvidedFile(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["file"]) -> FileInfoV2:
+        def field(
+            cls, field_name: typing_extensions.Literal["file"]
+        ) -> typing.Callable[[typing.Callable[[FileInfoV2], FileInfoV2]], typing.Callable[[FileInfoV2], FileInfoV2]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["related_types"]) -> typing.List[VariableType]:
+        def field(
+            cls, field_name: typing_extensions.Literal["related_types"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[VariableType]], typing.List[VariableType]]],
+            typing.Callable[[typing.List[VariableType]], typing.List[VariableType]],
+        ]:
             ...
 
         @classmethod

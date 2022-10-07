@@ -39,12 +39,22 @@ class NonVoidFunctionDefinition(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["signature"]) -> NonVoidFunctionSignature:
+        def field(
+            cls, field_name: typing_extensions.Literal["signature"]
+        ) -> typing.Callable[
+            [typing.Callable[[NonVoidFunctionSignature], NonVoidFunctionSignature]],
+            typing.Callable[[NonVoidFunctionSignature], NonVoidFunctionSignature],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["code"]) -> FunctionImplementationForMultipleLanguages:
+        def field(
+            cls, field_name: typing_extensions.Literal["code"]
+        ) -> typing.Callable[
+            [typing.Callable[[FunctionImplementationForMultipleLanguages], FunctionImplementationForMultipleLanguages]],
+            typing.Callable[[FunctionImplementationForMultipleLanguages], FunctionImplementationForMultipleLanguages],
+        ]:
             ...
 
         @classmethod

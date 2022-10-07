@@ -42,17 +42,29 @@ class TypeDeclaration(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> DeclaredTypeName:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[DeclaredTypeName], DeclaredTypeName]],
+            typing.Callable[[DeclaredTypeName], DeclaredTypeName],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["shape"]) -> Type:
+        def field(
+            cls, field_name: typing_extensions.Literal["shape"]
+        ) -> typing.Callable[[typing.Callable[[Type], Type]], typing.Callable[[Type], Type]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["referenced_types"]) -> typing.List[DeclaredTypeName]:
+        def field(
+            cls, field_name: typing_extensions.Literal["referenced_types"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[DeclaredTypeName]], typing.List[DeclaredTypeName]]],
+            typing.Callable[[typing.List[DeclaredTypeName]], typing.List[DeclaredTypeName]],
+        ]:
             ...
 
         @classmethod

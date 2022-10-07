@@ -41,17 +41,29 @@ class UnionTypeDeclaration(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["discriminant"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["discriminant"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["discriminant_v_2"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["discriminant_v_2"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["types"]) -> typing.List[SingleUnionType]:
+        def field(
+            cls, field_name: typing_extensions.Literal["types"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[SingleUnionType]], typing.List[SingleUnionType]]],
+            typing.Callable[[typing.List[SingleUnionType]], typing.List[SingleUnionType]],
+        ]:
             ...
 
         @classmethod

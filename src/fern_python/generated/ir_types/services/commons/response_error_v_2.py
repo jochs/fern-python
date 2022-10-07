@@ -32,12 +32,22 @@ class ResponseErrorV2(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["discriminant_value"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["discriminant_value"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["shape"]) -> ResponseErrorShape:
+        def field(
+            cls, field_name: typing_extensions.Literal["shape"]
+        ) -> typing.Callable[
+            [typing.Callable[[ResponseErrorShape], ResponseErrorShape]],
+            typing.Callable[[ResponseErrorShape], ResponseErrorShape],
+        ]:
             ...
 
         @classmethod

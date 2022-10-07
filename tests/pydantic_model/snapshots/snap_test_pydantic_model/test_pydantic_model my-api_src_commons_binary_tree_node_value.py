@@ -44,22 +44,36 @@ class BinaryTreeNodeValue(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["node_id"]) -> NodeId:
+        def field(
+            cls, field_name: typing_extensions.Literal["node_id"]
+        ) -> typing.Callable[[typing.Callable[[NodeId], NodeId]], typing.Callable[[NodeId], NodeId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["val"]) -> float:
+        def field(
+            cls, field_name: typing_extensions.Literal["val"]
+        ) -> typing.Callable[[typing.Callable[[float], float]], typing.Callable[[float], float]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["right"]) -> typing.Optional[NodeId]:
+        def field(
+            cls, field_name: typing_extensions.Literal["right"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]],
+            typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["left"]) -> typing.Optional[NodeId]:
+        def field(
+            cls, field_name: typing_extensions.Literal["left"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]],
+            typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]],
+        ]:
             ...
 
         @classmethod

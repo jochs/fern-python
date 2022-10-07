@@ -30,12 +30,21 @@ class PathParameter(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> StringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[StringWithAllCasings], StringWithAllCasings]],
+            typing.Callable[[StringWithAllCasings], StringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["value_type"]) -> TypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["value_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[TypeReference], TypeReference]], typing.Callable[[TypeReference], TypeReference]
+        ]:
             ...
 
         @classmethod

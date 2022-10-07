@@ -26,12 +26,16 @@ class TracedFile(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["filename"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["filename"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["directory"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["directory"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

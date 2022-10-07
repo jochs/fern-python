@@ -22,7 +22,12 @@ class ProblemDescription(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["boards"]) -> typing.List[ProblemDescriptionBoard]:
+        def field(
+            cls, field_name: typing_extensions.Literal["boards"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[ProblemDescriptionBoard]], typing.List[ProblemDescriptionBoard]]],
+            typing.Callable[[typing.List[ProblemDescriptionBoard]], typing.List[ProblemDescriptionBoard]],
+        ]:
             ...
 
         @classmethod

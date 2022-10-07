@@ -71,32 +71,62 @@ class HttpService(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> DeclaredServiceName:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[DeclaredServiceName], DeclaredServiceName]],
+            typing.Callable[[DeclaredServiceName], DeclaredServiceName],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["base_path"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["base_path"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["base_path_v_2"]) -> typing.Optional[HttpPath]:
+        def field(
+            cls, field_name: typing_extensions.Literal["base_path_v_2"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[HttpPath]], typing.Optional[HttpPath]]],
+            typing.Callable[[typing.Optional[HttpPath]], typing.Optional[HttpPath]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["endpoints"]) -> typing.List[HttpEndpoint]:
+        def field(
+            cls, field_name: typing_extensions.Literal["endpoints"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[HttpEndpoint]], typing.List[HttpEndpoint]]],
+            typing.Callable[[typing.List[HttpEndpoint]], typing.List[HttpEndpoint]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["headers"]) -> typing.List[HttpHeader]:
+        def field(
+            cls, field_name: typing_extensions.Literal["headers"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[HttpHeader]], typing.List[HttpHeader]]],
+            typing.Callable[[typing.List[HttpHeader]], typing.List[HttpHeader]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["path_parameters"]) -> typing.List[PathParameter]:
+        def field(
+            cls, field_name: typing_extensions.Literal["path_parameters"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[PathParameter]], typing.List[PathParameter]]],
+            typing.Callable[[typing.List[PathParameter]], typing.List[PathParameter]],
+        ]:
             ...
 
         @classmethod

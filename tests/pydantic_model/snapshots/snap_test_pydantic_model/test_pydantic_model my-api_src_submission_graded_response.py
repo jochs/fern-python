@@ -37,14 +37,21 @@ class GradedResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["test_cases"]
-        ) -> typing.Dict[str, TestCaseResultWithStdout]:
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[str, TestCaseResultWithStdout]], typing.Dict[str, TestCaseResultWithStdout]]],
+            typing.Callable[[typing.Dict[str, TestCaseResultWithStdout]], typing.Dict[str, TestCaseResultWithStdout]],
+        ]:
             ...
 
         @classmethod

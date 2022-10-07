@@ -69,32 +69,55 @@ class SubmitRequestV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["language"]) -> Language:
+        def field(
+            cls, field_name: typing_extensions.Literal["language"]
+        ) -> typing.Callable[[typing.Callable[[Language], Language]], typing.Callable[[Language], Language]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_files"]) -> typing.List[SubmissionFileInfo]:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_files"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[SubmissionFileInfo]], typing.List[SubmissionFileInfo]]],
+            typing.Callable[[typing.List[SubmissionFileInfo]], typing.List[SubmissionFileInfo]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_id"]) -> ProblemId:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_id"]
+        ) -> typing.Callable[[typing.Callable[[ProblemId], ProblemId]], typing.Callable[[ProblemId], ProblemId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_version"]) -> typing.Optional[int]:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_version"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[int]], typing.Optional[int]]],
+            typing.Callable[[typing.Optional[int]], typing.Optional[int]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["user_id"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["user_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @classmethod

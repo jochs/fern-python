@@ -39,12 +39,22 @@ class VoidFunctionDefinition(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["parameters"]) -> typing.List[Parameter]:
+        def field(
+            cls, field_name: typing_extensions.Literal["parameters"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[Parameter]], typing.List[Parameter]]],
+            typing.Callable[[typing.List[Parameter]], typing.List[Parameter]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["code"]) -> FunctionImplementationForMultipleLanguages:
+        def field(
+            cls, field_name: typing_extensions.Literal["code"]
+        ) -> typing.Callable[
+            [typing.Callable[[FunctionImplementationForMultipleLanguages], FunctionImplementationForMultipleLanguages]],
+            typing.Callable[[FunctionImplementationForMultipleLanguages], FunctionImplementationForMultipleLanguages],
+        ]:
             ...
 
         @classmethod

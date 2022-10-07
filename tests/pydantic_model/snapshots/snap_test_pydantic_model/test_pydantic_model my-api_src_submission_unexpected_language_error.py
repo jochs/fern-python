@@ -28,12 +28,16 @@ class UnexpectedLanguageError(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["expected_language"]) -> Language:
+        def field(
+            cls, field_name: typing_extensions.Literal["expected_language"]
+        ) -> typing.Callable[[typing.Callable[[Language], Language]], typing.Callable[[Language], Language]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["actual_language"]) -> Language:
+        def field(
+            cls, field_name: typing_extensions.Literal["actual_language"]
+        ) -> typing.Callable[[typing.Callable[[Language], Language]], typing.Callable[[Language], Language]]:
             ...
 
         @classmethod

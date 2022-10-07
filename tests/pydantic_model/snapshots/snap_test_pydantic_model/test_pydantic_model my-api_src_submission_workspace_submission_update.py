@@ -30,12 +30,19 @@ class WorkspaceSubmissionUpdate(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["update_time"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["update_time"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["update_info"]) -> WorkspaceSubmissionUpdateInfo:
+        def field(
+            cls, field_name: typing_extensions.Literal["update_info"]
+        ) -> typing.Callable[
+            [typing.Callable[[WorkspaceSubmissionUpdateInfo], WorkspaceSubmissionUpdateInfo]],
+            typing.Callable[[WorkspaceSubmissionUpdateInfo], WorkspaceSubmissionUpdateInfo],
+        ]:
             ...
 
         @classmethod

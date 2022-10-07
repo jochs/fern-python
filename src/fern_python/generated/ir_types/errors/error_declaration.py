@@ -62,27 +62,49 @@ class ErrorDeclaration(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> DeclaredErrorName:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[DeclaredErrorName], DeclaredErrorName]],
+            typing.Callable[[DeclaredErrorName], DeclaredErrorName],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["discriminant_value"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["discriminant_value"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["type"]) -> Type:
+        def field(
+            cls, field_name: typing_extensions.Literal["type"]
+        ) -> typing.Callable[[typing.Callable[[Type], Type]], typing.Callable[[Type], Type]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["type_v_2"]) -> typing.Optional[Type]:
+        def field(
+            cls, field_name: typing_extensions.Literal["type_v_2"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[Type]], typing.Optional[Type]]],
+            typing.Callable[[typing.Optional[Type]], typing.Optional[Type]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["http"]) -> typing.Optional[HttpErrorConfiguration]:
+        def field(
+            cls, field_name: typing_extensions.Literal["http"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[HttpErrorConfiguration]], typing.Optional[HttpErrorConfiguration]]],
+            typing.Callable[[typing.Optional[HttpErrorConfiguration]], typing.Optional[HttpErrorConfiguration]],
+        ]:
             ...
 
         @classmethod

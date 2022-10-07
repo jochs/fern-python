@@ -59,27 +59,49 @@ class WebSocketChannel(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> DeclaredServiceName:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[DeclaredServiceName], DeclaredServiceName]],
+            typing.Callable[[DeclaredServiceName], DeclaredServiceName],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["path"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["path"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["client"]) -> WebSocketMessenger:
+        def field(
+            cls, field_name: typing_extensions.Literal["client"]
+        ) -> typing.Callable[
+            [typing.Callable[[WebSocketMessenger], WebSocketMessenger]],
+            typing.Callable[[WebSocketMessenger], WebSocketMessenger],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["server"]) -> WebSocketMessenger:
+        def field(
+            cls, field_name: typing_extensions.Literal["server"]
+        ) -> typing.Callable[
+            [typing.Callable[[WebSocketMessenger], WebSocketMessenger]],
+            typing.Callable[[WebSocketMessenger], WebSocketMessenger],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["operation_properties"]) -> WebSocketOperationProperties:
+        def field(
+            cls, field_name: typing_extensions.Literal["operation_properties"]
+        ) -> typing.Callable[
+            [typing.Callable[[WebSocketOperationProperties], WebSocketOperationProperties]],
+            typing.Callable[[WebSocketOperationProperties], WebSocketOperationProperties],
+        ]:
             ...
 
         @classmethod

@@ -22,7 +22,12 @@ class WebSocketMessenger(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["operations"]) -> typing.List[WebSocketOperation]:
+        def field(
+            cls, field_name: typing_extensions.Literal["operations"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[WebSocketOperation]], typing.List[WebSocketOperation]]],
+            typing.Callable[[typing.List[WebSocketOperation]], typing.List[WebSocketOperation]],
+        ]:
             ...
 
         @classmethod

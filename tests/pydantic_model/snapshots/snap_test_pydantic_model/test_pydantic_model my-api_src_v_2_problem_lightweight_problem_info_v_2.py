@@ -47,22 +47,33 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_id"]) -> ProblemId:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_id"]
+        ) -> typing.Callable[[typing.Callable[[ProblemId], ProblemId]], typing.Callable[[ProblemId], ProblemId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_version"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_version"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["variable_types"]) -> typing.List[VariableType]:
+        def field(
+            cls, field_name: typing_extensions.Literal["variable_types"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[VariableType]], typing.List[VariableType]]],
+            typing.Callable[[typing.List[VariableType]], typing.List[VariableType]],
+        ]:
             ...
 
         @classmethod

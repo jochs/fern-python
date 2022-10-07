@@ -20,7 +20,12 @@ class Files(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["files"]) -> typing.List[FileInfoV2]:
+        def field(
+            cls, field_name: typing_extensions.Literal["files"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[FileInfoV2]], typing.List[FileInfoV2]]],
+            typing.Callable[[typing.List[FileInfoV2]], typing.List[FileInfoV2]],
+        ]:
             ...
 
         @classmethod

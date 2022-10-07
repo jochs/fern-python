@@ -29,12 +29,19 @@ class DoublyLinkedListNodeAndListValue(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["node_id"]) -> NodeId:
+        def field(
+            cls, field_name: typing_extensions.Literal["node_id"]
+        ) -> typing.Callable[[typing.Callable[[NodeId], NodeId]], typing.Callable[[NodeId], NodeId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["full_list"]) -> DoublyLinkedListValue:
+        def field(
+            cls, field_name: typing_extensions.Literal["full_list"]
+        ) -> typing.Callable[
+            [typing.Callable[[DoublyLinkedListValue], DoublyLinkedListValue]],
+            typing.Callable[[DoublyLinkedListValue], DoublyLinkedListValue],
+        ]:
             ...
 
         @classmethod

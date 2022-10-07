@@ -31,12 +31,22 @@ class Services(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["http"]) -> typing.List[HttpService]:
+        def field(
+            cls, field_name: typing_extensions.Literal["http"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[HttpService]], typing.List[HttpService]]],
+            typing.Callable[[typing.List[HttpService]], typing.List[HttpService]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["websocket"]) -> typing.List[WebSocketChannel]:
+        def field(
+            cls, field_name: typing_extensions.Literal["websocket"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[WebSocketChannel]], typing.List[WebSocketChannel]]],
+            typing.Callable[[typing.List[WebSocketChannel]], typing.List[WebSocketChannel]],
+        ]:
             ...
 
         @classmethod

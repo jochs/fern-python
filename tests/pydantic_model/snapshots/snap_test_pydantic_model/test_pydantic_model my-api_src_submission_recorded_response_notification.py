@@ -36,17 +36,28 @@ class RecordedResponseNotification(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["trace_responses_size"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["trace_responses_size"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["test_case_id"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["test_case_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @classmethod

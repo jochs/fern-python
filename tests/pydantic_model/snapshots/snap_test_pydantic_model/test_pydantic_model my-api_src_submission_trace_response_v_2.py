@@ -80,39 +80,65 @@ class TraceResponseV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["line_number"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["line_number"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["file"]) -> TracedFile:
+        def field(
+            cls, field_name: typing_extensions.Literal["file"]
+        ) -> typing.Callable[[typing.Callable[[TracedFile], TracedFile]], typing.Callable[[TracedFile], TracedFile]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["return_value"]) -> typing.Optional[DebugVariableValue]:
+        def field(
+            cls, field_name: typing_extensions.Literal["return_value"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[DebugVariableValue]], typing.Optional[DebugVariableValue]]],
+            typing.Callable[[typing.Optional[DebugVariableValue]], typing.Optional[DebugVariableValue]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["expression_location"]
-        ) -> typing.Optional[ExpressionLocation]:
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[ExpressionLocation]], typing.Optional[ExpressionLocation]]],
+            typing.Callable[[typing.Optional[ExpressionLocation]], typing.Optional[ExpressionLocation]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stack"]) -> StackInformation:
+        def field(
+            cls, field_name: typing_extensions.Literal["stack"]
+        ) -> typing.Callable[
+            [typing.Callable[[StackInformation], StackInformation]],
+            typing.Callable[[StackInformation], StackInformation],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stdout"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["stdout"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @classmethod

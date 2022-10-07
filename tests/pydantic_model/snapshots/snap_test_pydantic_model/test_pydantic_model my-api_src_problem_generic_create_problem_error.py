@@ -34,17 +34,23 @@ class GenericCreateProblemError(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["message"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["message"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["type"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["type"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stacktrace"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["stacktrace"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

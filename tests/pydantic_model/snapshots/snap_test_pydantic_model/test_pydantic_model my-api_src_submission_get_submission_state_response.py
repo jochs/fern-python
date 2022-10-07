@@ -49,22 +49,36 @@ class GetSubmissionStateResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["time_submitted"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["time_submitted"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["language"]) -> Language:
+        def field(
+            cls, field_name: typing_extensions.Literal["language"]
+        ) -> typing.Callable[[typing.Callable[[Language], Language]], typing.Callable[[Language], Language]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_type_state"]) -> SubmissionTypeState:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_type_state"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionTypeState], SubmissionTypeState]],
+            typing.Callable[[SubmissionTypeState], SubmissionTypeState],
+        ]:
             ...
 
         @classmethod

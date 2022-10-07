@@ -22,7 +22,12 @@ class WorkspaceSubmissionState(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["status"]) -> WorkspaceSubmissionStatus:
+        def field(
+            cls, field_name: typing_extensions.Literal["status"]
+        ) -> typing.Callable[
+            [typing.Callable[[WorkspaceSubmissionStatus], WorkspaceSubmissionStatus]],
+            typing.Callable[[WorkspaceSubmissionStatus], WorkspaceSubmissionStatus],
+        ]:
             ...
 
         @classmethod

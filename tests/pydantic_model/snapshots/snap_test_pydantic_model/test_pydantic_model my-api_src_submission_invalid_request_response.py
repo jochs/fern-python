@@ -29,12 +29,22 @@ class InvalidRequestResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["request"]) -> SubmissionRequest:
+        def field(
+            cls, field_name: typing_extensions.Literal["request"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionRequest], SubmissionRequest]],
+            typing.Callable[[SubmissionRequest], SubmissionRequest],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["cause"]) -> InvalidRequestCause:
+        def field(
+            cls, field_name: typing_extensions.Literal["cause"]
+        ) -> typing.Callable[
+            [typing.Callable[[InvalidRequestCause], InvalidRequestCause]],
+            typing.Callable[[InvalidRequestCause], InvalidRequestCause],
+        ]:
             ...
 
         @classmethod

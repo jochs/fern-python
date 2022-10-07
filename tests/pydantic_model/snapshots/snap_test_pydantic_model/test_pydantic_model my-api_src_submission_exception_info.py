@@ -34,17 +34,23 @@ class ExceptionInfo(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["exception_type"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["exception_type"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["exception_message"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["exception_message"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["exception_stacktrace"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["exception_stacktrace"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

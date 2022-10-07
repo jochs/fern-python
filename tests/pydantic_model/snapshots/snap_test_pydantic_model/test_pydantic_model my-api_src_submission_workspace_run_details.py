@@ -41,17 +41,29 @@ class WorkspaceRunDetails(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["exception_v_2"]) -> typing.Optional[ExceptionV2]:
+        def field(
+            cls, field_name: typing_extensions.Literal["exception_v_2"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[ExceptionV2]], typing.Optional[ExceptionV2]]],
+            typing.Callable[[typing.Optional[ExceptionV2]], typing.Optional[ExceptionV2]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["exception"]) -> typing.Optional[ExceptionInfo]:
+        def field(
+            cls, field_name: typing_extensions.Literal["exception"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[ExceptionInfo]], typing.Optional[ExceptionInfo]]],
+            typing.Callable[[typing.Optional[ExceptionInfo]], typing.Optional[ExceptionInfo]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stdout"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["stdout"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

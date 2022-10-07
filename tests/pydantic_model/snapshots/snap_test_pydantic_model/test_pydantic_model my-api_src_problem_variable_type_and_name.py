@@ -28,12 +28,18 @@ class VariableTypeAndName(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["variable_type"]) -> VariableType:
+        def field(
+            cls, field_name: typing_extensions.Literal["variable_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableType], VariableType]], typing.Callable[[VariableType], VariableType]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

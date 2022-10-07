@@ -33,12 +33,22 @@ class ResponseErrorsV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["discriminant"]) -> WireStringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["discriminant"]
+        ) -> typing.Callable[
+            [typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings]],
+            typing.Callable[[WireStringWithAllCasings], WireStringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["types"]) -> typing.List[ResponseErrorV2]:
+        def field(
+            cls, field_name: typing_extensions.Literal["types"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[ResponseErrorV2]], typing.List[ResponseErrorV2]]],
+            typing.Callable[[typing.List[ResponseErrorV2]], typing.List[ResponseErrorV2]],
+        ]:
             ...
 
         @classmethod

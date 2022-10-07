@@ -30,12 +30,19 @@ class TestCase(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["id"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["id"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["params"]) -> typing.List[VariableValue]:
+        def field(
+            cls, field_name: typing_extensions.Literal["params"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[VariableValue]], typing.List[VariableValue]]],
+            typing.Callable[[typing.List[VariableValue]], typing.List[VariableValue]],
+        ]:
             ...
 
         @classmethod

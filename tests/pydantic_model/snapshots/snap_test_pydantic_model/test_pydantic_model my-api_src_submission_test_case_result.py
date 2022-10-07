@@ -37,17 +37,27 @@ class TestCaseResult(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["expected_result"]) -> VariableValue:
+        def field(
+            cls, field_name: typing_extensions.Literal["expected_result"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableValue], VariableValue]], typing.Callable[[VariableValue], VariableValue]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["actual_result"]) -> ActualResult:
+        def field(
+            cls, field_name: typing_extensions.Literal["actual_result"]
+        ) -> typing.Callable[
+            [typing.Callable[[ActualResult], ActualResult]], typing.Callable[[ActualResult], ActualResult]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["passed"]) -> bool:
+        def field(
+            cls, field_name: typing_extensions.Literal["passed"]
+        ) -> typing.Callable[[typing.Callable[[bool], bool]], typing.Callable[[bool], bool]]:
             ...
 
         @classmethod

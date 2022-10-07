@@ -24,7 +24,12 @@ class GetFunctionSignatureResponse(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["function_by_language"]) -> typing.Dict[Language, str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["function_by_language"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, str]], typing.Dict[Language, str]]],
+            typing.Callable[[typing.Dict[Language, str]], typing.Dict[Language, str]],
+        ]:
             ...
 
         @classmethod

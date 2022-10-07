@@ -21,7 +21,12 @@ class ResponseError(WithDocs):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["error"]) -> DeclaredErrorName:
+        def field(
+            cls, field_name: typing_extensions.Literal["error"]
+        ) -> typing.Callable[
+            [typing.Callable[[DeclaredErrorName], DeclaredErrorName]],
+            typing.Callable[[DeclaredErrorName], DeclaredErrorName],
+        ]:
             ...
 
         @classmethod

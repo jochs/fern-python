@@ -29,12 +29,21 @@ class WorkspaceRanResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["run_details"]) -> WorkspaceRunDetails:
+        def field(
+            cls, field_name: typing_extensions.Literal["run_details"]
+        ) -> typing.Callable[
+            [typing.Callable[[WorkspaceRunDetails], WorkspaceRunDetails]],
+            typing.Callable[[WorkspaceRunDetails], WorkspaceRunDetails],
+        ]:
             ...
 
         @classmethod

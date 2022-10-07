@@ -44,17 +44,32 @@ class GetExecutionSessionStateResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["states"]) -> typing.Dict[str, ExecutionSessionState]:
+        def field(
+            cls, field_name: typing_extensions.Literal["states"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[str, ExecutionSessionState]], typing.Dict[str, ExecutionSessionState]]],
+            typing.Callable[[typing.Dict[str, ExecutionSessionState]], typing.Dict[str, ExecutionSessionState]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["num_warming_instances"]) -> typing.Optional[int]:
+        def field(
+            cls, field_name: typing_extensions.Literal["num_warming_instances"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[int]], typing.Optional[int]]],
+            typing.Callable[[typing.Optional[int]], typing.Optional[int]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["warming_session_ids"]) -> typing.List[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["warming_session_ids"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[str]], typing.List[str]]],
+            typing.Callable[[typing.List[str]], typing.List[str]],
+        ]:
             ...
 
         @classmethod

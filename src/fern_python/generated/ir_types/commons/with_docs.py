@@ -18,7 +18,12 @@ class WithDocs(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["docs"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["docs"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @classmethod

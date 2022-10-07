@@ -27,7 +27,10 @@ class GetBasicSolutionFileResponse(pydantic.BaseModel):
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["solution_file_by_language"]
-        ) -> typing.Dict[Language, FileInfoV2]:
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, FileInfoV2]], typing.Dict[Language, FileInfoV2]]],
+            typing.Callable[[typing.Dict[Language, FileInfoV2]], typing.Dict[Language, FileInfoV2]],
+        ]:
             ...
 
         @classmethod

@@ -34,17 +34,23 @@ class WebSocketOperationProperties(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["id"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["id"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["operation"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["operation"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["body"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["body"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

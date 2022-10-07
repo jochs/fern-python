@@ -31,12 +31,21 @@ class HttpResponse(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["type"]) -> TypeReference:
+        def field(
+            cls, field_name: typing_extensions.Literal["type"]
+        ) -> typing.Callable[
+            [typing.Callable[[TypeReference], TypeReference]], typing.Callable[[TypeReference], TypeReference]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["type_v_2"]) -> typing.Optional[TypeReference]:
+        def field(
+            cls, field_name: typing_extensions.Literal["type_v_2"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[TypeReference]], typing.Optional[TypeReference]]],
+            typing.Callable[[typing.Optional[TypeReference]], typing.Optional[TypeReference]],
+        ]:
             ...
 
         @classmethod

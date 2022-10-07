@@ -37,14 +37,28 @@ class SinglyLinkedListValue(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["head"]) -> typing.Optional[NodeId]:
+        def field(
+            cls, field_name: typing_extensions.Literal["head"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]],
+            typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["nodes"]
-        ) -> typing.Dict[NodeId, SinglyLinkedListNodeValue]:
+        ) -> typing.Callable[
+            [
+                typing.Callable[
+                    [typing.Dict[NodeId, SinglyLinkedListNodeValue]], typing.Dict[NodeId, SinglyLinkedListNodeValue]
+                ]
+            ],
+            typing.Callable[
+                [typing.Dict[NodeId, SinglyLinkedListNodeValue]], typing.Dict[NodeId, SinglyLinkedListNodeValue]
+            ],
+        ]:
             ...
 
         @classmethod

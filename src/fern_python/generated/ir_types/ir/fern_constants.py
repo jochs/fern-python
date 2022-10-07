@@ -34,17 +34,23 @@ class FernConstants(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["error_discriminant"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["error_discriminant"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["unknown_error_discriminant_value"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["unknown_error_discriminant_value"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["error_instance_id_key"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["error_instance_id_key"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

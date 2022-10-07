@@ -42,22 +42,30 @@ class FileInfoV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["filename"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["filename"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["directory"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["directory"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["contents"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["contents"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["editable"]) -> bool:
+        def field(
+            cls, field_name: typing_extensions.Literal["editable"]
+        ) -> typing.Callable[[typing.Callable[[bool], bool]], typing.Callable[[bool], bool]]:
             ...
 
         @classmethod

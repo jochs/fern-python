@@ -24,7 +24,12 @@ class DebugMapValue(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["key_value_pairs"]) -> typing.List[DebugKeyValuePairs]:
+        def field(
+            cls, field_name: typing_extensions.Literal["key_value_pairs"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[DebugKeyValuePairs]], typing.List[DebugKeyValuePairs]]],
+            typing.Callable[[typing.List[DebugKeyValuePairs]], typing.List[DebugKeyValuePairs]],
+        ]:
             ...
 
         @classmethod

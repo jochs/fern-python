@@ -20,7 +20,11 @@ class DeepEqualityCorrectnessCheck(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["expected_value_parameter_id"]) -> ParameterId:
+        def field(
+            cls, field_name: typing_extensions.Literal["expected_value_parameter_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[ParameterId], ParameterId]], typing.Callable[[ParameterId], ParameterId]
+        ]:
             ...
 
         @classmethod

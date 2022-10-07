@@ -20,7 +20,9 @@ class WireStringWithAllCasings(StringWithAllCasings):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["wire_value"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["wire_value"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

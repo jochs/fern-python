@@ -123,62 +123,109 @@ class HttpEndpoint(WithDocs):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["id"]) -> HttpEndpointId:
+        def field(
+            cls, field_name: typing_extensions.Literal["id"]
+        ) -> typing.Callable[
+            [typing.Callable[[HttpEndpointId], HttpEndpointId]], typing.Callable[[HttpEndpointId], HttpEndpointId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> StringWithAllCasings:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[
+            [typing.Callable[[StringWithAllCasings], StringWithAllCasings]],
+            typing.Callable[[StringWithAllCasings], StringWithAllCasings],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["method"]) -> HttpMethod:
+        def field(
+            cls, field_name: typing_extensions.Literal["method"]
+        ) -> typing.Callable[[typing.Callable[[HttpMethod], HttpMethod]], typing.Callable[[HttpMethod], HttpMethod]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["headers"]) -> typing.List[HttpHeader]:
+        def field(
+            cls, field_name: typing_extensions.Literal["headers"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[HttpHeader]], typing.List[HttpHeader]]],
+            typing.Callable[[typing.List[HttpHeader]], typing.List[HttpHeader]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["path"]) -> HttpPath:
+        def field(
+            cls, field_name: typing_extensions.Literal["path"]
+        ) -> typing.Callable[[typing.Callable[[HttpPath], HttpPath]], typing.Callable[[HttpPath], HttpPath]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["path_parameters"]) -> typing.List[PathParameter]:
+        def field(
+            cls, field_name: typing_extensions.Literal["path_parameters"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[PathParameter]], typing.List[PathParameter]]],
+            typing.Callable[[typing.List[PathParameter]], typing.List[PathParameter]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["query_parameters"]) -> typing.List[QueryParameter]:
+        def field(
+            cls, field_name: typing_extensions.Literal["query_parameters"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[QueryParameter]], typing.List[QueryParameter]]],
+            typing.Callable[[typing.List[QueryParameter]], typing.List[QueryParameter]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["request"]) -> HttpRequest:
+        def field(
+            cls, field_name: typing_extensions.Literal["request"]
+        ) -> typing.Callable[
+            [typing.Callable[[HttpRequest], HttpRequest]], typing.Callable[[HttpRequest], HttpRequest]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["response"]) -> HttpResponse:
+        def field(
+            cls, field_name: typing_extensions.Literal["response"]
+        ) -> typing.Callable[
+            [typing.Callable[[HttpResponse], HttpResponse]], typing.Callable[[HttpResponse], HttpResponse]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["errors"]) -> ResponseErrors:
+        def field(
+            cls, field_name: typing_extensions.Literal["errors"]
+        ) -> typing.Callable[
+            [typing.Callable[[ResponseErrors], ResponseErrors]], typing.Callable[[ResponseErrors], ResponseErrors]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["errors_v_2"]) -> ResponseErrorsV2:
+        def field(
+            cls, field_name: typing_extensions.Literal["errors_v_2"]
+        ) -> typing.Callable[
+            [typing.Callable[[ResponseErrorsV2], ResponseErrorsV2]],
+            typing.Callable[[ResponseErrorsV2], ResponseErrorsV2],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["auth"]) -> bool:
+        def field(
+            cls, field_name: typing_extensions.Literal["auth"]
+        ) -> typing.Callable[[typing.Callable[[bool], bool]], typing.Callable[[bool], bool]]:
             ...
 
         @classmethod

@@ -63,32 +63,53 @@ class ExecutionSessionState(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["last_time_contacted"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["last_time_contacted"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["session_id"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["session_id"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["is_warm_instance"]) -> bool:
+        def field(
+            cls, field_name: typing_extensions.Literal["is_warm_instance"]
+        ) -> typing.Callable[[typing.Callable[[bool], bool]], typing.Callable[[bool], bool]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["aws_task_id"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["aws_task_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["language"]) -> Language:
+        def field(
+            cls, field_name: typing_extensions.Literal["language"]
+        ) -> typing.Callable[[typing.Callable[[Language], Language]], typing.Callable[[Language], Language]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["status"]) -> ExecutionSessionStatus:
+        def field(
+            cls, field_name: typing_extensions.Literal["status"]
+        ) -> typing.Callable[
+            [typing.Callable[[ExecutionSessionStatus], ExecutionSessionStatus]],
+            typing.Callable[[ExecutionSessionStatus], ExecutionSessionStatus],
+        ]:
             ...
 
         @classmethod

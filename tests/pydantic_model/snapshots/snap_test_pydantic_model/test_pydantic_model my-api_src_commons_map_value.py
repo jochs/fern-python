@@ -22,7 +22,12 @@ class MapValue(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["key_value_pairs"]) -> typing.List[KeyValuePair]:
+        def field(
+            cls, field_name: typing_extensions.Literal["key_value_pairs"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[KeyValuePair]], typing.List[KeyValuePair]]],
+            typing.Callable[[typing.List[KeyValuePair]], typing.List[KeyValuePair]],
+        ]:
             ...
 
         @classmethod

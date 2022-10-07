@@ -29,12 +29,21 @@ class RunningResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["state"]) -> RunningSubmissionState:
+        def field(
+            cls, field_name: typing_extensions.Literal["state"]
+        ) -> typing.Callable[
+            [typing.Callable[[RunningSubmissionState], RunningSubmissionState]],
+            typing.Callable[[RunningSubmissionState], RunningSubmissionState],
+        ]:
             ...
 
         @classmethod

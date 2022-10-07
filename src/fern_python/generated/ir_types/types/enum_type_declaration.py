@@ -20,7 +20,12 @@ class EnumTypeDeclaration(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["values"]) -> typing.List[EnumValue]:
+        def field(
+            cls, field_name: typing_extensions.Literal["values"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[EnumValue]], typing.List[EnumValue]]],
+            typing.Callable[[typing.List[EnumValue]], typing.List[EnumValue]],
+        ]:
             ...
 
         @classmethod

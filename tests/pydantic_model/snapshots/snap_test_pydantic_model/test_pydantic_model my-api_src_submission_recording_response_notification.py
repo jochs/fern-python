@@ -60,29 +60,48 @@ class RecordingResponseNotification(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["test_case_id"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["test_case_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["line_number"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["line_number"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @typing.overload
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["lightweight_stack_info"]
-        ) -> LightweightStackframeInformation:
+        ) -> typing.Callable[
+            [typing.Callable[[LightweightStackframeInformation], LightweightStackframeInformation]],
+            typing.Callable[[LightweightStackframeInformation], LightweightStackframeInformation],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["traced_file"]) -> typing.Optional[TracedFile]:
+        def field(
+            cls, field_name: typing_extensions.Literal["traced_file"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[TracedFile]], typing.Optional[TracedFile]]],
+            typing.Callable[[typing.Optional[TracedFile]], typing.Optional[TracedFile]],
+        ]:
             ...
 
         @classmethod

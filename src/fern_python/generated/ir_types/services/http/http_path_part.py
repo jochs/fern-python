@@ -26,12 +26,16 @@ class HttpPathPart(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["path_parameter"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["path_parameter"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["tail"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["tail"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

@@ -36,17 +36,26 @@ class StackFrame(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["method_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["method_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["line_number"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["line_number"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["scopes"]) -> typing.List[Scope]:
+        def field(
+            cls, field_name: typing_extensions.Literal["scopes"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[Scope]], typing.List[Scope]]],
+            typing.Callable[[typing.List[Scope]], typing.List[Scope]],
+        ]:
             ...
 
         @classmethod

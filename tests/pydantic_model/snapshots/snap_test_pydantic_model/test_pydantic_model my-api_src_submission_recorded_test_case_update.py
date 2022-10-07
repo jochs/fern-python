@@ -28,12 +28,16 @@ class RecordedTestCaseUpdate(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["test_case_id"]) -> TestCaseId:
+        def field(
+            cls, field_name: typing_extensions.Literal["test_case_id"]
+        ) -> typing.Callable[[typing.Callable[[TestCaseId], TestCaseId]], typing.Callable[[TestCaseId], TestCaseId]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["trace_responses_size"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["trace_responses_size"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @classmethod

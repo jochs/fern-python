@@ -82,39 +82,65 @@ class CreateProblemRequestV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["problem_description"]) -> ProblemDescription:
+        def field(
+            cls, field_name: typing_extensions.Literal["problem_description"]
+        ) -> typing.Callable[
+            [typing.Callable[[ProblemDescription], ProblemDescription]],
+            typing.Callable[[ProblemDescription], ProblemDescription],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["custom_files"]) -> CustomFiles:
+        def field(
+            cls, field_name: typing_extensions.Literal["custom_files"]
+        ) -> typing.Callable[
+            [typing.Callable[[CustomFiles], CustomFiles]], typing.Callable[[CustomFiles], CustomFiles]
+        ]:
             ...
 
         @typing.overload
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["custom_test_case_templates"]
-        ) -> typing.List[TestCaseTemplate]:
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[TestCaseTemplate]], typing.List[TestCaseTemplate]]],
+            typing.Callable[[typing.List[TestCaseTemplate]], typing.List[TestCaseTemplate]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["testcases"]) -> typing.List[TestCaseV2]:
+        def field(
+            cls, field_name: typing_extensions.Literal["testcases"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[TestCaseV2]], typing.List[TestCaseV2]]],
+            typing.Callable[[typing.List[TestCaseV2]], typing.List[TestCaseV2]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["supported_languages"]) -> typing.List[Language]:
+        def field(
+            cls, field_name: typing_extensions.Literal["supported_languages"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[Language]], typing.List[Language]]],
+            typing.Callable[[typing.List[Language]], typing.List[Language]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["is_public"]) -> bool:
+        def field(
+            cls, field_name: typing_extensions.Literal["is_public"]
+        ) -> typing.Callable[[typing.Callable[[bool], bool]], typing.Callable[[bool], bool]]:
             ...
 
         @classmethod

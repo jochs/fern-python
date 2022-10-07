@@ -20,7 +20,11 @@ class InternalError(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["exception_info"]) -> ExceptionInfo:
+        def field(
+            cls, field_name: typing_extensions.Literal["exception_info"]
+        ) -> typing.Callable[
+            [typing.Callable[[ExceptionInfo], ExceptionInfo]], typing.Callable[[ExceptionInfo], ExceptionInfo]
+        ]:
             ...
 
         @classmethod

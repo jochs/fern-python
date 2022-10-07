@@ -25,7 +25,12 @@ class WorkspaceStarterFilesResponseV2(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["files_by_language"]) -> typing.Dict[Language, Files]:
+        def field(
+            cls, field_name: typing_extensions.Literal["files_by_language"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]]],
+            typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]],
+        ]:
             ...
 
         @classmethod

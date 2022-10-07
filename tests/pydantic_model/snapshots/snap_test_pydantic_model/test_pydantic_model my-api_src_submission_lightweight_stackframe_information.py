@@ -26,12 +26,16 @@ class LightweightStackframeInformation(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["num_stack_frames"]) -> int:
+        def field(
+            cls, field_name: typing_extensions.Literal["num_stack_frames"]
+        ) -> typing.Callable[[typing.Callable[[int], int]], typing.Callable[[int], int]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["top_stack_frame_method_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["top_stack_frame_method_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

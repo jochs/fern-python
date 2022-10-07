@@ -28,12 +28,18 @@ class DeclaredServiceName(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["fern_filepath"]) -> FernFilepath:
+        def field(
+            cls, field_name: typing_extensions.Literal["fern_filepath"]
+        ) -> typing.Callable[
+            [typing.Callable[[FernFilepath], FernFilepath]], typing.Callable[[FernFilepath], FernFilepath]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

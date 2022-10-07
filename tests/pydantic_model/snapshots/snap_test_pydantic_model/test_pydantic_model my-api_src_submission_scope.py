@@ -24,7 +24,12 @@ class Scope(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["variables"]) -> typing.Dict[str, DebugVariableValue]:
+        def field(
+            cls, field_name: typing_extensions.Literal["variables"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[str, DebugVariableValue]], typing.Dict[str, DebugVariableValue]]],
+            typing.Callable[[typing.Dict[str, DebugVariableValue]], typing.Dict[str, DebugVariableValue]],
+        ]:
             ...
 
         @classmethod

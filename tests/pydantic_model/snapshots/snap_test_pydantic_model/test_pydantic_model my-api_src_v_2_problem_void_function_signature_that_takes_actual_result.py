@@ -31,12 +31,21 @@ class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["parameters"]) -> typing.List[Parameter]:
+        def field(
+            cls, field_name: typing_extensions.Literal["parameters"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[Parameter]], typing.List[Parameter]]],
+            typing.Callable[[typing.List[Parameter]], typing.List[Parameter]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["actual_result_type"]) -> VariableType:
+        def field(
+            cls, field_name: typing_extensions.Literal["actual_result_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[VariableType], VariableType]], typing.Callable[[VariableType], VariableType]
+        ]:
             ...
 
         @classmethod

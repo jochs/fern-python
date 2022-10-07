@@ -50,27 +50,37 @@ class StringWithAllCasings(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["original_value"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["original_value"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["camel_case"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["camel_case"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["pascal_case"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["pascal_case"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["snake_case"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["snake_case"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["screaming_snake_case"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["screaming_snake_case"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

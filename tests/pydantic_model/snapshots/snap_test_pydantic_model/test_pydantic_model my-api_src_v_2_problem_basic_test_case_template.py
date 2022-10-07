@@ -48,22 +48,38 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["template_id"]) -> TestCaseTemplateId:
+        def field(
+            cls, field_name: typing_extensions.Literal["template_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseTemplateId], TestCaseTemplateId]],
+            typing.Callable[[TestCaseTemplateId], TestCaseTemplateId],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["description"]) -> TestCaseImplementationDescription:
+        def field(
+            cls, field_name: typing_extensions.Literal["description"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseImplementationDescription], TestCaseImplementationDescription]],
+            typing.Callable[[TestCaseImplementationDescription], TestCaseImplementationDescription],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["expected_value_parameter_id"]) -> ParameterId:
+        def field(
+            cls, field_name: typing_extensions.Literal["expected_value_parameter_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[ParameterId], ParameterId]], typing.Callable[[ParameterId], ParameterId]
+        ]:
             ...
 
         @classmethod

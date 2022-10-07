@@ -28,12 +28,19 @@ class GenericValue(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stringified_type"]) -> typing.Optional[str]:
+        def field(
+            cls, field_name: typing_extensions.Literal["stringified_type"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[str]], typing.Optional[str]]],
+            typing.Callable[[typing.Optional[str]], typing.Optional[str]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stringified_value"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["stringified_value"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

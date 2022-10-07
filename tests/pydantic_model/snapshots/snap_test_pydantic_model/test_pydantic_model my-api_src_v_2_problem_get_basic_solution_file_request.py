@@ -30,12 +30,19 @@ class GetBasicSolutionFileRequest(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["method_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["method_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["signature"]) -> NonVoidFunctionSignature:
+        def field(
+            cls, field_name: typing_extensions.Literal["signature"]
+        ) -> typing.Callable[
+            [typing.Callable[[NonVoidFunctionSignature], NonVoidFunctionSignature]],
+            typing.Callable[[NonVoidFunctionSignature], NonVoidFunctionSignature],
+        ]:
             ...
 
         @classmethod

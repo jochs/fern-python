@@ -23,7 +23,12 @@ class WebSocketResponse(WithDocs):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["type"]) -> typing.Optional[TypeReference]:
+        def field(
+            cls, field_name: typing_extensions.Literal["type"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[TypeReference]], typing.Optional[TypeReference]]],
+            typing.Callable[[typing.Optional[TypeReference]], typing.Optional[TypeReference]],
+        ]:
             ...
 
         @classmethod

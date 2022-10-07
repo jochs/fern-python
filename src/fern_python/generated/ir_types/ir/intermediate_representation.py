@@ -68,32 +68,52 @@ class IntermediateRepresentation(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["api_name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["api_name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["auth"]) -> ApiAuth:
+        def field(
+            cls, field_name: typing_extensions.Literal["auth"]
+        ) -> typing.Callable[[typing.Callable[[ApiAuth], ApiAuth]], typing.Callable[[ApiAuth], ApiAuth]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["types"]) -> typing.List[TypeDeclaration]:
+        def field(
+            cls, field_name: typing_extensions.Literal["types"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[TypeDeclaration]], typing.List[TypeDeclaration]]],
+            typing.Callable[[typing.List[TypeDeclaration]], typing.List[TypeDeclaration]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["services"]) -> Services:
+        def field(
+            cls, field_name: typing_extensions.Literal["services"]
+        ) -> typing.Callable[[typing.Callable[[Services], Services]], typing.Callable[[Services], Services]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["errors"]) -> typing.List[ErrorDeclaration]:
+        def field(
+            cls, field_name: typing_extensions.Literal["errors"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[ErrorDeclaration]], typing.List[ErrorDeclaration]]],
+            typing.Callable[[typing.List[ErrorDeclaration]], typing.List[ErrorDeclaration]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["constants"]) -> FernConstants:
+        def field(
+            cls, field_name: typing_extensions.Literal["constants"]
+        ) -> typing.Callable[
+            [typing.Callable[[FernConstants], FernConstants]], typing.Callable[[FernConstants], FernConstants]
+        ]:
             ...
 
         @classmethod

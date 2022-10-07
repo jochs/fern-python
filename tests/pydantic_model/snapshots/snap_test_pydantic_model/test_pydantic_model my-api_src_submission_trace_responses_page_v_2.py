@@ -30,12 +30,22 @@ class TraceResponsesPageV2(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["offset"]) -> typing.Optional[int]:
+        def field(
+            cls, field_name: typing_extensions.Literal["offset"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[int]], typing.Optional[int]]],
+            typing.Callable[[typing.Optional[int]], typing.Optional[int]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["trace_responses"]) -> typing.List[TraceResponseV2]:
+        def field(
+            cls, field_name: typing_extensions.Literal["trace_responses"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.List[TraceResponseV2]], typing.List[TraceResponseV2]]],
+            typing.Callable[[typing.List[TraceResponseV2]], typing.List[TraceResponseV2]],
+        ]:
             ...
 
         @classmethod

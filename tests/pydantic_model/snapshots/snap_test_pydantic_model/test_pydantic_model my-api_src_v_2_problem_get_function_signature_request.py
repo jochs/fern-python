@@ -20,7 +20,12 @@ class GetFunctionSignatureRequest(pydantic.BaseModel):
 
         @typing.overload  # type: ignore
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["function_signature"]) -> FunctionSignature:
+        def field(
+            cls, field_name: typing_extensions.Literal["function_signature"]
+        ) -> typing.Callable[
+            [typing.Callable[[FunctionSignature], FunctionSignature]],
+            typing.Callable[[FunctionSignature], FunctionSignature],
+        ]:
             ...
 
         @classmethod

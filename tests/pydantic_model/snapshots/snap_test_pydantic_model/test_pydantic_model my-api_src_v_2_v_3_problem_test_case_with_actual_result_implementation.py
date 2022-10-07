@@ -35,12 +35,22 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["get_actual_result"]) -> NonVoidFunctionDefinition:
+        def field(
+            cls, field_name: typing_extensions.Literal["get_actual_result"]
+        ) -> typing.Callable[
+            [typing.Callable[[NonVoidFunctionDefinition], NonVoidFunctionDefinition]],
+            typing.Callable[[NonVoidFunctionDefinition], NonVoidFunctionDefinition],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["assert_correctness_check"]) -> AssertCorrectnessCheck:
+        def field(
+            cls, field_name: typing_extensions.Literal["assert_correctness_check"]
+        ) -> typing.Callable[
+            [typing.Callable[[AssertCorrectnessCheck], AssertCorrectnessCheck]],
+            typing.Callable[[AssertCorrectnessCheck], AssertCorrectnessCheck],
+        ]:
             ...
 
         @classmethod

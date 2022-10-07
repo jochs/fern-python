@@ -49,22 +49,36 @@ class TestCaseNonHiddenGrade(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["passed"]) -> bool:
+        def field(
+            cls, field_name: typing_extensions.Literal["passed"]
+        ) -> typing.Callable[[typing.Callable[[bool], bool]], typing.Callable[[bool], bool]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["actual_result"]) -> typing.Optional[VariableValue]:
+        def field(
+            cls, field_name: typing_extensions.Literal["actual_result"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[VariableValue]], typing.Optional[VariableValue]]],
+            typing.Callable[[typing.Optional[VariableValue]], typing.Optional[VariableValue]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["exception"]) -> typing.Optional[ExceptionV2]:
+        def field(
+            cls, field_name: typing_extensions.Literal["exception"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[ExceptionV2]], typing.Optional[ExceptionV2]]],
+            typing.Callable[[typing.Optional[ExceptionV2]], typing.Optional[ExceptionV2]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["stdout"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["stdout"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @classmethod

@@ -35,12 +35,22 @@ class BinaryTreeValue(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["root"]) -> typing.Optional[NodeId]:
+        def field(
+            cls, field_name: typing_extensions.Literal["root"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]],
+            typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["nodes"]) -> typing.Dict[NodeId, BinaryTreeNodeValue]:
+        def field(
+            cls, field_name: typing_extensions.Literal["nodes"]
+        ) -> typing.Callable[
+            [typing.Callable[[typing.Dict[NodeId, BinaryTreeNodeValue]], typing.Dict[NodeId, BinaryTreeNodeValue]]],
+            typing.Callable[[typing.Dict[NodeId, BinaryTreeNodeValue]], typing.Dict[NodeId, BinaryTreeNodeValue]],
+        ]:
             ...
 
         @classmethod

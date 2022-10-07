@@ -29,12 +29,18 @@ class ErroredResponse(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["submission_id"]) -> SubmissionId:
+        def field(
+            cls, field_name: typing_extensions.Literal["submission_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[SubmissionId], SubmissionId]], typing.Callable[[SubmissionId], SubmissionId]
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["error_info"]) -> ErrorInfo:
+        def field(
+            cls, field_name: typing_extensions.Literal["error_info"]
+        ) -> typing.Callable[[typing.Callable[[ErrorInfo], ErrorInfo]], typing.Callable[[ErrorInfo], ErrorInfo]]:
             ...
 
         @classmethod

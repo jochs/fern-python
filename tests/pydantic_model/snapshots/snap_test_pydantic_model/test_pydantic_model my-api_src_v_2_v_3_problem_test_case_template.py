@@ -39,17 +39,29 @@ class TestCaseTemplate(pydantic.BaseModel):
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["template_id"]) -> TestCaseTemplateId:
+        def field(
+            cls, field_name: typing_extensions.Literal["template_id"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseTemplateId], TestCaseTemplateId]],
+            typing.Callable[[TestCaseTemplateId], TestCaseTemplateId],
+        ]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["name"]) -> str:
+        def field(
+            cls, field_name: typing_extensions.Literal["name"]
+        ) -> typing.Callable[[typing.Callable[[str], str]], typing.Callable[[str], str]]:
             ...
 
         @typing.overload
         @classmethod
-        def field(cls, field_name: typing_extensions.Literal["implementation"]) -> TestCaseImplementation:
+        def field(
+            cls, field_name: typing_extensions.Literal["implementation"]
+        ) -> typing.Callable[
+            [typing.Callable[[TestCaseImplementation], TestCaseImplementation]],
+            typing.Callable[[TestCaseImplementation], TestCaseImplementation],
+        ]:
             ...
 
         @classmethod

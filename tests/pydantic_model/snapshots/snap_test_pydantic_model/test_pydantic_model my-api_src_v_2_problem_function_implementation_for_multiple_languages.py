@@ -31,7 +31,16 @@ class FunctionImplementationForMultipleLanguages(pydantic.BaseModel):
         @classmethod
         def field(
             cls, field_name: typing_extensions.Literal["code_by_language"]
-        ) -> typing.Dict[Language, FunctionImplementation]:
+        ) -> typing.Callable[
+            [
+                typing.Callable[
+                    [typing.Dict[Language, FunctionImplementation]], typing.Dict[Language, FunctionImplementation]
+                ]
+            ],
+            typing.Callable[
+                [typing.Dict[Language, FunctionImplementation]], typing.Dict[Language, FunctionImplementation]
+            ],
+        ]:
             ...
 
         @classmethod
