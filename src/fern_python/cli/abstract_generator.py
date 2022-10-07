@@ -1,5 +1,6 @@
-import os
+import subprocess
 from abc import ABC, abstractmethod
+from typing import List
 
 from generator_exec.resources import logging
 from generator_exec.resources.config import GeneratorConfig, GeneratorPublishConfig
@@ -36,40 +37,25 @@ class AbstractGenerator(ABC):
             )
         generator_config.output.mode.visit(
             download_files=lambda: None,
-            publish=lambda publish: self._publish_project(
-                generator_exec_wrapper=generator_exec_wrapper, publish_config=publish
+            publish=lambda publish_config: self._publish(
+                generator_exec_wrapper=generator_exec_wrapper,
+                publish_config=publish_config,
+                generator_config=generator_config,
             ),
         )
 
-    def _publish_project(self, generator_exec_wrapper: GeneratorExecWrapper, publish_config: GeneratorPublishConfig) -> None:
-        pypi_registry_config = publish_config.registries_v_2.pypi
-        poetry_repo_name = "fern"
-        self._run_command(generator_exec_wrapper=generator_exec_wrapper, command=f"poetry install")
-        self._run_command(
-            generator_exec_wrapper=generator_exec_wrapper,
-            command=f"poetry config repositories.{poetry_repo_name} {pypi_registry_config.registry_url}/simple",
-        )
-        self._run_command(
-            generator_exec_wrapper=generator_exec_wrapper,
-            command=f"poetry config http-basic.{poetry_repo_name} {pypi_registry_config.username} {pypi_registry_config.password}",
-        )
-        self._run_command(
-            generator_exec_wrapper=generator_exec_wrapper,
-            command=f"poetry publish --build --repository {poetry_repo_name}",
-        )
-
-    def _run_command(
+    def _publish(
         self,
-        *,
-        command: str,
         generator_exec_wrapper: GeneratorExecWrapper,
-    ) -> None:
-        generator_exec_wrapper.send_update(
-            logging.GeneratorUpdate.factory.log(logging.LogUpdate(level=logging.LogLevel.DEBUG, message=command))
+        publish_config: GeneratorPublishConfig,
+        generator_config: GeneratorConfig,
+    ):
+        publisher = _Publisher(
+            generator_exec_wrapper=generator_exec_wrapper,
+            publish_config=publish_config,
+            generator_config=generator_config,
         )
-        exit_code = os.system(command)
-        if exit_code < 0:
-            raise Exception(f"{command} failed with exit code {exit_code}")
+        publisher.publish_project()
 
     @abstractmethod
     def run(
@@ -81,3 +67,67 @@ class AbstractGenerator(ABC):
         project: Project,
     ) -> None:
         pass
+
+
+class _Publisher:
+
+    _poetry_repo_name: str = "fern"
+
+    def __init__(
+        self,
+        generator_exec_wrapper: GeneratorExecWrapper,
+        publish_config: GeneratorPublishConfig,
+        generator_config: GeneratorConfig,
+    ):
+        self._generator_exec_wrapper = generator_exec_wrapper
+        self._publish_config = publish_config
+        self._generator_config = generator_config
+
+    def publish_project(
+        self,
+    ) -> None:
+        pypi_registry_config = self._publish_config.registries_v_2.pypi
+        self._run_command(command=["poetry", "install"])
+        self._run_command(
+            command=[
+                "poetry",
+                "config",
+                f"repositories.{self._poetry_repo_name}",
+                f"{pypi_registry_config.registry_url}/simple",
+            ],
+        )
+        self._run_command(
+            command=[
+                "poetry",
+                "config",
+                f"http-basic.{self._poetry_repo_name}",
+                pypi_registry_config.username,
+                pypi_registry_config.password,
+            ],
+        )
+        self._run_command(
+            command=[
+                "poetry",
+                "publish",
+                "--build",
+                "--repository",
+                self._poetry_repo_name,
+            ],
+        )
+
+    def _run_command(
+        self,
+        command: List[str],
+    ) -> None:
+        self._generator_exec_wrapper.send_update(
+            logging.GeneratorUpdate.factory.log(
+                logging.LogUpdate(level=logging.LogLevel.DEBUG, message=" ".join(command))
+            )
+        )
+        subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=self._generator_config.output.path,
+            check=True,
+        )

@@ -39,7 +39,7 @@ class PyProjectToml:
         content = ""
         for block in blocks:
             content += block.to_string()
-        with open(os.path.join(self._path, "pyproject.toml"), "r+") as f:
+        with open(os.path.join(self._path, "pyproject.toml"), "w") as f:
             f.write(content)
 
     class Block(ABC):

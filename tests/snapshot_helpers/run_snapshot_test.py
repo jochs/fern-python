@@ -25,23 +25,7 @@ def run_snapshot_test(
 
     generator_config = config.GeneratorConfig(
         ir_filepath=path_to_ir,
-        output=config.GeneratorOutputConfig(
-            path=path_to_output,
-            mode=config.OutputMode.factory.publish(
-                config.GeneratorPublishConfig(
-                    registries=config.GeneratorRegistriesConfig(
-                        maven=config.MavenRegistryConfig(registry_url="", username="", password="", group=""),
-                        npm=config.NpmRegistryConfig(registry_url="", token="", scope=""),
-                    ),
-                    registries_v_2=config.GeneratorRegistriesConfigV2(
-                        maven=config.MavenRegistryConfigV2(registry_url="", username="", password="", coordinate=""),
-                        npm=config.NpmRegistryConfigV2(registry_url="", token="", package_name=""),
-                        pypi=config.PypiRegistryConfig(registry_url="", username="", password="", package_name=""),
-                    ),
-                    version="0.0.0",
-                )
-            ),
-        ),
+        output=config.GeneratorOutputConfig(path=path_to_output, mode=config.OutputMode.factory.download_files()),
         workspace_name="ir",
         organization="fern",
         custom_config=None,
