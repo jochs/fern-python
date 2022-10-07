@@ -5,7 +5,6 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import List, Set
 
-from fern_python.codegen import dependency_manager
 from fern_python.codegen.ast.dependency.dependency import Dependency
 from fern_python.codegen.dependency_manager import DependencyManager
 
