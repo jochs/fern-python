@@ -74,8 +74,8 @@ class WriterImpl(AST.Writer):
         mkdir_p(os.path.dirname(self._filepath))
 
     def finish(self) -> None:
-        self._content = isort.code(self._content, quiet=True)
         try:
+            self._content = isort.code(self._content, quiet=True)
             self._content = black.format_file_contents(
                 self._content,
                 fast=True,
@@ -84,8 +84,9 @@ class WriterImpl(AST.Writer):
             )
         except black.report.NothingChanged:
             pass
-        with open(self._filepath, "w") as file:
-            file.write(self._content)
+        finally:  # write to disk even if the the formatting failed
+            with open(self._filepath, "w") as file:
+                file.write(self._content)
 
     def outdent(self) -> None:
         self._indent = max(0, self._indent - 1)

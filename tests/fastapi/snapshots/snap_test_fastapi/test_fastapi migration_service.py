@@ -1,2 +1,0 @@
-class AbstractMigrationInfoService:
-    pass

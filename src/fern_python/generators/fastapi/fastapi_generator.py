@@ -2,7 +2,7 @@ import fern.ir.pydantic as ir_types
 from generator_exec.resources import GeneratorConfig
 
 from fern_python.cli.abstract_generator import AbstractGenerator
-from fern_python.codegen import AST, Project
+from fern_python.codegen import Project
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 from fern_python.generators.pydantic_model import (
     PydanticModelCustomConfig,
@@ -10,6 +10,7 @@ from fern_python.generators.pydantic_model import (
 )
 
 from .context import FastApiGeneratorContext, FastApiGeneratorContextImpl
+from .service_generator import ServiceGenerator
 
 
 class FastApiGenerator(AbstractGenerator):
@@ -29,6 +30,7 @@ class FastApiGenerator(AbstractGenerator):
             project=project,
             context=context.pydantic_generator_context,
         )
+
         for service in ir.services.http:
             self._generate_service(
                 context=context,
@@ -50,6 +52,4 @@ class FastApiGenerator(AbstractGenerator):
         with self.source_file(
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
-            source_file.add_class_declaration(
-                declaration=AST.ClassDeclaration(name=context.get_class_name_for_service(service_name=service.name))
-            )
+            ServiceGenerator(context=context, service=service).generate(source_file=source_file)

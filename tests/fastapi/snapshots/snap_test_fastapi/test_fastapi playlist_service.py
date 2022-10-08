@@ -1,2 +1,0 @@
-class AbstractPlaylistCrudService:
-    pass
