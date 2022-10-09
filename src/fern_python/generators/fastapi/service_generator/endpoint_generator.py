@@ -62,21 +62,6 @@ class EndpointGenerator:
         return path
 
     def add_init_method_to_class(self, class_declaration: AST.ClassDeclaration) -> None:
-        def write_body(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
-            if len(self._parameters) > 0:
-                ...
-            writer.write(f"cls.{self._get_method_name()} = ")
-            writer.write(f"{EndpointGenerator._INIT_ENDPOINT_ROUTER_ARG}.")
-            writer.write(convert_http_method_to_fastapi_method_name(self._endpoint.method))
-            writer.write_line("(  # type: ignore")
-            with writer.indent():
-                writer.write_line(f'path="{self._endpoint_path}",')
-                if self._endpoint.response.type_v_2 is not None:
-                    writer.write("response_model=")
-                    writer.write_node(self._return_type)
-                    writer.write_line(",")
-            writer.write(f")(cls.{self._get_method_name()})")
-
         class_declaration.add_method(
             decorator=AST.ClassMethodDecorator.CLASS_METHOD,
             declaration=AST.FunctionDeclaration(
@@ -90,8 +75,80 @@ class EndpointGenerator:
                     ],
                     return_type=AST.TypeHint.none(),
                 ),
-                body=AST.CodeWriter(write_body),
+                body=AST.CodeWriter(self._write_init_body),
             ),
+        )
+
+    def _write_init_body(self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
+        if len(self._parameters) > 0:
+            self._write_update_endpoint_signature(writer=writer, reference_resolver=reference_resolver)
+        writer.write(f"cls.{self._get_method_name()} = ")
+        writer.write(f"{EndpointGenerator._INIT_ENDPOINT_ROUTER_ARG}.")
+        writer.write(convert_http_method_to_fastapi_method_name(self._endpoint.method))
+        writer.write_line("(  # type: ignore")
+        with writer.indent():
+            writer.write_line(f'path="{self._endpoint_path}",')
+            if self._endpoint.response.type_v_2 is not None:
+                writer.write("response_model=")
+                writer.write_node(self._return_type)
+                writer.write_line(",")
+        writer.write(f")(cls.{self._get_method_name()})")
+
+    def _write_update_endpoint_signature(
+        self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver
+    ) -> None:
+        ENDPOINT_FUNCTION_VARIABLE_NAME = "endpoint_function"
+        writer.write(f"{ENDPOINT_FUNCTION_VARIABLE_NAME} = ")
+        writer.write_node(
+            AST.FunctionInvocation(
+                function_definition=AST.Reference(
+                    qualified_name_excluding_import=("signature",),
+                    import_=AST.ReferenceImport(module=AST.Module.built_in("inspect")),
+                )
+            )
+        )
+        writer.write_line()
+
+        NEW_PARAMETERS_VARIABLE_NAME = "new_parameters"
+        writer.write(f"{NEW_PARAMETERS_VARIABLE_NAME}: ")
+        writer.write_node(
+            AST.TypeHint.list(
+                AST.TypeHint(
+                    type=AST.ClassReference(
+                        qualified_name_excluding_import=("Parameter",),
+                        import_=AST.ReferenceImport(module=AST.Module.built_in("inspect")),
+                    )
+                )
+            )
+        )
+        writer.write_line(" = []")
+
+        INDEX_VARIABLE_NAME = "index"
+        PARAMETER_NAME_VARIABLE_NAME = "parameter_name"
+        PARAMETER_VALUE_VARIABLE_NAME = "parameter"
+        writer.write_line(
+            f"for {INDEX_VARIABLE_NAME}, ({PARAMETER_NAME_VARIABLE_NAME}, {PARAMETER_VALUE_VARIABLE_NAME}) "
+            + f"in enumerate({ENDPOINT_FUNCTION_VARIABLE_NAME}.parameters.items()):"
+        )
+
+        with writer.indent():
+            for i, parameter in enumerate(self._parameters):
+                writer.write_line(
+                    ("if" if i == 0 else "elif") + f' {PARAMETER_NAME_VARIABLE_NAME} == "{parameter.get_name()}":'
+                )
+                with writer.indent():
+                    writer.write(
+                        f"{NEW_PARAMETERS_VARIABLE_NAME}.append(" + f"{PARAMETER_VALUE_VARIABLE_NAME}.replace(default="
+                    )
+                    writer.write_node(parameter.get_default())
+                    writer.write_line("))")
+            writer.write_line("else:")
+            with writer.indent():
+                writer.write_line(f"{NEW_PARAMETERS_VARIABLE_NAME}.append({PARAMETER_VALUE_VARIABLE_NAME})")
+
+        writer.write_line(
+            f"cls.{self._get_method_name()}.__signature__ = "
+            + f"{ENDPOINT_FUNCTION_VARIABLE_NAME}.replace(parameters={NEW_PARAMETERS_VARIABLE_NAME})"
         )
 
     def invoke_init_method(self, *, reference_to_fastapi_router: AST.Expression) -> AST.FunctionInvocation:

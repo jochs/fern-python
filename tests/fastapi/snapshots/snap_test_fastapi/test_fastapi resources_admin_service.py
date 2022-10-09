@@ -1,4 +1,5 @@
 import abc
+import inspect
 import typing
 
 import fastapi
@@ -78,48 +79,132 @@ class AbstractAdminService(abc.ABC):
 
     @classmethod
     def __init_updateTestSubmissionStatus(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.updateTestSubmissionStatus.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.updateTestSubmissionStatus = router.post(  # type: ignore
             path="/store-test-submission-status/{submission_id}"
         )(cls.updateTestSubmissionStatus)
 
     @classmethod
     def __init_sendTestSubmissionUpdate(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.sendTestSubmissionUpdate.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.sendTestSubmissionUpdate = router.post(  # type: ignore
             path="/store-test-submission-status-v2/{submission_id}"
         )(cls.sendTestSubmissionUpdate)
 
     @classmethod
     def __init_updateWorkspaceSubmissionStatus(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.updateWorkspaceSubmissionStatus.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.updateWorkspaceSubmissionStatus = router.post(  # type: ignore
             path="/store-workspace-submission-status/{submission_id}"
         )(cls.updateWorkspaceSubmissionStatus)
 
     @classmethod
     def __init_sendWorkspaceSubmissionUpdate(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.sendWorkspaceSubmissionUpdate.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.sendWorkspaceSubmissionUpdate = router.post(  # type: ignore
             path="/store-workspace-submission-status-v2/{submission_id}"
         )(cls.sendWorkspaceSubmissionUpdate)
 
     @classmethod
     def __init_storeTracedTestCase(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            elif parameter_name == "test_case_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.storeTracedTestCase.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.storeTracedTestCase = router.post(  # type: ignore
             path="/store-test-trace/submission/{submission_id}/testCase/{test_case_id}"
         )(cls.storeTracedTestCase)
 
     @classmethod
     def __init_storeTracedTestCaseV2(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            elif parameter_name == "test_case_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.storeTracedTestCaseV2.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.storeTracedTestCaseV2 = router.post(  # type: ignore
             path="/store-test-trace-v2/submission/{submission_id}/testCase/{test_case_id}"
         )(cls.storeTracedTestCaseV2)
 
     @classmethod
     def __init_storeTracedWorkspace(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.storeTracedWorkspace.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.storeTracedWorkspace = router.post(  # type: ignore
             path="/store-workspace-trace/submission/{submission_id}"
         )(cls.storeTracedWorkspace)
 
     @classmethod
     def __init_storeTracedWorkspaceV2(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "submission_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.storeTracedWorkspaceV2.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.storeTracedWorkspaceV2 = router.post(  # type: ignore
             path="/store-workspace-trace-v2/submission/{submission_id}"
         )(cls.storeTracedWorkspaceV2)

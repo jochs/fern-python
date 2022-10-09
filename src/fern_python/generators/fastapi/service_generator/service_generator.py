@@ -72,15 +72,6 @@ class ServiceGenerator:
         )
 
     def _add_init_fern_method(self, class_declaration: AST.ClassDeclaration) -> None:
-        def write_body(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
-            for endpoint_generator in self._endpoint_generators:
-                writer.write_node(
-                    endpoint_generator.invoke_init_method(
-                        reference_to_fastapi_router=AST.Expression(ServiceGenerator._INIT_FERN_ROUTER_ARGUMENT)
-                    )
-                )
-                writer.write_line()
-
         class_declaration.add_method(
             decorator=AST.ClassMethodDecorator.CLASS_METHOD,
             declaration=AST.FunctionDeclaration(
@@ -94,6 +85,15 @@ class ServiceGenerator:
                     ],
                     return_type=AST.TypeHint.none(),
                 ),
-                body=AST.CodeWriter(write_body),
+                body=AST.CodeWriter(self._write_init_fern_body),
             ),
         )
+
+    def _write_init_fern_body(self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
+        for endpoint_generator in self._endpoint_generators:
+            writer.write_node(
+                endpoint_generator.invoke_init_method(
+                    reference_to_fastapi_router=AST.Expression(ServiceGenerator._INIT_FERN_ROUTER_ARGUMENT)
+                )
+            )
+            writer.write_line()

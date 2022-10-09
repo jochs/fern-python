@@ -1,4 +1,5 @@
 import abc
+import inspect
 import typing
 
 import fastapi
@@ -60,12 +61,30 @@ class AbstractProblemInfoServicV2(abc.ABC):
 
     @classmethod
     def __init_getLatestProblem(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "problem_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.getLatestProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.getLatestProblem = router.get(  # type: ignore
             path="/problem-info/{problem_id}", response_model=ProblemInfoV2
         )(cls.getLatestProblem)
 
     @classmethod
     def __init_getProblemVersion(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "problem_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            elif parameter_name == "problem_version":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.getProblemVersion.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.getProblemVersion = router.get(  # type: ignore
             path="/problem-info/{problem_id}/version/{problem_version}", response_model=ProblemInfoV2
         )(cls.getProblemVersion)

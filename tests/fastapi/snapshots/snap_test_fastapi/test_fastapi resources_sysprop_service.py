@@ -1,4 +1,5 @@
 import abc
+import inspect
 import typing
 
 import fastapi
@@ -36,6 +37,16 @@ class AbstractSysPropCrudService(abc.ABC):
 
     @classmethod
     def __init_setNumWarmInstances(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "language":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            elif parameter_name == "num_warm_instances":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.setNumWarmInstances.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.setNumWarmInstances = router.put(  # type: ignore
             path="/num-warm-instances/{language}/{num_warm_instances}"
         )(cls.setNumWarmInstances)

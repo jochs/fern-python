@@ -1,4 +1,5 @@
 import abc
+import inspect
 import typing
 
 import fastapi
@@ -51,22 +52,56 @@ class AbstractProblemCrudService(abc.ABC):
 
     @classmethod
     def __init_createProblem(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.createProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.createProblem = router.post(path="/create", response_model=CreateProblemResponse)(  # type: ignore
             cls.createProblem
         )
 
     @classmethod
     def __init_updateProblem(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "problem_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.updateProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.updateProblem = router.post(  # type: ignore
             path="/update/{problem_id}", response_model=UpdateProblemResponse
         )(cls.updateProblem)
 
     @classmethod
     def __init_deleteProblem(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "problem_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.deleteProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.deleteProblem = router.delete(path="/delete/{problem_id}")(cls.deleteProblem)  # type: ignore
 
     @classmethod
     def __init_getDefaultStarterFiles(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.getDefaultStarterFiles.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.getDefaultStarterFiles = router.post(  # type: ignore
             path="/default-starter-files", response_model=GetDefaultStarterFilesResponse
         )(cls.getDefaultStarterFiles)

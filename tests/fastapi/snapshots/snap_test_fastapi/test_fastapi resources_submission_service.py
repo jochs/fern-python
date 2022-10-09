@@ -1,4 +1,5 @@
 import abc
+import inspect
 import typing
 
 import fastapi
@@ -48,18 +49,42 @@ class AbstractExecutionSesssionManagementService(abc.ABC):
 
     @classmethod
     def __init_createExecutionSession(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "language":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.createExecutionSession.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.createExecutionSession = router.post(  # type: ignore
             path="/create-session/{language}", response_model=ExecutionSessionResponse
         )(cls.createExecutionSession)
 
     @classmethod
     def __init_getExecutionSession(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "session_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.getExecutionSession.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.getExecutionSession = router.get(  # type: ignore
             path="/{session_id}", response_model=typing.Optional[ExecutionSessionResponse]
         )(cls.getExecutionSession)
 
     @classmethod
     def __init_stopExecutionSession(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "session_id":
+                new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.stopExecutionSession.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.stopExecutionSession = router.delete(path="/stop/{session_id}")(cls.stopExecutionSession)  # type: ignore
 
     @classmethod

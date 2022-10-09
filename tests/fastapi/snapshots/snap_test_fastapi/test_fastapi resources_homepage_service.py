@@ -1,4 +1,5 @@
 import abc
+import inspect
 import typing
 
 import fastapi
@@ -42,4 +43,12 @@ class AbstractHomepageProblemService(abc.ABC):
 
     @classmethod
     def __init_setHomepageProblems(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if parameter_name == "request":
+                new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            else:
+                new_parameters.append(parameter)
+        cls.setHomepageProblems.__signature__ = endpoint_function.replace(parameters=new_parameters)
         cls.setHomepageProblems = router.post(path="/")(cls.setHomepageProblems)  # type: ignore
