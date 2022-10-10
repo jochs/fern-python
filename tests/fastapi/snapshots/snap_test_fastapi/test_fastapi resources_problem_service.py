@@ -5,6 +5,7 @@ import typing
 import fastapi
 
 from ...core.abstract_fern_service import AbstractFernService
+from ...core.route_args import get_route_args
 from ..commons.types.problem_id import ProblemId
 from .types.create_problem_request import CreateProblemRequest
 from .types.create_problem_response import CreateProblemResponse
@@ -63,9 +64,10 @@ class AbstractProblemCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.createProblem = router.post(path="/create", response_model=CreateProblemResponse)(  # type: ignore
-            cls.createProblem
-        )
+
+        cls.createProblem = router.post(  # type: ignore
+            path="/create", response_model=CreateProblemResponse, **get_route_args(cls.createProblem)
+        )(cls.createProblem)
 
     @classmethod
     def __init_updateProblem(cls, router: fastapi.APIRouter) -> None:
@@ -81,8 +83,9 @@ class AbstractProblemCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.updateProblem = router.post(  # type: ignore
-            path="/update/{problem_id}", response_model=UpdateProblemResponse
+            path="/update/{problem_id}", response_model=UpdateProblemResponse, **get_route_args(cls.updateProblem)
         )(cls.updateProblem)
 
     @classmethod
@@ -97,7 +100,10 @@ class AbstractProblemCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.deleteProblem = router.delete(path="/delete/{problem_id}")(cls.deleteProblem)  # type: ignore
+
+        cls.deleteProblem = router.delete(  # type: ignore
+            path="/delete/{problem_id}", **get_route_args(cls.deleteProblem)
+        )(cls.deleteProblem)
 
     @classmethod
     def __init_getDefaultStarterFiles(cls, router: fastapi.APIRouter) -> None:
@@ -111,6 +117,9 @@ class AbstractProblemCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.getDefaultStarterFiles = router.post(  # type: ignore
-            path="/default-starter-files", response_model=GetDefaultStarterFilesResponse
+            path="/default-starter-files",
+            response_model=GetDefaultStarterFilesResponse,
+            **get_route_args(cls.getDefaultStarterFiles),
         )(cls.getDefaultStarterFiles)

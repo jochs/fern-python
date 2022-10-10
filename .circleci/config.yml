@@ -63,7 +63,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - publish-docker:
+      - publish-dockers:
           filters:
             branches:
               only: main

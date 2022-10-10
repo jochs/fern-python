@@ -42,6 +42,19 @@ class CoreUtilities:
             ),
         )
 
+    def get_route_args(self, endpoint_method: AST.Expression) -> AST.Expression:
+        return AST.Expression(
+            AST.FunctionInvocation(
+                function_definition=AST.Reference(
+                    qualified_name_excluding_import=(),
+                    import_=AST.ReferenceImport(
+                        module=AST.Module.local(*self._module_path, "route_args"), named_import="get_route_args"
+                    ),
+                ),
+                args=[endpoint_method],
+            )
+        )
+
     def BearerToken(self) -> AST.ClassReference:
         return AST.ClassReference(
             qualified_name_excluding_import=(),

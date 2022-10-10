@@ -5,6 +5,7 @@ import typing
 import fastapi
 
 from ...core.abstract_fern_service import AbstractFernService
+from ...core.route_args import get_route_args
 from ...security import ApiAuth, FernAuth
 from .types.playlist import Playlist
 from .types.playlist_create_request import PlaylistCreateRequest
@@ -71,7 +72,10 @@ class AbstractPlaylistCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.createPlaylist = router.post(path="/create", response_model=Playlist)(cls.createPlaylist)  # type: ignore
+
+        cls.createPlaylist = router.post(  # type: ignore
+            path="/create", response_model=Playlist, **get_route_args(cls.createPlaylist)
+        )(cls.createPlaylist)
 
     @classmethod
     def __init_getPlaylists(cls, router: fastapi.APIRouter) -> None:
@@ -89,9 +93,10 @@ class AbstractPlaylistCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.getPlaylists = router.get(path="/all", response_model=typing.List[Playlist])(  # type: ignore
-            cls.getPlaylists
-        )
+
+        cls.getPlaylists = router.get(  # type: ignore
+            path="/all", response_model=typing.List[Playlist], **get_route_args(cls.getPlaylists)
+        )(cls.getPlaylists)
 
     @classmethod
     def __init_getPlaylist(cls, router: fastapi.APIRouter) -> None:
@@ -105,7 +110,10 @@ class AbstractPlaylistCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.getPlaylist = router.get(path="/{playlist_id}", response_model=Playlist)(cls.getPlaylist)  # type: ignore
+
+        cls.getPlaylist = router.get(  # type: ignore
+            path="/{playlist_id}", response_model=Playlist, **get_route_args(cls.getPlaylist)
+        )(cls.getPlaylist)
 
     @classmethod
     def __init_updatePlaylist(cls, router: fastapi.APIRouter) -> None:
@@ -123,8 +131,9 @@ class AbstractPlaylistCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.updatePlaylist = router.put(  # type: ignore
-            path="/{playlist_id}", response_model=typing.Optional[Playlist]
+            path="/{playlist_id}", response_model=typing.Optional[Playlist], **get_route_args(cls.updatePlaylist)
         )(cls.updatePlaylist)
 
     @classmethod
@@ -141,4 +150,7 @@ class AbstractPlaylistCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.deletePlaylist = router.delete(path="/{playlist_id}")(cls.deletePlaylist)  # type: ignore
+
+        cls.deletePlaylist = router.delete(path="/{playlist_id}", **get_route_args(cls.deletePlaylist))(  # type: ignore
+            cls.deletePlaylist
+        )

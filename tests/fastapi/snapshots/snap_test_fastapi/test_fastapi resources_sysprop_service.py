@@ -5,6 +5,7 @@ import typing
 import fastapi
 
 from ...core.abstract_fern_service import AbstractFernService
+from ...core.route_args import get_route_args
 from ..commons.types.language import Language
 
 
@@ -50,8 +51,9 @@ class AbstractSysPropCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.setNumWarmInstances = router.put(  # type: ignore
-            path="/num-warm-instances/{language}/{num_warm_instances}"
+            path="/num-warm-instances/{language}/{num_warm_instances}", **get_route_args(cls.setNumWarmInstances)
         )(cls.setNumWarmInstances)
 
     @classmethod
@@ -64,6 +66,9 @@ class AbstractSysPropCrudService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.getNumWarmInstances = router.get(  # type: ignore
-            path="/num-warm-instances", response_model=typing.Dict[Language, int]
+            path="/num-warm-instances",
+            response_model=typing.Dict[Language, int],
+            **get_route_args(cls.getNumWarmInstances),
         )(cls.getNumWarmInstances)

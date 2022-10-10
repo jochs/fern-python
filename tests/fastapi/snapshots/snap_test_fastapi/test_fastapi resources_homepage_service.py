@@ -5,6 +5,7 @@ import typing
 import fastapi
 
 from ...core.abstract_fern_service import AbstractFernService
+from ...core.route_args import get_route_args
 from ..commons.types.problem_id import ProblemId
 
 
@@ -46,9 +47,10 @@ class AbstractHomepageProblemService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.getHomepageProblems = router.get(path="/", response_model=typing.List[ProblemId])(  # type: ignore
-            cls.getHomepageProblems
-        )
+
+        cls.getHomepageProblems = router.get(  # type: ignore
+            path="/", response_model=typing.List[ProblemId], **get_route_args(cls.getHomepageProblems)
+        )(cls.getHomepageProblems)
 
     @classmethod
     def __init_setHomepageProblems(cls, router: fastapi.APIRouter) -> None:
@@ -62,4 +64,7 @@ class AbstractHomepageProblemService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.setHomepageProblems = router.post(path="/")(cls.setHomepageProblems)  # type: ignore
+
+        cls.setHomepageProblems = router.post(path="/", **get_route_args(cls.setHomepageProblems))(  # type: ignore
+            cls.setHomepageProblems
+        )

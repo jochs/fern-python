@@ -5,6 +5,7 @@ import typing
 import fastapi
 
 from .....core.abstract_fern_service import AbstractFernService
+from .....core.route_args import get_route_args
 from ....commons.types.problem_id import ProblemId
 from .types.lightweight_problem_info_v_2 import LightweightProblemInfoV2
 from .types.problem_info_v_2 import ProblemInfoV2
@@ -58,8 +59,11 @@ class AbstractProblemInfoServicV2(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.getLightweightProblems = router.get(  # type: ignore
-            path="/lightweight-problem-info", response_model=typing.List[LightweightProblemInfoV2]
+            path="/lightweight-problem-info",
+            response_model=typing.List[LightweightProblemInfoV2],
+            **get_route_args(cls.getLightweightProblems),
         )(cls.getLightweightProblems)
 
     @classmethod
@@ -72,9 +76,10 @@ class AbstractProblemInfoServicV2(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.getProblems = router.get(path="/problem-info", response_model=typing.List[ProblemInfoV2])(  # type: ignore
-            cls.getProblems
-        )
+
+        cls.getProblems = router.get(  # type: ignore
+            path="/problem-info", response_model=typing.List[ProblemInfoV2], **get_route_args(cls.getProblems)
+        )(cls.getProblems)
 
     @classmethod
     def __init_getLatestProblem(cls, router: fastapi.APIRouter) -> None:
@@ -88,8 +93,9 @@ class AbstractProblemInfoServicV2(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.getLatestProblem = router.get(  # type: ignore
-            path="/problem-info/{problem_id}", response_model=ProblemInfoV2
+            path="/problem-info/{problem_id}", response_model=ProblemInfoV2, **get_route_args(cls.getLatestProblem)
         )(cls.getLatestProblem)
 
     @classmethod
@@ -106,6 +112,9 @@ class AbstractProblemInfoServicV2(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
+
         cls.getProblemVersion = router.get(  # type: ignore
-            path="/problem-info/{problem_id}/version/{problem_version}", response_model=ProblemInfoV2
+            path="/problem-info/{problem_id}/version/{problem_version}",
+            response_model=ProblemInfoV2,
+            **get_route_args(cls.getProblemVersion),
         )(cls.getProblemVersion)

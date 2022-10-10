@@ -83,7 +83,10 @@ class EndpointGenerator:
 
     def _write_init_body(self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
         self._write_update_endpoint_signature(writer=writer, reference_resolver=reference_resolver)
-        writer.write(f"cls.{self._get_method_name()} = ")
+        writer.write_line()
+
+        method_name = f"cls.{self._get_method_name()}"
+        writer.write(f"{method_name} = ")
         writer.write(f"{EndpointGenerator._INIT_ENDPOINT_ROUTER_ARG}.")
         writer.write(convert_http_method_to_fastapi_method_name(self._endpoint.method))
         writer.write_line("(  # type: ignore")
@@ -93,7 +96,10 @@ class EndpointGenerator:
                 writer.write("response_model=")
                 writer.write_node(self._return_type)
                 writer.write_line(",")
-        writer.write(f")(cls.{self._get_method_name()})")
+            writer.write("**")
+            writer.write_node(self._context.core_utilities.get_route_args(AST.Expression(method_name)))
+            writer.write_line(",")
+        writer.write(f")({method_name})")
 
     def _write_update_endpoint_signature(
         self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver

@@ -5,6 +5,7 @@ import typing
 import fastapi
 
 from ...core.abstract_fern_service import AbstractFernService
+from ...core.route_args import get_route_args
 from .types.migration import Migration
 
 
@@ -41,6 +42,7 @@ class AbstractMigrationInfoService(AbstractFernService):
             else:
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
-        cls.getAttemptedMigrations = router.get(path="/all", response_model=typing.List[Migration])(  # type: ignore
-            cls.getAttemptedMigrations
-        )
+
+        cls.getAttemptedMigrations = router.get(  # type: ignore
+            path="/all", response_model=typing.List[Migration], **get_route_args(cls.getAttemptedMigrations)
+        )(cls.getAttemptedMigrations)
