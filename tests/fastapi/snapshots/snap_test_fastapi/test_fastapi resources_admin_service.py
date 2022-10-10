@@ -97,7 +97,7 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.updateTestSubmissionStatus = router.post(  # type: ignore
-            path="/store-test-submission-status/{submission_id}", **get_route_args(cls.updateTestSubmissionStatus)
+            path="/admin/store-test-submission-status/{submission_id}", **get_route_args(cls.updateTestSubmissionStatus)
         )(cls.updateTestSubmissionStatus)
 
     @classmethod
@@ -116,7 +116,8 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.sendTestSubmissionUpdate = router.post(  # type: ignore
-            path="/store-test-submission-status-v2/{submission_id}", **get_route_args(cls.sendTestSubmissionUpdate)
+            path="/admin/store-test-submission-status-v2/{submission_id}",
+            **get_route_args(cls.sendTestSubmissionUpdate),
         )(cls.sendTestSubmissionUpdate)
 
     @classmethod
@@ -135,7 +136,7 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.updateWorkspaceSubmissionStatus = router.post(  # type: ignore
-            path="/store-workspace-submission-status/{submission_id}",
+            path="/admin/store-workspace-submission-status/{submission_id}",
             **get_route_args(cls.updateWorkspaceSubmissionStatus),
         )(cls.updateWorkspaceSubmissionStatus)
 
@@ -155,7 +156,7 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.sendWorkspaceSubmissionUpdate = router.post(  # type: ignore
-            path="/store-workspace-submission-status-v2/{submission_id}",
+            path="/admin/store-workspace-submission-status-v2/{submission_id}",
             **get_route_args(cls.sendWorkspaceSubmissionUpdate),
         )(cls.sendWorkspaceSubmissionUpdate)
 
@@ -177,7 +178,7 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.storeTracedTestCase = router.post(  # type: ignore
-            path="/store-test-trace/submission/{submission_id}/testCase/{test_case_id}",
+            path="/admin/store-test-trace/submission/{submission_id}/testCase/{test_case_id}",
             **get_route_args(cls.storeTracedTestCase),
         )(cls.storeTracedTestCase)
 
@@ -199,7 +200,7 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.storeTracedTestCaseV2 = router.post(  # type: ignore
-            path="/store-test-trace-v2/submission/{submission_id}/testCase/{test_case_id}",
+            path="/admin/store-test-trace-v2/submission/{submission_id}/testCase/{test_case_id}",
             **get_route_args(cls.storeTracedTestCaseV2),
         )(cls.storeTracedTestCaseV2)
 
@@ -219,7 +220,7 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.storeTracedWorkspace = router.post(  # type: ignore
-            path="/store-workspace-trace/submission/{submission_id}", **get_route_args(cls.storeTracedWorkspace)
+            path="/admin/store-workspace-trace/submission/{submission_id}", **get_route_args(cls.storeTracedWorkspace)
         )(cls.storeTracedWorkspace)
 
     @classmethod
@@ -238,5 +239,6 @@ class AbstractAdminService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.storeTracedWorkspaceV2 = router.post(  # type: ignore
-            path="/store-workspace-trace-v2/submission/{submission_id}", **get_route_args(cls.storeTracedWorkspaceV2)
+            path="/admin/store-workspace-trace-v2/submission/{submission_id}",
+            **get_route_args(cls.storeTracedWorkspaceV2),
         )(cls.storeTracedWorkspaceV2)

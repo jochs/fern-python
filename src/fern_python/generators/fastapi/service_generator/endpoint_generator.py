@@ -19,7 +19,14 @@ from .endpoint_parameters import (
 class EndpointGenerator:
     _INIT_ENDPOINT_ROUTER_ARG = "router"
 
-    def __init__(self, *, endpoint: ir_types.services.HttpEndpoint, context: FastApiGeneratorContext):
+    def __init__(
+        self,
+        *,
+        service: ir_types.services.HttpService,
+        endpoint: ir_types.services.HttpEndpoint,
+        context: FastApiGeneratorContext,
+    ):
+        self._service = service
         self._endpoint = endpoint
         self._context = context
 
@@ -31,6 +38,8 @@ class EndpointGenerator:
                     request_type=endpoint.request.type_v_2,
                 )
             )
+        for path_parameter in service.path_parameters:
+            self._parameters.append(PathEndpointParameter(context=context, path_parameter=path_parameter))
         for path_parameter in endpoint.path_parameters:
             self._parameters.append(PathEndpointParameter(context=context, path_parameter=path_parameter))
         for query_parameter in endpoint.query_parameters:
@@ -56,11 +65,30 @@ class EndpointGenerator:
 
     @cached_property
     def _endpoint_path(self) -> str:
-        path = self._endpoint.path.head
-        for i, part in enumerate(self._endpoint.path.parts):
-            path_parameter = self._endpoint.path_parameters[i]
-            path += "{" + PathEndpointParameter.get_variable_name_of_path_parameter(path_parameter) + "}"
-            path += part.tail
+        base_path = self._service.base_path_v_2
+        service_part = (
+            base_path.head
+            + "".join(
+                self._get_path_parameter_part_as_str(self._service.path_parameters[i], part.tail)
+                for i, part in enumerate(base_path.parts)
+            )
+            if base_path is not None
+            else ""
+        )
+        endpoint_part = self._endpoint.path.head + "".join(
+            self._get_path_parameter_part_as_str(self._endpoint.path_parameters[i], part.tail)
+            for i, part in enumerate(self._endpoint.path.parts)
+        )
+        if service_part.endswith("/"):
+            service_part = service_part[:-1]
+        if endpoint_part.startswith("/"):
+            endpoint_part = endpoint_part[1:]
+        return f"{service_part}/{endpoint_part}"
+
+    def _get_path_parameter_part_as_str(self, path_parameter: ir_types.services.PathParameter, tail: str) -> str:
+        path = ""
+        path += "{" + PathEndpointParameter.get_variable_name_of_path_parameter(path_parameter) + "}"
+        path += tail
         return path
 
     def add_init_method_to_class(self, class_declaration: AST.ClassDeclaration) -> None:

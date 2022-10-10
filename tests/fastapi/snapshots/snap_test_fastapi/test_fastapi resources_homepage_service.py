@@ -49,7 +49,7 @@ class AbstractHomepageProblemService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getHomepageProblems = router.get(  # type: ignore
-            path="/", response_model=typing.List[ProblemId], **get_route_args(cls.getHomepageProblems)
+            path="/homepage-problems/", response_model=typing.List[ProblemId], **get_route_args(cls.getHomepageProblems)
         )(cls.getHomepageProblems)
 
     @classmethod
@@ -65,6 +65,6 @@ class AbstractHomepageProblemService(AbstractFernService):
                 new_parameters.append(parameter)
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
-        cls.setHomepageProblems = router.post(path="/", **get_route_args(cls.setHomepageProblems))(  # type: ignore
-            cls.setHomepageProblems
-        )
+        cls.setHomepageProblems = router.post(  # type: ignore
+            path="/homepage-problems/", **get_route_args(cls.setHomepageProblems)
+        )(cls.setHomepageProblems)

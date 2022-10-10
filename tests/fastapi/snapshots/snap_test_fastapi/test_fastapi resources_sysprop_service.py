@@ -53,7 +53,8 @@ class AbstractSysPropCrudService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.setNumWarmInstances = router.put(  # type: ignore
-            path="/num-warm-instances/{language}/{num_warm_instances}", **get_route_args(cls.setNumWarmInstances)
+            path="/sysprop/num-warm-instances/{language}/{num_warm_instances}",
+            **get_route_args(cls.setNumWarmInstances),
         )(cls.setNumWarmInstances)
 
     @classmethod
@@ -68,7 +69,7 @@ class AbstractSysPropCrudService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getNumWarmInstances = router.get(  # type: ignore
-            path="/num-warm-instances",
+            path="/sysprop/num-warm-instances",
             response_model=typing.Dict[Language, int],
             **get_route_args(cls.getNumWarmInstances),
         )(cls.getNumWarmInstances)

@@ -44,5 +44,7 @@ class AbstractMigrationInfoService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getAttemptedMigrations = router.get(  # type: ignore
-            path="/all", response_model=typing.List[Migration], **get_route_args(cls.getAttemptedMigrations)
+            path="/migration-info/all",
+            response_model=typing.List[Migration],
+            **get_route_args(cls.getAttemptedMigrations),
         )(cls.getAttemptedMigrations)

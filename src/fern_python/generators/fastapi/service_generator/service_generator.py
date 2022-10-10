@@ -14,7 +14,7 @@ class ServiceGenerator:
         self._context = context
         self._service = service
         self._endpoint_generators = [
-            EndpointGenerator(endpoint=endpoint, context=context) for endpoint in service.endpoints
+            EndpointGenerator(service=service, endpoint=endpoint, context=context) for endpoint in service.endpoints
         ]
 
     def generate(

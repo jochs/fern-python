@@ -66,7 +66,7 @@ class AbstractProblemCrudService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.createProblem = router.post(  # type: ignore
-            path="/create", response_model=CreateProblemResponse, **get_route_args(cls.createProblem)
+            path="/problem-crud/create", response_model=CreateProblemResponse, **get_route_args(cls.createProblem)
         )(cls.createProblem)
 
     @classmethod
@@ -85,7 +85,9 @@ class AbstractProblemCrudService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.updateProblem = router.post(  # type: ignore
-            path="/update/{problem_id}", response_model=UpdateProblemResponse, **get_route_args(cls.updateProblem)
+            path="/problem-crud/update/{problem_id}",
+            response_model=UpdateProblemResponse,
+            **get_route_args(cls.updateProblem),
         )(cls.updateProblem)
 
     @classmethod
@@ -102,7 +104,7 @@ class AbstractProblemCrudService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.deleteProblem = router.delete(  # type: ignore
-            path="/delete/{problem_id}", **get_route_args(cls.deleteProblem)
+            path="/problem-crud/delete/{problem_id}", **get_route_args(cls.deleteProblem)
         )(cls.deleteProblem)
 
     @classmethod
@@ -119,7 +121,7 @@ class AbstractProblemCrudService(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getDefaultStarterFiles = router.post(  # type: ignore
-            path="/default-starter-files",
+            path="/problem-crud/default-starter-files",
             response_model=GetDefaultStarterFilesResponse,
             **get_route_args(cls.getDefaultStarterFiles),
         )(cls.getDefaultStarterFiles)

@@ -61,7 +61,7 @@ class AbstractProblemInfoServicV2(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getLightweightProblems = router.get(  # type: ignore
-            path="/lightweight-problem-info",
+            path="/problems-v2/lightweight-problem-info",
             response_model=typing.List[LightweightProblemInfoV2],
             **get_route_args(cls.getLightweightProblems),
         )(cls.getLightweightProblems)
@@ -78,7 +78,9 @@ class AbstractProblemInfoServicV2(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getProblems = router.get(  # type: ignore
-            path="/problem-info", response_model=typing.List[ProblemInfoV2], **get_route_args(cls.getProblems)
+            path="/problems-v2/problem-info",
+            response_model=typing.List[ProblemInfoV2],
+            **get_route_args(cls.getProblems),
         )(cls.getProblems)
 
     @classmethod
@@ -95,7 +97,9 @@ class AbstractProblemInfoServicV2(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getLatestProblem = router.get(  # type: ignore
-            path="/problem-info/{problem_id}", response_model=ProblemInfoV2, **get_route_args(cls.getLatestProblem)
+            path="/problems-v2/problem-info/{problem_id}",
+            response_model=ProblemInfoV2,
+            **get_route_args(cls.getLatestProblem),
         )(cls.getLatestProblem)
 
     @classmethod
@@ -114,7 +118,7 @@ class AbstractProblemInfoServicV2(AbstractFernService):
         setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
 
         cls.getProblemVersion = router.get(  # type: ignore
-            path="/problem-info/{problem_id}/version/{problem_version}",
+            path="/problems-v2/problem-info/{problem_id}/version/{problem_version}",
             response_model=ProblemInfoV2,
             **get_route_args(cls.getProblemVersion),
         )(cls.getProblemVersion)
