@@ -10,8 +10,35 @@ snapshots = Snapshot()
 
 snapshots['test_fastapi __init__'] = FileSnapshot('snap_test_fastapi/test_fastapi __init__.py')
 
+snapshots['test_fastapi core___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi core___init__.py')
+
+snapshots['test_fastapi core_abstract_fern_service'] = FileSnapshot('snap_test_fastapi/test_fastapi core_abstract_fern_service.py')
+
+snapshots['test_fastapi core_cbv'] = FileSnapshot('snap_test_fastapi/test_fastapi core_cbv.py')
+
+snapshots['test_fastapi core_exceptions___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions___init__.py')
+
+snapshots['test_fastapi core_exceptions_fern_http_exception'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions_fern_http_exception.py')
+
+snapshots['test_fastapi core_exceptions_unauthorized'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions_unauthorized.py')
+
+snapshots['test_fastapi core_route_args'] = FileSnapshot('snap_test_fastapi/test_fastapi core_route_args.py')
+
+snapshots['test_fastapi core_security___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi core_security___init__.py')
+
+snapshots['test_fastapi core_security_bearer'] = FileSnapshot('snap_test_fastapi/test_fastapi core_security_bearer.py')
+
 snapshots['test_fastapi filepaths'] = [
     '__init__.py',
+    'core/__init__.py',
+    'core/abstract_fern_service.py',
+    'core/cbv.py',
+    'core/exceptions/__init__.py',
+    'core/exceptions/fern_http_exception.py',
+    'core/exceptions/unauthorized.py',
+    'core/route_args.py',
+    'core/security/__init__.py',
+    'core/security/bearer.py',
     'resources/__init__.py',
     'resources/admin/__init__.py',
     'resources/admin/service.py',

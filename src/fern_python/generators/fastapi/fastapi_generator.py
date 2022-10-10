@@ -46,6 +46,8 @@ class FastApiGenerator(AbstractGenerator):
             project=project, generator_exec_wrapper=generator_exec_wrapper
         )
 
+        context.core_utilities.copy_to_project(project=project)
+
     def _generate_service(
         self,
         context: FastApiGeneratorContext,

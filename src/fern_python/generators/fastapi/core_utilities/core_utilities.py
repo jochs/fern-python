@@ -1,6 +1,8 @@
+import os
+import shutil
 from typing import Tuple
 
-from fern_python.codegen import AST, Filepath
+from fern_python.codegen import AST, Filepath, Project
 
 from ..fastapi_filepath_creator import FastApiFilepathCreator
 
@@ -11,6 +13,15 @@ class CoreUtilities:
             Filepath.DirectoryFilepathPart(module_name="core"),
         )
         self._module_path = tuple(part.module_name for part in self._filepath)
+
+    def copy_to_project(self, *, project: Project) -> None:
+        source = (
+            os.path.join(os.path.dirname(__file__), "../../../../../core_utilities/fastapi")
+            if "PYTEST_CURRENT_TEST" in os.environ
+            else "/assets/core_utilities"
+        )
+        destination = os.path.join(project.project_filepath, "/".join(self._module_path))
+        shutil.copytree(src=source, dst=destination)
 
     def BearerToken(self) -> AST.ClassReference:
         return AST.ClassReference(
