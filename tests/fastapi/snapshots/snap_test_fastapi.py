@@ -253,7 +253,8 @@ snapshots['test_fastapi filepaths'] = [
     'resources/v_2/v_3/problem/types/void_function_definition.py',
     'resources/v_2/v_3/problem/types/void_function_definition_that_takes_actual_result.py',
     'resources/v_2/v_3/problem/types/void_function_signature.py',
-    'resources/v_2/v_3/problem/types/void_function_signature_that_takes_actual_result.py'
+    'resources/v_2/v_3/problem/types/void_function_signature_that_takes_actual_result.py',
+    'security.py'
 ]
 
 snapshots['test_fastapi resources___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi resources___init__.py')
@@ -739,3 +740,5 @@ snapshots['test_fastapi resources_v_2_v_3_problem_types_void_function_definition
 snapshots['test_fastapi resources_v_2_v_3_problem_types_void_function_signature'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_v_2_v_3_problem_types_void_function_signature.py')
 
 snapshots['test_fastapi resources_v_2_v_3_problem_types_void_function_signature_that_takes_actual_result'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_v_2_v_3_problem_types_void_function_signature_that_takes_actual_result.py')
+
+snapshots['test_fastapi security'] = FileSnapshot('snap_test_fastapi/test_fastapi security.py')

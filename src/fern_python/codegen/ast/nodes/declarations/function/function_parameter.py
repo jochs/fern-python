@@ -16,12 +16,16 @@ class FunctionParameter(AstNode):
         references: Set[Reference] = set()
         if self.type_hint is not None:
             references.update(self.type_hint.get_references())
+        if self.initializer is not None:
+            references.update(self.initializer.get_references())
         return references
 
     def get_generics(self) -> Set[GenericTypeVar]:
         generics: Set[GenericTypeVar] = set()
         if self.type_hint is not None:
             generics.update(self.type_hint.get_generics())
+        if self.initializer is not None:
+            generics.update(self.initializer.get_generics())
         return generics
 
     def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:

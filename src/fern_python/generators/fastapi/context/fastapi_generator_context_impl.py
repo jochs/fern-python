@@ -8,12 +8,13 @@ from .fastapi_generator_context import FastApiGeneratorContext
 
 
 class FastApiGeneratorContextImpl(FastApiGeneratorContext):
-    def __init__(self, ir: ir_types.IntermediateRepresentation, generator_config: GeneratorConfig):
+    def __init__(
+        self,
+        ir: ir_types.IntermediateRepresentation,
+        generator_config: GeneratorConfig,
+    ):
         super().__init__(ir=ir, generator_config=generator_config)
-        self._service_declaration_handler = ServiceDeclarationReferencer(
-            generator_config=generator_config,
-            ir=ir,
-        )
+        self._service_declaration_handler = ServiceDeclarationReferencer(filepath_creator=self.filepath_creator)
 
     def get_filepath_for_service(self, service_name: ir_types.services.DeclaredServiceName) -> Filepath:
         return self._service_declaration_handler.get_filepath(name=service_name)

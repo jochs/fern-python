@@ -3,15 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 
 import fern.ir.pydantic as ir_types
-from generator_exec.resources import (
-    GeneratorConfig,
-    GeneratorUpdate,
-    LogLevel,
-    LogUpdate,
-)
+from generator_exec.resources import GeneratorConfig
 from generator_exec.resources.config import GeneratorPublishConfig
 
-from fern_python.codegen import Filepath, SourceFile
 from fern_python.codegen.project import Project, PublishConfig
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 
@@ -61,18 +55,6 @@ class AbstractGenerator(ABC):
             generator_config=generator_config,
         )
         publisher.publish_project()
-
-    def source_file(
-        self,
-        *,
-        project: Project,
-        filepath: Filepath,
-        generator_exec_wrapper: GeneratorExecWrapper,
-    ) -> SourceFile:
-        generator_exec_wrapper.send_update(
-            GeneratorUpdate.factory.log(LogUpdate(level=LogLevel.DEBUG, message=f"Generating {filepath}"))
-        )
-        return project.source_file(filepath=filepath)
 
     @abstractmethod
     def run(

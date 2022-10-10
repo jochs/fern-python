@@ -10,6 +10,8 @@ import isort
 
 from . import AST
 
+TAB_LENGTH = 4
+
 
 class WriterImpl(AST.Writer):
     def __init__(self, filepath: str):
@@ -39,7 +41,7 @@ class WriterImpl(AST.Writer):
         return self._last_character_is_newline or not self._has_written_anything
 
     def _get_indent_str(self) -> str:
-        return "\t" * self._indent
+        return " " * TAB_LENGTH * self._indent
 
     def _write(self, content: str) -> None:
         if len(content) > 0:

@@ -26,9 +26,9 @@ class AbstractSysPropCrudService(abc.ABC):
         ...
 
     """
-	Below are internal methods used by Fern to register your implementation.
-	You can ignore them.
-	"""
+    Below are internal methods used by Fern to register your implementation.
+    You can ignore them.
+    """
 
     @classmethod
     def _init_fern(cls, router: fastapi.APIRouter) -> None:

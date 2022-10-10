@@ -4,6 +4,7 @@ from generator_exec.resources.config import GeneratorConfig
 from fern_python.cli.abstract_generator import AbstractGenerator
 from fern_python.codegen import Project
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
+from fern_python.source_file_generator import SourceFileGenerator
 
 from .context import PydanticGeneratorContext, PydanticGeneratorContextImpl
 from .custom_config import CustomConfig
@@ -64,7 +65,7 @@ class PydanticModelGenerator(AbstractGenerator):
         context: PydanticGeneratorContext,
     ) -> None:
         filepath = context.get_filepath_for_type_name(type_name=type.name)
-        with self.source_file(
+        with SourceFileGenerator.generate(
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
             type_declaration_handler = TypeDeclarationHandler(

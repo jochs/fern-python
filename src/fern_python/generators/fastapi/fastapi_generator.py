@@ -8,7 +8,9 @@ from fern_python.generators.pydantic_model import (
     PydanticModelCustomConfig,
     PydanticModelGenerator,
 )
+from fern_python.source_file_generator import SourceFileGenerator
 
+from .auth import SecurityFileGenerator
 from .context import FastApiGeneratorContext, FastApiGeneratorContextImpl
 from .service_generator import ServiceGenerator
 
@@ -40,6 +42,10 @@ class FastApiGenerator(AbstractGenerator):
                 project=project,
             )
 
+        SecurityFileGenerator(context=context).generate_security_file(
+            project=project, generator_exec_wrapper=generator_exec_wrapper
+        )
+
     def _generate_service(
         self,
         context: FastApiGeneratorContext,
@@ -49,7 +55,7 @@ class FastApiGenerator(AbstractGenerator):
         project: Project,
     ) -> None:
         filepath = context.get_filepath_for_service(service.name)
-        with self.source_file(
+        with SourceFileGenerator.generate(
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
             ServiceGenerator(context=context, service=service).generate(source_file=source_file)
