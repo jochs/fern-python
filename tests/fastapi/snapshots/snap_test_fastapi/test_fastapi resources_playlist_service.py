@@ -4,6 +4,7 @@ import typing
 
 import fastapi
 
+from ...security import ApiAuth, FernAuth
 from .types.playlist import Playlist
 from .types.playlist_create_request import PlaylistCreateRequest
 from .types.playlist_id import PlaylistId
@@ -21,25 +22,25 @@ class AbstractPlaylistCrudService(abc.ABC):
     """
 
     @abc.abstractmethod
-    def createPlaylist(self, request: PlaylistCreateRequest) -> Playlist:
+    def createPlaylist(self, *, request: PlaylistCreateRequest, auth: ApiAuth) -> Playlist:
         ...
 
     @abc.abstractmethod
-    def getPlaylists(self, limit: typing.Optional[int], other_field: str) -> typing.List[Playlist]:
+    def getPlaylists(self, *, limit: typing.Optional[int], other_field: str, auth: ApiAuth) -> typing.List[Playlist]:
         ...
 
     @abc.abstractmethod
-    def getPlaylist(self, playlist_id: PlaylistId) -> Playlist:
+    def getPlaylist(self, *, playlist_id: PlaylistId) -> Playlist:
         ...
 
     @abc.abstractmethod
     def updatePlaylist(
-        self, request: typing.Optional[UpdatePlaylistRequest], playlist_id: PlaylistId
+        self, *, request: typing.Optional[UpdatePlaylistRequest], playlist_id: PlaylistId, auth: ApiAuth
     ) -> typing.Optional[Playlist]:
         ...
 
     @abc.abstractmethod
-    def deletePlaylist(self, playlist_id: PlaylistId) -> None:
+    def deletePlaylist(self, *, playlist_id: PlaylistId, auth: ApiAuth) -> None:
         ...
 
     """
@@ -62,6 +63,8 @@ class AbstractPlaylistCrudService(abc.ABC):
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
             if parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
+            elif parameter_name == "auth":
+                new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
         cls.createPlaylist.__signature__ = endpoint_function.replace(parameters=new_parameters)
@@ -76,6 +79,8 @@ class AbstractPlaylistCrudService(abc.ABC):
                 new_parameters.append(parameter.replace(default=fastapi.Query(default=None)))
             elif parameter_name == "other_field":
                 new_parameters.append(parameter.replace(default=fastapi.Query(alias="otherField")))
+            elif parameter_name == "auth":
+                new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
         cls.getPlaylists.__signature__ = endpoint_function.replace(parameters=new_parameters)
@@ -104,6 +109,8 @@ class AbstractPlaylistCrudService(abc.ABC):
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "playlist_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            elif parameter_name == "auth":
+                new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
         cls.updatePlaylist.__signature__ = endpoint_function.replace(parameters=new_parameters)
@@ -118,6 +125,8 @@ class AbstractPlaylistCrudService(abc.ABC):
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
             if parameter_name == "playlist_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
+            elif parameter_name == "auth":
+                new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
         cls.deletePlaylist.__signature__ = endpoint_function.replace(parameters=new_parameters)

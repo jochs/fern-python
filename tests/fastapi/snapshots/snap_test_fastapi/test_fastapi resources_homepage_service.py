@@ -22,7 +22,7 @@ class AbstractHomepageProblemService(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def setHomepageProblems(self, request: typing.List[ProblemId]) -> None:
+    def setHomepageProblems(self, *, request: typing.List[ProblemId]) -> None:
         ...
 
     """

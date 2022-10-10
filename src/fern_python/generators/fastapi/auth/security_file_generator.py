@@ -3,12 +3,14 @@ from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 from fern_python.source_file_generator import SourceFileGenerator
 
 from ..context import FastApiGeneratorContext
+from ..external_dependencies import FastAPI
 from .basic_auth_generator import BasicAuthGenerator
 from .bearer_auth_generator import BearerAuthGenerator
 from .header_auth_generator import HeaderAuthGenerator
 
 
 class SecurityFileGenerator:
+    _API_AUTH_TYPE = "ApiAuth"
     _MODULE_NAME = "security"
     _METHOD_NAME = "FernAuth"
     _AUTH_PARAMETER_NAME = "auth"
@@ -17,12 +19,26 @@ class SecurityFileGenerator:
         self._context = context
 
     @staticmethod
-    def get_reference_to_fern_auth(context: FastApiGeneratorContext) -> AST.Expression:
-        return AST.Expression(
-            AST.Reference(
+    def get_reference_to_fern_auth_dependency(context: FastApiGeneratorContext) -> AST.Expression:
+        return FastAPI.Depends(
+            AST.Expression(
+                AST.Reference(
+                    import_=AST.ReferenceImport(
+                        module=SecurityFileGenerator._get_filepath(context).to_module(),
+                        named_import=SecurityFileGenerator._METHOD_NAME,
+                    ),
+                    qualified_name_excluding_import=(),
+                )
+            )
+        )
+
+    @staticmethod
+    def get_reference_to_parsed_auth(context: FastApiGeneratorContext) -> AST.TypeHint:
+        return AST.TypeHint(
+            type=AST.ClassReference(
                 import_=AST.ReferenceImport(
                     module=SecurityFileGenerator._get_filepath(context).to_module(),
-                    named_import=SecurityFileGenerator._METHOD_NAME,
+                    named_import=SecurityFileGenerator._API_AUTH_TYPE,
                 ),
                 qualified_name_excluding_import=(),
             )
@@ -48,12 +64,20 @@ class SecurityFileGenerator:
             basic=lambda x: BasicAuthGenerator(context=self._context),
             header=lambda header: HeaderAuthGenerator(context=self._context, http_header=header),
         )
+        parsed_auth_type = auth_generator.get_parsed_auth_type()
 
         with SourceFileGenerator.generate(
             project=project,
             generator_exec_wrapper=generator_exec_wrapper,
             filepath=SecurityFileGenerator._get_filepath(context=self._context),
         ) as source_file:
+            source_file.add_declaration(
+                declaration=AST.VariableDeclaration(
+                    name=SecurityFileGenerator._API_AUTH_TYPE,
+                    type_hint=parsed_auth_type,
+                ),
+                should_export=True,
+            )
             source_file.add_declaration(
                 should_export=False,
                 declaration=AST.FunctionDeclaration(
@@ -62,11 +86,11 @@ class SecurityFileGenerator:
                         parameters=[
                             AST.FunctionParameter(
                                 name=SecurityFileGenerator._AUTH_PARAMETER_NAME,
-                                type_hint=auth_generator.get_parsed_auth_type(),
+                                type_hint=parsed_auth_type,
                                 initializer=auth_generator.get_dependency(),
                             )
                         ],
-                        return_type=auth_generator.get_parsed_auth_type(),
+                        return_type=parsed_auth_type,
                     ),
                     body=AST.CodeWriter(self._write_fern_auth_body),
                 ),

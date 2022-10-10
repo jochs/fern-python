@@ -52,13 +52,22 @@ class FastAPI:
 
     Request = AST.TypeHint(type=_export("requests", "Request"))
 
-    Depends = _export("Depends")
-
     HTTPBasic = _export("security", "HTTPBasic")
 
     HTTPBasicCredentials = _export("security", "HTTPBasicCredentials")
 
     APIRouter = APIRouter
+
+    @staticmethod
+    def Depends(dependency: AST.Expression) -> AST.Expression:
+        return AST.Expression(
+            AST.FunctionInvocation(
+                function_definition=_export(
+                    "Depends",
+                ),
+                args=[dependency],
+            )
+        )
 
     @staticmethod
     def Header(*, is_optional: bool, wire_value: str) -> AST.Expression:

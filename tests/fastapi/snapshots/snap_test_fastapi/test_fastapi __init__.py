@@ -136,6 +136,7 @@ from .resources import (
     WorkspaceTracedUpdate,
     v_2,
 )
+from .security import ApiAuth
 
 __all__ = [
     "AbstractAdminService",
@@ -146,6 +147,7 @@ __all__ = [
     "AbstractProblemCrudService",
     "AbstractSysPropCrudService",
     "ActualResult",
+    "ApiAuth",
     "BinaryTreeNodeAndTreeValue",
     "BinaryTreeNodeValue",
     "BinaryTreeValue",

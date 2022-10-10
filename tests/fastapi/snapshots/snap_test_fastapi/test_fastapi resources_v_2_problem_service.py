@@ -28,11 +28,11 @@ class AbstractProblemInfoServicV2(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def getLatestProblem(self, problem_id: ProblemId) -> ProblemInfoV2:
+    def getLatestProblem(self, *, problem_id: ProblemId) -> ProblemInfoV2:
         ...
 
     @abc.abstractmethod
-    def getProblemVersion(self, problem_id: ProblemId, problem_version: int) -> ProblemInfoV2:
+    def getProblemVersion(self, *, problem_id: ProblemId, problem_version: int) -> ProblemInfoV2:
         ...
 
     """

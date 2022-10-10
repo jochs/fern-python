@@ -8,6 +8,7 @@ from fern_python.codegen import AST
 from ..context import FastApiGeneratorContext
 from ..external_dependencies import FastAPI
 from .endpoint_parameters import (
+    AuthEndpointParameter,
     EndpointParameter,
     PathEndpointParameter,
     QueryEndpointParameter,
@@ -34,13 +35,14 @@ class EndpointGenerator:
             self._parameters.append(PathEndpointParameter(context=context, path_parameter=path_parameter))
         for query_parameter in endpoint.query_parameters:
             self._parameters.append(QueryEndpointParameter(context=context, query_parameter=query_parameter))
-        # TODO auth
+        if endpoint.auth:
+            self._parameters.append(AuthEndpointParameter(context=context))
 
     def add_abstract_method_to_class(self, class_declaration: AST.ClassDeclaration) -> None:
         class_declaration.add_abstract_method(
             name=self._get_method_name(),
             signature=AST.FunctionSignature(
-                parameters=[parameter.to_function_parameter() for parameter in self._parameters],
+                named_parameters=[parameter.to_function_parameter() for parameter in self._parameters],
                 return_type=self._return_type,
             ),
         )

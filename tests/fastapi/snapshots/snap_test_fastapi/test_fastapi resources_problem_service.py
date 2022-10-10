@@ -23,19 +23,19 @@ class AbstractProblemCrudService(abc.ABC):
     """
 
     @abc.abstractmethod
-    def createProblem(self, request: CreateProblemRequest) -> CreateProblemResponse:
+    def createProblem(self, *, request: CreateProblemRequest) -> CreateProblemResponse:
         ...
 
     @abc.abstractmethod
-    def updateProblem(self, request: CreateProblemRequest, problem_id: ProblemId) -> UpdateProblemResponse:
+    def updateProblem(self, *, request: CreateProblemRequest, problem_id: ProblemId) -> UpdateProblemResponse:
         ...
 
     @abc.abstractmethod
-    def deleteProblem(self, problem_id: ProblemId) -> None:
+    def deleteProblem(self, *, problem_id: ProblemId) -> None:
         ...
 
     @abc.abstractmethod
-    def getDefaultStarterFiles(self, request: GetDefaultStarterFilesRequest) -> GetDefaultStarterFilesResponse:
+    def getDefaultStarterFiles(self, *, request: GetDefaultStarterFilesRequest) -> GetDefaultStarterFilesResponse:
         ...
 
     """

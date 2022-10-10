@@ -18,7 +18,7 @@ class AbstractSysPropCrudService(abc.ABC):
     """
 
     @abc.abstractmethod
-    def setNumWarmInstances(self, language: Language, num_warm_instances: int) -> None:
+    def setNumWarmInstances(self, *, language: Language, num_warm_instances: int) -> None:
         ...
 
     @abc.abstractmethod

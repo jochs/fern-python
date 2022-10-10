@@ -20,15 +20,15 @@ class AbstractExecutionSesssionManagementService(abc.ABC):
     """
 
     @abc.abstractmethod
-    def createExecutionSession(self, language: Language) -> ExecutionSessionResponse:
+    def createExecutionSession(self, *, language: Language) -> ExecutionSessionResponse:
         ...
 
     @abc.abstractmethod
-    def getExecutionSession(self, session_id: str) -> typing.Optional[ExecutionSessionResponse]:
+    def getExecutionSession(self, *, session_id: str) -> typing.Optional[ExecutionSessionResponse]:
         ...
 
     @abc.abstractmethod
-    def stopExecutionSession(self, session_id: str) -> None:
+    def stopExecutionSession(self, *, session_id: str) -> None:
         ...
 
     @abc.abstractmethod

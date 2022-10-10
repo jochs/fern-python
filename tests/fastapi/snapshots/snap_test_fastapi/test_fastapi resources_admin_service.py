@@ -26,39 +26,41 @@ class AbstractAdminService(abc.ABC):
     """
 
     @abc.abstractmethod
-    def updateTestSubmissionStatus(self, request: TestSubmissionStatus, submission_id: SubmissionId) -> None:
+    def updateTestSubmissionStatus(self, *, request: TestSubmissionStatus, submission_id: SubmissionId) -> None:
         ...
 
     @abc.abstractmethod
-    def sendTestSubmissionUpdate(self, request: TestSubmissionUpdate, submission_id: SubmissionId) -> None:
+    def sendTestSubmissionUpdate(self, *, request: TestSubmissionUpdate, submission_id: SubmissionId) -> None:
         ...
 
     @abc.abstractmethod
-    def updateWorkspaceSubmissionStatus(self, request: WorkspaceSubmissionStatus, submission_id: SubmissionId) -> None:
+    def updateWorkspaceSubmissionStatus(
+        self, *, request: WorkspaceSubmissionStatus, submission_id: SubmissionId
+    ) -> None:
         ...
 
     @abc.abstractmethod
-    def sendWorkspaceSubmissionUpdate(self, request: WorkspaceSubmissionUpdate, submission_id: SubmissionId) -> None:
+    def sendWorkspaceSubmissionUpdate(self, *, request: WorkspaceSubmissionUpdate, submission_id: SubmissionId) -> None:
         ...
 
     @abc.abstractmethod
     def storeTracedTestCase(
-        self, request: StoreTracedTestCaseRequest, submission_id: SubmissionId, test_case_id: str
+        self, *, request: StoreTracedTestCaseRequest, submission_id: SubmissionId, test_case_id: str
     ) -> None:
         ...
 
     @abc.abstractmethod
     def storeTracedTestCaseV2(
-        self, request: typing.List[TraceResponseV2], submission_id: SubmissionId, test_case_id: TestCaseId
+        self, *, request: typing.List[TraceResponseV2], submission_id: SubmissionId, test_case_id: TestCaseId
     ) -> None:
         ...
 
     @abc.abstractmethod
-    def storeTracedWorkspace(self, request: StoreTracedWorkspaceRequest, submission_id: SubmissionId) -> None:
+    def storeTracedWorkspace(self, *, request: StoreTracedWorkspaceRequest, submission_id: SubmissionId) -> None:
         ...
 
     @abc.abstractmethod
-    def storeTracedWorkspaceV2(self, request: typing.List[TraceResponseV2], submission_id: SubmissionId) -> None:
+    def storeTracedWorkspaceV2(self, *, request: typing.List[TraceResponseV2], submission_id: SubmissionId) -> None:
         ...
 
     """
