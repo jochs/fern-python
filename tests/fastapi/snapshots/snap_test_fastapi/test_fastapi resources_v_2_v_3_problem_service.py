@@ -4,12 +4,13 @@ import typing
 
 import fastapi
 
+from .....core.abstract_fern_service import AbstractFernService
 from ....commons.types.problem_id import ProblemId
 from .types.lightweight_problem_info_v_2 import LightweightProblemInfoV2
 from .types.problem_info_v_2 import ProblemInfoV2
 
 
-class AbstractProblemInfoServicV2(abc.ABC):
+class AbstractProblemInfoServicV2(AbstractFernService):
     """
     AbstractProblemInfoServicV2 is an abstract class containing the methods that your
     ProblemInfoServicV2 implementation should implement.
@@ -49,12 +50,28 @@ class AbstractProblemInfoServicV2(abc.ABC):
 
     @classmethod
     def __init_getLightweightProblems(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            else:
+                new_parameters.append(parameter)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getLightweightProblems = router.get(  # type: ignore
             path="/lightweight-problem-info", response_model=typing.List[LightweightProblemInfoV2]
         )(cls.getLightweightProblems)
 
     @classmethod
     def __init_getProblems(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            else:
+                new_parameters.append(parameter)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getProblems = router.get(path="/problem-info", response_model=typing.List[ProblemInfoV2])(  # type: ignore
             cls.getProblems
         )
@@ -64,11 +81,13 @@ class AbstractProblemInfoServicV2(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "problem_id":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "problem_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.getLatestProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getLatestProblem = router.get(  # type: ignore
             path="/problem-info/{problem_id}", response_model=ProblemInfoV2
         )(cls.getLatestProblem)
@@ -78,13 +97,15 @@ class AbstractProblemInfoServicV2(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "problem_id":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "problem_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             elif parameter_name == "problem_version":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.getProblemVersion.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getProblemVersion = router.get(  # type: ignore
             path="/problem-info/{problem_id}/version/{problem_version}", response_model=ProblemInfoV2
         )(cls.getProblemVersion)

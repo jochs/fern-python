@@ -14,8 +14,6 @@ snapshots['test_fastapi core___init__'] = FileSnapshot('snap_test_fastapi/test_f
 
 snapshots['test_fastapi core_abstract_fern_service'] = FileSnapshot('snap_test_fastapi/test_fastapi core_abstract_fern_service.py')
 
-snapshots['test_fastapi core_cbv'] = FileSnapshot('snap_test_fastapi/test_fastapi core_cbv.py')
-
 snapshots['test_fastapi core_exceptions___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions___init__.py')
 
 snapshots['test_fastapi core_exceptions_fern_http_exception'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions_fern_http_exception.py')
@@ -32,13 +30,13 @@ snapshots['test_fastapi filepaths'] = [
     '__init__.py',
     'core/__init__.py',
     'core/abstract_fern_service.py',
-    'core/cbv.py',
     'core/exceptions/__init__.py',
     'core/exceptions/fern_http_exception.py',
     'core/exceptions/unauthorized.py',
     'core/route_args.py',
     'core/security/__init__.py',
     'core/security/bearer.py',
+    'register.py',
     'resources/__init__.py',
     'resources/admin/__init__.py',
     'resources/admin/service.py',
@@ -283,6 +281,8 @@ snapshots['test_fastapi filepaths'] = [
     'resources/v_2/v_3/problem/types/void_function_signature_that_takes_actual_result.py',
     'security.py'
 ]
+
+snapshots['test_fastapi register'] = FileSnapshot('snap_test_fastapi/test_fastapi register.py')
 
 snapshots['test_fastapi resources___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi resources___init__.py')
 

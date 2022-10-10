@@ -17,21 +17,21 @@ def _export(*name: str) -> AST.ClassReference:
 
 class APIRouter:
 
-    TYPE = AST.TypeHint(type=_export("APIRouter"))
+    REFERENCE = _export("APIRouter")
 
     @staticmethod
-    def _invoke() -> AST.Expression:
+    def invoke() -> AST.Expression:
         return AST.Expression(
             AST.FunctionInvocation(
-                function_definition=_export(
-                    "APIRouter",
-                ),
-                args=[AST.Expression(AST.CodeWriter("..."))],
+                function_definition=APIRouter.REFERENCE,
+                args=[],
             )
         )
 
 
 class FastAPI:
+    FastAPI = AST.TypeHint(type=_export("FastAPI"))
+
     Body = AST.Expression(
         AST.FunctionInvocation(
             function_definition=_export(
@@ -51,6 +51,8 @@ class FastAPI:
     )
 
     Request = AST.TypeHint(type=_export("requests", "Request"))
+
+    JSONResponse = AST.TypeHint(type=_export("requests", "JSONResponse"))
 
     HTTPBasic = _export("security", "HTTPBasic")
 
@@ -98,4 +100,41 @@ class FastAPI:
                 ),
                 kwargs=kwargs,
             )
+        )
+
+    @staticmethod
+    def include_router(*, app_variable: str, router: AST.Expression) -> AST.Expression:
+        return AST.Expression(
+            AST.FunctionInvocation(
+                function_definition=AST.Reference(qualified_name_excluding_import=(app_variable, "include_router")),
+                args=[router],
+            )
+        )
+
+    EXCEPTION_HANDLER_REQUEST_ARGUMENT = "request"
+    EXCEPTION_HANDLER_EXCEPTION_ARGUMENT = "exc"
+
+    @staticmethod
+    def exception_handler(
+        *, app_variable: str, exception_type: AST.ClassReference, body: AST.CodeWriter
+    ) -> AST.FunctionDeclaration:
+        decorator = AST.Expression(
+            AST.FunctionInvocation(
+                function_definition=AST.Reference(qualified_name_excluding_import=(app_variable, "exception_handler")),
+                args=[AST.Expression(exception_type)],
+            )
+        )
+        return AST.FunctionDeclaration(
+            name="_exception_handler",
+            signature=AST.FunctionSignature(
+                parameters=[
+                    AST.FunctionParameter(name=FastAPI.EXCEPTION_HANDLER_REQUEST_ARGUMENT, type_hint=FastAPI.Request),
+                    AST.FunctionParameter(
+                        name=FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT, type_hint=AST.TypeHint(type=exception_type)
+                    ),
+                ],
+                return_type=FastAPI.JSONResponse,
+            ),
+            decorators=[decorator],
+            body=body,
         )

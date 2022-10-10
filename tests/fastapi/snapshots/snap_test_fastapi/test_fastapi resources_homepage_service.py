@@ -4,10 +4,11 @@ import typing
 
 import fastapi
 
+from ...core.abstract_fern_service import AbstractFernService
 from ..commons.types.problem_id import ProblemId
 
 
-class AbstractHomepageProblemService(abc.ABC):
+class AbstractHomepageProblemService(AbstractFernService):
     """
     AbstractHomepageProblemService is an abstract class containing the methods that your
     HomepageProblemService implementation should implement.
@@ -37,6 +38,14 @@ class AbstractHomepageProblemService(abc.ABC):
 
     @classmethod
     def __init_getHomepageProblems(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            else:
+                new_parameters.append(parameter)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getHomepageProblems = router.get(path="/", response_model=typing.List[ProblemId])(  # type: ignore
             cls.getHomepageProblems
         )
@@ -46,9 +55,11 @@ class AbstractHomepageProblemService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             else:
                 new_parameters.append(parameter)
-        cls.setHomepageProblems.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.setHomepageProblems = router.post(path="/")(cls.setHomepageProblems)  # type: ignore

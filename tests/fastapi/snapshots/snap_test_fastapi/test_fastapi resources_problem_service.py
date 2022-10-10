@@ -4,6 +4,7 @@ import typing
 
 import fastapi
 
+from ...core.abstract_fern_service import AbstractFernService
 from ..commons.types.problem_id import ProblemId
 from .types.create_problem_request import CreateProblemRequest
 from .types.create_problem_response import CreateProblemResponse
@@ -12,7 +13,7 @@ from .types.get_default_starter_files_response import GetDefaultStarterFilesResp
 from .types.update_problem_response import UpdateProblemResponse
 
 
-class AbstractProblemCrudService(abc.ABC):
+class AbstractProblemCrudService(AbstractFernService):
     """
     AbstractProblemCrudService is an abstract class containing the methods that your
     ProblemCrudService implementation should implement.
@@ -55,11 +56,13 @@ class AbstractProblemCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             else:
                 new_parameters.append(parameter)
-        cls.createProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.createProblem = router.post(path="/create", response_model=CreateProblemResponse)(  # type: ignore
             cls.createProblem
         )
@@ -69,13 +72,15 @@ class AbstractProblemCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "problem_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.updateProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.updateProblem = router.post(  # type: ignore
             path="/update/{problem_id}", response_model=UpdateProblemResponse
         )(cls.updateProblem)
@@ -85,11 +90,13 @@ class AbstractProblemCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "problem_id":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "problem_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.deleteProblem.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.deleteProblem = router.delete(path="/delete/{problem_id}")(cls.deleteProblem)  # type: ignore
 
     @classmethod
@@ -97,11 +104,13 @@ class AbstractProblemCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             else:
                 new_parameters.append(parameter)
-        cls.getDefaultStarterFiles.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getDefaultStarterFiles = router.post(  # type: ignore
             path="/default-starter-files", response_model=GetDefaultStarterFilesResponse
         )(cls.getDefaultStarterFiles)

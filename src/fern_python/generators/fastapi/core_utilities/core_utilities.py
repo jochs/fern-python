@@ -23,6 +23,25 @@ class CoreUtilities:
         destination = os.path.join(project.project_filepath, "/".join(self._module_path))
         shutil.copytree(src=source, dst=destination)
 
+    def AbstractFernService(self) -> AST.ClassReference:
+        return AST.ClassReference(
+            qualified_name_excluding_import=(),
+            import_=AST.ReferenceImport(
+                module=AST.Module.local(*self._module_path, "abstract_fern_service"),
+                named_import="AbstractFernService",
+            ),
+        )
+
+    INIT_FERN_METHOD_NAME = "_init_fern"
+
+    def FernHTTPException(self) -> AST.ClassReference:
+        return AST.ClassReference(
+            qualified_name_excluding_import=(),
+            import_=AST.ReferenceImport(
+                module=AST.Module.local(*self._module_path, "exceptions"), named_import="FernHTTPException"
+            ),
+        )
+
     def BearerToken(self) -> AST.ClassReference:
         return AST.ClassReference(
             qualified_name_excluding_import=(),

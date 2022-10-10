@@ -4,12 +4,13 @@ import typing
 
 import fastapi
 
+from ...core.abstract_fern_service import AbstractFernService
 from ..commons.types.language import Language
 from .types.execution_session_response import ExecutionSessionResponse
 from .types.get_execution_session_state_response import GetExecutionSessionStateResponse
 
 
-class AbstractExecutionSesssionManagementService(abc.ABC):
+class AbstractExecutionSesssionManagementService(AbstractFernService):
     """
     AbstractExecutionSesssionManagementService is an abstract class containing the methods that your
     ExecutionSesssionManagementService implementation should implement.
@@ -52,11 +53,13 @@ class AbstractExecutionSesssionManagementService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "language":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "language":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.createExecutionSession.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.createExecutionSession = router.post(  # type: ignore
             path="/create-session/{language}", response_model=ExecutionSessionResponse
         )(cls.createExecutionSession)
@@ -66,11 +69,13 @@ class AbstractExecutionSesssionManagementService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "session_id":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "session_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.getExecutionSession.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getExecutionSession = router.get(  # type: ignore
             path="/{session_id}", response_model=typing.Optional[ExecutionSessionResponse]
         )(cls.getExecutionSession)
@@ -80,15 +85,25 @@ class AbstractExecutionSesssionManagementService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "session_id":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "session_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.stopExecutionSession.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.stopExecutionSession = router.delete(path="/stop/{session_id}")(cls.stopExecutionSession)  # type: ignore
 
     @classmethod
     def __init_getExecutionSessionsState(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            else:
+                new_parameters.append(parameter)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getExecutionSessionsState = router.get(  # type: ignore
             path="/execution-sessions-state", response_model=GetExecutionSessionStateResponse
         )(cls.getExecutionSessionsState)

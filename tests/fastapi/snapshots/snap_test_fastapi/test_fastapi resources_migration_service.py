@@ -1,12 +1,14 @@
 import abc
+import inspect
 import typing
 
 import fastapi
 
+from ...core.abstract_fern_service import AbstractFernService
 from .types.migration import Migration
 
 
-class AbstractMigrationInfoService(abc.ABC):
+class AbstractMigrationInfoService(AbstractFernService):
     """
     AbstractMigrationInfoService is an abstract class containing the methods that your
     MigrationInfoService implementation should implement.
@@ -31,6 +33,14 @@ class AbstractMigrationInfoService(abc.ABC):
 
     @classmethod
     def __init_getAttemptedMigrations(cls, router: fastapi.APIRouter) -> None:
+        endpoint_function = inspect.signature()
+        new_parameters: typing.List[inspect.Parameter] = []
+        for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            else:
+                new_parameters.append(parameter)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getAttemptedMigrations = router.get(path="/all", response_model=typing.List[Migration])(  # type: ignore
             cls.getAttemptedMigrations
         )

@@ -72,7 +72,7 @@ class EndpointGenerator:
                     parameters=[
                         AST.FunctionParameter(
                             name=EndpointGenerator._INIT_ENDPOINT_ROUTER_ARG,
-                            type_hint=FastAPI.APIRouter.TYPE,
+                            type_hint=AST.TypeHint(type=FastAPI.APIRouter.REFERENCE),
                         )
                     ],
                     return_type=AST.TypeHint.none(),
@@ -82,8 +82,7 @@ class EndpointGenerator:
         )
 
     def _write_init_body(self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
-        if len(self._parameters) > 0:
-            self._write_update_endpoint_signature(writer=writer, reference_resolver=reference_resolver)
+        self._write_update_endpoint_signature(writer=writer, reference_resolver=reference_resolver)
         writer.write(f"cls.{self._get_method_name()} = ")
         writer.write(f"{EndpointGenerator._INIT_ENDPOINT_ROUTER_ARG}.")
         writer.write(convert_http_method_to_fastapi_method_name(self._endpoint.method))
@@ -134,10 +133,15 @@ class EndpointGenerator:
         )
 
         with writer.indent():
-            for i, parameter in enumerate(self._parameters):
-                writer.write_line(
-                    ("if" if i == 0 else "elif") + f' {PARAMETER_NAME_VARIABLE_NAME} == "{parameter.get_name()}":'
+            writer.write_line(f"if {INDEX_VARIABLE_NAME} == 0:")
+            with writer.indent():
+                writer.write(
+                    f"{NEW_PARAMETERS_VARIABLE_NAME}.append(" + f"{PARAMETER_VALUE_VARIABLE_NAME}.replace(default="
                 )
+                writer.write_node(node=FastAPI.Depends(dependency=AST.Expression("cls")))
+                writer.write_line("))")
+            for i, parameter in enumerate(self._parameters):
+                writer.write_line(f'elif {PARAMETER_NAME_VARIABLE_NAME} == "{parameter.get_name()}":')
                 with writer.indent():
                     writer.write(
                         f"{NEW_PARAMETERS_VARIABLE_NAME}.append(" + f"{PARAMETER_VALUE_VARIABLE_NAME}.replace(default="
@@ -149,8 +153,8 @@ class EndpointGenerator:
                 writer.write_line(f"{NEW_PARAMETERS_VARIABLE_NAME}.append({PARAMETER_VALUE_VARIABLE_NAME})")
 
         writer.write_line(
-            f"cls.{self._get_method_name()}.__signature__ = "
-            + f"{ENDPOINT_FUNCTION_VARIABLE_NAME}.replace(parameters={NEW_PARAMETERS_VARIABLE_NAME})"
+            'setattr(cls, "__signature__", '
+            + f"{ENDPOINT_FUNCTION_VARIABLE_NAME}.replace(parameters={NEW_PARAMETERS_VARIABLE_NAME}))"
         )
 
     def invoke_init_method(self, *, reference_to_fastapi_router: AST.Expression) -> AST.FunctionInvocation:

@@ -4,6 +4,7 @@ import typing
 
 import fastapi
 
+from ...core.abstract_fern_service import AbstractFernService
 from ...security import ApiAuth, FernAuth
 from .types.playlist import Playlist
 from .types.playlist_create_request import PlaylistCreateRequest
@@ -11,7 +12,7 @@ from .types.playlist_id import PlaylistId
 from .types.update_playlist_request import UpdatePlaylistRequest
 
 
-class AbstractPlaylistCrudService(abc.ABC):
+class AbstractPlaylistCrudService(AbstractFernService):
     """
     AbstractPlaylistCrudService is an abstract class containing the methods that your
     PlaylistCrudService implementation should implement.
@@ -61,13 +62,15 @@ class AbstractPlaylistCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "auth":
                 new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
-        cls.createPlaylist.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.createPlaylist = router.post(path="/create", response_model=Playlist)(cls.createPlaylist)  # type: ignore
 
     @classmethod
@@ -75,7 +78,9 @@ class AbstractPlaylistCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "limit":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "limit":
                 new_parameters.append(parameter.replace(default=fastapi.Query(default=None)))
             elif parameter_name == "other_field":
                 new_parameters.append(parameter.replace(default=fastapi.Query(alias="otherField")))
@@ -83,7 +88,7 @@ class AbstractPlaylistCrudService(abc.ABC):
                 new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
-        cls.getPlaylists.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getPlaylists = router.get(path="/all", response_model=typing.List[Playlist])(  # type: ignore
             cls.getPlaylists
         )
@@ -93,11 +98,13 @@ class AbstractPlaylistCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "playlist_id":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "playlist_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.getPlaylist.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.getPlaylist = router.get(path="/{playlist_id}", response_model=Playlist)(cls.getPlaylist)  # type: ignore
 
     @classmethod
@@ -105,7 +112,9 @@ class AbstractPlaylistCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "playlist_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
@@ -113,7 +122,7 @@ class AbstractPlaylistCrudService(abc.ABC):
                 new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
-        cls.updatePlaylist.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.updatePlaylist = router.put(  # type: ignore
             path="/{playlist_id}", response_model=typing.Optional[Playlist]
         )(cls.updatePlaylist)
@@ -123,11 +132,13 @@ class AbstractPlaylistCrudService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "playlist_id":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "playlist_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             elif parameter_name == "auth":
                 new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
                 new_parameters.append(parameter)
-        cls.deletePlaylist.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.deletePlaylist = router.delete(path="/{playlist_id}")(cls.deletePlaylist)  # type: ignore

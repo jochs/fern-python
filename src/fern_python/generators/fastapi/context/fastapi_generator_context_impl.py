@@ -1,7 +1,7 @@
 import fern.ir.pydantic as ir_types
 from generator_exec.resources import GeneratorConfig
 
-from fern_python.codegen import Filepath
+from fern_python.codegen import AST, Filepath
 
 from ..declaration_referencers import ServiceDeclarationReferencer
 from .fastapi_generator_context import FastApiGeneratorContext
@@ -21,3 +21,6 @@ class FastApiGeneratorContextImpl(FastApiGeneratorContext):
 
     def get_class_name_for_service(self, service_name: ir_types.services.DeclaredServiceName) -> str:
         return self._service_declaration_handler.get_class_name(name=service_name)
+
+    def get_reference_to_service(self, service_name: ir_types.services.DeclaredServiceName) -> AST.ClassReference:
+        return self._service_declaration_handler.get_class_reference(name=service_name)

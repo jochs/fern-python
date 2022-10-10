@@ -4,6 +4,7 @@ import typing
 
 import fastapi
 
+from ...core.abstract_fern_service import AbstractFernService
 from ..submission.types.submission_id import SubmissionId
 from ..submission.types.test_submission_status import TestSubmissionStatus
 from ..submission.types.test_submission_update import TestSubmissionUpdate
@@ -15,7 +16,7 @@ from .types.store_traced_test_case_request import StoreTracedTestCaseRequest
 from .types.store_traced_workspace_request import StoreTracedWorkspaceRequest
 
 
-class AbstractAdminService(abc.ABC):
+class AbstractAdminService(AbstractFernService):
     """
     AbstractAdminService is an abstract class containing the methods that your
     AdminService implementation should implement.
@@ -84,13 +85,15 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.updateTestSubmissionStatus.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.updateTestSubmissionStatus = router.post(  # type: ignore
             path="/store-test-submission-status/{submission_id}"
         )(cls.updateTestSubmissionStatus)
@@ -100,13 +103,15 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.sendTestSubmissionUpdate.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.sendTestSubmissionUpdate = router.post(  # type: ignore
             path="/store-test-submission-status-v2/{submission_id}"
         )(cls.sendTestSubmissionUpdate)
@@ -116,13 +121,15 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.updateWorkspaceSubmissionStatus.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.updateWorkspaceSubmissionStatus = router.post(  # type: ignore
             path="/store-workspace-submission-status/{submission_id}"
         )(cls.updateWorkspaceSubmissionStatus)
@@ -132,13 +139,15 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.sendWorkspaceSubmissionUpdate.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.sendWorkspaceSubmissionUpdate = router.post(  # type: ignore
             path="/store-workspace-submission-status-v2/{submission_id}"
         )(cls.sendWorkspaceSubmissionUpdate)
@@ -148,7 +157,9 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
@@ -156,7 +167,7 @@ class AbstractAdminService(abc.ABC):
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.storeTracedTestCase.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.storeTracedTestCase = router.post(  # type: ignore
             path="/store-test-trace/submission/{submission_id}/testCase/{test_case_id}"
         )(cls.storeTracedTestCase)
@@ -166,7 +177,9 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
@@ -174,7 +187,7 @@ class AbstractAdminService(abc.ABC):
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.storeTracedTestCaseV2.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.storeTracedTestCaseV2 = router.post(  # type: ignore
             path="/store-test-trace-v2/submission/{submission_id}/testCase/{test_case_id}"
         )(cls.storeTracedTestCaseV2)
@@ -184,13 +197,15 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.storeTracedWorkspace.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.storeTracedWorkspace = router.post(  # type: ignore
             path="/store-workspace-trace/submission/{submission_id}"
         )(cls.storeTracedWorkspace)
@@ -200,13 +215,15 @@ class AbstractAdminService(abc.ABC):
         endpoint_function = inspect.signature()
         new_parameters: typing.List[inspect.Parameter] = []
         for index, (parameter_name, parameter) in enumerate(endpoint_function.parameters.items()):
-            if parameter_name == "request":
+            if index == 0:
+                new_parameters.append(parameter.replace(default=fastapi.Depends(cls)))
+            elif parameter_name == "request":
                 new_parameters.append(parameter.replace(default=fastapi.Body(...)))
             elif parameter_name == "submission_id":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             else:
                 new_parameters.append(parameter)
-        cls.storeTracedWorkspaceV2.__signature__ = endpoint_function.replace(parameters=new_parameters)
+        setattr(cls, "__signature__", endpoint_function.replace(parameters=new_parameters))
         cls.storeTracedWorkspaceV2 = router.post(  # type: ignore
             path="/store-workspace-trace-v2/submission/{submission_id}"
         )(cls.storeTracedWorkspaceV2)

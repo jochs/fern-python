@@ -8,7 +8,6 @@ from .endpoint_generator import EndpointGenerator
 
 
 class ServiceGenerator:
-    _INIT_FERN_METHOD_NAME = "_init_fern"
     _INIT_FERN_ROUTER_ARGUMENT = "router"
 
     def __init__(self, context: FastApiGeneratorContext, service: ir_types.services.HttpService):
@@ -44,7 +43,7 @@ class ServiceGenerator:
         class_name = context.get_class_name_for_service(service_name=service.name)
         return AST.ClassDeclaration(
             name=class_name,
-            is_abstract=True,
+            extends=[self._context.core_utilities.AbstractFernService()],
             docstring="\n".join(
                 [
                     f"{class_name} is an abstract class containing the methods that your",
@@ -75,12 +74,12 @@ class ServiceGenerator:
         class_declaration.add_method(
             decorator=AST.ClassMethodDecorator.CLASS_METHOD,
             declaration=AST.FunctionDeclaration(
-                name=ServiceGenerator._INIT_FERN_METHOD_NAME,
+                name=self._context.core_utilities.INIT_FERN_METHOD_NAME,
                 signature=AST.FunctionSignature(
                     parameters=[
                         AST.FunctionParameter(
                             name=ServiceGenerator._INIT_FERN_ROUTER_ARGUMENT,
-                            type_hint=FastAPI.APIRouter.TYPE,
+                            type_hint=AST.TypeHint(type=FastAPI.APIRouter.REFERENCE),
                         )
                     ],
                     return_type=AST.TypeHint.none(),

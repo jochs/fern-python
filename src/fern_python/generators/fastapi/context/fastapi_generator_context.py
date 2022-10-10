@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import fern.ir.pydantic as ir_types
 from generator_exec.resources import GeneratorConfig
 
-from fern_python.codegen import Filepath
+from fern_python.codegen import AST, Filepath
 from fern_python.generators.pydantic_model import PydanticGeneratorContextImpl
 
 from ..core_utilities import CoreUtilities
@@ -32,4 +32,8 @@ class FastApiGeneratorContext(ABC):
 
     @abstractmethod
     def get_class_name_for_service(self, service_name: ir_types.services.DeclaredServiceName) -> str:
+        ...
+
+    @abstractmethod
+    def get_reference_to_service(self, service_name: ir_types.services.DeclaredServiceName) -> AST.ClassReference:
         ...

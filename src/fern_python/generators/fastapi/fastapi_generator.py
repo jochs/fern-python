@@ -12,6 +12,7 @@ from fern_python.source_file_generator import SourceFileGenerator
 
 from .auth import SecurityFileGenerator
 from .context import FastApiGeneratorContext, FastApiGeneratorContextImpl
+from .register import RegisterFileGenerator
 from .service_generator import ServiceGenerator
 
 
@@ -43,7 +44,13 @@ class FastApiGenerator(AbstractGenerator):
             )
 
         SecurityFileGenerator(context=context).generate_security_file(
-            project=project, generator_exec_wrapper=generator_exec_wrapper
+            project=project,
+            generator_exec_wrapper=generator_exec_wrapper,
+        )
+
+        RegisterFileGenerator(context=context).generate_registry_file(
+            project=project,
+            generator_exec_wrapper=generator_exec_wrapper,
         )
 
         context.core_utilities.copy_to_project(project=project)
