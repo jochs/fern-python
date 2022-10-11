@@ -10,21 +10,29 @@ class ListType(pydantic.BaseModel):
     value_type: VariableType = pydantic.Field(alias="valueType")
     is_fixed_length: typing.Optional[bool] = pydantic.Field(alias="isFixedLength")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("value_type")
     def _validate_value_type(cls, value_type: VariableType) -> VariableType:
-        for validator in ListType.Validators._value_type:
+        for validator in ListType.Validators._value_type_validators:
             value_type = validator(value_type)
         return value_type
 
     @pydantic.validator("is_fixed_length")
     def _validate_is_fixed_length(cls, is_fixed_length: typing.Optional[bool]) -> typing.Optional[bool]:
-        for validator in ListType.Validators._is_fixed_length:
+        for validator in ListType.Validators._is_fixed_length_validators:
             is_fixed_length = validator(is_fixed_length)
         return is_fixed_length
 
     class Validators:
-        _value_type: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
-        _is_fixed_length: typing.ClassVar[
+        _value_type_validators: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
+        _is_fixed_length_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[bool]], typing.Optional[bool]]]
         ] = []
 
@@ -51,23 +59,15 @@ class ListType(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "value_type":
-                    cls._value_type.append(validator)
+                    cls._value_type_validators.append(validator)
                 elif field_name == "is_fixed_length":
-                    cls._is_fixed_length.append(validator)
+                    cls._is_fixed_length_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on ListType: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

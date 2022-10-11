@@ -10,21 +10,29 @@ class WorkspaceFiles(pydantic.BaseModel):
     main_file: FileInfo = pydantic.Field(alias="mainFile")
     read_only_files: typing.List[FileInfo] = pydantic.Field(alias="readOnlyFiles")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("main_file")
     def _validate_main_file(cls, main_file: FileInfo) -> FileInfo:
-        for validator in WorkspaceFiles.Validators._main_file:
+        for validator in WorkspaceFiles.Validators._main_file_validators:
             main_file = validator(main_file)
         return main_file
 
     @pydantic.validator("read_only_files")
     def _validate_read_only_files(cls, read_only_files: typing.List[FileInfo]) -> typing.List[FileInfo]:
-        for validator in WorkspaceFiles.Validators._read_only_files:
+        for validator in WorkspaceFiles.Validators._read_only_files_validators:
             read_only_files = validator(read_only_files)
         return read_only_files
 
     class Validators:
-        _main_file: typing.ClassVar[typing.List[typing.Callable[[FileInfo], FileInfo]]] = []
-        _read_only_files: typing.ClassVar[
+        _main_file_validators: typing.ClassVar[typing.List[typing.Callable[[FileInfo], FileInfo]]] = []
+        _read_only_files_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[FileInfo]], typing.List[FileInfo]]]
         ] = []
 
@@ -49,23 +57,15 @@ class WorkspaceFiles(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "main_file":
-                    cls._main_file.append(validator)
+                    cls._main_file_validators.append(validator)
                 elif field_name == "read_only_files":
-                    cls._read_only_files.append(validator)
+                    cls._read_only_files_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on WorkspaceFiles: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

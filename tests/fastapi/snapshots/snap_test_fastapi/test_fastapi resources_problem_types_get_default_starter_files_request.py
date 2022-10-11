@@ -12,30 +12,38 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
     output_type: VariableType = pydantic.Field(alias="outputType")
     method_name: str = pydantic.Field(alias="methodName")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("input_params")
     def _validate_input_params(cls, input_params: typing.List[VariableTypeAndName]) -> typing.List[VariableTypeAndName]:
-        for validator in GetDefaultStarterFilesRequest.Validators._input_params:
+        for validator in GetDefaultStarterFilesRequest.Validators._input_params_validators:
             input_params = validator(input_params)
         return input_params
 
     @pydantic.validator("output_type")
     def _validate_output_type(cls, output_type: VariableType) -> VariableType:
-        for validator in GetDefaultStarterFilesRequest.Validators._output_type:
+        for validator in GetDefaultStarterFilesRequest.Validators._output_type_validators:
             output_type = validator(output_type)
         return output_type
 
     @pydantic.validator("method_name")
     def _validate_method_name(cls, method_name: str) -> str:
-        for validator in GetDefaultStarterFilesRequest.Validators._method_name:
+        for validator in GetDefaultStarterFilesRequest.Validators._method_name_validators:
             method_name = validator(method_name)
         return method_name
 
     class Validators:
-        _input_params: typing.ClassVar[
+        _input_params_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[VariableTypeAndName]], typing.List[VariableTypeAndName]]]
         ] = []
-        _output_type: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
-        _method_name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _output_type_validators: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
+        _method_name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
 
         @typing.overload
         @classmethod
@@ -67,25 +75,17 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "input_params":
-                    cls._input_params.append(validator)
+                    cls._input_params_validators.append(validator)
                 elif field_name == "output_type":
-                    cls._output_type.append(validator)
+                    cls._output_type_validators.append(validator)
                 elif field_name == "method_name":
-                    cls._method_name.append(validator)
+                    cls._method_name_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GetDefaultStarterFilesRequest: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

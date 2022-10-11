@@ -11,28 +11,38 @@ class SinglyLinkedListNodeValue(pydantic.BaseModel):
     val: float
     next: typing.Optional[NodeId]
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("node_id")
     def _validate_node_id(cls, node_id: NodeId) -> NodeId:
-        for validator in SinglyLinkedListNodeValue.Validators._node_id:
+        for validator in SinglyLinkedListNodeValue.Validators._node_id_validators:
             node_id = validator(node_id)
         return node_id
 
     @pydantic.validator("val")
     def _validate_val(cls, val: float) -> float:
-        for validator in SinglyLinkedListNodeValue.Validators._val:
+        for validator in SinglyLinkedListNodeValue.Validators._val_validators:
             val = validator(val)
         return val
 
     @pydantic.validator("next")
     def _validate_next(cls, next: typing.Optional[NodeId]) -> typing.Optional[NodeId]:
-        for validator in SinglyLinkedListNodeValue.Validators._next:
+        for validator in SinglyLinkedListNodeValue.Validators._next_validators:
             next = validator(next)
         return next
 
     class Validators:
-        _node_id: typing.ClassVar[typing.List[typing.Callable[[NodeId], NodeId]]] = []
-        _val: typing.ClassVar[typing.List[typing.Callable[[float], float]]] = []
-        _next: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]] = []
+        _node_id_validators: typing.ClassVar[typing.List[typing.Callable[[NodeId], NodeId]]] = []
+        _val_validators: typing.ClassVar[typing.List[typing.Callable[[float], float]]] = []
+        _next_validators: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]
+        ] = []
 
         @typing.overload
         @classmethod
@@ -62,25 +72,17 @@ class SinglyLinkedListNodeValue(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "node_id":
-                    cls._node_id.append(validator)
+                    cls._node_id_validators.append(validator)
                 elif field_name == "val":
-                    cls._val.append(validator)
+                    cls._val_validators.append(validator)
                 elif field_name == "next":
-                    cls._next.append(validator)
+                    cls._next_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on SinglyLinkedListNodeValue: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

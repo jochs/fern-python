@@ -15,21 +15,29 @@ class RecordingResponseNotification(pydantic.BaseModel):
     lightweight_stack_info: LightweightStackframeInformation = pydantic.Field(alias="lightweightStackInfo")
     traced_file: typing.Optional[TracedFile] = pydantic.Field(alias="tracedFile")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("submission_id")
     def _validate_submission_id(cls, submission_id: SubmissionId) -> SubmissionId:
-        for validator in RecordingResponseNotification.Validators._submission_id:
+        for validator in RecordingResponseNotification.Validators._submission_id_validators:
             submission_id = validator(submission_id)
         return submission_id
 
     @pydantic.validator("test_case_id")
     def _validate_test_case_id(cls, test_case_id: typing.Optional[str]) -> typing.Optional[str]:
-        for validator in RecordingResponseNotification.Validators._test_case_id:
+        for validator in RecordingResponseNotification.Validators._test_case_id_validators:
             test_case_id = validator(test_case_id)
         return test_case_id
 
     @pydantic.validator("line_number")
     def _validate_line_number(cls, line_number: int) -> int:
-        for validator in RecordingResponseNotification.Validators._line_number:
+        for validator in RecordingResponseNotification.Validators._line_number_validators:
             line_number = validator(line_number)
         return line_number
 
@@ -37,24 +45,26 @@ class RecordingResponseNotification(pydantic.BaseModel):
     def _validate_lightweight_stack_info(
         cls, lightweight_stack_info: LightweightStackframeInformation
     ) -> LightweightStackframeInformation:
-        for validator in RecordingResponseNotification.Validators._lightweight_stack_info:
+        for validator in RecordingResponseNotification.Validators._lightweight_stack_info_validators:
             lightweight_stack_info = validator(lightweight_stack_info)
         return lightweight_stack_info
 
     @pydantic.validator("traced_file")
     def _validate_traced_file(cls, traced_file: typing.Optional[TracedFile]) -> typing.Optional[TracedFile]:
-        for validator in RecordingResponseNotification.Validators._traced_file:
+        for validator in RecordingResponseNotification.Validators._traced_file_validators:
             traced_file = validator(traced_file)
         return traced_file
 
     class Validators:
-        _submission_id: typing.ClassVar[typing.List[typing.Callable[[SubmissionId], SubmissionId]]] = []
-        _test_case_id: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]] = []
-        _line_number: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
-        _lightweight_stack_info: typing.ClassVar[
+        _submission_id_validators: typing.ClassVar[typing.List[typing.Callable[[SubmissionId], SubmissionId]]] = []
+        _test_case_id_validators: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]
+        ] = []
+        _line_number_validators: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
+        _lightweight_stack_info_validators: typing.ClassVar[
             typing.List[typing.Callable[[LightweightStackframeInformation], LightweightStackframeInformation]]
         ] = []
-        _traced_file: typing.ClassVar[
+        _traced_file_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[TracedFile]], typing.Optional[TracedFile]]]
         ] = []
 
@@ -108,29 +118,21 @@ class RecordingResponseNotification(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "submission_id":
-                    cls._submission_id.append(validator)
+                    cls._submission_id_validators.append(validator)
                 elif field_name == "test_case_id":
-                    cls._test_case_id.append(validator)
+                    cls._test_case_id_validators.append(validator)
                 elif field_name == "line_number":
-                    cls._line_number.append(validator)
+                    cls._line_number_validators.append(validator)
                 elif field_name == "lightweight_stack_info":
-                    cls._lightweight_stack_info.append(validator)
+                    cls._lightweight_stack_info_validators.append(validator)
                 elif field_name == "traced_file":
-                    cls._traced_file.append(validator)
+                    cls._traced_file_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on RecordingResponseNotification: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

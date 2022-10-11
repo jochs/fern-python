@@ -13,37 +13,45 @@ class GetSubmissionStateResponse(pydantic.BaseModel):
     language: Language
     submission_type_state: SubmissionTypeState = pydantic.Field(alias="submissionTypeState")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("time_submitted")
     def _validate_time_submitted(cls, time_submitted: typing.Optional[str]) -> typing.Optional[str]:
-        for validator in GetSubmissionStateResponse.Validators._time_submitted:
+        for validator in GetSubmissionStateResponse.Validators._time_submitted_validators:
             time_submitted = validator(time_submitted)
         return time_submitted
 
     @pydantic.validator("submission")
     def _validate_submission(cls, submission: str) -> str:
-        for validator in GetSubmissionStateResponse.Validators._submission:
+        for validator in GetSubmissionStateResponse.Validators._submission_validators:
             submission = validator(submission)
         return submission
 
     @pydantic.validator("language")
     def _validate_language(cls, language: Language) -> Language:
-        for validator in GetSubmissionStateResponse.Validators._language:
+        for validator in GetSubmissionStateResponse.Validators._language_validators:
             language = validator(language)
         return language
 
     @pydantic.validator("submission_type_state")
     def _validate_submission_type_state(cls, submission_type_state: SubmissionTypeState) -> SubmissionTypeState:
-        for validator in GetSubmissionStateResponse.Validators._submission_type_state:
+        for validator in GetSubmissionStateResponse.Validators._submission_type_state_validators:
             submission_type_state = validator(submission_type_state)
         return submission_type_state
 
     class Validators:
-        _time_submitted: typing.ClassVar[
+        _time_submitted_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]
         ] = []
-        _submission: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _language: typing.ClassVar[typing.List[typing.Callable[[Language], Language]]] = []
-        _submission_type_state: typing.ClassVar[
+        _submission_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _language_validators: typing.ClassVar[typing.List[typing.Callable[[Language], Language]]] = []
+        _submission_type_state_validators: typing.ClassVar[
             typing.List[typing.Callable[[SubmissionTypeState], SubmissionTypeState]]
         ] = []
 
@@ -85,27 +93,19 @@ class GetSubmissionStateResponse(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "time_submitted":
-                    cls._time_submitted.append(validator)
+                    cls._time_submitted_validators.append(validator)
                 elif field_name == "submission":
-                    cls._submission.append(validator)
+                    cls._submission_validators.append(validator)
                 elif field_name == "language":
-                    cls._language.append(validator)
+                    cls._language_validators.append(validator)
                 elif field_name == "submission_type_state":
-                    cls._submission_type_state.append(validator)
+                    cls._submission_type_state_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GetSubmissionStateResponse: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

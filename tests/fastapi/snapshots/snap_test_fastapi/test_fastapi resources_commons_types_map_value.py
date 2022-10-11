@@ -9,14 +9,22 @@ import typing_extensions
 class MapValue(pydantic.BaseModel):
     key_value_pairs: typing.List[KeyValuePair] = pydantic.Field(alias="keyValuePairs")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("key_value_pairs")
     def _validate_key_value_pairs(cls, key_value_pairs: typing.List[KeyValuePair]) -> typing.List[KeyValuePair]:
-        for validator in MapValue.Validators._key_value_pairs:
+        for validator in MapValue.Validators._key_value_pairs_validators:
             key_value_pairs = validator(key_value_pairs)
         return key_value_pairs
 
     class Validators:
-        _key_value_pairs: typing.ClassVar[
+        _key_value_pairs_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[KeyValuePair]], typing.List[KeyValuePair]]]
         ] = []
 
@@ -34,21 +42,13 @@ class MapValue(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "key_value_pairs":
-                    cls._key_value_pairs.append(validator)
+                    cls._key_value_pairs_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on MapValue: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

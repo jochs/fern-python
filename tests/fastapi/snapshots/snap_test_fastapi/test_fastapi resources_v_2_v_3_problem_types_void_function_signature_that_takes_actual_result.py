@@ -11,23 +11,31 @@ class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
     parameters: typing.List[Parameter]
     actual_result_type: VariableType = pydantic.Field(alias="actualResultType")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("parameters")
     def _validate_parameters(cls, parameters: typing.List[Parameter]) -> typing.List[Parameter]:
-        for validator in VoidFunctionSignatureThatTakesActualResult.Validators._parameters:
+        for validator in VoidFunctionSignatureThatTakesActualResult.Validators._parameters_validators:
             parameters = validator(parameters)
         return parameters
 
     @pydantic.validator("actual_result_type")
     def _validate_actual_result_type(cls, actual_result_type: VariableType) -> VariableType:
-        for validator in VoidFunctionSignatureThatTakesActualResult.Validators._actual_result_type:
+        for validator in VoidFunctionSignatureThatTakesActualResult.Validators._actual_result_type_validators:
             actual_result_type = validator(actual_result_type)
         return actual_result_type
 
     class Validators:
-        _parameters: typing.ClassVar[
+        _parameters_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[Parameter]], typing.List[Parameter]]]
         ] = []
-        _actual_result_type: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
+        _actual_result_type_validators: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
 
         @typing.overload
         @classmethod
@@ -52,9 +60,9 @@ class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "parameters":
-                    cls._parameters.append(validator)
+                    cls._parameters_validators.append(validator)
                 elif field_name == "actual_result_type":
-                    cls._actual_result_type.append(validator)
+                    cls._actual_result_type_validators.append(validator)
                 else:
                     raise RuntimeError(
                         "Field does not exist on VoidFunctionSignatureThatTakesActualResult: " + field_name
@@ -63,14 +71,6 @@ class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

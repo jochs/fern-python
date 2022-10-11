@@ -13,35 +13,43 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
     problem_version: int = pydantic.Field(alias="problemVersion")
     variable_types: typing.List[VariableType] = pydantic.Field(alias="variableTypes")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("problem_id")
     def _validate_problem_id(cls, problem_id: ProblemId) -> ProblemId:
-        for validator in LightweightProblemInfoV2.Validators._problem_id:
+        for validator in LightweightProblemInfoV2.Validators._problem_id_validators:
             problem_id = validator(problem_id)
         return problem_id
 
     @pydantic.validator("problem_name")
     def _validate_problem_name(cls, problem_name: str) -> str:
-        for validator in LightweightProblemInfoV2.Validators._problem_name:
+        for validator in LightweightProblemInfoV2.Validators._problem_name_validators:
             problem_name = validator(problem_name)
         return problem_name
 
     @pydantic.validator("problem_version")
     def _validate_problem_version(cls, problem_version: int) -> int:
-        for validator in LightweightProblemInfoV2.Validators._problem_version:
+        for validator in LightweightProblemInfoV2.Validators._problem_version_validators:
             problem_version = validator(problem_version)
         return problem_version
 
     @pydantic.validator("variable_types")
     def _validate_variable_types(cls, variable_types: typing.List[VariableType]) -> typing.List[VariableType]:
-        for validator in LightweightProblemInfoV2.Validators._variable_types:
+        for validator in LightweightProblemInfoV2.Validators._variable_types_validators:
             variable_types = validator(variable_types)
         return variable_types
 
     class Validators:
-        _problem_id: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
-        _problem_name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _problem_version: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
-        _variable_types: typing.ClassVar[
+        _problem_id_validators: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
+        _problem_name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _problem_version_validators: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
+        _variable_types_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[VariableType]], typing.List[VariableType]]]
         ] = []
 
@@ -80,27 +88,19 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "problem_id":
-                    cls._problem_id.append(validator)
+                    cls._problem_id_validators.append(validator)
                 elif field_name == "problem_name":
-                    cls._problem_name.append(validator)
+                    cls._problem_name_validators.append(validator)
                 elif field_name == "problem_version":
-                    cls._problem_version.append(validator)
+                    cls._problem_version_validators.append(validator)
                 elif field_name == "variable_types":
-                    cls._variable_types.append(validator)
+                    cls._variable_types_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on LightweightProblemInfoV2: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

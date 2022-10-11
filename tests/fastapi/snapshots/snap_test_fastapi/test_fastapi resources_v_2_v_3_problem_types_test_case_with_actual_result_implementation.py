@@ -11,9 +11,17 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
     get_actual_result: NonVoidFunctionDefinition = pydantic.Field(alias="getActualResult")
     assert_correctness_check: AssertCorrectnessCheck = pydantic.Field(alias="assertCorrectnessCheck")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("get_actual_result")
     def _validate_get_actual_result(cls, get_actual_result: NonVoidFunctionDefinition) -> NonVoidFunctionDefinition:
-        for validator in TestCaseWithActualResultImplementation.Validators._get_actual_result:
+        for validator in TestCaseWithActualResultImplementation.Validators._get_actual_result_validators:
             get_actual_result = validator(get_actual_result)
         return get_actual_result
 
@@ -21,15 +29,15 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
     def _validate_assert_correctness_check(
         cls, assert_correctness_check: AssertCorrectnessCheck
     ) -> AssertCorrectnessCheck:
-        for validator in TestCaseWithActualResultImplementation.Validators._assert_correctness_check:
+        for validator in TestCaseWithActualResultImplementation.Validators._assert_correctness_check_validators:
             assert_correctness_check = validator(assert_correctness_check)
         return assert_correctness_check
 
     class Validators:
-        _get_actual_result: typing.ClassVar[
+        _get_actual_result_validators: typing.ClassVar[
             typing.List[typing.Callable[[NonVoidFunctionDefinition], NonVoidFunctionDefinition]]
         ] = []
-        _assert_correctness_check: typing.ClassVar[
+        _assert_correctness_check_validators: typing.ClassVar[
             typing.List[typing.Callable[[AssertCorrectnessCheck], AssertCorrectnessCheck]]
         ] = []
 
@@ -57,23 +65,15 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "get_actual_result":
-                    cls._get_actual_result.append(validator)
+                    cls._get_actual_result_validators.append(validator)
                 elif field_name == "assert_correctness_check":
-                    cls._assert_correctness_check.append(validator)
+                    cls._assert_correctness_check_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on TestCaseWithActualResultImplementation: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

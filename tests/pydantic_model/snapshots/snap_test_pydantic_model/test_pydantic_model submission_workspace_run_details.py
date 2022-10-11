@@ -12,32 +12,40 @@ class WorkspaceRunDetails(pydantic.BaseModel):
     exception: typing.Optional[ExceptionInfo]
     stdout: str
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("exception_v_2")
     def _validate_exception_v_2(cls, exception_v_2: typing.Optional[ExceptionV2]) -> typing.Optional[ExceptionV2]:
-        for validator in WorkspaceRunDetails.Validators._exception_v_2:
+        for validator in WorkspaceRunDetails.Validators._exception_v_2_validators:
             exception_v_2 = validator(exception_v_2)
         return exception_v_2
 
     @pydantic.validator("exception")
     def _validate_exception(cls, exception: typing.Optional[ExceptionInfo]) -> typing.Optional[ExceptionInfo]:
-        for validator in WorkspaceRunDetails.Validators._exception:
+        for validator in WorkspaceRunDetails.Validators._exception_validators:
             exception = validator(exception)
         return exception
 
     @pydantic.validator("stdout")
     def _validate_stdout(cls, stdout: str) -> str:
-        for validator in WorkspaceRunDetails.Validators._stdout:
+        for validator in WorkspaceRunDetails.Validators._stdout_validators:
             stdout = validator(stdout)
         return stdout
 
     class Validators:
-        _exception_v_2: typing.ClassVar[
+        _exception_v_2_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[ExceptionV2]], typing.Optional[ExceptionV2]]]
         ] = []
-        _exception: typing.ClassVar[
+        _exception_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[ExceptionInfo]], typing.Optional[ExceptionInfo]]]
         ] = []
-        _stdout: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _stdout_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
 
         @typing.overload
         @classmethod
@@ -70,25 +78,17 @@ class WorkspaceRunDetails(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "exception_v_2":
-                    cls._exception_v_2.append(validator)
+                    cls._exception_v_2_validators.append(validator)
                 elif field_name == "exception":
-                    cls._exception.append(validator)
+                    cls._exception_validators.append(validator)
                 elif field_name == "stdout":
-                    cls._stdout.append(validator)
+                    cls._stdout_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on WorkspaceRunDetails: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

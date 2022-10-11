@@ -10,21 +10,29 @@ class DebugKeyValuePairs(pydantic.BaseModel):
     key: DebugVariableValue
     value: DebugVariableValue
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("key")
     def _validate_key(cls, key: DebugVariableValue) -> DebugVariableValue:
-        for validator in DebugKeyValuePairs.Validators._key:
+        for validator in DebugKeyValuePairs.Validators._key_validators:
             key = validator(key)
         return key
 
     @pydantic.validator("value")
     def _validate_value(cls, value: DebugVariableValue) -> DebugVariableValue:
-        for validator in DebugKeyValuePairs.Validators._value:
+        for validator in DebugKeyValuePairs.Validators._value_validators:
             value = validator(value)
         return value
 
     class Validators:
-        _key: typing.ClassVar[typing.List[typing.Callable[[DebugVariableValue], DebugVariableValue]]] = []
-        _value: typing.ClassVar[typing.List[typing.Callable[[DebugVariableValue], DebugVariableValue]]] = []
+        _key_validators: typing.ClassVar[typing.List[typing.Callable[[DebugVariableValue], DebugVariableValue]]] = []
+        _value_validators: typing.ClassVar[typing.List[typing.Callable[[DebugVariableValue], DebugVariableValue]]] = []
 
         @typing.overload
         @classmethod
@@ -50,23 +58,15 @@ class DebugKeyValuePairs(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "key":
-                    cls._key.append(validator)
+                    cls._key_validators.append(validator)
                 elif field_name == "value":
-                    cls._value.append(validator)
+                    cls._value_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on DebugKeyValuePairs: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

@@ -16,9 +16,17 @@ class TestCaseV2(pydantic.BaseModel):
     arguments: typing.Dict[ParameterId, VariableValue]
     expects: typing.Optional[TestCaseExpects]
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("metadata")
     def _validate_metadata(cls, metadata: TestCaseMetadata) -> TestCaseMetadata:
-        for validator in TestCaseV2.Validators._metadata:
+        for validator in TestCaseV2.Validators._metadata_validators:
             metadata = validator(metadata)
         return metadata
 
@@ -26,7 +34,7 @@ class TestCaseV2(pydantic.BaseModel):
     def _validate_implementation(
         cls, implementation: TestCaseImplementationReference
     ) -> TestCaseImplementationReference:
-        for validator in TestCaseV2.Validators._implementation:
+        for validator in TestCaseV2.Validators._implementation_validators:
             implementation = validator(implementation)
         return implementation
 
@@ -34,27 +42,27 @@ class TestCaseV2(pydantic.BaseModel):
     def _validate_arguments(
         cls, arguments: typing.Dict[ParameterId, VariableValue]
     ) -> typing.Dict[ParameterId, VariableValue]:
-        for validator in TestCaseV2.Validators._arguments:
+        for validator in TestCaseV2.Validators._arguments_validators:
             arguments = validator(arguments)
         return arguments
 
     @pydantic.validator("expects")
     def _validate_expects(cls, expects: typing.Optional[TestCaseExpects]) -> typing.Optional[TestCaseExpects]:
-        for validator in TestCaseV2.Validators._expects:
+        for validator in TestCaseV2.Validators._expects_validators:
             expects = validator(expects)
         return expects
 
     class Validators:
-        _metadata: typing.ClassVar[typing.List[typing.Callable[[TestCaseMetadata], TestCaseMetadata]]] = []
-        _implementation: typing.ClassVar[
+        _metadata_validators: typing.ClassVar[typing.List[typing.Callable[[TestCaseMetadata], TestCaseMetadata]]] = []
+        _implementation_validators: typing.ClassVar[
             typing.List[typing.Callable[[TestCaseImplementationReference], TestCaseImplementationReference]]
         ] = []
-        _arguments: typing.ClassVar[
+        _arguments_validators: typing.ClassVar[
             typing.List[
                 typing.Callable[[typing.Dict[ParameterId, VariableValue]], typing.Dict[ParameterId, VariableValue]]
             ]
         ] = []
-        _expects: typing.ClassVar[
+        _expects_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[TestCaseExpects]], typing.Optional[TestCaseExpects]]]
         ] = []
 
@@ -102,27 +110,19 @@ class TestCaseV2(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "metadata":
-                    cls._metadata.append(validator)
+                    cls._metadata_validators.append(validator)
                 elif field_name == "implementation":
-                    cls._implementation.append(validator)
+                    cls._implementation_validators.append(validator)
                 elif field_name == "arguments":
-                    cls._arguments.append(validator)
+                    cls._arguments_validators.append(validator)
                 elif field_name == "expects":
-                    cls._expects.append(validator)
+                    cls._expects_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on TestCaseV2: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

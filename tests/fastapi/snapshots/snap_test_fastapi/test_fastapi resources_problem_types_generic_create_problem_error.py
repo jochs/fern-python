@@ -9,28 +9,36 @@ class GenericCreateProblemError(pydantic.BaseModel):
     type: str
     stacktrace: str
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("message")
     def _validate_message(cls, message: str) -> str:
-        for validator in GenericCreateProblemError.Validators._message:
+        for validator in GenericCreateProblemError.Validators._message_validators:
             message = validator(message)
         return message
 
     @pydantic.validator("type")
     def _validate_type(cls, type: str) -> str:
-        for validator in GenericCreateProblemError.Validators._type:
+        for validator in GenericCreateProblemError.Validators._type_validators:
             type = validator(type)
         return type
 
     @pydantic.validator("stacktrace")
     def _validate_stacktrace(cls, stacktrace: str) -> str:
-        for validator in GenericCreateProblemError.Validators._stacktrace:
+        for validator in GenericCreateProblemError.Validators._stacktrace_validators:
             stacktrace = validator(stacktrace)
         return stacktrace
 
     class Validators:
-        _message: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _type: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _stacktrace: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _message_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _type_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _stacktrace_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
 
         @typing.overload
         @classmethod
@@ -57,25 +65,17 @@ class GenericCreateProblemError(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "message":
-                    cls._message.append(validator)
+                    cls._message_validators.append(validator)
                 elif field_name == "type":
-                    cls._type.append(validator)
+                    cls._type_validators.append(validator)
                 elif field_name == "stacktrace":
-                    cls._stacktrace.append(validator)
+                    cls._stacktrace_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GenericCreateProblemError: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

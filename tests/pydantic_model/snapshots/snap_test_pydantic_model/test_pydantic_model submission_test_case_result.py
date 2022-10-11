@@ -12,28 +12,36 @@ class TestCaseResult(pydantic.BaseModel):
     actual_result: ActualResult = pydantic.Field(alias="actualResult")
     passed: bool
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("expected_result")
     def _validate_expected_result(cls, expected_result: VariableValue) -> VariableValue:
-        for validator in TestCaseResult.Validators._expected_result:
+        for validator in TestCaseResult.Validators._expected_result_validators:
             expected_result = validator(expected_result)
         return expected_result
 
     @pydantic.validator("actual_result")
     def _validate_actual_result(cls, actual_result: ActualResult) -> ActualResult:
-        for validator in TestCaseResult.Validators._actual_result:
+        for validator in TestCaseResult.Validators._actual_result_validators:
             actual_result = validator(actual_result)
         return actual_result
 
     @pydantic.validator("passed")
     def _validate_passed(cls, passed: bool) -> bool:
-        for validator in TestCaseResult.Validators._passed:
+        for validator in TestCaseResult.Validators._passed_validators:
             passed = validator(passed)
         return passed
 
     class Validators:
-        _expected_result: typing.ClassVar[typing.List[typing.Callable[[VariableValue], VariableValue]]] = []
-        _actual_result: typing.ClassVar[typing.List[typing.Callable[[ActualResult], ActualResult]]] = []
-        _passed: typing.ClassVar[typing.List[typing.Callable[[bool], bool]]] = []
+        _expected_result_validators: typing.ClassVar[typing.List[typing.Callable[[VariableValue], VariableValue]]] = []
+        _actual_result_validators: typing.ClassVar[typing.List[typing.Callable[[ActualResult], ActualResult]]] = []
+        _passed_validators: typing.ClassVar[typing.List[typing.Callable[[bool], bool]]] = []
 
         @typing.overload
         @classmethod
@@ -64,25 +72,17 @@ class TestCaseResult(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "expected_result":
-                    cls._expected_result.append(validator)
+                    cls._expected_result_validators.append(validator)
                 elif field_name == "actual_result":
-                    cls._actual_result.append(validator)
+                    cls._actual_result_validators.append(validator)
                 elif field_name == "passed":
-                    cls._passed.append(validator)
+                    cls._passed_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on TestCaseResult: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

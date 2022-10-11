@@ -11,21 +11,29 @@ class GradedTestCaseUpdate(pydantic.BaseModel):
     test_case_id: TestCaseId = pydantic.Field(alias="testCaseId")
     grade: TestCaseGrade
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("test_case_id")
     def _validate_test_case_id(cls, test_case_id: TestCaseId) -> TestCaseId:
-        for validator in GradedTestCaseUpdate.Validators._test_case_id:
+        for validator in GradedTestCaseUpdate.Validators._test_case_id_validators:
             test_case_id = validator(test_case_id)
         return test_case_id
 
     @pydantic.validator("grade")
     def _validate_grade(cls, grade: TestCaseGrade) -> TestCaseGrade:
-        for validator in GradedTestCaseUpdate.Validators._grade:
+        for validator in GradedTestCaseUpdate.Validators._grade_validators:
             grade = validator(grade)
         return grade
 
     class Validators:
-        _test_case_id: typing.ClassVar[typing.List[typing.Callable[[TestCaseId], TestCaseId]]] = []
-        _grade: typing.ClassVar[typing.List[typing.Callable[[TestCaseGrade], TestCaseGrade]]] = []
+        _test_case_id_validators: typing.ClassVar[typing.List[typing.Callable[[TestCaseId], TestCaseId]]] = []
+        _grade_validators: typing.ClassVar[typing.List[typing.Callable[[TestCaseGrade], TestCaseGrade]]] = []
 
         @typing.overload
         @classmethod
@@ -47,23 +55,15 @@ class GradedTestCaseUpdate(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "test_case_id":
-                    cls._test_case_id.append(validator)
+                    cls._test_case_id_validators.append(validator)
                 elif field_name == "grade":
-                    cls._grade.append(validator)
+                    cls._grade_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GradedTestCaseUpdate: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

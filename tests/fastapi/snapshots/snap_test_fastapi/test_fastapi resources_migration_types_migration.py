@@ -10,21 +10,29 @@ class Migration(pydantic.BaseModel):
     name: str
     status: MigrationStatus
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("name")
     def _validate_name(cls, name: str) -> str:
-        for validator in Migration.Validators._name:
+        for validator in Migration.Validators._name_validators:
             name = validator(name)
         return name
 
     @pydantic.validator("status")
     def _validate_status(cls, status: MigrationStatus) -> MigrationStatus:
-        for validator in Migration.Validators._status:
+        for validator in Migration.Validators._status_validators:
             status = validator(status)
         return status
 
     class Validators:
-        _name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _status: typing.ClassVar[typing.List[typing.Callable[[MigrationStatus], MigrationStatus]]] = []
+        _name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _status_validators: typing.ClassVar[typing.List[typing.Callable[[MigrationStatus], MigrationStatus]]] = []
 
         @typing.overload
         @classmethod
@@ -46,23 +54,15 @@ class Migration(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "name":
-                    cls._name.append(validator)
+                    cls._name_validators.append(validator)
                 elif field_name == "status":
-                    cls._status.append(validator)
+                    cls._status_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on Migration: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

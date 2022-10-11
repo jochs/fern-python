@@ -8,21 +8,29 @@ class ExpressionLocation(pydantic.BaseModel):
     start: int
     offset: int
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("start")
     def _validate_start(cls, start: int) -> int:
-        for validator in ExpressionLocation.Validators._start:
+        for validator in ExpressionLocation.Validators._start_validators:
             start = validator(start)
         return start
 
     @pydantic.validator("offset")
     def _validate_offset(cls, offset: int) -> int:
-        for validator in ExpressionLocation.Validators._offset:
+        for validator in ExpressionLocation.Validators._offset_validators:
             offset = validator(offset)
         return offset
 
     class Validators:
-        _start: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
-        _offset: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
+        _start_validators: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
+        _offset_validators: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
 
         @typing.overload
         @classmethod
@@ -42,23 +50,15 @@ class ExpressionLocation(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "start":
-                    cls._start.append(validator)
+                    cls._start_validators.append(validator)
                 elif field_name == "offset":
-                    cls._offset.append(validator)
+                    cls._offset_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on ExpressionLocation: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

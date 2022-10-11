@@ -4,18 +4,20 @@ from fern_python.pydantic_codegen import PydanticModel
 from .validator_generator import ValidatorGenerator
 
 
-class RootValidatorGenerator(ValidatorGenerator):
+class CustomRootTypeValidatorGenerator(ValidatorGenerator):
     _VALIDATOR_VALUE_ARGUMENT = "values"
     _VALIDATOR_CLASS_VALIDATORS_CLASS_VAR = "_validators"
 
-    def __init__(self, model: PydanticModel, root_type: AST.TypeHint):
-        super().__init__(model=model)
+    def __init__(
+        self, root_type: AST.TypeHint, model: PydanticModel, reference_to_validators_class: AST.ClassReference
+    ):
+        super().__init__(model=model, reference_to_validators_class=reference_to_validators_class)
         self._root_type = root_type
 
-    def _add_validators_to_model(self) -> None:
+    def add_validator_to_model(self) -> None:
         self._model.add_root_validator(
             validator_name="_validate",
-            value_argument_name=RootValidatorGenerator._VALIDATOR_VALUE_ARGUMENT,
+            value_argument_name=CustomRootTypeValidatorGenerator._VALIDATOR_VALUE_ARGUMENT,
             body=AST.CodeWriter(self._write_validator_body),
         )
 
@@ -36,20 +38,16 @@ class RootValidatorGenerator(ValidatorGenerator):
                 ),
                 args=[
                     AST.Expression(self._root_type),
-                    AST.Expression(f'{RootValidatorGenerator._VALIDATOR_VALUE_ARGUMENT}.get("__root__")'),
+                    AST.Expression(f'{CustomRootTypeValidatorGenerator._VALIDATOR_VALUE_ARGUMENT}.get("__root__")'),
                 ],
             ),
         )
         writer.write_line()
 
-        reference_to_registered_validators = ".".join(
-            [
-                self._model.name,
-                RootValidatorGenerator._VALIDATOR_CLASS_NAME,
-                RootValidatorGenerator._VALIDATOR_CLASS_VALIDATORS_CLASS_VAR,
-            ]
-        )
-        writer.write_line(f"for {INDIVIDUAL_VALIDATOR_NAME} in {reference_to_registered_validators}:")
+        writer.write(f"for {INDIVIDUAL_VALIDATOR_NAME} in ")
+        writer.write_node(AST.ReferenceNode(self._reference_to_validators_class))
+        writer.write_line(f".{CustomRootTypeValidatorGenerator._VALIDATOR_CLASS_VALIDATORS_CLASS_VAR}:")
+
         with writer.indent():
             writer.write(f"{ROOT_VARIABLE_NAME} = ")
             writer.write_node(
@@ -62,19 +60,17 @@ class RootValidatorGenerator(ValidatorGenerator):
             )
             writer.write_line()
         writer.write_line(
-            f'return {{ **{RootValidatorGenerator._VALIDATOR_VALUE_ARGUMENT}, "__root__": {ROOT_VARIABLE_NAME} }}'
+            "return "
+            + f'{{ **{CustomRootTypeValidatorGenerator._VALIDATOR_VALUE_ARGUMENT}, "__root__": {ROOT_VARIABLE_NAME} }}'
         )
 
-    def _add_validators_class_to_model(self) -> None:
+    def add_to_validators_class(self, validators_class: AST.ClassDeclaration) -> None:
         VALIDATOR_PARAMETER = "validator"
 
         validator_type = AST.TypeHint.callable([self._root_type], self._root_type)
-        validators_class = AST.ClassDeclaration(
-            name=RootValidatorGenerator._VALIDATOR_CLASS_NAME,
-        )
         validators_class.add_class_var(
             AST.VariableDeclaration(
-                name=RootValidatorGenerator._VALIDATOR_CLASS_VALIDATORS_CLASS_VAR,
+                name=CustomRootTypeValidatorGenerator._VALIDATOR_CLASS_VALIDATORS_CLASS_VAR,
                 type_hint=AST.TypeHint.class_var(AST.TypeHint.list(validator_type)),
                 initializer=AST.Expression("[]"),
             )
@@ -87,10 +83,9 @@ class RootValidatorGenerator(ValidatorGenerator):
                     return_type=AST.TypeHint.none(),
                 ),
                 body=AST.CodeWriter(
-                    f"cls.{RootValidatorGenerator._VALIDATOR_CLASS_VALIDATORS_CLASS_VAR}"
+                    f"cls.{CustomRootTypeValidatorGenerator._VALIDATOR_CLASS_VALIDATORS_CLASS_VAR}"
                     + f".append({VALIDATOR_PARAMETER})"
                 ),
             ),
             decorator=AST.ClassMethodDecorator.CLASS_METHOD,
         )
-        self._model.add_inner_class(validators_class)

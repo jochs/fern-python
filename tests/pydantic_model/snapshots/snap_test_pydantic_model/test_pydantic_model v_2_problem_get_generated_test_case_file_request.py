@@ -11,23 +11,31 @@ class GetGeneratedTestCaseFileRequest(pydantic.BaseModel):
     template: typing.Optional[TestCaseTemplate]
     test_case: TestCaseV2 = pydantic.Field(alias="testCase")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("template")
     def _validate_template(cls, template: typing.Optional[TestCaseTemplate]) -> typing.Optional[TestCaseTemplate]:
-        for validator in GetGeneratedTestCaseFileRequest.Validators._template:
+        for validator in GetGeneratedTestCaseFileRequest.Validators._template_validators:
             template = validator(template)
         return template
 
     @pydantic.validator("test_case")
     def _validate_test_case(cls, test_case: TestCaseV2) -> TestCaseV2:
-        for validator in GetGeneratedTestCaseFileRequest.Validators._test_case:
+        for validator in GetGeneratedTestCaseFileRequest.Validators._test_case_validators:
             test_case = validator(test_case)
         return test_case
 
     class Validators:
-        _template: typing.ClassVar[
+        _template_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[TestCaseTemplate]], typing.Optional[TestCaseTemplate]]]
         ] = []
-        _test_case: typing.ClassVar[typing.List[typing.Callable[[TestCaseV2], TestCaseV2]]] = []
+        _test_case_validators: typing.ClassVar[typing.List[typing.Callable[[TestCaseV2], TestCaseV2]]] = []
 
         @typing.overload
         @classmethod
@@ -50,23 +58,15 @@ class GetGeneratedTestCaseFileRequest(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "template":
-                    cls._template.append(validator)
+                    cls._template_validators.append(validator)
                 elif field_name == "test_case":
-                    cls._test_case.append(validator)
+                    cls._test_case_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GetGeneratedTestCaseFileRequest: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

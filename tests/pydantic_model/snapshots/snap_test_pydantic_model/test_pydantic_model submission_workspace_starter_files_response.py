@@ -10,14 +10,22 @@ from .workspace_files import WorkspaceFiles
 class WorkspaceStarterFilesResponse(pydantic.BaseModel):
     files: typing.Dict[Language, WorkspaceFiles]
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("files")
     def _validate_files(cls, files: typing.Dict[Language, WorkspaceFiles]) -> typing.Dict[Language, WorkspaceFiles]:
-        for validator in WorkspaceStarterFilesResponse.Validators._files:
+        for validator in WorkspaceStarterFilesResponse.Validators._files_validators:
             files = validator(files)
         return files
 
     class Validators:
-        _files: typing.ClassVar[
+        _files_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Dict[Language, WorkspaceFiles]], typing.Dict[Language, WorkspaceFiles]]]
         ] = []
 
@@ -35,21 +43,13 @@ class WorkspaceStarterFilesResponse(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "files":
-                    cls._files.append(validator)
+                    cls._files_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on WorkspaceStarterFilesResponse: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

@@ -8,23 +8,31 @@ class GenericValue(pydantic.BaseModel):
     stringified_type: typing.Optional[str] = pydantic.Field(alias="stringifiedType")
     stringified_value: str = pydantic.Field(alias="stringifiedValue")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("stringified_type")
     def _validate_stringified_type(cls, stringified_type: typing.Optional[str]) -> typing.Optional[str]:
-        for validator in GenericValue.Validators._stringified_type:
+        for validator in GenericValue.Validators._stringified_type_validators:
             stringified_type = validator(stringified_type)
         return stringified_type
 
     @pydantic.validator("stringified_value")
     def _validate_stringified_value(cls, stringified_value: str) -> str:
-        for validator in GenericValue.Validators._stringified_value:
+        for validator in GenericValue.Validators._stringified_value_validators:
             stringified_value = validator(stringified_value)
         return stringified_value
 
     class Validators:
-        _stringified_type: typing.ClassVar[
+        _stringified_type_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]
         ] = []
-        _stringified_value: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _stringified_value_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
 
         @typing.overload
         @classmethod
@@ -47,23 +55,15 @@ class GenericValue(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "stringified_type":
-                    cls._stringified_type.append(validator)
+                    cls._stringified_type_validators.append(validator)
                 elif field_name == "stringified_value":
-                    cls._stringified_value.append(validator)
+                    cls._stringified_value_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GenericValue: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

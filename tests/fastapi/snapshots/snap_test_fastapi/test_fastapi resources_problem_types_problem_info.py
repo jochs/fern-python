@@ -24,45 +24,53 @@ class ProblemInfo(pydantic.BaseModel):
     method_name: str = pydantic.Field(alias="methodName")
     supports_custom_test_cases: bool = pydantic.Field(alias="supportsCustomTestCases")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("problem_id")
     def _validate_problem_id(cls, problem_id: ProblemId) -> ProblemId:
-        for validator in ProblemInfo.Validators._problem_id:
+        for validator in ProblemInfo.Validators._problem_id_validators:
             problem_id = validator(problem_id)
         return problem_id
 
     @pydantic.validator("problem_description")
     def _validate_problem_description(cls, problem_description: ProblemDescription) -> ProblemDescription:
-        for validator in ProblemInfo.Validators._problem_description:
+        for validator in ProblemInfo.Validators._problem_description_validators:
             problem_description = validator(problem_description)
         return problem_description
 
     @pydantic.validator("problem_name")
     def _validate_problem_name(cls, problem_name: str) -> str:
-        for validator in ProblemInfo.Validators._problem_name:
+        for validator in ProblemInfo.Validators._problem_name_validators:
             problem_name = validator(problem_name)
         return problem_name
 
     @pydantic.validator("problem_version")
     def _validate_problem_version(cls, problem_version: int) -> int:
-        for validator in ProblemInfo.Validators._problem_version:
+        for validator in ProblemInfo.Validators._problem_version_validators:
             problem_version = validator(problem_version)
         return problem_version
 
     @pydantic.validator("files")
     def _validate_files(cls, files: typing.Dict[Language, ProblemFiles]) -> typing.Dict[Language, ProblemFiles]:
-        for validator in ProblemInfo.Validators._files:
+        for validator in ProblemInfo.Validators._files_validators:
             files = validator(files)
         return files
 
     @pydantic.validator("input_params")
     def _validate_input_params(cls, input_params: typing.List[VariableTypeAndName]) -> typing.List[VariableTypeAndName]:
-        for validator in ProblemInfo.Validators._input_params:
+        for validator in ProblemInfo.Validators._input_params_validators:
             input_params = validator(input_params)
         return input_params
 
     @pydantic.validator("output_type")
     def _validate_output_type(cls, output_type: VariableType) -> VariableType:
-        for validator in ProblemInfo.Validators._output_type:
+        for validator in ProblemInfo.Validators._output_type_validators:
             output_type = validator(output_type)
         return output_type
 
@@ -70,43 +78,43 @@ class ProblemInfo(pydantic.BaseModel):
     def _validate_testcases(
         cls, testcases: typing.List[TestCaseWithExpectedResult]
     ) -> typing.List[TestCaseWithExpectedResult]:
-        for validator in ProblemInfo.Validators._testcases:
+        for validator in ProblemInfo.Validators._testcases_validators:
             testcases = validator(testcases)
         return testcases
 
     @pydantic.validator("method_name")
     def _validate_method_name(cls, method_name: str) -> str:
-        for validator in ProblemInfo.Validators._method_name:
+        for validator in ProblemInfo.Validators._method_name_validators:
             method_name = validator(method_name)
         return method_name
 
     @pydantic.validator("supports_custom_test_cases")
     def _validate_supports_custom_test_cases(cls, supports_custom_test_cases: bool) -> bool:
-        for validator in ProblemInfo.Validators._supports_custom_test_cases:
+        for validator in ProblemInfo.Validators._supports_custom_test_cases_validators:
             supports_custom_test_cases = validator(supports_custom_test_cases)
         return supports_custom_test_cases
 
     class Validators:
-        _problem_id: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
-        _problem_description: typing.ClassVar[
+        _problem_id_validators: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
+        _problem_description_validators: typing.ClassVar[
             typing.List[typing.Callable[[ProblemDescription], ProblemDescription]]
         ] = []
-        _problem_name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _problem_version: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
-        _files: typing.ClassVar[
+        _problem_name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _problem_version_validators: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
+        _files_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Dict[Language, ProblemFiles]], typing.Dict[Language, ProblemFiles]]]
         ] = []
-        _input_params: typing.ClassVar[
+        _input_params_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[VariableTypeAndName]], typing.List[VariableTypeAndName]]]
         ] = []
-        _output_type: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
-        _testcases: typing.ClassVar[
+        _output_type_validators: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
+        _testcases_validators: typing.ClassVar[
             typing.List[
                 typing.Callable[[typing.List[TestCaseWithExpectedResult]], typing.List[TestCaseWithExpectedResult]]
             ]
         ] = []
-        _method_name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _supports_custom_test_cases: typing.ClassVar[typing.List[typing.Callable[[bool], bool]]] = []
+        _method_name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _supports_custom_test_cases_validators: typing.ClassVar[typing.List[typing.Callable[[bool], bool]]] = []
 
         @typing.overload
         @classmethod
@@ -196,39 +204,31 @@ class ProblemInfo(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "problem_id":
-                    cls._problem_id.append(validator)
+                    cls._problem_id_validators.append(validator)
                 elif field_name == "problem_description":
-                    cls._problem_description.append(validator)
+                    cls._problem_description_validators.append(validator)
                 elif field_name == "problem_name":
-                    cls._problem_name.append(validator)
+                    cls._problem_name_validators.append(validator)
                 elif field_name == "problem_version":
-                    cls._problem_version.append(validator)
+                    cls._problem_version_validators.append(validator)
                 elif field_name == "files":
-                    cls._files.append(validator)
+                    cls._files_validators.append(validator)
                 elif field_name == "input_params":
-                    cls._input_params.append(validator)
+                    cls._input_params_validators.append(validator)
                 elif field_name == "output_type":
-                    cls._output_type.append(validator)
+                    cls._output_type_validators.append(validator)
                 elif field_name == "testcases":
-                    cls._testcases.append(validator)
+                    cls._testcases_validators.append(validator)
                 elif field_name == "method_name":
-                    cls._method_name.append(validator)
+                    cls._method_name_validators.append(validator)
                 elif field_name == "supports_custom_test_cases":
-                    cls._supports_custom_test_cases.append(validator)
+                    cls._supports_custom_test_cases_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on ProblemInfo: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

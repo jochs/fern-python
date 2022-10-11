@@ -14,39 +14,49 @@ class TestSubmissionState(pydantic.BaseModel):
     custom_test_cases: typing.List[TestCase] = pydantic.Field(alias="customTestCases")
     status: TestSubmissionStatus
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("problem_id")
     def _validate_problem_id(cls, problem_id: ProblemId) -> ProblemId:
-        for validator in TestSubmissionState.Validators._problem_id:
+        for validator in TestSubmissionState.Validators._problem_id_validators:
             problem_id = validator(problem_id)
         return problem_id
 
     @pydantic.validator("default_test_cases")
     def _validate_default_test_cases(cls, default_test_cases: typing.List[TestCase]) -> typing.List[TestCase]:
-        for validator in TestSubmissionState.Validators._default_test_cases:
+        for validator in TestSubmissionState.Validators._default_test_cases_validators:
             default_test_cases = validator(default_test_cases)
         return default_test_cases
 
     @pydantic.validator("custom_test_cases")
     def _validate_custom_test_cases(cls, custom_test_cases: typing.List[TestCase]) -> typing.List[TestCase]:
-        for validator in TestSubmissionState.Validators._custom_test_cases:
+        for validator in TestSubmissionState.Validators._custom_test_cases_validators:
             custom_test_cases = validator(custom_test_cases)
         return custom_test_cases
 
     @pydantic.validator("status")
     def _validate_status(cls, status: TestSubmissionStatus) -> TestSubmissionStatus:
-        for validator in TestSubmissionState.Validators._status:
+        for validator in TestSubmissionState.Validators._status_validators:
             status = validator(status)
         return status
 
     class Validators:
-        _problem_id: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
-        _default_test_cases: typing.ClassVar[
+        _problem_id_validators: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
+        _default_test_cases_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[TestCase]], typing.List[TestCase]]]
         ] = []
-        _custom_test_cases: typing.ClassVar[
+        _custom_test_cases_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[TestCase]], typing.List[TestCase]]]
         ] = []
-        _status: typing.ClassVar[typing.List[typing.Callable[[TestSubmissionStatus], TestSubmissionStatus]]] = []
+        _status_validators: typing.ClassVar[
+            typing.List[typing.Callable[[TestSubmissionStatus], TestSubmissionStatus]]
+        ] = []
 
         @typing.overload
         @classmethod
@@ -89,27 +99,19 @@ class TestSubmissionState(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "problem_id":
-                    cls._problem_id.append(validator)
+                    cls._problem_id_validators.append(validator)
                 elif field_name == "default_test_cases":
-                    cls._default_test_cases.append(validator)
+                    cls._default_test_cases_validators.append(validator)
                 elif field_name == "custom_test_cases":
-                    cls._custom_test_cases.append(validator)
+                    cls._custom_test_cases_validators.append(validator)
                 elif field_name == "status":
-                    cls._status.append(validator)
+                    cls._status_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on TestSubmissionState: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

@@ -7,14 +7,24 @@ import typing_extensions
 class GetTraceResponsesPageRequest(pydantic.BaseModel):
     offset: typing.Optional[int]
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("offset")
     def _validate_offset(cls, offset: typing.Optional[int]) -> typing.Optional[int]:
-        for validator in GetTraceResponsesPageRequest.Validators._offset:
+        for validator in GetTraceResponsesPageRequest.Validators._offset_validators:
             offset = validator(offset)
         return offset
 
     class Validators:
-        _offset: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[int]], typing.Optional[int]]]] = []
+        _offset_validators: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[int]], typing.Optional[int]]]
+        ] = []
 
         @typing.overload  # type: ignore
         @classmethod
@@ -30,21 +40,13 @@ class GetTraceResponsesPageRequest(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "offset":
-                    cls._offset.append(validator)
+                    cls._offset_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GetTraceResponsesPageRequest: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

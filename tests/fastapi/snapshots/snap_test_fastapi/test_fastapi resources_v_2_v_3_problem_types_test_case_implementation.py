@@ -11,23 +11,31 @@ class TestCaseImplementation(pydantic.BaseModel):
     description: TestCaseImplementationDescription
     function: TestCaseFunction
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("description")
     def _validate_description(cls, description: TestCaseImplementationDescription) -> TestCaseImplementationDescription:
-        for validator in TestCaseImplementation.Validators._description:
+        for validator in TestCaseImplementation.Validators._description_validators:
             description = validator(description)
         return description
 
     @pydantic.validator("function")
     def _validate_function(cls, function: TestCaseFunction) -> TestCaseFunction:
-        for validator in TestCaseImplementation.Validators._function:
+        for validator in TestCaseImplementation.Validators._function_validators:
             function = validator(function)
         return function
 
     class Validators:
-        _description: typing.ClassVar[
+        _description_validators: typing.ClassVar[
             typing.List[typing.Callable[[TestCaseImplementationDescription], TestCaseImplementationDescription]]
         ] = []
-        _function: typing.ClassVar[typing.List[typing.Callable[[TestCaseFunction], TestCaseFunction]]] = []
+        _function_validators: typing.ClassVar[typing.List[typing.Callable[[TestCaseFunction], TestCaseFunction]]] = []
 
         @typing.overload
         @classmethod
@@ -53,23 +61,15 @@ class TestCaseImplementation(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "description":
-                    cls._description.append(validator)
+                    cls._description_validators.append(validator)
                 elif field_name == "function":
-                    cls._function.append(validator)
+                    cls._function_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on TestCaseImplementation: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

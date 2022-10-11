@@ -10,7 +10,11 @@ from fern_python.pydantic_codegen import PydanticField, PydanticModel
 
 from .context import HashableDeclaredTypeName, PydanticGeneratorContext
 from .custom_config import CustomConfig
-from .validators import FieldValidatorsGenerator, RootValidatorGenerator
+from .validators import (
+    CustomRootTypeValidatorsGenerator,
+    PydanticValidatorsGenerator,
+    ValidatorsGenerator,
+)
 
 
 class FernAwarePydanticModel:
@@ -161,10 +165,10 @@ class FernAwarePydanticModel:
         self._pydantic_model.set_constructor(constructor)
 
     def finish(self) -> None:
-        if not self._custom_config.exclude_validators:
-            self._add_validators()
         self._override_json()
         self._override_dict()
+        if not self._custom_config.exclude_validators:
+            self._get_validators_generator().add_validators()
         self._pydantic_model.finish()
         if self._model_contains_forward_refs:
             self._source_file.add_footer_expression(
@@ -180,15 +184,15 @@ class FernAwarePydanticModel:
                 )
             )
 
-    def _add_validators(self) -> None:
+    def _get_validators_generator(self) -> ValidatorsGenerator:
         root_type = self._pydantic_model.get_root_type()
         if root_type is not None:
-            RootValidatorGenerator(
+            return CustomRootTypeValidatorsGenerator(
                 model=self._pydantic_model,
                 root_type=root_type,
-            ).add_validators()
+            )
         else:
-            FieldValidatorsGenerator(model=self._pydantic_model).add_validators()
+            return PydanticValidatorsGenerator(model=self._pydantic_model)
 
     def _override_json(self) -> None:
         def write_json_body(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:

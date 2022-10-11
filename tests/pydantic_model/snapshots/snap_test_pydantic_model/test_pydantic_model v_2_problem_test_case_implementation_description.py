@@ -9,16 +9,24 @@ from .test_case_implementation_description_board import TestCaseImplementationDe
 class TestCaseImplementationDescription(pydantic.BaseModel):
     boards: typing.List[TestCaseImplementationDescriptionBoard]
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("boards")
     def _validate_boards(
         cls, boards: typing.List[TestCaseImplementationDescriptionBoard]
     ) -> typing.List[TestCaseImplementationDescriptionBoard]:
-        for validator in TestCaseImplementationDescription.Validators._boards:
+        for validator in TestCaseImplementationDescription.Validators._boards_validators:
             boards = validator(boards)
         return boards
 
     class Validators:
-        _boards: typing.ClassVar[
+        _boards_validators: typing.ClassVar[
             typing.List[
                 typing.Callable[
                     [typing.List[TestCaseImplementationDescriptionBoard]],
@@ -49,21 +57,13 @@ class TestCaseImplementationDescription(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "boards":
-                    cls._boards.append(validator)
+                    cls._boards_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on TestCaseImplementationDescription: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

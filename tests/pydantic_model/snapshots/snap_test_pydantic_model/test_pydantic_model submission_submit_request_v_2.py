@@ -17,15 +17,23 @@ class SubmitRequestV2(pydantic.BaseModel):
     problem_version: typing.Optional[int] = pydantic.Field(alias="problemVersion")
     user_id: typing.Optional[str] = pydantic.Field(alias="userId")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("submission_id")
     def _validate_submission_id(cls, submission_id: SubmissionId) -> SubmissionId:
-        for validator in SubmitRequestV2.Validators._submission_id:
+        for validator in SubmitRequestV2.Validators._submission_id_validators:
             submission_id = validator(submission_id)
         return submission_id
 
     @pydantic.validator("language")
     def _validate_language(cls, language: Language) -> Language:
-        for validator in SubmitRequestV2.Validators._language:
+        for validator in SubmitRequestV2.Validators._language_validators:
             language = validator(language)
         return language
 
@@ -33,39 +41,41 @@ class SubmitRequestV2(pydantic.BaseModel):
     def _validate_submission_files(
         cls, submission_files: typing.List[SubmissionFileInfo]
     ) -> typing.List[SubmissionFileInfo]:
-        for validator in SubmitRequestV2.Validators._submission_files:
+        for validator in SubmitRequestV2.Validators._submission_files_validators:
             submission_files = validator(submission_files)
         return submission_files
 
     @pydantic.validator("problem_id")
     def _validate_problem_id(cls, problem_id: ProblemId) -> ProblemId:
-        for validator in SubmitRequestV2.Validators._problem_id:
+        for validator in SubmitRequestV2.Validators._problem_id_validators:
             problem_id = validator(problem_id)
         return problem_id
 
     @pydantic.validator("problem_version")
     def _validate_problem_version(cls, problem_version: typing.Optional[int]) -> typing.Optional[int]:
-        for validator in SubmitRequestV2.Validators._problem_version:
+        for validator in SubmitRequestV2.Validators._problem_version_validators:
             problem_version = validator(problem_version)
         return problem_version
 
     @pydantic.validator("user_id")
     def _validate_user_id(cls, user_id: typing.Optional[str]) -> typing.Optional[str]:
-        for validator in SubmitRequestV2.Validators._user_id:
+        for validator in SubmitRequestV2.Validators._user_id_validators:
             user_id = validator(user_id)
         return user_id
 
     class Validators:
-        _submission_id: typing.ClassVar[typing.List[typing.Callable[[SubmissionId], SubmissionId]]] = []
-        _language: typing.ClassVar[typing.List[typing.Callable[[Language], Language]]] = []
-        _submission_files: typing.ClassVar[
+        _submission_id_validators: typing.ClassVar[typing.List[typing.Callable[[SubmissionId], SubmissionId]]] = []
+        _language_validators: typing.ClassVar[typing.List[typing.Callable[[Language], Language]]] = []
+        _submission_files_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[SubmissionFileInfo]], typing.List[SubmissionFileInfo]]]
         ] = []
-        _problem_id: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
-        _problem_version: typing.ClassVar[
+        _problem_id_validators: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
+        _problem_version_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[int]], typing.Optional[int]]]
         ] = []
-        _user_id: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]] = []
+        _user_id_validators: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]
+        ] = []
 
         @typing.overload
         @classmethod
@@ -124,31 +134,23 @@ class SubmitRequestV2(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "submission_id":
-                    cls._submission_id.append(validator)
+                    cls._submission_id_validators.append(validator)
                 elif field_name == "language":
-                    cls._language.append(validator)
+                    cls._language_validators.append(validator)
                 elif field_name == "submission_files":
-                    cls._submission_files.append(validator)
+                    cls._submission_files_validators.append(validator)
                 elif field_name == "problem_id":
-                    cls._problem_id.append(validator)
+                    cls._problem_id_validators.append(validator)
                 elif field_name == "problem_version":
-                    cls._problem_version.append(validator)
+                    cls._problem_version_validators.append(validator)
                 elif field_name == "user_id":
-                    cls._user_id.append(validator)
+                    cls._user_id_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on SubmitRequestV2: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

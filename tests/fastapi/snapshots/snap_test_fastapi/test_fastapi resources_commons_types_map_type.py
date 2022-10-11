@@ -10,21 +10,29 @@ class MapType(pydantic.BaseModel):
     key_type: VariableType = pydantic.Field(alias="keyType")
     value_type: VariableType = pydantic.Field(alias="valueType")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("key_type")
     def _validate_key_type(cls, key_type: VariableType) -> VariableType:
-        for validator in MapType.Validators._key_type:
+        for validator in MapType.Validators._key_type_validators:
             key_type = validator(key_type)
         return key_type
 
     @pydantic.validator("value_type")
     def _validate_value_type(cls, value_type: VariableType) -> VariableType:
-        for validator in MapType.Validators._value_type:
+        for validator in MapType.Validators._value_type_validators:
             value_type = validator(value_type)
         return value_type
 
     class Validators:
-        _key_type: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
-        _value_type: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
+        _key_type_validators: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
+        _value_type_validators: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
 
         @typing.overload
         @classmethod
@@ -48,23 +56,15 @@ class MapType(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "key_type":
-                    cls._key_type.append(validator)
+                    cls._key_type_validators.append(validator)
                 elif field_name == "value_type":
-                    cls._value_type.append(validator)
+                    cls._value_type_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on MapType: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

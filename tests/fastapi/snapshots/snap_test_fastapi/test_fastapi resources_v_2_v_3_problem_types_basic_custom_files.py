@@ -15,21 +15,29 @@ class BasicCustomFiles(pydantic.BaseModel):
     additional_files: typing.Dict[Language, Files] = pydantic.Field(alias="additionalFiles")
     basic_test_case_template: BasicTestCaseTemplate = pydantic.Field(alias="basicTestCaseTemplate")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("method_name")
     def _validate_method_name(cls, method_name: str) -> str:
-        for validator in BasicCustomFiles.Validators._method_name:
+        for validator in BasicCustomFiles.Validators._method_name_validators:
             method_name = validator(method_name)
         return method_name
 
     @pydantic.validator("signature")
     def _validate_signature(cls, signature: NonVoidFunctionSignature) -> NonVoidFunctionSignature:
-        for validator in BasicCustomFiles.Validators._signature:
+        for validator in BasicCustomFiles.Validators._signature_validators:
             signature = validator(signature)
         return signature
 
     @pydantic.validator("additional_files")
     def _validate_additional_files(cls, additional_files: typing.Dict[Language, Files]) -> typing.Dict[Language, Files]:
-        for validator in BasicCustomFiles.Validators._additional_files:
+        for validator in BasicCustomFiles.Validators._additional_files_validators:
             additional_files = validator(additional_files)
         return additional_files
 
@@ -37,19 +45,19 @@ class BasicCustomFiles(pydantic.BaseModel):
     def _validate_basic_test_case_template(
         cls, basic_test_case_template: BasicTestCaseTemplate
     ) -> BasicTestCaseTemplate:
-        for validator in BasicCustomFiles.Validators._basic_test_case_template:
+        for validator in BasicCustomFiles.Validators._basic_test_case_template_validators:
             basic_test_case_template = validator(basic_test_case_template)
         return basic_test_case_template
 
     class Validators:
-        _method_name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _signature: typing.ClassVar[
+        _method_name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _signature_validators: typing.ClassVar[
             typing.List[typing.Callable[[NonVoidFunctionSignature], NonVoidFunctionSignature]]
         ] = []
-        _additional_files: typing.ClassVar[
+        _additional_files_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Dict[Language, Files]], typing.Dict[Language, Files]]]
         ] = []
-        _basic_test_case_template: typing.ClassVar[
+        _basic_test_case_template_validators: typing.ClassVar[
             typing.List[typing.Callable[[BasicTestCaseTemplate], BasicTestCaseTemplate]]
         ] = []
 
@@ -94,27 +102,19 @@ class BasicCustomFiles(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "method_name":
-                    cls._method_name.append(validator)
+                    cls._method_name_validators.append(validator)
                 elif field_name == "signature":
-                    cls._signature.append(validator)
+                    cls._signature_validators.append(validator)
                 elif field_name == "additional_files":
-                    cls._additional_files.append(validator)
+                    cls._additional_files_validators.append(validator)
                 elif field_name == "basic_test_case_template":
-                    cls._basic_test_case_template.append(validator)
+                    cls._basic_test_case_template_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on BasicCustomFiles: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

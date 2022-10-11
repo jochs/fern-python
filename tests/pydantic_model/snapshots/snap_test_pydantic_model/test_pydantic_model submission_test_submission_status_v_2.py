@@ -14,37 +14,45 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
     problem_version: int = pydantic.Field(alias="problemVersion")
     problem_info: ProblemInfoV2 = pydantic.Field(alias="problemInfo")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("updates")
     def _validate_updates(cls, updates: typing.List[TestSubmissionUpdate]) -> typing.List[TestSubmissionUpdate]:
-        for validator in TestSubmissionStatusV2.Validators._updates:
+        for validator in TestSubmissionStatusV2.Validators._updates_validators:
             updates = validator(updates)
         return updates
 
     @pydantic.validator("problem_id")
     def _validate_problem_id(cls, problem_id: ProblemId) -> ProblemId:
-        for validator in TestSubmissionStatusV2.Validators._problem_id:
+        for validator in TestSubmissionStatusV2.Validators._problem_id_validators:
             problem_id = validator(problem_id)
         return problem_id
 
     @pydantic.validator("problem_version")
     def _validate_problem_version(cls, problem_version: int) -> int:
-        for validator in TestSubmissionStatusV2.Validators._problem_version:
+        for validator in TestSubmissionStatusV2.Validators._problem_version_validators:
             problem_version = validator(problem_version)
         return problem_version
 
     @pydantic.validator("problem_info")
     def _validate_problem_info(cls, problem_info: ProblemInfoV2) -> ProblemInfoV2:
-        for validator in TestSubmissionStatusV2.Validators._problem_info:
+        for validator in TestSubmissionStatusV2.Validators._problem_info_validators:
             problem_info = validator(problem_info)
         return problem_info
 
     class Validators:
-        _updates: typing.ClassVar[
+        _updates_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[TestSubmissionUpdate]], typing.List[TestSubmissionUpdate]]]
         ] = []
-        _problem_id: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
-        _problem_version: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
-        _problem_info: typing.ClassVar[typing.List[typing.Callable[[ProblemInfoV2], ProblemInfoV2]]] = []
+        _problem_id_validators: typing.ClassVar[typing.List[typing.Callable[[ProblemId], ProblemId]]] = []
+        _problem_version_validators: typing.ClassVar[typing.List[typing.Callable[[int], int]]] = []
+        _problem_info_validators: typing.ClassVar[typing.List[typing.Callable[[ProblemInfoV2], ProblemInfoV2]]] = []
 
         @typing.overload
         @classmethod
@@ -83,27 +91,19 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "updates":
-                    cls._updates.append(validator)
+                    cls._updates_validators.append(validator)
                 elif field_name == "problem_id":
-                    cls._problem_id.append(validator)
+                    cls._problem_id_validators.append(validator)
                 elif field_name == "problem_version":
-                    cls._problem_version.append(validator)
+                    cls._problem_version_validators.append(validator)
                 elif field_name == "problem_info":
-                    cls._problem_info.append(validator)
+                    cls._problem_info_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on TestSubmissionStatusV2: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

@@ -15,51 +15,63 @@ class ExecutionSessionState(pydantic.BaseModel):
     language: Language
     status: ExecutionSessionStatus
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("last_time_contacted")
     def _validate_last_time_contacted(cls, last_time_contacted: typing.Optional[str]) -> typing.Optional[str]:
-        for validator in ExecutionSessionState.Validators._last_time_contacted:
+        for validator in ExecutionSessionState.Validators._last_time_contacted_validators:
             last_time_contacted = validator(last_time_contacted)
         return last_time_contacted
 
     @pydantic.validator("session_id")
     def _validate_session_id(cls, session_id: str) -> str:
-        for validator in ExecutionSessionState.Validators._session_id:
+        for validator in ExecutionSessionState.Validators._session_id_validators:
             session_id = validator(session_id)
         return session_id
 
     @pydantic.validator("is_warm_instance")
     def _validate_is_warm_instance(cls, is_warm_instance: bool) -> bool:
-        for validator in ExecutionSessionState.Validators._is_warm_instance:
+        for validator in ExecutionSessionState.Validators._is_warm_instance_validators:
             is_warm_instance = validator(is_warm_instance)
         return is_warm_instance
 
     @pydantic.validator("aws_task_id")
     def _validate_aws_task_id(cls, aws_task_id: typing.Optional[str]) -> typing.Optional[str]:
-        for validator in ExecutionSessionState.Validators._aws_task_id:
+        for validator in ExecutionSessionState.Validators._aws_task_id_validators:
             aws_task_id = validator(aws_task_id)
         return aws_task_id
 
     @pydantic.validator("language")
     def _validate_language(cls, language: Language) -> Language:
-        for validator in ExecutionSessionState.Validators._language:
+        for validator in ExecutionSessionState.Validators._language_validators:
             language = validator(language)
         return language
 
     @pydantic.validator("status")
     def _validate_status(cls, status: ExecutionSessionStatus) -> ExecutionSessionStatus:
-        for validator in ExecutionSessionState.Validators._status:
+        for validator in ExecutionSessionState.Validators._status_validators:
             status = validator(status)
         return status
 
     class Validators:
-        _last_time_contacted: typing.ClassVar[
+        _last_time_contacted_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]
         ] = []
-        _session_id: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _is_warm_instance: typing.ClassVar[typing.List[typing.Callable[[bool], bool]]] = []
-        _aws_task_id: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]] = []
-        _language: typing.ClassVar[typing.List[typing.Callable[[Language], Language]]] = []
-        _status: typing.ClassVar[typing.List[typing.Callable[[ExecutionSessionStatus], ExecutionSessionStatus]]] = []
+        _session_id_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _is_warm_instance_validators: typing.ClassVar[typing.List[typing.Callable[[bool], bool]]] = []
+        _aws_task_id_validators: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[str]], typing.Optional[str]]]
+        ] = []
+        _language_validators: typing.ClassVar[typing.List[typing.Callable[[Language], Language]]] = []
+        _status_validators: typing.ClassVar[
+            typing.List[typing.Callable[[ExecutionSessionStatus], ExecutionSessionStatus]]
+        ] = []
 
         @typing.overload
         @classmethod
@@ -116,31 +128,23 @@ class ExecutionSessionState(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "last_time_contacted":
-                    cls._last_time_contacted.append(validator)
+                    cls._last_time_contacted_validators.append(validator)
                 elif field_name == "session_id":
-                    cls._session_id.append(validator)
+                    cls._session_id_validators.append(validator)
                 elif field_name == "is_warm_instance":
-                    cls._is_warm_instance.append(validator)
+                    cls._is_warm_instance_validators.append(validator)
                 elif field_name == "aws_task_id":
-                    cls._aws_task_id.append(validator)
+                    cls._aws_task_id_validators.append(validator)
                 elif field_name == "language":
-                    cls._language.append(validator)
+                    cls._language_validators.append(validator)
                 elif field_name == "status":
-                    cls._status.append(validator)
+                    cls._status_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on ExecutionSessionState: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

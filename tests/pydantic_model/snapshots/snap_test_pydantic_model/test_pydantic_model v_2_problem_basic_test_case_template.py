@@ -14,37 +14,49 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
     description: TestCaseImplementationDescription
     expected_value_parameter_id: ParameterId = pydantic.Field(alias="expectedValueParameterId")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("template_id")
     def _validate_template_id(cls, template_id: TestCaseTemplateId) -> TestCaseTemplateId:
-        for validator in BasicTestCaseTemplate.Validators._template_id:
+        for validator in BasicTestCaseTemplate.Validators._template_id_validators:
             template_id = validator(template_id)
         return template_id
 
     @pydantic.validator("name")
     def _validate_name(cls, name: str) -> str:
-        for validator in BasicTestCaseTemplate.Validators._name:
+        for validator in BasicTestCaseTemplate.Validators._name_validators:
             name = validator(name)
         return name
 
     @pydantic.validator("description")
     def _validate_description(cls, description: TestCaseImplementationDescription) -> TestCaseImplementationDescription:
-        for validator in BasicTestCaseTemplate.Validators._description:
+        for validator in BasicTestCaseTemplate.Validators._description_validators:
             description = validator(description)
         return description
 
     @pydantic.validator("expected_value_parameter_id")
     def _validate_expected_value_parameter_id(cls, expected_value_parameter_id: ParameterId) -> ParameterId:
-        for validator in BasicTestCaseTemplate.Validators._expected_value_parameter_id:
+        for validator in BasicTestCaseTemplate.Validators._expected_value_parameter_id_validators:
             expected_value_parameter_id = validator(expected_value_parameter_id)
         return expected_value_parameter_id
 
     class Validators:
-        _template_id: typing.ClassVar[typing.List[typing.Callable[[TestCaseTemplateId], TestCaseTemplateId]]] = []
-        _name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _description: typing.ClassVar[
+        _template_id_validators: typing.ClassVar[
+            typing.List[typing.Callable[[TestCaseTemplateId], TestCaseTemplateId]]
+        ] = []
+        _name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _description_validators: typing.ClassVar[
             typing.List[typing.Callable[[TestCaseImplementationDescription], TestCaseImplementationDescription]]
         ] = []
-        _expected_value_parameter_id: typing.ClassVar[typing.List[typing.Callable[[ParameterId], ParameterId]]] = []
+        _expected_value_parameter_id_validators: typing.ClassVar[
+            typing.List[typing.Callable[[ParameterId], ParameterId]]
+        ] = []
 
         @typing.overload
         @classmethod
@@ -86,27 +98,19 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "template_id":
-                    cls._template_id.append(validator)
+                    cls._template_id_validators.append(validator)
                 elif field_name == "name":
-                    cls._name.append(validator)
+                    cls._name_validators.append(validator)
                 elif field_name == "description":
-                    cls._description.append(validator)
+                    cls._description_validators.append(validator)
                 elif field_name == "expected_value_parameter_id":
-                    cls._expected_value_parameter_id.append(validator)
+                    cls._expected_value_parameter_id_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on BasicTestCaseTemplate: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

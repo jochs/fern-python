@@ -20,33 +20,41 @@ class CreateProblemRequest(pydantic.BaseModel):
     testcases: typing.List[TestCaseWithExpectedResult]
     method_name: str = pydantic.Field(alias="methodName")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("problem_name")
     def _validate_problem_name(cls, problem_name: str) -> str:
-        for validator in CreateProblemRequest.Validators._problem_name:
+        for validator in CreateProblemRequest.Validators._problem_name_validators:
             problem_name = validator(problem_name)
         return problem_name
 
     @pydantic.validator("problem_description")
     def _validate_problem_description(cls, problem_description: ProblemDescription) -> ProblemDescription:
-        for validator in CreateProblemRequest.Validators._problem_description:
+        for validator in CreateProblemRequest.Validators._problem_description_validators:
             problem_description = validator(problem_description)
         return problem_description
 
     @pydantic.validator("files")
     def _validate_files(cls, files: typing.Dict[Language, ProblemFiles]) -> typing.Dict[Language, ProblemFiles]:
-        for validator in CreateProblemRequest.Validators._files:
+        for validator in CreateProblemRequest.Validators._files_validators:
             files = validator(files)
         return files
 
     @pydantic.validator("input_params")
     def _validate_input_params(cls, input_params: typing.List[VariableTypeAndName]) -> typing.List[VariableTypeAndName]:
-        for validator in CreateProblemRequest.Validators._input_params:
+        for validator in CreateProblemRequest.Validators._input_params_validators:
             input_params = validator(input_params)
         return input_params
 
     @pydantic.validator("output_type")
     def _validate_output_type(cls, output_type: VariableType) -> VariableType:
-        for validator in CreateProblemRequest.Validators._output_type:
+        for validator in CreateProblemRequest.Validators._output_type_validators:
             output_type = validator(output_type)
         return output_type
 
@@ -54,34 +62,34 @@ class CreateProblemRequest(pydantic.BaseModel):
     def _validate_testcases(
         cls, testcases: typing.List[TestCaseWithExpectedResult]
     ) -> typing.List[TestCaseWithExpectedResult]:
-        for validator in CreateProblemRequest.Validators._testcases:
+        for validator in CreateProblemRequest.Validators._testcases_validators:
             testcases = validator(testcases)
         return testcases
 
     @pydantic.validator("method_name")
     def _validate_method_name(cls, method_name: str) -> str:
-        for validator in CreateProblemRequest.Validators._method_name:
+        for validator in CreateProblemRequest.Validators._method_name_validators:
             method_name = validator(method_name)
         return method_name
 
     class Validators:
-        _problem_name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
-        _problem_description: typing.ClassVar[
+        _problem_name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _problem_description_validators: typing.ClassVar[
             typing.List[typing.Callable[[ProblemDescription], ProblemDescription]]
         ] = []
-        _files: typing.ClassVar[
+        _files_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Dict[Language, ProblemFiles]], typing.Dict[Language, ProblemFiles]]]
         ] = []
-        _input_params: typing.ClassVar[
+        _input_params_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.List[VariableTypeAndName]], typing.List[VariableTypeAndName]]]
         ] = []
-        _output_type: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
-        _testcases: typing.ClassVar[
+        _output_type_validators: typing.ClassVar[typing.List[typing.Callable[[VariableType], VariableType]]] = []
+        _testcases_validators: typing.ClassVar[
             typing.List[
                 typing.Callable[[typing.List[TestCaseWithExpectedResult]], typing.List[TestCaseWithExpectedResult]]
             ]
         ] = []
-        _method_name: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _method_name_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
 
         @typing.overload
         @classmethod
@@ -150,33 +158,25 @@ class CreateProblemRequest(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "problem_name":
-                    cls._problem_name.append(validator)
+                    cls._problem_name_validators.append(validator)
                 elif field_name == "problem_description":
-                    cls._problem_description.append(validator)
+                    cls._problem_description_validators.append(validator)
                 elif field_name == "files":
-                    cls._files.append(validator)
+                    cls._files_validators.append(validator)
                 elif field_name == "input_params":
-                    cls._input_params.append(validator)
+                    cls._input_params_validators.append(validator)
                 elif field_name == "output_type":
-                    cls._output_type.append(validator)
+                    cls._output_type_validators.append(validator)
                 elif field_name == "testcases":
-                    cls._testcases.append(validator)
+                    cls._testcases_validators.append(validator)
                 elif field_name == "method_name":
-                    cls._method_name.append(validator)
+                    cls._method_name_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on CreateProblemRequest: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

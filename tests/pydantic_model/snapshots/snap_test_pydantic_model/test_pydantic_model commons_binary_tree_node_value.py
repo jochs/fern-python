@@ -12,35 +12,47 @@ class BinaryTreeNodeValue(pydantic.BaseModel):
     right: typing.Optional[NodeId]
     left: typing.Optional[NodeId]
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("node_id")
     def _validate_node_id(cls, node_id: NodeId) -> NodeId:
-        for validator in BinaryTreeNodeValue.Validators._node_id:
+        for validator in BinaryTreeNodeValue.Validators._node_id_validators:
             node_id = validator(node_id)
         return node_id
 
     @pydantic.validator("val")
     def _validate_val(cls, val: float) -> float:
-        for validator in BinaryTreeNodeValue.Validators._val:
+        for validator in BinaryTreeNodeValue.Validators._val_validators:
             val = validator(val)
         return val
 
     @pydantic.validator("right")
     def _validate_right(cls, right: typing.Optional[NodeId]) -> typing.Optional[NodeId]:
-        for validator in BinaryTreeNodeValue.Validators._right:
+        for validator in BinaryTreeNodeValue.Validators._right_validators:
             right = validator(right)
         return right
 
     @pydantic.validator("left")
     def _validate_left(cls, left: typing.Optional[NodeId]) -> typing.Optional[NodeId]:
-        for validator in BinaryTreeNodeValue.Validators._left:
+        for validator in BinaryTreeNodeValue.Validators._left_validators:
             left = validator(left)
         return left
 
     class Validators:
-        _node_id: typing.ClassVar[typing.List[typing.Callable[[NodeId], NodeId]]] = []
-        _val: typing.ClassVar[typing.List[typing.Callable[[float], float]]] = []
-        _right: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]] = []
-        _left: typing.ClassVar[typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]] = []
+        _node_id_validators: typing.ClassVar[typing.List[typing.Callable[[NodeId], NodeId]]] = []
+        _val_validators: typing.ClassVar[typing.List[typing.Callable[[float], float]]] = []
+        _right_validators: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]
+        ] = []
+        _left_validators: typing.ClassVar[
+            typing.List[typing.Callable[[typing.Optional[NodeId]], typing.Optional[NodeId]]]
+        ] = []
 
         @typing.overload
         @classmethod
@@ -80,27 +92,19 @@ class BinaryTreeNodeValue(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "node_id":
-                    cls._node_id.append(validator)
+                    cls._node_id_validators.append(validator)
                 elif field_name == "val":
-                    cls._val.append(validator)
+                    cls._val_validators.append(validator)
                 elif field_name == "right":
-                    cls._right.append(validator)
+                    cls._right_validators.append(validator)
                 elif field_name == "left":
-                    cls._left.append(validator)
+                    cls._left_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on BinaryTreeNodeValue: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

@@ -9,16 +9,24 @@ from ...commons.language import Language
 class GetFunctionSignatureResponse(pydantic.BaseModel):
     function_by_language: typing.Dict[Language, str] = pydantic.Field(alias="functionByLanguage")
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("function_by_language")
     def _validate_function_by_language(
         cls, function_by_language: typing.Dict[Language, str]
     ) -> typing.Dict[Language, str]:
-        for validator in GetFunctionSignatureResponse.Validators._function_by_language:
+        for validator in GetFunctionSignatureResponse.Validators._function_by_language_validators:
             function_by_language = validator(function_by_language)
         return function_by_language
 
     class Validators:
-        _function_by_language: typing.ClassVar[
+        _function_by_language_validators: typing.ClassVar[
             typing.List[typing.Callable[[typing.Dict[Language, str]], typing.Dict[Language, str]]]
         ] = []
 
@@ -36,21 +44,13 @@ class GetFunctionSignatureResponse(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "function_by_language":
-                    cls._function_by_language.append(validator)
+                    cls._function_by_language_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on GetFunctionSignatureResponse: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True

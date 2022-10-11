@@ -7,14 +7,22 @@ import typing_extensions
 class CompileError(pydantic.BaseModel):
     message: str
 
+    def json(self, **kwargs: typing.Any) -> str:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().json(**kwargs_with_defaults)
+
+    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
+        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
+        return super().dict(**kwargs_with_defaults)
+
     @pydantic.validator("message")
     def _validate_message(cls, message: str) -> str:
-        for validator in CompileError.Validators._message:
+        for validator in CompileError.Validators._message_validators:
             message = validator(message)
         return message
 
     class Validators:
-        _message: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
+        _message_validators: typing.ClassVar[typing.List[typing.Callable[[str], str]]] = []
 
         @typing.overload  # type: ignore
         @classmethod
@@ -27,21 +35,13 @@ class CompileError(pydantic.BaseModel):
         def field(cls, field_name: str) -> typing.Any:
             def decorator(validator: typing.Any) -> typing.Any:
                 if field_name == "message":
-                    cls._message.append(validator)
+                    cls._message_validators.append(validator)
                 else:
                     raise RuntimeError("Field does not exist on CompileError: " + field_name)
 
                 return validator
 
             return decorator
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
 
     class Config:
         frozen = True
