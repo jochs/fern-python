@@ -3,7 +3,7 @@ import shutil
 import subprocess
 from glob import glob
 from pathlib import Path
-from typing import Callable, Set
+from typing import Callable, List, Set
 
 from generator_exec.resources import config
 from snapshottest.file import FileSnapshot  # type: ignore
@@ -49,13 +49,16 @@ def run_snapshot_test(
         raise RuntimeError(f"Cannot delete {symlink}")
     os.symlink(path_to_output, symlink)
 
-    subprocess.run(
-        ["npx", "fern-api", "ir", "--output", path_to_ir],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        cwd=path_to_fixture,
-        check=True,
-    )
+    def run_command_in_output_directory(command: List[str]) -> None:
+        subprocess.run(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=path_to_fixture,
+            check=True,
+        )
+
+    run_command_in_output_directory(["npx", "fern-api", "ir", "--output", path_to_ir])
     cli(path_to_config_json)
 
     # snapshot files
@@ -72,3 +75,8 @@ def run_snapshot_test(
         name="filepaths",
         value=sorted(list(relative_filepaths)),
     )
+
+    # check compile
+    run_command_in_output_directory(["poetry", "init", "--no-interaction"])
+    run_command_in_output_directory(["poetry", "add", "fastapi", "pydantic", "mypy"])
+    run_command_in_output_directory(["poetry", "run", "mypy", "."])
