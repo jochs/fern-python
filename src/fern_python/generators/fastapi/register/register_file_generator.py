@@ -3,8 +3,9 @@ from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 from fern_python.source_file_generator import SourceFileGenerator
 
 from ..context import FastApiGeneratorContext
-from ..external_dependencies import FastAPI
+from ..external_dependencies import FastAPI, Starlette
 from .service_initializer import ServiceInitializer
+from .exception_handler_generator import ExceptionHandlerGenerator
 
 
 class RegisterFileGenerator:
@@ -65,21 +66,63 @@ class RegisterFileGenerator:
             )
             writer.write_line()
         writer.write_line()
+        self._write_exception_handlers(writer)
+
+    def _write_exception_handlers(self, writer: AST.NodeWriter) -> None:
+
+        exception_handler_generator = ExceptionHandlerGenerator()
         writer.write_node(
-            FastAPI.exception_handler(
+            exception_handler_generator.generate(
+                exception_handler_name="_fern_exception_handler",
                 app_variable=RegisterFileGenerator._APP_PARAMETER_NAME,
-                exception_type=self._context.core_utilities.FernHTTPException(),
-                body=AST.CodeWriter(self._write_exception_handler_body),
+                exception_cls=self._context.core_utilities.FernHTTPException.get_reference_to(),
+                write_return_statement=AST.CodeWriter(
+                    f"{FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT}.to_json_response()"
+                ),
             )
         )
 
-    def _write_exception_handler_body(self, writer: AST.NodeWriter) -> None:
-        writer.write(f"{FastAPI.EXCEPTION_HANDLER_REQUEST_ARGUMENT}.state.logger.info(")
-        writer.write(f'f"{{{FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT}.__class__.__name__}} in ')
-        writer.write(f'{{{FastAPI.EXCEPTION_HANDLER_REQUEST_ARGUMENT}.url.path}}", ')
-        writer.write_line(f"exc_info={FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT})")
+        writer.write_node(
+            exception_handler_generator.generate(
+                exception_handler_name="_starlette_exception_handler",
+                app_variable=RegisterFileGenerator._APP_PARAMETER_NAME,
+                exception_cls=Starlette.HTTPException,
+                write_return_statement=AST.CodeWriter(
+                    lambda writer: writer.write_node(
+                        self._context.core_utilities.FernHTTPException.create(
+                            status_code=AST.Expression(
+                                FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT
+                                + "."
+                                + Starlette.HTTPException_STATUS_CODE_MEMBER
+                            ),
+                            name=None,
+                            content=AST.Expression(
+                                FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT
+                                + "."
+                                + Starlette.HTTPException_DETAIL_MEMBER
+                            ),
+                        )
+                    )
+                ),
+            )
+        )
 
-        writer.write_line(f"return {FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT}.to_json_response()")
+        writer.write_node(
+            exception_handler_generator.generate(
+                exception_handler_name="_default_exception_handler",
+                app_variable=RegisterFileGenerator._APP_PARAMETER_NAME,
+                exception_cls=AST.ClassReference(qualified_name_excluding_import=("Exception",)),
+                write_return_statement=AST.CodeWriter(
+                    lambda writer: writer.write_node(
+                        self._context.core_utilities.FernHTTPException.create(
+                            status_code=AST.Expression("500"),
+                            name=None,
+                            content=AST.Expression('"Internal Server Error"'),
+                        )
+                    )
+                ),
+            )
+        )
 
     def _get_register_service_method(self) -> AST.FunctionDeclaration:
         return AST.FunctionDeclaration(

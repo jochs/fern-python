@@ -10,6 +10,7 @@ import os
 import types
 
 import fastapi
+import starlette
 
 from .core.abstract_fern_service import AbstractFernService
 from .core.exceptions import FernHTTPException
@@ -52,9 +53,23 @@ def register(
     app.include_router(__register_service(v_2_v_3_problem))
 
     @app.exception_handler(FernHTTPException)
-    def _exception_handler(request: fastapi.requests.Request, exc: FernHTTPException) -> fastapi.responses.JSONResponse:
+    def _fern_exception_handler(
+        request: fastapi.requests.Request, exc: FernHTTPException
+    ) -> fastapi.responses.JSONResponse:
         request.state.logger.info(f"{exc.__class__.__name__} in {request.url.path}", exc_info=exc)
         return exc.to_json_response()
+
+    @app.exception_handler(starlette.HTTPException)
+    def _starlette_exception_handler(
+        request: fastapi.requests.Request, exc: starlette.HTTPException
+    ) -> fastapi.responses.JSONResponse:
+        request.state.logger.info(f"{exc.__class__.__name__} in {request.url.path}", exc_info=exc)
+        return FernHTTPException(status_code=exc.status_code, content=exc.detail)
+
+    @app.exception_handler(Exception)
+    def _default_exception_handler(request: fastapi.requests.Request, exc: Exception) -> fastapi.responses.JSONResponse:
+        request.state.logger.info(f"{exc.__class__.__name__} in {request.url.path}", exc_info=exc)
+        return FernHTTPException(status_code=500, content="Internal Server Error")
 
 
 def __register_service(service: AbstractFernService) -> fastapi.APIRouter:
