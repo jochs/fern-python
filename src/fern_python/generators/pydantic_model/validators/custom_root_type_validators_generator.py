@@ -22,3 +22,7 @@ class CustomRootTypeValidatorsGenerator(ValidatorsGenerator):
 
     def _get_validator_generators(self) -> Sequence[ValidatorGenerator]:
         return [self._root_type_generator]
+
+    def _write_examples_for_docstring(self, writer: AST.NodeWriter) -> None:
+        writer.write_line()
+        self._root_type_generator.write_example_for_docstring(writer=writer)

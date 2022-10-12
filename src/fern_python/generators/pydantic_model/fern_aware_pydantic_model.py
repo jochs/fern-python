@@ -60,9 +60,17 @@ class FernAwarePydanticModel:
     def get_class_name(self) -> str:
         return self._context.get_class_name_for_type_name(self._type_name)
 
-    def add_field(self, name: str, json_field_name: str, type_reference: ir_types.TypeReference) -> PydanticField:
+    def add_field(
+        self,
+        *,
+        name: str,
+        pascal_case_field_name: str,
+        json_field_name: str,
+        type_reference: ir_types.TypeReference,
+    ) -> PydanticField:
         field = PydanticField(
             name=name,
+            pascal_case_field_name=pascal_case_field_name,
             type_hint=self.get_type_hint_for_type_reference(
                 type_reference,
             ),
@@ -165,10 +173,10 @@ class FernAwarePydanticModel:
         self._pydantic_model.set_constructor(constructor)
 
     def finish(self) -> None:
-        self._override_json()
-        self._override_dict()
         if not self._custom_config.exclude_validators:
             self._get_validators_generator().add_validators()
+        self._override_json()
+        self._override_dict()
         self._pydantic_model.finish()
         if self._model_contains_forward_refs:
             self._source_file.add_footer_expression(

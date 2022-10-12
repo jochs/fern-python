@@ -8,6 +8,9 @@ from .validators_generator import ValidatorsGenerator
 
 
 class PydanticValidatorsGenerator(ValidatorsGenerator):
+    _DECORATOR_FUNCTION_NAME = "field"
+    _PARTIAL_CLASS_NAME = "Partial"
+
     def __init__(self, model: PydanticModel):
         super().__init__(model=model)
         self._validator_generators = [
@@ -32,7 +35,7 @@ class PydanticValidatorsGenerator(ValidatorsGenerator):
         validators_class.add_method(
             decorator=AST.ClassMethodDecorator.CLASS_METHOD,
             declaration=AST.FunctionDeclaration(
-                name="field",
+                name=PydanticValidatorsGenerator._DECORATOR_FUNCTION_NAME,
                 signature=AST.FunctionSignature(
                     parameters=[
                         AST.FunctionParameter(
@@ -47,6 +50,39 @@ class PydanticValidatorsGenerator(ValidatorsGenerator):
             ),
         )
 
+        for generator in self._validator_generators:
+            validator_protocol = AST.ClassDeclaration(
+                name=generator.get_validator_protocol_name(),
+                extends=[
+                    AST.ClassReference(
+                        import_=AST.ReferenceImport(module=AST.Module.built_in("typing_extensions")),
+                        qualified_name_excluding_import=("Protocol",),
+                    )
+                ],
+            )
+            validator_protocol.add_method(
+                declaration=AST.FunctionDeclaration(
+                    name="__call__",
+                    signature=AST.FunctionSignature(
+                        parameters=[
+                            AST.FunctionParameter(
+                                name=PydanticModel.VALIDATOR_FIELD_VALUE_PARAMETER_NAME,
+                                type_hint=generator.field.type_hint,
+                            ),
+                        ],
+                        named_parameters=[
+                            AST.FunctionParameter(
+                                name=PydanticModel.VALIDATOR_VALUES_PARAMETER_NAME,
+                                type_hint=AST.TypeHint(type=self._get_reference_to_partial()),
+                            ),
+                        ],
+                        return_type=generator.field.type_hint,
+                    ),
+                    body=AST.CodeWriter("..."),
+                )
+            )
+            validators_class.add_class(declaration=validator_protocol)
+
     def _write_add_field_validator_body(
         self,
         writer: AST.NodeWriter,
@@ -58,9 +94,8 @@ class PydanticValidatorsGenerator(ValidatorsGenerator):
             writer: AST.NodeWriter,
             reference_resolver: AST.ReferenceResolver,
         ) -> None:
-            for i, generator in enumerate(self._validator_generators):
-                writer.write("if" if i == 0 else "elif")
-                writer.write(f" {FieldValidatorGenerator._DECORATOR_FIELD_NAME_ARGUMENT} == ")
+            for generator in self._validator_generators:
+                writer.write(f"if {FieldValidatorGenerator._DECORATOR_FIELD_NAME_ARGUMENT} == ")
                 writer.write(f'"{generator.field.name}":')
                 writer.write_line()
                 with writer.indent():
@@ -75,12 +110,6 @@ class PydanticValidatorsGenerator(ValidatorsGenerator):
                         args=[AST.Expression(FieldValidatorGenerator._VALIDATOR_PARAMETER_NAME)],
                     )
                     writer.write_node(append_statement)
-                writer.write_line()
-            writer.write_line("else:")
-            with writer.indent():
-                writer.write(f'raise RuntimeError("Field does not exist on {self._model.name}: " + ')
-                writer.write(FieldValidatorGenerator._DECORATOR_FIELD_NAME_ARGUMENT)
-                writer.write_line(")")
                 writer.write_line()
             writer.write(f"return {FieldValidatorGenerator._VALIDATOR_PARAMETER_NAME}")
 
@@ -98,3 +127,42 @@ class PydanticValidatorsGenerator(ValidatorsGenerator):
 
     def _get_validator_generators(self) -> Sequence[ValidatorGenerator]:
         return self._validator_generators
+
+    def _get_reference_to_partial(self) -> AST.ClassReference:
+        return AST.ClassReference(
+            qualified_name_excluding_import=(self._model.name, PydanticValidatorsGenerator._PARTIAL_CLASS_NAME),
+            is_forward_reference=True,
+        )
+
+    def _finish(self) -> None:
+        partial_class = AST.ClassDeclaration(
+            name=PydanticValidatorsGenerator._PARTIAL_CLASS_NAME,
+            extends=[
+                AST.ClassReference(
+                    import_=AST.ReferenceImport(module=AST.Module.built_in("typing")),
+                    qualified_name_excluding_import=("TypedDict",),
+                )
+            ],
+        )
+
+        for generator in self._validator_generators:
+            partial_class.add_class_var(
+                variable_declaration=AST.VariableDeclaration(
+                    name=generator.field.name,
+                    type_hint=AST.TypeHint.not_required(generator.field.type_hint),
+                ),
+            )
+
+        self._model.add_inner_class(inner_class=partial_class)
+
+    def _write_examples_for_docstring(self, writer: AST.NodeWriter) -> None:
+        for generator in self._validator_generators:
+            writer.write_line()
+            generator.write_example_for_docstring(
+                writer=writer,
+                reference_to_decorator=(
+                    *self._get_reference_to_validators_class(),
+                    PydanticValidatorsGenerator._DECORATOR_FUNCTION_NAME,
+                ),
+                reference_to_partial=self._get_reference_to_partial(),
+            )
