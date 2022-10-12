@@ -5,7 +5,6 @@ from fern_python.source_file_generator import SourceFileGenerator
 from ..context import FastApiGeneratorContext
 from ..external_dependencies import FastAPI, Starlette
 from .service_initializer import ServiceInitializer
-from .exception_handler_generator import ExceptionHandlerGenerator
 
 
 class RegisterFileGenerator:
@@ -66,63 +65,33 @@ class RegisterFileGenerator:
             )
             writer.write_line()
         writer.write_line()
-        self._write_exception_handlers(writer)
-
-    def _write_exception_handlers(self, writer: AST.NodeWriter) -> None:
-
-        exception_handler_generator = ExceptionHandlerGenerator()
-        writer.write_node(
-            exception_handler_generator.generate(
-                exception_handler_name="_fern_exception_handler",
-                app_variable=RegisterFileGenerator._APP_PARAMETER_NAME,
-                exception_cls=self._context.core_utilities.FernHTTPException.get_reference_to(),
-                write_return_statement=AST.CodeWriter(
-                    f"{FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT}.to_json_response()"
-                ),
-            )
+        self._write_exception_handler(
+            writer=writer,
+            exception_type=self._context.core_utilities.exceptions.FernHTTPException.get_reference_to(),
+            handler=self._context.core_utilities.exceptions.fern_http_exception_handler(),
+        )
+        self._write_exception_handler(
+            writer=writer,
+            exception_type=Starlette.HTTPException,
+            handler=self._context.core_utilities.exceptions.http_exception_handler(),
+        )
+        self._write_exception_handler(
+            writer=writer,
+            exception_type=AST.ClassReference(qualified_name_excluding_import=("Exception",)),
+            handler=self._context.core_utilities.exceptions.default_exception_handler(),
         )
 
+    def _write_exception_handler(
+        self, *, writer: AST.NodeWriter, exception_type: AST.ClassReference, handler: AST.Reference
+    ) -> None:
         writer.write_node(
-            exception_handler_generator.generate(
-                exception_handler_name="_starlette_exception_handler",
+            FastAPI.add_exception_handler(
                 app_variable=RegisterFileGenerator._APP_PARAMETER_NAME,
-                exception_cls=Starlette.HTTPException,
-                write_return_statement=AST.CodeWriter(
-                    lambda writer: writer.write_node(
-                        self._context.core_utilities.FernHTTPException.create(
-                            status_code=AST.Expression(
-                                FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT
-                                + "."
-                                + Starlette.HTTPException_STATUS_CODE_MEMBER
-                            ),
-                            name=None,
-                            content=AST.Expression(
-                                FastAPI.EXCEPTION_HANDLER_EXCEPTION_ARGUMENT
-                                + "."
-                                + Starlette.HTTPException_DETAIL_MEMBER
-                            ),
-                        )
-                    )
-                ),
+                exception_type=exception_type,
+                handler=handler,
             )
         )
-
-        writer.write_node(
-            exception_handler_generator.generate(
-                exception_handler_name="_default_exception_handler",
-                app_variable=RegisterFileGenerator._APP_PARAMETER_NAME,
-                exception_cls=AST.ClassReference(qualified_name_excluding_import=("Exception",)),
-                write_return_statement=AST.CodeWriter(
-                    lambda writer: writer.write_node(
-                        self._context.core_utilities.FernHTTPException.create(
-                            status_code=AST.Expression("500"),
-                            name=None,
-                            content=AST.Expression('"Internal Server Error"'),
-                        )
-                    )
-                ),
-            )
-        )
+        writer.write_line()
 
     def _get_register_service_method(self) -> AST.FunctionDeclaration:
         return AST.FunctionDeclaration(

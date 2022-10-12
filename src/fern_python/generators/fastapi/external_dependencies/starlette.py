@@ -16,7 +16,7 @@ def _export(*name: str) -> AST.ClassReference:
 
 
 class Starlette:
-    HTTPException = _export("HTTPException")
+    HTTPException = _export("exceptions", "HTTPException")
 
     HTTPException_STATUS_CODE_MEMBER = "status_code"
     HTTPException_DETAIL_MEMBER = "detail"

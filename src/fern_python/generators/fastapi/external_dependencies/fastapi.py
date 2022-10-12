@@ -142,3 +142,15 @@ class FastAPI:
             decorators=[decorator],
             body=body,
         )
+
+    @staticmethod
+    def add_exception_handler(
+        *,
+        app_variable: str,
+        exception_type: AST.ClassReference,
+        handler: AST.Reference,
+    ) -> AST.FunctionInvocation:
+        return AST.FunctionInvocation(
+            function_definition=AST.Reference(qualified_name_excluding_import=(app_variable, "add_exception_handler")),
+            args=[AST.Expression(exception_type), AST.Expression(handler)],
+        )

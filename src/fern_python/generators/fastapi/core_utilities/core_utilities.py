@@ -1,6 +1,6 @@
 import os
 import shutil
-from typing import Tuple, Optional, List
+from typing import List, Optional, Tuple
 
 from fern_python.codegen import AST, Filepath, Project
 
@@ -15,7 +15,8 @@ class FernHTTPException:
         return AST.ClassReference(
             qualified_name_excluding_import=(),
             import_=AST.ReferenceImport(
-                module=AST.Module.local(*self._module_path, "exceptions"), named_import="FernHTTPException"
+                module=AST.Module.local(*self._module_path),
+                named_import="FernHTTPException",
             ),
         )
 
@@ -35,13 +36,46 @@ class FernHTTPException:
         return AST.ClassInstantiation(class_=self.get_reference_to(), kwargs=kwargs)
 
 
+class Exceptions:
+    def __init__(self, module_path: AST.ModulePath):
+        self._module_path = (*module_path, "exceptions")
+        self.FernHTTPException = FernHTTPException(module_path=self._module_path)
+
+    def fern_http_exception_handler(self) -> AST.Reference:
+        return AST.Reference(
+            qualified_name_excluding_import=(),
+            import_=AST.ReferenceImport(
+                module=AST.Module.local(*self._module_path),
+                named_import="fern_http_exception_handler",
+            ),
+        )
+
+    def http_exception_handler(self) -> AST.Reference:
+        return AST.Reference(
+            qualified_name_excluding_import=(),
+            import_=AST.ReferenceImport(
+                module=AST.Module.local(*self._module_path),
+                named_import="http_exception_handler",
+            ),
+        )
+
+    def default_exception_handler(self) -> AST.Reference:
+        return AST.Reference(
+            qualified_name_excluding_import=(),
+            import_=AST.ReferenceImport(
+                module=AST.Module.local(*self._module_path),
+                named_import="default_exception_handler",
+            ),
+        )
+
+
 class CoreUtilities:
     def __init__(self, filepath_creator: FastApiFilepathCreator):
         self._filepath = filepath_creator.generate_filepath_prefix() + (
             Filepath.DirectoryFilepathPart(module_name="core"),
         )
         self._module_path = tuple(part.module_name for part in self._filepath)
-        self.FernHTTPException = FernHTTPException(module_path=self._module_path)
+        self.exceptions = Exceptions(module_path=self._module_path)
 
     def copy_to_project(self, *, project: Project) -> None:
         source = (
