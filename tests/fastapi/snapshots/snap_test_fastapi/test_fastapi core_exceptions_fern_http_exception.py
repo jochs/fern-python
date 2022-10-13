@@ -9,6 +9,7 @@ from __future__ import annotations
 import abc
 import http
 import typing
+import uuid
 
 import fastapi
 import pydantic
@@ -25,8 +26,8 @@ class FernHTTPException(abc.ABC, fastapi.HTTPException):
 
     class Body(pydantic.BaseModel):
         error: typing.Optional[str]
-        error_instance_id: typing.Optional[str] = pydantic.Field(alias="errorInstanceId")
-        content: typing.Optional[str]
+        error_instance_id: uuid.UUID = pydantic.Field(alias="errorInstanceId", default_factory=uuid.uuid4)
+        content: typing.Optional[typing.Any]
 
         class Config:
             frozen = True

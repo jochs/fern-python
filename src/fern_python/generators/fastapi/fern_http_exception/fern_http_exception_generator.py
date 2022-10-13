@@ -87,15 +87,26 @@ class FernHTTPExceptionGenerator:
             body_pydantic_model.add_field(
                 PydanticField(
                     name=self._get_error_instance_id_field_name(),
-                    type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
+                    type_hint=AST.TypeHint(
+                        type=AST.ClassReference(
+                            import_=AST.ReferenceImport(module=AST.Module.built_in("uuid")),
+                            qualified_name_excluding_import=("UUID",),
+                        )
+                    ),
                     json_field_name=self._context.ir.constants_v_2.errors.error_instance_id_key.wire_value,
                     pascal_case_field_name=self._context.ir.constants_v_2.errors.error_instance_id_key.pascal_case,
+                    default_factory=AST.Expression(
+                        AST.Reference(
+                            import_=AST.ReferenceImport(module=AST.Module.built_in("uuid")),
+                            qualified_name_excluding_import=("uuid4",),
+                        )
+                    ),
                 )
             )
             body_pydantic_model.add_field(
                 PydanticField(
                     name=self._get_error_content_field_name(),
-                    type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
+                    type_hint=AST.TypeHint.optional(AST.TypeHint.any()),
                     json_field_name=self._context.ir.constants_v_2.errors.error_content_key.wire_value,
                     pascal_case_field_name=self._context.ir.constants_v_2.errors.error_content_key.pascal_case,
                 )

@@ -265,7 +265,7 @@ def get_field_name_initializer(
         writer.write_reference(PYDANTIC_FIELD_REFERENCE)
         writer.write(f'(alias="{json_field_name}"')
         if default_factory is not None:
-            writer.write(", ")
+            writer.write(", default_factory=")
             writer.write_node(default_factory)
         writer.write(")")
 
