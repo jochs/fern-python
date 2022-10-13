@@ -238,7 +238,9 @@ class EndpointGenerator:
         with writer.indent():
             writer.write_line(f"return {self._get_reference_to_init_method_on_cls()}(*args, **kwargs)")
 
-        errors = self._endpoint.errors.get_as_list()
+        errors = [self._context.get_reference_to_error(error.error) for error in self._endpoint.errors.get_as_list()]
+        if self._endpoint.auth:
+            errors.insert(0, self._context.core_utilities.exceptions.UnauthorizedException())
         if len(errors) > 0:
             writer.write("except ")
             if len(errors) > 1:
@@ -246,7 +248,7 @@ class EndpointGenerator:
             for i, error in enumerate(errors):
                 if i > 0:
                     writer.write(", ")
-                writer.write_reference(self._context.get_reference_to_error(error.error))
+                writer.write_reference(error)
             if len(errors) > 1:
                 writer.write(")")
             writer.write_line(f" as {CAUGHT_ERROR_NAME}:")

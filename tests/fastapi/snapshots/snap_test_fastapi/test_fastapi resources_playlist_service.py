@@ -12,7 +12,7 @@ import typing
 import fastapi
 
 from ...core.abstract_fern_service import AbstractFernService
-from ...core.exceptions import FernHTTPException
+from ...core.exceptions import FernHTTPException, UnauthorizedException
 from ...core.route_args import get_route_args
 from ...security import ApiAuth, FernAuth
 from .errors.playlist_id_not_found_error import PlaylistIdNotFoundError
@@ -90,6 +90,8 @@ class AbstractPlaylistCrudService(AbstractFernService):
         def wrapper(*args, **kwargs: typing.Any) -> Playlist:
             try:
                 return cls.__init_create_playlist(*args, **kwargs)
+            except UnauthorizedException as e:
+                raise e
             except FernHTTPException as e:
                 logging.getLogger(__name__).warn(
                     f"create_playlist unexpectedly threw {e.__class__.__name__}. "
@@ -125,6 +127,8 @@ class AbstractPlaylistCrudService(AbstractFernService):
         def wrapper(*args, **kwargs: typing.Any) -> typing.List[Playlist]:
             try:
                 return cls.__init_get_playlists(*args, **kwargs)
+            except UnauthorizedException as e:
+                raise e
             except FernHTTPException as e:
                 logging.getLogger(__name__).warn(
                     f"get_playlists unexpectedly threw {e.__class__.__name__}. "
@@ -197,7 +201,7 @@ class AbstractPlaylistCrudService(AbstractFernService):
         def wrapper(*args, **kwargs: typing.Any) -> typing.Optional[Playlist]:
             try:
                 return cls.__init_update_playlist(*args, **kwargs)
-            except PlaylistIdNotFoundError as e:
+            except (UnauthorizedException, PlaylistIdNotFoundError) as e:
                 raise e
             except FernHTTPException as e:
                 logging.getLogger(__name__).warn(
@@ -234,6 +238,8 @@ class AbstractPlaylistCrudService(AbstractFernService):
         def wrapper(*args, **kwargs: typing.Any) -> None:
             try:
                 return cls.__init_delete_playlist(*args, **kwargs)
+            except UnauthorizedException as e:
+                raise e
             except FernHTTPException as e:
                 logging.getLogger(__name__).warn(
                     f"delete_playlist unexpectedly threw {e.__class__.__name__}. "
