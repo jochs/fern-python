@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import inspect
 import typing
+
 import typing_extensions
 
 T = typing.TypeVar("T", bound=typing.Callable[..., typing.Any])
