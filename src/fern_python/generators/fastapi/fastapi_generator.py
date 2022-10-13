@@ -44,6 +44,15 @@ class FastApiGenerator(AbstractGenerator):
                 project=project,
             )
 
+        for error in ir.errors:
+            self._generate_error(
+                context=context,
+                ir=ir,
+                generator_exec_wrapper=generator_exec_wrapper,
+                error=error,
+                project=project,
+            )
+
         SecurityFileGenerator(context=context).generate_security_file(
             project=project,
             generator_exec_wrapper=generator_exec_wrapper,

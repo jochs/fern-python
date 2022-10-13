@@ -19,6 +19,7 @@ class ErrorGenerator:
         source_file.add_class_declaration(
             declaration=AST.ClassDeclaration(
                 name=self._context.get_class_name_for_error(error_name=self._error.name),
+                extends=[self._context.core_utilities.exceptions.FernHTTPException.get_reference_to()],
                 constructor=AST.ClassConstructor(
                     parameters=[
                         AST.FunctionParameter(
@@ -30,7 +31,7 @@ class ErrorGenerator:
                     ]
                     if self._error.type_v_3 is not None
                     else [],
-                    body=AST.CodeWriter(""),
+                    body=AST.CodeWriter(self._write_constructor_body),
                 ),
             )
         )
@@ -39,7 +40,7 @@ class ErrorGenerator:
         writer.write_node(
             self._context.core_utilities.exceptions.FernHTTPException.create(
                 status_code=AST.Expression(f"{self._error.status_code}"),
-                name=AST.Expression(f'"{self._error.name}"'),
+                name=AST.Expression(f'"{self._error.name.name_v_2.original_value}"'),
                 content=AST.Expression(ErrorGenerator._BODY_PARAMETER_NAME)
                 if self._error.type_v_3 is not None
                 else None,
