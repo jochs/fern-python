@@ -9,6 +9,8 @@ from generator_exec.resources import config
 from snapshottest.file import FileSnapshot  # type: ignore
 from snapshottest.module import SnapshotTest  # type: ignore
 
+PYTHON_VERSION = "3.7.13"
+
 
 def run_snapshot_test(
     *,
@@ -77,6 +79,7 @@ def run_snapshot_test(
         print(proc.stdout)
         proc.check_returncode()
 
-    run_command_in_output_directory(["poetry", "init", "--no-interaction"])
+    run_command_in_output_directory(["poetry", "init", "--no-interaction", "--python", PYTHON_VERSION])
+    run_command_in_output_directory(["poetry", "env", "use", PYTHON_VERSION])
     run_command_in_output_directory(["poetry", "add", "fastapi", "pydantic", "mypy"])
     run_command_in_output_directory(["poetry", "run", "mypy", "."])
