@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Sequence, Set, Union
 
-from ...ast_node import AstNode, GenericTypeVar, NodeWriter, ReferenceResolver
+from ...ast_node import AstNode, GenericTypeVar, NodeWriter
 from ...references import ClassReference, Module, Reference, ReferenceImport
 from ..expressions import Expression
 from .type_parameter import TypeParameter
@@ -16,6 +16,17 @@ class TypeHint(AstNode):
     ):
         self._type = type
         self._type_parameters = type_parameters or []
+
+    def is_optional(self) -> bool:
+        return (
+            isinstance(self._type, ClassReference)
+            and self._type.import_ is not None
+            and self._type.import_.module == Module.built_in("typing")
+            and (
+                self._type.qualified_name_excluding_import == ("Optional",)
+                or self._type.import_.named_import == "Optional"
+            )
+        )
 
     @staticmethod
     def str_() -> TypeHint:
@@ -36,6 +47,13 @@ class TypeHint(AstNode):
     @staticmethod
     def none() -> TypeHint:
         return TypeHint(type=get_reference_to_built_in_primitive("None"))
+
+    @staticmethod
+    def not_required(wrapped_type: TypeHint) -> TypeHint:
+        return TypeHint(
+            type=get_reference_to_typing_extensions_import("NotRequired"),
+            type_parameters=[TypeParameter(wrapped_type)],
+        )
 
     @staticmethod
     def optional(wrapped_type: TypeHint) -> TypeHint:
@@ -134,19 +152,18 @@ class TypeHint(AstNode):
             generics.update(type_parameter.get_generics())
         return generics
 
-    def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:
-        writer.write(
-            self._type.name
-            if isinstance(self._type, GenericTypeVar)
-            else reference_resolver.resolve_reference(self._type)
-        )
+    def write(self, writer: NodeWriter) -> None:
+        if isinstance(self._type, GenericTypeVar):
+            writer.write(self._type.name)
+        else:
+            writer.write_reference(self._type)
         if len(self._type_parameters) > 0:
             writer.write("[")
             just_wrote_parameter = False
             for i, type_parameter in enumerate(self._type_parameters):
                 if just_wrote_parameter:
                     writer.write(", ")
-                type_parameter.write(writer=writer, reference_resolver=reference_resolver)
+                type_parameter.write(writer=writer)
                 just_wrote_parameter = True
             writer.write("]")
 

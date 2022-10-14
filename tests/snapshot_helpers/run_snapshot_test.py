@@ -49,7 +49,11 @@ def run_snapshot_test(
         raise RuntimeError(f"Cannot delete {symlink}")
     os.symlink(path_to_output, symlink)
 
-    subprocess.run(["npx", "fern-api", "ir", "--output", path_to_ir], cwd=path_to_fixture, check=True)
+    subprocess.run(
+        ["npx", "--yes", "fern-api", "ir", "--output", path_to_ir],
+        cwd=path_to_fixture,
+        check=True,
+    )
     cli(path_to_config_json)
 
     # snapshot files

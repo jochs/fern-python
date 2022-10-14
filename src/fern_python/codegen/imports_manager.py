@@ -22,6 +22,8 @@ class ImportsManager:
     def resolve_constraints(self, statements: Sequence[TopLevelStatement]) -> None:
         for statement in statements:
             for reference in statement.references:
+                if reference.is_forward_reference:
+                    self._postponed_annotations = True
                 if reference.import_ is not None:
                     if reference.must_import_after_current_declaration:
                         self._import_to_statements_that_must_precede_it[reference.import_].add(statement.id)
@@ -40,7 +42,7 @@ class ImportsManager:
         self._has_written_top_imports = True
 
     def write_top_imports_for_statement(
-        self, statement: TopLevelStatement, writer: AST.Writer, reference_resolver: ReferenceResolverImpl
+        self, statement: TopLevelStatement, writer: AST.NodeWriter, reference_resolver: ReferenceResolverImpl
     ) -> None:
         if not self._has_written_top_imports:
             raise RuntimeError("Top imports haven't been written yet")
@@ -58,12 +60,12 @@ class ImportsManager:
 
         self._has_written_any_statements = True
 
-    def write_remaining_imports(self, writer: AST.Writer, reference_resolver: ReferenceResolverImpl) -> None:
+    def write_remaining_imports(self, writer: AST.NodeWriter, reference_resolver: ReferenceResolverImpl) -> None:
         for import_ in self._import_to_statements_that_must_precede_it:
             self._write_import(import_=import_, writer=writer, reference_resolver=reference_resolver)
 
     def _write_import(
-        self, import_: AST.ReferenceImport, writer: AST.Writer, reference_resolver: ReferenceResolverImpl
+        self, import_: AST.ReferenceImport, writer: AST.NodeWriter, reference_resolver: ReferenceResolverImpl
     ) -> None:
         resolved_import = reference_resolver.resolve_import(import_)
         if resolved_import.import_ is not None:

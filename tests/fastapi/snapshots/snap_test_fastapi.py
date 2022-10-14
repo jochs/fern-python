@@ -18,6 +18,8 @@ snapshots['test_fastapi core_exceptions___init__'] = FileSnapshot('snap_test_fas
 
 snapshots['test_fastapi core_exceptions_fern_http_exception'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions_fern_http_exception.py')
 
+snapshots['test_fastapi core_exceptions_handlers'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions_handlers.py')
+
 snapshots['test_fastapi core_exceptions_unauthorized'] = FileSnapshot('snap_test_fastapi/test_fastapi core_exceptions_unauthorized.py')
 
 snapshots['test_fastapi core_route_args'] = FileSnapshot('snap_test_fastapi/test_fastapi core_route_args.py')
@@ -32,6 +34,7 @@ snapshots['test_fastapi filepaths'] = [
     'core/abstract_fern_service.py',
     'core/exceptions/__init__.py',
     'core/exceptions/fern_http_exception.py',
+    'core/exceptions/handlers.py',
     'core/exceptions/unauthorized.py',
     'core/route_args.py',
     'core/security/__init__.py',
@@ -83,11 +86,15 @@ snapshots['test_fastapi filepaths'] = [
     'resources/migration/types/migration.py',
     'resources/migration/types/migration_status.py',
     'resources/playlist/__init__.py',
+    'resources/playlist/errors/__init__.py',
+    'resources/playlist/errors/playlist_id_not_found_error.py',
+    'resources/playlist/errors/unauthorized_error.py',
     'resources/playlist/service.py',
     'resources/playlist/types/__init__.py',
     'resources/playlist/types/playlist.py',
     'resources/playlist/types/playlist_create_request.py',
     'resources/playlist/types/playlist_id.py',
+    'resources/playlist/types/playlist_id_not_found_error_body.py',
     'resources/playlist/types/update_playlist_request.py',
     'resources/problem/__init__.py',
     'resources/problem/service.py',
@@ -376,6 +383,12 @@ snapshots['test_fastapi resources_migration_types_migration_status'] = FileSnaps
 
 snapshots['test_fastapi resources_playlist___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist___init__.py')
 
+snapshots['test_fastapi resources_playlist_errors___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_errors___init__.py')
+
+snapshots['test_fastapi resources_playlist_errors_playlist_id_not_found_error'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_errors_playlist_id_not_found_error.py')
+
+snapshots['test_fastapi resources_playlist_errors_unauthorized_error'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_errors_unauthorized_error.py')
+
 snapshots['test_fastapi resources_playlist_service'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_service.py')
 
 snapshots['test_fastapi resources_playlist_types___init__'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_types___init__.py')
@@ -385,6 +398,8 @@ snapshots['test_fastapi resources_playlist_types_playlist'] = FileSnapshot('snap
 snapshots['test_fastapi resources_playlist_types_playlist_create_request'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_types_playlist_create_request.py')
 
 snapshots['test_fastapi resources_playlist_types_playlist_id'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_types_playlist_id.py')
+
+snapshots['test_fastapi resources_playlist_types_playlist_id_not_found_error_body'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_types_playlist_id_not_found_error_body.py')
 
 snapshots['test_fastapi resources_playlist_types_update_playlist_request'] = FileSnapshot('snap_test_fastapi/test_fastapi resources_playlist_types_update_playlist_request.py')
 

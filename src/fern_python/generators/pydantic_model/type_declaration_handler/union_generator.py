@@ -92,6 +92,7 @@ class UnionGenerator(AbstractTypeGenerator):
                         internal_pydantic_model_for_single_union_type.add_field(
                             PydanticField(
                                 name=shape.name.snake_case,
+                                pascal_case_field_name=shape.name.pascal_case,
                                 json_field_name=shape.name.wire_value,
                                 type_hint=self._context.get_type_hint_for_type_reference(type_reference=shape.type),
                             )
@@ -127,7 +128,6 @@ class UnionGenerator(AbstractTypeGenerator):
                                     single_union_type=single_union_type,
                                     internal_single_union_type=internal_single_union_type,
                                     external_union=external_pydantic_model.to_reference(),
-                                    discriminant_attr_name=discriminant_field.name,
                                 )
                             ),
                         ),
@@ -155,7 +155,7 @@ class UnionGenerator(AbstractTypeGenerator):
                     items=[
                         VisitableItem(
                             parameter_name=single_union_type.discriminant_value.snake_case,
-                            expected_value=single_union_type.discriminant_value.wire_value,
+                            expected_value=f'"{single_union_type.discriminant_value.wire_value}"',
                             visitor_argument=single_union_type.shape.visit(
                                 same_properties_as_object=lambda type_name: VisitorArgument(
                                     expression=AST.Expression("self.__root__"),
@@ -175,7 +175,6 @@ class UnionGenerator(AbstractTypeGenerator):
                         for single_union_type in self._union.types
                     ],
                     reference_to_current_value=f"self.__root__.{self._get_discriminant_attr_name()}",
-                    are_checks_exhaustive=True,
                 )
             )
 
@@ -202,9 +201,8 @@ class UnionGenerator(AbstractTypeGenerator):
         single_union_type: ir_types.SingleUnionType,
         internal_single_union_type: AST.ClassReference,
         external_union: AST.ClassReference,
-        discriminant_attr_name: str,
-    ) -> AST.ReferencingCodeWriter:
-        def write(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
+    ) -> AST.CodeWriterFunction:
+        def write(writer: AST.NodeWriter) -> None:
             # explicit typing needed to help mypy
             no_expressions: List[AST.Expression] = []
 
@@ -223,7 +221,12 @@ class UnionGenerator(AbstractTypeGenerator):
                     single_property=lambda property: no_expressions,
                     no_properties=lambda: no_expressions,
                 ),
-                kwargs=[(discriminant_attr_name, self._get_discriminant_value_for_single_union_type(single_union_type))]
+                kwargs=[
+                    (
+                        self._get_discriminant_attr_name(),
+                        self._get_discriminant_value_for_single_union_type(single_union_type),
+                    )
+                ]
                 + single_union_type.shape.visit(
                     same_properties_as_object=lambda type_name: [],
                     single_property=lambda property: [
@@ -248,6 +251,7 @@ class UnionGenerator(AbstractTypeGenerator):
     ) -> PydanticField:
         return PydanticField(
             name=self._get_discriminant_attr_name(),
+            pascal_case_field_name=self._union.discriminant_v_2.pascal_case,
             type_hint=AST.TypeHint.literal(self._get_discriminant_value_for_single_union_type(single_union_type)),
             json_field_name=self._union.discriminant_v_2.wire_value,
         )

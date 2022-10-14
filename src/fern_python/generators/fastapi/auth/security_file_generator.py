@@ -74,7 +74,7 @@ class SecurityFileGenerator:
             source_file.add_declaration(
                 declaration=AST.VariableDeclaration(
                     name=SecurityFileGenerator._API_AUTH_TYPE,
-                    type_hint=parsed_auth_type,
+                    initializer=AST.Expression(parsed_auth_type),
                 ),
                 should_export=True,
             )
@@ -96,5 +96,5 @@ class SecurityFileGenerator:
                 ),
             )
 
-    def _write_fern_auth_body(self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
+    def _write_fern_auth_body(self, writer: AST.NodeWriter) -> None:
         writer.write_line(f"return {SecurityFileGenerator._AUTH_PARAMETER_NAME}")

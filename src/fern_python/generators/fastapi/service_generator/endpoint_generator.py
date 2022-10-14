@@ -109,15 +109,41 @@ class EndpointGenerator:
             ),
         )
 
-    def _write_init_body(self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
-        self._write_update_endpoint_signature(writer=writer, reference_resolver=reference_resolver)
+    def _write_init_body(self, writer: AST.NodeWriter) -> None:
+        method_on_cls = self._get_reference_to_method_on_cls()
+
+        self._write_update_endpoint_signature(writer=writer)
         writer.write_line()
 
-        method_on_cls = self._get_reference_to_method_on_cls()
-        writer.write(f"{method_on_cls} = ")
+        _TRY_EXCEPT_WRAPPER_NAME = "wrapper"
+        writer.write_node(
+            node=AST.FunctionDeclaration(
+                name=_TRY_EXCEPT_WRAPPER_NAME,
+                body=AST.CodeWriter(self._write_try_except_wrapper_body),
+                signature=AST.FunctionSignature(include_args=True, include_kwargs=True, return_type=self._return_type),
+                decorators=[
+                    AST.FunctionInvocation(
+                        function_definition=AST.Reference(
+                            qualified_name_excluding_import=("wraps",),
+                            import_=AST.ReferenceImport(module=AST.Module.built_in("functools")),
+                        ),
+                        args=[AST.Expression(method_on_cls)],
+                    )
+                ],
+            )
+        )
+        writer.write_line()
+
+        writer.write_line("# this is necessary for FastAPI to find forward-ref'ed type hints.")
+        writer.write_line("# https://github.com/tiangolo/fastapi/pull/5077")
+        writer.write_line(
+            f"{_TRY_EXCEPT_WRAPPER_NAME}.__globals__.update(" + self._get_reference_to_method_on_cls() + ".__globals__)"
+        )
+        writer.write_line()
+
         writer.write(f"{EndpointGenerator._INIT_ENDPOINT_ROUTER_ARG}.")
         writer.write(convert_http_method_to_fastapi_method_name(self._endpoint.method))
-        writer.write_line("(  # type: ignore")
+        writer.write_line("(")
         with writer.indent():
             writer.write_line(f'path="{self._endpoint_path}",')
             if self._endpoint.response.type_v_2 is not None:
@@ -127,11 +153,9 @@ class EndpointGenerator:
             writer.write("**")
             writer.write_node(self._context.core_utilities.get_route_args(AST.Expression(method_on_cls)))
             writer.write_line(",")
-        writer.write(f")({method_on_cls})")
+        writer.write(f")({_TRY_EXCEPT_WRAPPER_NAME})")
 
-    def _write_update_endpoint_signature(
-        self, writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver
-    ) -> None:
+    def _write_update_endpoint_signature(self, writer: AST.NodeWriter) -> None:
         method_on_cls = self._get_reference_to_method_on_cls()
 
         ENDPOINT_FUNCTION_VARIABLE_NAME = "endpoint_function"
@@ -213,6 +237,51 @@ class EndpointGenerator:
 
     def _get_reference_to_init_method_on_cls(self) -> str:
         return f"cls.{self._get_init_method_name()}"
+
+    def _write_try_except_wrapper_body(self, writer: AST.NodeWriter) -> None:
+        CAUGHT_ERROR_NAME = "e"
+
+        writer.write_line("try:")
+        with writer.indent():
+            writer.write_line(f"return {self._get_reference_to_method_on_cls()}(*args, **kwargs)")
+
+        errors = self._endpoint.errors.get_as_list()
+        if len(errors) > 0:
+            writer.write("except ")
+            if len(errors) > 1:
+                writer.write("(")
+            for i, error in enumerate(errors):
+                if i > 0:
+                    writer.write(", ")
+                writer.write_reference(self._context.get_reference_to_error(error.error))
+            if len(errors) > 1:
+                writer.write(")")
+            writer.write_line(f" as {CAUGHT_ERROR_NAME}:")
+            with writer.indent():
+                writer.write_line("raise e")
+
+        writer.write("except ")
+        writer.write_reference(self._context.core_utilities.exceptions.FernHTTPException.get_reference_to())
+        writer.write_line(f" as {CAUGHT_ERROR_NAME}:")
+        with writer.indent():
+            writer.write_reference(
+                AST.Reference(
+                    qualified_name_excluding_import=("getLogger",),
+                    import_=AST.ReferenceImport(module=AST.Module.built_in("logging")),
+                )
+            )
+            writer.write_line('(f"{cls.__module__}.{cls.__name__}").warn(')
+            with writer.indent():
+                writer.write_line(
+                    f"f\"Endpoint '{self._get_method_name()}' unexpectedly threw "
+                    + f'{{{CAUGHT_ERROR_NAME}.__class__.__name__}}. "'
+                )
+                writer.write_line(
+                    f'+ f"If this was intentional, please add {{{CAUGHT_ERROR_NAME}.__class__.__name__}} to "'
+                )
+                writer.write_line('+ "the endpoint\'s errors list in your Fern Definition."')
+            writer.write_line(")")
+            writer.write_line(f"raise {CAUGHT_ERROR_NAME}")
 
 
 def convert_http_method_to_fastapi_method_name(http_method: ir_types.services.HttpMethod) -> str:

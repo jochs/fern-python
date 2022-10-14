@@ -15,6 +15,11 @@ from .pydantic_field import PydanticField
 
 
 class PydanticModel:
+    VALIDATOR_FIELD_VALUE_PARAMETER_NAME = "v"
+    VALIDATOR_VALUES_PARAMETER_NAME = "values"
+
+    _PARTIAL_CLASS_NAME = "Partial"
+
     def __init__(
         self,
         source_file: SourceFile,
@@ -31,18 +36,22 @@ class PydanticModel:
         self._has_aliases = False
         self._root_type: Optional[AST.TypeHint] = None
         self._fields: List[PydanticField] = []
+        self._should_generate_partial_class = False
         self.frozen = True
         self.name = name
-
-    def set_constructor(self, constructor: AST.ClassConstructor) -> None:
-        self._class_declaration.constructor = constructor
 
     def to_reference(self) -> LocalClassReference:
         return self._local_class_reference
 
     def add_field(self, field: PydanticField) -> None:
         initializer = (
-            AST.Expression(AST.CodeWriter(get_field_name_initializer(json_field_name=field.json_field_name)))
+            AST.Expression(
+                AST.CodeWriter(
+                    get_field_name_initializer(
+                        json_field_name=field.json_field_name, default_factory=field.default_factory
+                    )
+                )
+            )
             if field.json_field_name != field.name
             else None
         )
@@ -126,7 +135,6 @@ class PydanticModel:
         self,
         validator_name: str,
         field_name: str,
-        field_parameter_name: str,
         field_type: AST.TypeHint,
         body: AST.CodeWriter,
     ) -> None:
@@ -136,7 +144,16 @@ class PydanticModel:
             declaration=AST.FunctionDeclaration(
                 name=validator_name,
                 signature=AST.FunctionSignature(
-                    parameters=[AST.FunctionParameter(name=field_parameter_name, type_hint=field_type)],
+                    parameters=[
+                        AST.FunctionParameter(
+                            name=PydanticModel.VALIDATOR_FIELD_VALUE_PARAMETER_NAME,
+                            type_hint=field_type,
+                        ),
+                        AST.FunctionParameter(
+                            name=PydanticModel.VALIDATOR_VALUES_PARAMETER_NAME,
+                            type_hint=AST.TypeHint(type=self.get_reference_to_partial_class()),
+                        ),
+                    ],
                     return_type=field_type,
                 ),
                 body=body,
@@ -150,19 +167,22 @@ class PydanticModel:
         )
 
     def add_root_validator(
-        self,
-        validator_name: str,
-        value_argument_name: str,
-        body: AST.CodeWriter,
+        self, *, validator_name: str, body: AST.CodeWriter, should_use_partial_type: bool = False
     ) -> None:
-        value_type = AST.TypeHint.dict(AST.TypeHint.str_(), AST.TypeHint.any())
+        value_type = (
+            AST.TypeHint(type=self.get_reference_to_partial_class())
+            if should_use_partial_type
+            else AST.TypeHint.dict(AST.TypeHint.str_(), AST.TypeHint.any())
+        )
         self._class_declaration.add_method(
             decorator=AST.ClassMethodDecorator.CLASS_METHOD,
             no_implicit_decorator=True,
             declaration=AST.FunctionDeclaration(
                 name=validator_name,
                 signature=AST.FunctionSignature(
-                    parameters=[AST.FunctionParameter(name=value_argument_name, type_hint=value_type)],
+                    parameters=[
+                        AST.FunctionParameter(name=PydanticModel.VALIDATOR_VALUES_PARAMETER_NAME, type_hint=value_type)
+                    ],
                     return_type=value_type,
                 ),
                 body=body,
@@ -174,6 +194,39 @@ class PydanticModel:
         self._class_declaration.add_class(declaration=inner_class)
 
     def finish(self) -> None:
+        if self._should_generate_partial_class:
+            self._add_partial_class()
+        self._add_config_class()
+
+    def _add_partial_class(self) -> None:
+        partial_class = AST.ClassDeclaration(
+            name=PydanticModel._PARTIAL_CLASS_NAME,
+            extends=[
+                AST.ClassReference(
+                    import_=AST.ReferenceImport(module=AST.Module.built_in("typing_extensions")),
+                    qualified_name_excluding_import=("TypedDict",),
+                )
+            ],
+        )
+
+        for field in self.get_public_fields():
+            partial_class.add_class_var(
+                variable_declaration=AST.VariableDeclaration(
+                    name=field.name,
+                    type_hint=AST.TypeHint.not_required(field.type_hint),
+                ),
+            )
+
+        self.add_inner_class(inner_class=partial_class)
+
+    def get_reference_to_partial_class(self) -> AST.ClassReference:
+        self._should_generate_partial_class = True
+        return AST.ClassReference(
+            qualified_name_excluding_import=(self.name, PydanticModel._PARTIAL_CLASS_NAME),
+            is_forward_reference=True,
+        )
+
+    def _add_config_class(self) -> None:
         config = AST.ClassDeclaration(name="Config")
 
         if self.frozen:
@@ -207,9 +260,15 @@ class PydanticModel:
         self.finish()
 
 
-def get_field_name_initializer(json_field_name: str) -> AST.ReferencingCodeWriter:
-    def write(writer: AST.NodeWriter, reference_resolver: AST.ReferenceResolver) -> None:
-        PydanticField = reference_resolver.resolve_reference(PYDANTIC_FIELD_REFERENCE)
-        return writer.write(f'{PydanticField}(alias="{json_field_name}")')
+def get_field_name_initializer(
+    json_field_name: str, default_factory: Optional[AST.Expression]
+) -> AST.CodeWriterFunction:
+    def write(writer: AST.NodeWriter) -> None:
+        writer.write_reference(PYDANTIC_FIELD_REFERENCE)
+        writer.write(f'(alias="{json_field_name}"')
+        if default_factory is not None:
+            writer.write(", default_factory=")
+            writer.write_node(default_factory)
+        writer.write(")")
 
     return write

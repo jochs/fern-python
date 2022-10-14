@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Sequence, Set, Tuple
 
-from ....ast_node import AstNode, GenericTypeVar, NodeWriter, ReferenceResolver
+from ....ast_node import AstNode, GenericTypeVar, NodeWriter
 from ....references import ClassReference, Reference
 from ..callable_invocation import CallableInvocation
 
@@ -14,16 +14,16 @@ class ClassInstantiation(AstNode):
         args: Sequence[Expression] = None,
         kwargs: Sequence[Tuple[str, Expression]] = None,
     ):
-        self._callable_invocation = CallableInvocation(callable=class_, args=args, kwargs=kwargs)
+        self.callable_invocation = CallableInvocation(callable=class_, args=args, kwargs=kwargs)
 
     def get_references(self) -> Set[Reference]:
-        return self._callable_invocation.get_references()
+        return self.callable_invocation.get_references()
 
     def get_generics(self) -> Set[GenericTypeVar]:
-        return self._callable_invocation.get_generics()
+        return self.callable_invocation.get_generics()
 
-    def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:
-        return self._callable_invocation.write(writer=writer, reference_resolver=reference_resolver)
+    def write(self, writer: NodeWriter) -> None:
+        return self.callable_invocation.write(writer=writer)
 
 
 if TYPE_CHECKING:

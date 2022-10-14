@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from typing import List, Sequence, Set
 
-from ....ast_node import AstNode, GenericTypeVar, NodeWriter, ReferenceResolver
+from ....ast_node import AstNode, GenericTypeVar, NodeWriter
 from ....references import ClassReference, Module, Reference, ReferenceImport
 from ...code_writer import CodeWriter
+from ...docstring import Docstring
 from ...expressions import Expression
 from ...reference_node import ReferenceNode
 from ..function import FunctionDeclaration, FunctionParameter, FunctionSignature
@@ -20,7 +21,7 @@ class ClassDeclaration(AstNode):
         is_abstract: bool = False,
         extends: Sequence[ClassReference] = None,
         constructor: ClassConstructor = None,
-        docstring: str = None,
+        docstring: Docstring = None,
     ):
         self.name = name
         self.extends = list(extends or [])
@@ -115,6 +116,8 @@ class ClassDeclaration(AstNode):
             references.update(self.constructor.get_references())
         for statement in self.statements:
             references.update(statement.get_references())
+        if self.docstring is not None:
+            references.update(self.docstring.get_references())
         return references
 
     def get_generics(self) -> Set[GenericTypeVar]:
@@ -123,26 +126,42 @@ class ClassDeclaration(AstNode):
             generics.update(self.constructor.get_generics())
         for statement in self.statements:
             generics.update(statement.get_generics())
+        if self.docstring is not None:
+            generics.update(self.docstring.get_generics())
         return generics
 
     def add_expression(self, expression: Expression) -> None:
         self.statements.append(expression)
 
-    def write(self, writer: NodeWriter, reference_resolver: ReferenceResolver) -> None:
-        top_line = f"class {self.name}"
+    def write(self, writer: NodeWriter) -> None:
+        writer.write(f"class {self.name}")
+
+        just_wrote_extension = False
         if len(self.extends) > 0:
-            top_line += f"({', '.join(reference_resolver.resolve_reference(r) for r in self.extends)})"
-        top_line += ":"
-        writer.write_line(top_line)
+            writer.write("(")
+            for extension in self.extends:
+                if just_wrote_extension:
+                    writer.write(", ")
+                writer.write_reference(extension)
+                just_wrote_extension = True
+            writer.write(")")
+        writer.write_line(":")
 
         with writer.indent():
             if self.docstring is not None:
-                trimmed_docstring = self.docstring.strip()
-                if len(trimmed_docstring) > 0:
-                    writer.write_line(f'"""\n{trimmed_docstring}\n"""')
+                writer.write_line('"""')
+                writer.write_node(self.docstring)
+                writer.write_newline_if_last_line_not()
+                writer.write_line('"""')
+
+            did_write_statement = False
+            if self.constructor is not None:
+                writer.write_node(self.constructor)
+                writer.write_newline_if_last_line_not()
+                did_write_statement = True
             for statement in self.statements:
                 writer.write_node(statement)
                 writer.write_newline_if_last_line_not()
-            if len(self.statements) == 0:
+                did_write_statement = True
+            if not did_write_statement:
                 writer.write("pass")
-            writer.write_line()

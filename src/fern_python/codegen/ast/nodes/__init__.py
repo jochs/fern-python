@@ -1,4 +1,4 @@
-from .code_writer import CodeWriter, ReferencingCodeWriter
+from .code_writer import CodeWriter, CodeWriterFunction
 from .declarations import (
     ClassConstructor,
     ClassDeclaration,
@@ -10,6 +10,7 @@ from .declarations import (
     TypeAliasDeclaration,
     VariableDeclaration,
 )
+from .docstring import Docstring
 from .expressions import (
     ClassInstantiation,
     Expression,
@@ -27,7 +28,7 @@ __all__ = [
     "TypeHint",
     "VariableDeclaration",
     "CodeWriter",
-    "ReferencingCodeWriter",
+    "CodeWriterFunction",
     "TypeHint",
     "TypeAliasDeclaration",
     "Expression",
@@ -38,4 +39,5 @@ __all__ = [
     "ClassMethodDecorator",
     "ReferenceNode",
     "FunctionSignature",
+    "Docstring",
 ]
