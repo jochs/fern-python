@@ -18,6 +18,10 @@ class RecordedTestCaseUpdate(pydantic.BaseModel):
     test_case_id: TestCaseId = pydantic.Field(alias="testCaseId")
     trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
 
+    class Partial(typing_extensions.TypedDict):
+        test_case_id: typing_extensions.NotRequired[TestCaseId]
+        trace_responses_size: typing_extensions.NotRequired[int]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

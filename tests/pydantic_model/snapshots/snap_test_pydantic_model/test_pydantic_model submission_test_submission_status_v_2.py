@@ -22,6 +22,12 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
     problem_version: int = pydantic.Field(alias="problemVersion")
     problem_info: ProblemInfoV2 = pydantic.Field(alias="problemInfo")
 
+    class Partial(typing_extensions.TypedDict):
+        updates: typing_extensions.NotRequired[typing.List[TestSubmissionUpdate]]
+        problem_id: typing_extensions.NotRequired[ProblemId]
+        problem_version: typing_extensions.NotRequired[int]
+        problem_info: typing_extensions.NotRequired[ProblemInfoV2]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

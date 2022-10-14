@@ -17,6 +17,9 @@ from ....commons.types.language import Language
 class GetFunctionSignatureResponse(pydantic.BaseModel):
     function_by_language: typing.Dict[Language, str] = pydantic.Field(alias="functionByLanguage")
 
+    class Partial(typing_extensions.TypedDict):
+        function_by_language: typing_extensions.NotRequired[typing.Dict[Language, str]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

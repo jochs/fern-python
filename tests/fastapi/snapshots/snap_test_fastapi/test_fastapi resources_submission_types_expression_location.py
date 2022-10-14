@@ -16,6 +16,10 @@ class ExpressionLocation(pydantic.BaseModel):
     start: int
     offset: int
 
+    class Partial(typing_extensions.TypedDict):
+        start: typing_extensions.NotRequired[int]
+        offset: typing_extensions.NotRequired[int]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

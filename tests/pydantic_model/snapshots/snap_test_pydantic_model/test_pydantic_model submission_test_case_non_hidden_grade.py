@@ -21,6 +21,12 @@ class TestCaseNonHiddenGrade(pydantic.BaseModel):
     exception: typing.Optional[ExceptionV2]
     stdout: str
 
+    class Partial(typing_extensions.TypedDict):
+        passed: typing_extensions.NotRequired[bool]
+        actual_result: typing_extensions.NotRequired[typing.Optional[VariableValue]]
+        exception: typing_extensions.NotRequired[typing.Optional[ExceptionV2]]
+        stdout: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

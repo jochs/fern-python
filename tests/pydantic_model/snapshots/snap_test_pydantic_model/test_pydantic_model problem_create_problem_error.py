@@ -35,9 +35,6 @@ class CreateProblemError(pydantic.BaseModel):
         typing.Union[_CreateProblemError.Generic], pydantic.Field(discriminator="error_type")
     ]
 
-    class Partial(typing_extensions.TypedDict):
-        pass
-
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

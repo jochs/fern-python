@@ -19,6 +19,10 @@ class NonVoidFunctionDefinition(pydantic.BaseModel):
     signature: NonVoidFunctionSignature
     code: FunctionImplementationForMultipleLanguages
 
+    class Partial(typing_extensions.TypedDict):
+        signature: typing_extensions.NotRequired[NonVoidFunctionSignature]
+        code: typing_extensions.NotRequired[FunctionImplementationForMultipleLanguages]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

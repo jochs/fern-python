@@ -20,6 +20,11 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
     output_type: VariableType = pydantic.Field(alias="outputType")
     method_name: str = pydantic.Field(alias="methodName")
 
+    class Partial(typing_extensions.TypedDict):
+        input_params: typing_extensions.NotRequired[typing.List[VariableTypeAndName]]
+        output_type: typing_extensions.NotRequired[VariableType]
+        method_name: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

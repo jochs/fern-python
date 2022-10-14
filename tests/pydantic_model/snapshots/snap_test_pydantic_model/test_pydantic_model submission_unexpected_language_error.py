@@ -18,6 +18,10 @@ class UnexpectedLanguageError(pydantic.BaseModel):
     expected_language: Language = pydantic.Field(alias="expectedLanguage")
     actual_language: Language = pydantic.Field(alias="actualLanguage")
 
+    class Partial(typing_extensions.TypedDict):
+        expected_language: typing_extensions.NotRequired[Language]
+        actual_language: typing_extensions.NotRequired[Language]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

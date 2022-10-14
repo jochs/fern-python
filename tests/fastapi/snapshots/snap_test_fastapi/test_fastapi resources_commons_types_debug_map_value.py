@@ -15,6 +15,9 @@ import typing_extensions
 class DebugMapValue(pydantic.BaseModel):
     key_value_pairs: typing.List[DebugKeyValuePairs] = pydantic.Field(alias="keyValuePairs")
 
+    class Partial(typing_extensions.TypedDict):
+        key_value_pairs: typing_extensions.NotRequired[typing.List[DebugKeyValuePairs]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

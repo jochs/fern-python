@@ -22,6 +22,12 @@ class WorkspaceSubmitRequest(pydantic.BaseModel):
     submission_files: typing.List[SubmissionFileInfo] = pydantic.Field(alias="submissionFiles")
     user_id: typing.Optional[str] = pydantic.Field(alias="userId")
 
+    class Partial(typing_extensions.TypedDict):
+        submission_id: typing_extensions.NotRequired[SubmissionId]
+        language: typing_extensions.NotRequired[Language]
+        submission_files: typing_extensions.NotRequired[typing.List[SubmissionFileInfo]]
+        user_id: typing_extensions.NotRequired[typing.Optional[str]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

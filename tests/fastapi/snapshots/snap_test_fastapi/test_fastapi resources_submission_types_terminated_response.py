@@ -9,9 +9,13 @@ from __future__ import annotations
 import typing
 
 import pydantic
+import typing_extensions
 
 
 class TerminatedResponse(pydantic.BaseModel):
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

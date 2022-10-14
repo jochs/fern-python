@@ -27,6 +27,15 @@ class CreateProblemRequestV2(pydantic.BaseModel):
     supported_languages: typing.List[Language] = pydantic.Field(alias="supportedLanguages")
     is_public: bool = pydantic.Field(alias="isPublic")
 
+    class Partial(typing_extensions.TypedDict):
+        problem_name: typing_extensions.NotRequired[str]
+        problem_description: typing_extensions.NotRequired[ProblemDescription]
+        custom_files: typing_extensions.NotRequired[CustomFiles]
+        custom_test_case_templates: typing_extensions.NotRequired[typing.List[TestCaseTemplate]]
+        testcases: typing_extensions.NotRequired[typing.List[TestCaseV2]]
+        supported_languages: typing_extensions.NotRequired[typing.List[Language]]
+        is_public: typing_extensions.NotRequired[bool]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

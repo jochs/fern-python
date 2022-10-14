@@ -15,6 +15,9 @@ import typing_extensions
 class CompileError(pydantic.BaseModel):
     message: str
 
+    class Partial(typing_extensions.TypedDict):
+        message: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

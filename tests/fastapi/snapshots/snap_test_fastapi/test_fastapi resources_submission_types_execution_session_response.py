@@ -21,6 +21,12 @@ class ExecutionSessionResponse(pydantic.BaseModel):
     language: Language
     status: ExecutionSessionStatus
 
+    class Partial(typing_extensions.TypedDict):
+        session_id: typing_extensions.NotRequired[str]
+        execution_session_url: typing_extensions.NotRequired[typing.Optional[str]]
+        language: typing_extensions.NotRequired[Language]
+        status: typing_extensions.NotRequired[ExecutionSessionStatus]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

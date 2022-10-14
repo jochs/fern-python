@@ -17,6 +17,11 @@ class ExceptionInfo(pydantic.BaseModel):
     exception_message: str = pydantic.Field(alias="exceptionMessage")
     exception_stacktrace: str = pydantic.Field(alias="exceptionStacktrace")
 
+    class Partial(typing_extensions.TypedDict):
+        exception_type: typing_extensions.NotRequired[str]
+        exception_message: typing_extensions.NotRequired[str]
+        exception_stacktrace: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -20,6 +20,11 @@ class Parameter(pydantic.BaseModel):
     name: str
     variable_type: VariableType = pydantic.Field(alias="variableType")
 
+    class Partial(typing_extensions.TypedDict):
+        parameter_id: typing_extensions.NotRequired[ParameterId]
+        name: typing_extensions.NotRequired[str]
+        variable_type: typing_extensions.NotRequired[VariableType]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

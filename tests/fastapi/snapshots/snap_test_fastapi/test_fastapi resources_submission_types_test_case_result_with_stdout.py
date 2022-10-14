@@ -18,6 +18,10 @@ class TestCaseResultWithStdout(pydantic.BaseModel):
     result: TestCaseResult
     stdout: str
 
+    class Partial(typing_extensions.TypedDict):
+        result: typing_extensions.NotRequired[TestCaseResult]
+        stdout: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

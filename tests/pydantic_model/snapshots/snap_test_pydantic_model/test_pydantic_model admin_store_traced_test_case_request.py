@@ -19,6 +19,10 @@ class StoreTracedTestCaseRequest(pydantic.BaseModel):
     result: TestCaseResultWithStdout
     trace_responses: typing.List[TraceResponse] = pydantic.Field(alias="traceResponses")
 
+    class Partial(typing_extensions.TypedDict):
+        result: typing_extensions.NotRequired[TestCaseResultWithStdout]
+        trace_responses: typing_extensions.NotRequired[typing.List[TraceResponse]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

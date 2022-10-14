@@ -20,6 +20,10 @@ class GradedResponseV2(pydantic.BaseModel):
     submission_id: SubmissionId = pydantic.Field(alias="submissionId")
     test_cases: typing.Dict[TestCaseId, TestCaseGrade] = pydantic.Field(alias="testCases")
 
+    class Partial(typing_extensions.TypedDict):
+        submission_id: typing_extensions.NotRequired[SubmissionId]
+        test_cases: typing_extensions.NotRequired[typing.Dict[TestCaseId, TestCaseGrade]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

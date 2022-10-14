@@ -15,6 +15,9 @@ import typing_extensions
 class LangServerResponse(pydantic.BaseModel):
     response: typing.Any
 
+    class Partial(typing_extensions.TypedDict):
+        response: typing_extensions.NotRequired[typing.Any]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

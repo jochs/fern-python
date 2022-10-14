@@ -16,6 +16,10 @@ class ListType(pydantic.BaseModel):
     value_type: VariableType = pydantic.Field(alias="valueType")
     is_fixed_length: typing.Optional[bool] = pydantic.Field(alias="isFixedLength")
 
+    class Partial(typing_extensions.TypedDict):
+        value_type: typing_extensions.NotRequired[VariableType]
+        is_fixed_length: typing_extensions.NotRequired[typing.Optional[bool]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

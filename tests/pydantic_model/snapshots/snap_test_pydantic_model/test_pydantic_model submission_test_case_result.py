@@ -20,6 +20,11 @@ class TestCaseResult(pydantic.BaseModel):
     actual_result: ActualResult = pydantic.Field(alias="actualResult")
     passed: bool
 
+    class Partial(typing_extensions.TypedDict):
+        expected_result: typing_extensions.NotRequired[VariableValue]
+        actual_result: typing_extensions.NotRequired[ActualResult]
+        passed: typing_extensions.NotRequired[bool]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -20,6 +20,12 @@ class BinaryTreeNodeValue(pydantic.BaseModel):
     right: typing.Optional[NodeId]
     left: typing.Optional[NodeId]
 
+    class Partial(typing_extensions.TypedDict):
+        node_id: typing_extensions.NotRequired[NodeId]
+        val: typing_extensions.NotRequired[float]
+        right: typing_extensions.NotRequired[typing.Optional[NodeId]]
+        left: typing_extensions.NotRequired[typing.Optional[NodeId]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

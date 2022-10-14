@@ -18,6 +18,10 @@ class ProblemFiles(pydantic.BaseModel):
     solution_file: FileInfo = pydantic.Field(alias="solutionFile")
     read_only_files: typing.List[FileInfo] = pydantic.Field(alias="readOnlyFiles")
 
+    class Partial(typing_extensions.TypedDict):
+        solution_file: typing_extensions.NotRequired[FileInfo]
+        read_only_files: typing_extensions.NotRequired[typing.List[FileInfo]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

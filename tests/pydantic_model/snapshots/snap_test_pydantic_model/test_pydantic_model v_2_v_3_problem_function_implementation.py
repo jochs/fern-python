@@ -16,6 +16,10 @@ class FunctionImplementation(pydantic.BaseModel):
     impl: str
     imports: typing.Optional[str]
 
+    class Partial(typing_extensions.TypedDict):
+        impl: typing_extensions.NotRequired[str]
+        imports: typing_extensions.NotRequired[typing.Optional[str]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

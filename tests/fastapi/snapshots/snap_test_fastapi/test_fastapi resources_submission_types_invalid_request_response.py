@@ -19,6 +19,10 @@ class InvalidRequestResponse(pydantic.BaseModel):
     request: SubmissionRequest
     cause: InvalidRequestCause
 
+    class Partial(typing_extensions.TypedDict):
+        request: typing_extensions.NotRequired[SubmissionRequest]
+        cause: typing_extensions.NotRequired[InvalidRequestCause]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

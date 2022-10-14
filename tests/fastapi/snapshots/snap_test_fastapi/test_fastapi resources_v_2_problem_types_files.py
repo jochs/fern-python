@@ -17,6 +17,9 @@ from .file_info_v_2 import FileInfoV2
 class Files(pydantic.BaseModel):
     files: typing.List[FileInfoV2]
 
+    class Partial(typing_extensions.TypedDict):
+        files: typing_extensions.NotRequired[typing.List[FileInfoV2]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

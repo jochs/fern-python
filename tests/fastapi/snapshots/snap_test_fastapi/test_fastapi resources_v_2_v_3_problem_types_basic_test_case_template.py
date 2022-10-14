@@ -22,6 +22,12 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
     description: TestCaseImplementationDescription
     expected_value_parameter_id: ParameterId = pydantic.Field(alias="expectedValueParameterId")
 
+    class Partial(typing_extensions.TypedDict):
+        template_id: typing_extensions.NotRequired[TestCaseTemplateId]
+        name: typing_extensions.NotRequired[str]
+        description: typing_extensions.NotRequired[TestCaseImplementationDescription]
+        expected_value_parameter_id: typing_extensions.NotRequired[ParameterId]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

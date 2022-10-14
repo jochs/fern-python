@@ -18,6 +18,10 @@ class UpdatePlaylistRequest(pydantic.BaseModel):
     name: str
     problems: typing.List[ProblemId]
 
+    class Partial(typing_extensions.TypedDict):
+        name: typing_extensions.NotRequired[str]
+        problems: typing_extensions.NotRequired[typing.List[ProblemId]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

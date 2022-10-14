@@ -19,6 +19,10 @@ class RunningResponse(pydantic.BaseModel):
     submission_id: SubmissionId = pydantic.Field(alias="submissionId")
     state: RunningSubmissionState
 
+    class Partial(typing_extensions.TypedDict):
+        submission_id: typing_extensions.NotRequired[SubmissionId]
+        state: typing_extensions.NotRequired[RunningSubmissionState]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

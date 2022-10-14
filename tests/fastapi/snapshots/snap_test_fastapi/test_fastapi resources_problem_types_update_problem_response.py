@@ -15,6 +15,9 @@ import typing_extensions
 class UpdateProblemResponse(pydantic.BaseModel):
     problem_version: int = pydantic.Field(alias="problemVersion")
 
+    class Partial(typing_extensions.TypedDict):
+        problem_version: typing_extensions.NotRequired[int]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -9,7 +9,6 @@ from __future__ import annotations
 import typing
 
 import pydantic
-import typing_extensions
 
 
 class ParameterId(pydantic.BaseModel):
@@ -21,9 +20,6 @@ class ParameterId(pydantic.BaseModel):
     @staticmethod
     def from_str(value: str) -> ParameterId:
         return ParameterId(__root__=value)
-
-    class Partial(typing_extensions.TypedDict):
-        pass
 
     class Validators:
         """

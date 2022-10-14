@@ -15,6 +15,9 @@ import typing_extensions
 class GetTraceResponsesPageRequest(pydantic.BaseModel):
     offset: typing.Optional[int]
 
+    class Partial(typing_extensions.TypedDict):
+        offset: typing_extensions.NotRequired[typing.Optional[int]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

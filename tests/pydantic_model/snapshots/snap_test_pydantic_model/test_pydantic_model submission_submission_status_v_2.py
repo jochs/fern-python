@@ -45,9 +45,6 @@ class SubmissionStatusV2(pydantic.BaseModel):
         typing.Union[_SubmissionStatusV2.Test, _SubmissionStatusV2.Workspace], pydantic.Field(discriminator="type")
     ]
 
-    class Partial(typing_extensions.TypedDict):
-        pass
-
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

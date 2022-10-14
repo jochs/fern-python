@@ -61,9 +61,6 @@ class SubmissionStatusForTestCase(pydantic.BaseModel):
         pydantic.Field(discriminator="type"),
     ]
 
-    class Partial(typing_extensions.TypedDict):
-        pass
-
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

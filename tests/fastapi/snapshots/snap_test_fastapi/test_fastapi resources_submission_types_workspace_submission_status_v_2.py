@@ -17,6 +17,9 @@ from .workspace_submission_update import WorkspaceSubmissionUpdate
 class WorkspaceSubmissionStatusV2(pydantic.BaseModel):
     updates: typing.List[WorkspaceSubmissionUpdate]
 
+    class Partial(typing_extensions.TypedDict):
+        updates: typing_extensions.NotRequired[typing.List[WorkspaceSubmissionUpdate]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -18,6 +18,10 @@ class GetBasicSolutionFileRequest(pydantic.BaseModel):
     method_name: str = pydantic.Field(alias="methodName")
     signature: NonVoidFunctionSignature
 
+    class Partial(typing_extensions.TypedDict):
+        method_name: typing_extensions.NotRequired[str]
+        signature: typing_extensions.NotRequired[NonVoidFunctionSignature]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

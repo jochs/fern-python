@@ -15,6 +15,9 @@ import typing_extensions
 class WorkspaceTracedUpdate(pydantic.BaseModel):
     trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
 
+    class Partial(typing_extensions.TypedDict):
+        trace_responses_size: typing_extensions.NotRequired[int]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

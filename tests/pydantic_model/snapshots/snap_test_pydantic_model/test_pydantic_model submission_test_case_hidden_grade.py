@@ -15,6 +15,9 @@ import typing_extensions
 class TestCaseHiddenGrade(pydantic.BaseModel):
     passed: bool
 
+    class Partial(typing_extensions.TypedDict):
+        passed: typing_extensions.NotRequired[bool]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

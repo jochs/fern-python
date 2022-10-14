@@ -19,6 +19,10 @@ class VoidFunctionDefinitionThatTakesActualResult(pydantic.BaseModel):
     additional_parameters: typing.List[Parameter] = pydantic.Field(alias="additionalParameters")
     code: FunctionImplementationForMultipleLanguages
 
+    class Partial(typing_extensions.TypedDict):
+        additional_parameters: typing_extensions.NotRequired[typing.List[Parameter]]
+        code: typing_extensions.NotRequired[FunctionImplementationForMultipleLanguages]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

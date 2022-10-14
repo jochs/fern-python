@@ -16,6 +16,10 @@ class LightweightStackframeInformation(pydantic.BaseModel):
     num_stack_frames: int = pydantic.Field(alias="numStackFrames")
     top_stack_frame_method_name: str = pydantic.Field(alias="topStackFrameMethodName")
 
+    class Partial(typing_extensions.TypedDict):
+        num_stack_frames: typing_extensions.NotRequired[int]
+        top_stack_frame_method_name: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

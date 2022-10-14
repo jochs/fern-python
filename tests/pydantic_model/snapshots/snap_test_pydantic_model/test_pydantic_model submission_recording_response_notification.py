@@ -23,6 +23,13 @@ class RecordingResponseNotification(pydantic.BaseModel):
     lightweight_stack_info: LightweightStackframeInformation = pydantic.Field(alias="lightweightStackInfo")
     traced_file: typing.Optional[TracedFile] = pydantic.Field(alias="tracedFile")
 
+    class Partial(typing_extensions.TypedDict):
+        submission_id: typing_extensions.NotRequired[SubmissionId]
+        test_case_id: typing_extensions.NotRequired[typing.Optional[str]]
+        line_number: typing_extensions.NotRequired[int]
+        lightweight_stack_info: typing_extensions.NotRequired[LightweightStackframeInformation]
+        traced_file: typing_extensions.NotRequired[typing.Optional[TracedFile]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -17,6 +17,9 @@ from .test_case_implementation_description_board import TestCaseImplementationDe
 class TestCaseImplementationDescription(pydantic.BaseModel):
     boards: typing.List[TestCaseImplementationDescriptionBoard]
 
+    class Partial(typing_extensions.TypedDict):
+        boards: typing_extensions.NotRequired[typing.List[TestCaseImplementationDescriptionBoard]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

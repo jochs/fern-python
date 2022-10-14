@@ -16,6 +16,10 @@ class GenericValue(pydantic.BaseModel):
     stringified_type: typing.Optional[str] = pydantic.Field(alias="stringifiedType")
     stringified_value: str = pydantic.Field(alias="stringifiedValue")
 
+    class Partial(typing_extensions.TypedDict):
+        stringified_type: typing_extensions.NotRequired[typing.Optional[str]]
+        stringified_value: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

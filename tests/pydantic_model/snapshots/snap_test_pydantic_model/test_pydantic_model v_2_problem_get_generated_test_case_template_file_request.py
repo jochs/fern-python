@@ -17,6 +17,9 @@ from .test_case_template import TestCaseTemplate
 class GetGeneratedTestCaseTemplateFileRequest(pydantic.BaseModel):
     template: TestCaseTemplate
 
+    class Partial(typing_extensions.TypedDict):
+        template: typing_extensions.NotRequired[TestCaseTemplate]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

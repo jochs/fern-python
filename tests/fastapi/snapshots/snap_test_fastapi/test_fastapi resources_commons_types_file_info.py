@@ -16,6 +16,10 @@ class FileInfo(pydantic.BaseModel):
     filename: str
     contents: str
 
+    class Partial(typing_extensions.TypedDict):
+        filename: typing_extensions.NotRequired[str]
+        contents: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

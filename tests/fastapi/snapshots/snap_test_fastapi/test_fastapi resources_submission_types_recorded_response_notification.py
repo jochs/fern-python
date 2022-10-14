@@ -19,6 +19,11 @@ class RecordedResponseNotification(pydantic.BaseModel):
     trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
     test_case_id: typing.Optional[str] = pydantic.Field(alias="testCaseId")
 
+    class Partial(typing_extensions.TypedDict):
+        submission_id: typing_extensions.NotRequired[SubmissionId]
+        trace_responses_size: typing_extensions.NotRequired[int]
+        test_case_id: typing_extensions.NotRequired[typing.Optional[str]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

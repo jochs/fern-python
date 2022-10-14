@@ -17,6 +17,9 @@ from .problem_description_board import ProblemDescriptionBoard
 class ProblemDescription(pydantic.BaseModel):
     boards: typing.List[ProblemDescriptionBoard]
 
+    class Partial(typing_extensions.TypedDict):
+        boards: typing_extensions.NotRequired[typing.List[ProblemDescriptionBoard]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

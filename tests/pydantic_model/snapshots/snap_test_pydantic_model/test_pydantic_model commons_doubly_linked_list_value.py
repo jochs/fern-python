@@ -19,6 +19,10 @@ class DoublyLinkedListValue(pydantic.BaseModel):
     head: typing.Optional[NodeId]
     nodes: typing.Dict[NodeId, DoublyLinkedListNodeValue]
 
+    class Partial(typing_extensions.TypedDict):
+        head: typing_extensions.NotRequired[typing.Optional[NodeId]]
+        nodes: typing_extensions.NotRequired[typing.Dict[NodeId, DoublyLinkedListNodeValue]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

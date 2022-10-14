@@ -20,6 +20,10 @@ class Playlist(PlaylistCreateRequest):
     playlist_id: PlaylistId
     owner_id: UserId = pydantic.Field(alias="owner-id")
 
+    class Partial(PlaylistCreateRequest.Partial):
+        playlist_id: typing_extensions.NotRequired[PlaylistId]
+        owner_id: typing_extensions.NotRequired[UserId]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

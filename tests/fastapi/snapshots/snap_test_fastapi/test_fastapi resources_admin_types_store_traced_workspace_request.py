@@ -19,6 +19,10 @@ class StoreTracedWorkspaceRequest(pydantic.BaseModel):
     workspace_run_details: WorkspaceRunDetails = pydantic.Field(alias="workspaceRunDetails")
     trace_responses: typing.List[TraceResponse] = pydantic.Field(alias="traceResponses")
 
+    class Partial(typing_extensions.TypedDict):
+        workspace_run_details: typing_extensions.NotRequired[WorkspaceRunDetails]
+        trace_responses: typing_extensions.NotRequired[typing.List[TraceResponse]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

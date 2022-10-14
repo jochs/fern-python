@@ -19,6 +19,10 @@ class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
     parameters: typing.List[Parameter]
     actual_result_type: VariableType = pydantic.Field(alias="actualResultType")
 
+    class Partial(typing_extensions.TypedDict):
+        parameters: typing_extensions.NotRequired[typing.List[Parameter]]
+        actual_result_type: typing_extensions.NotRequired[VariableType]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

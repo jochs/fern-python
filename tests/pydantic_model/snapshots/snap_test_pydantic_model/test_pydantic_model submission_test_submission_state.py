@@ -22,6 +22,12 @@ class TestSubmissionState(pydantic.BaseModel):
     custom_test_cases: typing.List[TestCase] = pydantic.Field(alias="customTestCases")
     status: TestSubmissionStatus
 
+    class Partial(typing_extensions.TypedDict):
+        problem_id: typing_extensions.NotRequired[ProblemId]
+        default_test_cases: typing_extensions.NotRequired[typing.List[TestCase]]
+        custom_test_cases: typing_extensions.NotRequired[typing.List[TestCase]]
+        status: typing_extensions.NotRequired[TestSubmissionStatus]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

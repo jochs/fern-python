@@ -18,6 +18,10 @@ class Migration(pydantic.BaseModel):
     name: str
     status: MigrationStatus
 
+    class Partial(typing_extensions.TypedDict):
+        name: typing_extensions.NotRequired[str]
+        status: typing_extensions.NotRequired[MigrationStatus]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

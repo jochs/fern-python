@@ -19,6 +19,11 @@ class SinglyLinkedListNodeValue(pydantic.BaseModel):
     val: float
     next: typing.Optional[NodeId]
 
+    class Partial(typing_extensions.TypedDict):
+        node_id: typing_extensions.NotRequired[NodeId]
+        val: typing_extensions.NotRequired[float]
+        next: typing_extensions.NotRequired[typing.Optional[NodeId]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

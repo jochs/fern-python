@@ -19,6 +19,10 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
     get_actual_result: NonVoidFunctionDefinition = pydantic.Field(alias="getActualResult")
     assert_correctness_check: AssertCorrectnessCheck = pydantic.Field(alias="assertCorrectnessCheck")
 
+    class Partial(typing_extensions.TypedDict):
+        get_actual_result: typing_extensions.NotRequired[NonVoidFunctionDefinition]
+        assert_correctness_check: typing_extensions.NotRequired[AssertCorrectnessCheck]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

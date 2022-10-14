@@ -16,6 +16,10 @@ class DebugKeyValuePairs(pydantic.BaseModel):
     key: DebugVariableValue
     value: DebugVariableValue
 
+    class Partial(typing_extensions.TypedDict):
+        key: typing_extensions.NotRequired[DebugVariableValue]
+        value: typing_extensions.NotRequired[DebugVariableValue]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

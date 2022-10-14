@@ -24,6 +24,12 @@ class TestCaseV2(pydantic.BaseModel):
     arguments: typing.Dict[ParameterId, VariableValue]
     expects: typing.Optional[TestCaseExpects]
 
+    class Partial(typing_extensions.TypedDict):
+        metadata: typing_extensions.NotRequired[TestCaseMetadata]
+        implementation: typing_extensions.NotRequired[TestCaseImplementationReference]
+        arguments: typing_extensions.NotRequired[typing.Dict[ParameterId, VariableValue]]
+        expects: typing_extensions.NotRequired[typing.Optional[TestCaseExpects]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

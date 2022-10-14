@@ -21,6 +21,12 @@ class GetSubmissionStateResponse(pydantic.BaseModel):
     language: Language
     submission_type_state: SubmissionTypeState = pydantic.Field(alias="submissionTypeState")
 
+    class Partial(typing_extensions.TypedDict):
+        time_submitted: typing_extensions.NotRequired[typing.Optional[str]]
+        submission: typing_extensions.NotRequired[str]
+        language: typing_extensions.NotRequired[Language]
+        submission_type_state: typing_extensions.NotRequired[SubmissionTypeState]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

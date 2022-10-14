@@ -19,6 +19,10 @@ class CustomTestCasesUnsupported(pydantic.BaseModel):
     problem_id: ProblemId = pydantic.Field(alias="problemId")
     submission_id: SubmissionId = pydantic.Field(alias="submissionId")
 
+    class Partial(typing_extensions.TypedDict):
+        problem_id: typing_extensions.NotRequired[ProblemId]
+        submission_id: typing_extensions.NotRequired[SubmissionId]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

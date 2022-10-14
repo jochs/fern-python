@@ -16,6 +16,10 @@ class MapType(pydantic.BaseModel):
     key_type: VariableType = pydantic.Field(alias="keyType")
     value_type: VariableType = pydantic.Field(alias="valueType")
 
+    class Partial(typing_extensions.TypedDict):
+        key_type: typing_extensions.NotRequired[VariableType]
+        value_type: typing_extensions.NotRequired[VariableType]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

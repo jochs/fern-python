@@ -37,9 +37,6 @@ class PlaylistIdNotFoundErrorBody(pydantic.BaseModel):
         typing.Union[_PlaylistIdNotFoundErrorBody.PlaylistId], pydantic.Field(discriminator="type")
     ]
 
-    class Partial(typing_extensions.TypedDict):
-        pass
-
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

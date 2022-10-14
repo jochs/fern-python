@@ -18,6 +18,9 @@ from ...v_2.problem.types.files import Files
 class WorkspaceStarterFilesResponseV2(pydantic.BaseModel):
     files_by_language: typing.Dict[Language, Files] = pydantic.Field(alias="filesByLanguage")
 
+    class Partial(typing_extensions.TypedDict):
+        files_by_language: typing_extensions.NotRequired[typing.Dict[Language, Files]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

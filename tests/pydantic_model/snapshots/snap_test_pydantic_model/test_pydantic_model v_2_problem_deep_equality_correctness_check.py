@@ -17,6 +17,9 @@ from .parameter_id import ParameterId
 class DeepEqualityCorrectnessCheck(pydantic.BaseModel):
     expected_value_parameter_id: ParameterId = pydantic.Field(alias="expectedValueParameterId")
 
+    class Partial(typing_extensions.TypedDict):
+        expected_value_parameter_id: typing_extensions.NotRequired[ParameterId]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

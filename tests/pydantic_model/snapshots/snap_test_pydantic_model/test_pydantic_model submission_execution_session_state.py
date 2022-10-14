@@ -23,6 +23,14 @@ class ExecutionSessionState(pydantic.BaseModel):
     language: Language
     status: ExecutionSessionStatus
 
+    class Partial(typing_extensions.TypedDict):
+        last_time_contacted: typing_extensions.NotRequired[typing.Optional[str]]
+        session_id: typing_extensions.NotRequired[str]
+        is_warm_instance: typing_extensions.NotRequired[bool]
+        aws_task_id: typing_extensions.NotRequired[typing.Optional[str]]
+        language: typing_extensions.NotRequired[Language]
+        status: typing_extensions.NotRequired[ExecutionSessionStatus]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

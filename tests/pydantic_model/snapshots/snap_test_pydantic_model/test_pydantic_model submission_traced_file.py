@@ -16,6 +16,10 @@ class TracedFile(pydantic.BaseModel):
     filename: str
     directory: str
 
+    class Partial(typing_extensions.TypedDict):
+        filename: typing_extensions.NotRequired[str]
+        directory: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -18,6 +18,10 @@ class TestSubmissionUpdate(pydantic.BaseModel):
     update_time: str = pydantic.Field(alias="updateTime")
     update_info: TestSubmissionUpdateInfo = pydantic.Field(alias="updateInfo")
 
+    class Partial(typing_extensions.TypedDict):
+        update_time: typing_extensions.NotRequired[str]
+        update_info: typing_extensions.NotRequired[TestSubmissionUpdateInfo]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

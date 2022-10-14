@@ -23,6 +23,12 @@ class BasicCustomFiles(pydantic.BaseModel):
     additional_files: typing.Dict[Language, Files] = pydantic.Field(alias="additionalFiles")
     basic_test_case_template: BasicTestCaseTemplate = pydantic.Field(alias="basicTestCaseTemplate")
 
+    class Partial(typing_extensions.TypedDict):
+        method_name: typing_extensions.NotRequired[str]
+        signature: typing_extensions.NotRequired[NonVoidFunctionSignature]
+        additional_files: typing_extensions.NotRequired[typing.Dict[Language, Files]]
+        basic_test_case_template: typing_extensions.NotRequired[BasicTestCaseTemplate]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

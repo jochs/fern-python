@@ -19,6 +19,10 @@ class DefaultProvidedFile(pydantic.BaseModel):
     file: FileInfoV2
     related_types: typing.List[VariableType] = pydantic.Field(alias="relatedTypes")
 
+    class Partial(typing_extensions.TypedDict):
+        file: typing_extensions.NotRequired[FileInfoV2]
+        related_types: typing_extensions.NotRequired[typing.List[VariableType]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

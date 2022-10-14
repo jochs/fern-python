@@ -18,6 +18,10 @@ class InitializeProblemRequest(pydantic.BaseModel):
     problem_id: ProblemId = pydantic.Field(alias="problemId")
     problem_version: typing.Optional[int] = pydantic.Field(alias="problemVersion")
 
+    class Partial(typing_extensions.TypedDict):
+        problem_id: typing_extensions.NotRequired[ProblemId]
+        problem_version: typing_extensions.NotRequired[typing.Optional[int]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

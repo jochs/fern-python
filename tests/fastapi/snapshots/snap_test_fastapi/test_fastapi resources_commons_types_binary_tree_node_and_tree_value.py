@@ -19,6 +19,10 @@ class BinaryTreeNodeAndTreeValue(pydantic.BaseModel):
     node_id: NodeId = pydantic.Field(alias="nodeId")
     full_tree: BinaryTreeValue = pydantic.Field(alias="fullTree")
 
+    class Partial(typing_extensions.TypedDict):
+        node_id: typing_extensions.NotRequired[NodeId]
+        full_tree: typing_extensions.NotRequired[BinaryTreeValue]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -18,6 +18,10 @@ class TraceResponsesPageV2(pydantic.BaseModel):
     offset: typing.Optional[int]
     trace_responses: typing.List[TraceResponseV2] = pydantic.Field(alias="traceResponses")
 
+    class Partial(typing_extensions.TypedDict):
+        offset: typing_extensions.NotRequired[typing.Optional[int]]
+        trace_responses: typing_extensions.NotRequired[typing.List[TraceResponseV2]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

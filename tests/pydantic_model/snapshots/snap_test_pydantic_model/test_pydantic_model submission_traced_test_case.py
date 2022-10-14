@@ -18,6 +18,10 @@ class TracedTestCase(pydantic.BaseModel):
     result: TestCaseResultWithStdout
     trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
 
+    class Partial(typing_extensions.TypedDict):
+        result: typing_extensions.NotRequired[TestCaseResultWithStdout]
+        trace_responses_size: typing_extensions.NotRequired[int]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

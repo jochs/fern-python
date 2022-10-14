@@ -19,6 +19,10 @@ class TestCaseImplementation(pydantic.BaseModel):
     description: TestCaseImplementationDescription
     function: TestCaseFunction
 
+    class Partial(typing_extensions.TypedDict):
+        description: typing_extensions.NotRequired[TestCaseImplementationDescription]
+        function: typing_extensions.NotRequired[TestCaseFunction]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -17,6 +17,9 @@ from .exception_info import ExceptionInfo
 class InternalError(pydantic.BaseModel):
     exception_info: ExceptionInfo = pydantic.Field(alias="exceptionInfo")
 
+    class Partial(typing_extensions.TypedDict):
+        exception_info: typing_extensions.NotRequired[ExceptionInfo]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

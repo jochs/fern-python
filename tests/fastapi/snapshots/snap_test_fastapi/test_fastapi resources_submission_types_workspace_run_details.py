@@ -20,6 +20,11 @@ class WorkspaceRunDetails(pydantic.BaseModel):
     exception: typing.Optional[ExceptionInfo]
     stdout: str
 
+    class Partial(typing_extensions.TypedDict):
+        exception_v_2: typing_extensions.NotRequired[typing.Optional[ExceptionV2]]
+        exception: typing_extensions.NotRequired[typing.Optional[ExceptionInfo]]
+        stdout: typing_extensions.NotRequired[str]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

@@ -19,6 +19,11 @@ class StackFrame(pydantic.BaseModel):
     line_number: int = pydantic.Field(alias="lineNumber")
     scopes: typing.List[Scope]
 
+    class Partial(typing_extensions.TypedDict):
+        method_name: typing_extensions.NotRequired[str]
+        line_number: typing_extensions.NotRequired[int]
+        scopes: typing_extensions.NotRequired[typing.List[Scope]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

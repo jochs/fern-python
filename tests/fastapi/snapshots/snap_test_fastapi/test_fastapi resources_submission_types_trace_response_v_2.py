@@ -27,6 +27,15 @@ class TraceResponseV2(pydantic.BaseModel):
     stack: StackInformation
     stdout: typing.Optional[str]
 
+    class Partial(typing_extensions.TypedDict):
+        submission_id: typing_extensions.NotRequired[SubmissionId]
+        line_number: typing_extensions.NotRequired[int]
+        file: typing_extensions.NotRequired[TracedFile]
+        return_value: typing_extensions.NotRequired[typing.Optional[DebugVariableValue]]
+        expression_location: typing_extensions.NotRequired[typing.Optional[ExpressionLocation]]
+        stack: typing_extensions.NotRequired[StackInformation]
+        stdout: typing_extensions.NotRequired[typing.Optional[str]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.

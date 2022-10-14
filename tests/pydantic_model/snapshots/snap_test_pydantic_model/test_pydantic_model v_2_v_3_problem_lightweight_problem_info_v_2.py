@@ -21,6 +21,12 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
     problem_version: int = pydantic.Field(alias="problemVersion")
     variable_types: typing.List[VariableType] = pydantic.Field(alias="variableTypes")
 
+    class Partial(typing_extensions.TypedDict):
+        problem_id: typing_extensions.NotRequired[ProblemId]
+        problem_name: typing_extensions.NotRequired[str]
+        problem_version: typing_extensions.NotRequired[int]
+        variable_types: typing_extensions.NotRequired[typing.List[VariableType]]
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
