@@ -137,6 +137,9 @@ class CodeExecutionUpdate(pydantic.BaseModel):
         pydantic.Field(discriminator="type"),
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -255,17 +258,11 @@ class _CodeExecutionUpdate:
     class BuildingExecutor(BuildingExecutorResponse):
         type: typing_extensions.Literal["buildingExecutor"]
 
-        class Partial(BuildingExecutorResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["buildingExecutor"]]
-
         class Config:
             frozen = True
 
     class Running(RunningResponse):
         type: typing_extensions.Literal["running"]
-
-        class Partial(RunningResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["running"]]
 
         class Config:
             frozen = True
@@ -273,17 +270,11 @@ class _CodeExecutionUpdate:
     class Errored(ErroredResponse):
         type: typing_extensions.Literal["errored"]
 
-        class Partial(ErroredResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["errored"]]
-
         class Config:
             frozen = True
 
     class Stopped(StoppedResponse):
         type: typing_extensions.Literal["stopped"]
-
-        class Partial(StoppedResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["stopped"]]
 
         class Config:
             frozen = True
@@ -291,17 +282,11 @@ class _CodeExecutionUpdate:
     class Graded(GradedResponse):
         type: typing_extensions.Literal["graded"]
 
-        class Partial(GradedResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["graded"]]
-
         class Config:
             frozen = True
 
     class GradedV2(GradedResponseV2):
         type: typing_extensions.Literal["gradedV2"]
-
-        class Partial(GradedResponseV2.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["gradedV2"]]
 
         class Config:
             frozen = True
@@ -309,17 +294,11 @@ class _CodeExecutionUpdate:
     class WorkspaceRan(WorkspaceRanResponse):
         type: typing_extensions.Literal["workspaceRan"]
 
-        class Partial(WorkspaceRanResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["workspaceRan"]]
-
         class Config:
             frozen = True
 
     class Recording(RecordingResponseNotification):
         type: typing_extensions.Literal["recording"]
-
-        class Partial(RecordingResponseNotification.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["recording"]]
 
         class Config:
             frozen = True
@@ -327,26 +306,17 @@ class _CodeExecutionUpdate:
     class Recorded(RecordedResponseNotification):
         type: typing_extensions.Literal["recorded"]
 
-        class Partial(RecordedResponseNotification.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["recorded"]]
-
         class Config:
             frozen = True
 
     class InvalidRequest(InvalidRequestResponse):
         type: typing_extensions.Literal["invalidRequest"]
 
-        class Partial(InvalidRequestResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["invalidRequest"]]
-
         class Config:
             frozen = True
 
     class Finished(FinishedResponse):
         type: typing_extensions.Literal["finished"]
-
-        class Partial(FinishedResponse.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["finished"]]
 
         class Config:
             frozen = True

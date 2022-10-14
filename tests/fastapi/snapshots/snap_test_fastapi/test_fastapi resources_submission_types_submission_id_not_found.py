@@ -87,9 +87,6 @@ class SubmissionIdNotFound(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        missing_submission_id: typing_extensions.NotRequired[SubmissionId]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

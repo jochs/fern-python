@@ -120,9 +120,5 @@ class DoublyLinkedListValue(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        head: typing_extensions.NotRequired[typing.Optional[NodeId]]
-        nodes: typing_extensions.NotRequired[typing.Dict[NodeId, DoublyLinkedListNodeValue]]
-
     class Config:
         frozen = True

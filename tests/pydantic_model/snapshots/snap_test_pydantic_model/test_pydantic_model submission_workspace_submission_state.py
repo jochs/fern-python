@@ -88,8 +88,5 @@ class WorkspaceSubmissionState(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        status: typing_extensions.NotRequired[WorkspaceSubmissionStatus]
-
     class Config:
         frozen = True

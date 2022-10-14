@@ -111,9 +111,5 @@ class TestCaseResultWithStdout(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        result: typing_extensions.NotRequired[TestCaseResult]
-        stdout: typing_extensions.NotRequired[str]
-
     class Config:
         frozen = True

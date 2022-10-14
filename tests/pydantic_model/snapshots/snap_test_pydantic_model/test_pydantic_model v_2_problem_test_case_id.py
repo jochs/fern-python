@@ -9,6 +9,7 @@ from __future__ import annotations
 import typing
 
 import pydantic
+import typing_extensions
 
 
 class TestCaseId(pydantic.BaseModel):
@@ -20,6 +21,9 @@ class TestCaseId(pydantic.BaseModel):
     @staticmethod
     def from_str(value: str) -> TestCaseId:
         return TestCaseId(__root__=value)
+
+    class Partial(typing_extensions.TypedDict):
+        pass
 
     class Validators:
         """

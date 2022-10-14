@@ -45,6 +45,9 @@ class TestCaseFunction(pydantic.BaseModel):
         typing.Union[_TestCaseFunction.WithActualResult, _TestCaseFunction.Custom], pydantic.Field(discriminator="type")
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -98,17 +101,11 @@ class _TestCaseFunction:
     class WithActualResult(TestCaseWithActualResultImplementation):
         type: typing_extensions.Literal["withActualResult"]
 
-        class Partial(TestCaseWithActualResultImplementation.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["withActualResult"]]
-
         class Config:
             frozen = True
 
     class Custom(VoidFunctionDefinition):
         type: typing_extensions.Literal["custom"]
-
-        class Partial(VoidFunctionDefinition.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["custom"]]
 
         class Config:
             frozen = True

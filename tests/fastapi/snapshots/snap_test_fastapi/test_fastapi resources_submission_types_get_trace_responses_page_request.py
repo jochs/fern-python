@@ -88,8 +88,5 @@ class GetTraceResponsesPageRequest(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        offset: typing_extensions.NotRequired[typing.Optional[int]]
-
     class Config:
         frozen = True

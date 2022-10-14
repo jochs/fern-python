@@ -45,6 +45,9 @@ class TestCaseGrade(pydantic.BaseModel):
         typing.Union[_TestCaseGrade.Hidden, _TestCaseGrade.NonHidden], pydantic.Field(discriminator="type")
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -96,17 +99,11 @@ class _TestCaseGrade:
     class Hidden(TestCaseHiddenGrade):
         type: typing_extensions.Literal["hidden"]
 
-        class Partial(TestCaseHiddenGrade.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["hidden"]]
-
         class Config:
             frozen = True
 
     class NonHidden(TestCaseNonHiddenGrade):
         type: typing_extensions.Literal["nonHidden"]
-
-        class Partial(TestCaseNonHiddenGrade.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["nonHidden"]]
 
         class Config:
             frozen = True

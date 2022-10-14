@@ -226,14 +226,6 @@ class TraceResponse(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        submission_id: typing_extensions.NotRequired[SubmissionId]
-        line_number: typing_extensions.NotRequired[int]
-        return_value: typing_extensions.NotRequired[typing.Optional[DebugVariableValue]]
-        expression_location: typing_extensions.NotRequired[typing.Optional[ExpressionLocation]]
-        stack: typing_extensions.NotRequired[StackInformation]
-        stdout: typing_extensions.NotRequired[typing.Optional[str]]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

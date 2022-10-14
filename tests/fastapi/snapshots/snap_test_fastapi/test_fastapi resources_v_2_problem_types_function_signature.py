@@ -59,6 +59,9 @@ class FunctionSignature(pydantic.BaseModel):
         pydantic.Field(discriminator="type"),
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -133,26 +136,17 @@ class _FunctionSignature:
     class Void(VoidFunctionSignature):
         type: typing_extensions.Literal["void"]
 
-        class Partial(VoidFunctionSignature.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["void"]]
-
         class Config:
             frozen = True
 
     class NonVoid(NonVoidFunctionSignature):
         type: typing_extensions.Literal["nonVoid"]
 
-        class Partial(NonVoidFunctionSignature.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["nonVoid"]]
-
         class Config:
             frozen = True
 
     class VoidThatTakesActualResult(VoidFunctionSignatureThatTakesActualResult):
         type: typing_extensions.Literal["voidThatTakesActualResult"]
-
-        class Partial(VoidFunctionSignatureThatTakesActualResult.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["voidThatTakesActualResult"]]
 
         class Config:
             frozen = True

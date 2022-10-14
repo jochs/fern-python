@@ -102,6 +102,9 @@ class WorkspaceSubmissionUpdateInfo(pydantic.BaseModel):
         pydantic.Field(discriminator="type"),
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -201,18 +204,11 @@ class _WorkspaceSubmissionUpdateInfo:
         type: typing_extensions.Literal["running"]
         value: RunningSubmissionState
 
-        class Partial(typing_extensions.TypedDict):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["running"]]
-            value: typing_extensions.NotRequired[RunningSubmissionState]
-
         class Config:
             frozen = True
 
     class Ran(WorkspaceRunDetails):
         type: typing_extensions.Literal["ran"]
-
-        class Partial(WorkspaceRunDetails.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["ran"]]
 
         class Config:
             frozen = True
@@ -220,26 +216,17 @@ class _WorkspaceSubmissionUpdateInfo:
     class Stopped(pydantic.BaseModel):
         type: typing_extensions.Literal["stopped"]
 
-        class Partial(typing_extensions.TypedDict):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["stopped"]]
-
         class Config:
             frozen = True
 
     class Traced(pydantic.BaseModel):
         type: typing_extensions.Literal["traced"]
 
-        class Partial(typing_extensions.TypedDict):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["traced"]]
-
         class Config:
             frozen = True
 
     class TracedV2(WorkspaceTracedUpdate):
         type: typing_extensions.Literal["tracedV2"]
-
-        class Partial(WorkspaceTracedUpdate.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["tracedV2"]]
 
         class Config:
             frozen = True
@@ -248,18 +235,11 @@ class _WorkspaceSubmissionUpdateInfo:
         type: typing_extensions.Literal["errored"]
         value: ErrorInfo
 
-        class Partial(typing_extensions.TypedDict):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["errored"]]
-            value: typing_extensions.NotRequired[ErrorInfo]
-
         class Config:
             frozen = True
 
     class Finished(pydantic.BaseModel):
         type: typing_extensions.Literal["finished"]
-
-        class Partial(typing_extensions.TypedDict):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["finished"]]
 
         class Config:
             frozen = True

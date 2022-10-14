@@ -238,14 +238,6 @@ class ExecutionSessionState(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        last_time_contacted: typing_extensions.NotRequired[typing.Optional[str]]
-        session_id: typing_extensions.NotRequired[str]
-        is_warm_instance: typing_extensions.NotRequired[bool]
-        aws_task_id: typing_extensions.NotRequired[typing.Optional[str]]
-        language: typing_extensions.NotRequired[Language]
-        status: typing_extensions.NotRequired[ExecutionSessionStatus]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

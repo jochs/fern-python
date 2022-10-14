@@ -111,10 +111,6 @@ class GenericValue(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        stringified_type: typing_extensions.NotRequired[typing.Optional[str]]
-        stringified_value: typing_extensions.NotRequired[str]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

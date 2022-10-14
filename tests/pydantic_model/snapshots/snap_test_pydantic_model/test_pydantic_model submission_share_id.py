@@ -9,6 +9,7 @@ from __future__ import annotations
 import typing
 
 import pydantic
+import typing_extensions
 
 
 class ShareId(pydantic.BaseModel):
@@ -20,6 +21,9 @@ class ShareId(pydantic.BaseModel):
     @staticmethod
     def from_str(value: str) -> ShareId:
         return ShareId(__root__=value)
+
+    class Partial(typing_extensions.TypedDict):
+        pass
 
     class Validators:
         """

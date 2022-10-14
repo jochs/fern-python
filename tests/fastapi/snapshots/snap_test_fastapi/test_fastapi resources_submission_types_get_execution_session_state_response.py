@@ -164,11 +164,6 @@ class GetExecutionSessionStateResponse(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        states: typing_extensions.NotRequired[typing.Dict[str, ExecutionSessionState]]
-        num_warming_instances: typing_extensions.NotRequired[typing.Optional[int]]
-        warming_session_ids: typing_extensions.NotRequired[typing.List[str]]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

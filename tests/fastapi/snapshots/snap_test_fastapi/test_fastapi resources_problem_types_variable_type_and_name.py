@@ -113,10 +113,6 @@ class VariableTypeAndName(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        variable_type: typing_extensions.NotRequired[VariableType]
-        name: typing_extensions.NotRequired[str]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

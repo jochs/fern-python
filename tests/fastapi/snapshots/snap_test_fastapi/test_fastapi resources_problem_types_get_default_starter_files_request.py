@@ -153,11 +153,6 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        input_params: typing_extensions.NotRequired[typing.List[VariableTypeAndName]]
-        output_type: typing_extensions.NotRequired[VariableType]
-        method_name: typing_extensions.NotRequired[str]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

@@ -103,10 +103,6 @@ class KeyValuePair(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        key: typing_extensions.NotRequired[VariableValue]
-        value: typing_extensions.NotRequired[VariableValue]
-
     class Config:
         frozen = True
 

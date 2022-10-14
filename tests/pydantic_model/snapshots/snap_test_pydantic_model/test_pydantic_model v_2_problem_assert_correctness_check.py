@@ -46,6 +46,9 @@ class AssertCorrectnessCheck(pydantic.BaseModel):
         pydantic.Field(discriminator="type"),
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -99,17 +102,11 @@ class _AssertCorrectnessCheck:
     class DeepEquality(DeepEqualityCorrectnessCheck):
         type: typing_extensions.Literal["deepEquality"]
 
-        class Partial(DeepEqualityCorrectnessCheck.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["deepEquality"]]
-
         class Config:
             frozen = True
 
     class Custom(VoidFunctionDefinitionThatTakesActualResult):
         type: typing_extensions.Literal["custom"]
-
-        class Partial(VoidFunctionDefinitionThatTakesActualResult.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["custom"]]
 
         class Config:
             frozen = True

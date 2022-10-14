@@ -177,12 +177,6 @@ class TestCaseNonHiddenGrade(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        passed: typing_extensions.NotRequired[bool]
-        actual_result: typing_extensions.NotRequired[typing.Optional[VariableValue]]
-        exception: typing_extensions.NotRequired[typing.Optional[ExceptionV2]]
-        stdout: typing_extensions.NotRequired[str]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

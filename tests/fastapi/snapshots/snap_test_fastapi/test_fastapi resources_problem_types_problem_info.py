@@ -338,18 +338,6 @@ class ProblemInfo(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        problem_id: typing_extensions.NotRequired[ProblemId]
-        problem_description: typing_extensions.NotRequired[ProblemDescription]
-        problem_name: typing_extensions.NotRequired[str]
-        problem_version: typing_extensions.NotRequired[int]
-        files: typing_extensions.NotRequired[typing.Dict[Language, ProblemFiles]]
-        input_params: typing_extensions.NotRequired[typing.List[VariableTypeAndName]]
-        output_type: typing_extensions.NotRequired[VariableType]
-        testcases: typing_extensions.NotRequired[typing.List[TestCaseWithExpectedResult]]
-        method_name: typing_extensions.NotRequired[str]
-        supports_custom_test_cases: typing_extensions.NotRequired[bool]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

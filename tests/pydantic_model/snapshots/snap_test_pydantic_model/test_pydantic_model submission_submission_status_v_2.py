@@ -45,6 +45,9 @@ class SubmissionStatusV2(pydantic.BaseModel):
         typing.Union[_SubmissionStatusV2.Test, _SubmissionStatusV2.Workspace], pydantic.Field(discriminator="type")
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -98,17 +101,11 @@ class _SubmissionStatusV2:
     class Test(TestSubmissionStatusV2):
         type: typing_extensions.Literal["test"]
 
-        class Partial(TestSubmissionStatusV2.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["test"]]
-
         class Config:
             frozen = True
 
     class Workspace(WorkspaceSubmissionStatusV2):
         type: typing_extensions.Literal["workspace"]
-
-        class Partial(WorkspaceSubmissionStatusV2.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["workspace"]]
 
         class Config:
             frozen = True

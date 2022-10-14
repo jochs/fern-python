@@ -173,11 +173,5 @@ class TestCaseV2(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        metadata: typing_extensions.NotRequired[TestCaseMetadata]
-        implementation: typing_extensions.NotRequired[TestCaseImplementationReference]
-        arguments: typing_extensions.NotRequired[typing.Dict[ParameterId, VariableValue]]
-        expects: typing_extensions.NotRequired[typing.Optional[TestCaseExpects]]
-
     class Config:
         frozen = True

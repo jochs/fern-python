@@ -177,12 +177,6 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        updates: typing_extensions.NotRequired[typing.List[TestSubmissionUpdate]]
-        problem_id: typing_extensions.NotRequired[ProblemId]
-        problem_version: typing_extensions.NotRequired[int]
-        problem_info: typing_extensions.NotRequired[ProblemInfoV2]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

@@ -230,14 +230,6 @@ class SubmitRequestV2(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        submission_id: typing_extensions.NotRequired[SubmissionId]
-        language: typing_extensions.NotRequired[Language]
-        submission_files: typing_extensions.NotRequired[typing.List[SubmissionFileInfo]]
-        problem_id: typing_extensions.NotRequired[ProblemId]
-        problem_version: typing_extensions.NotRequired[typing.Optional[int]]
-        user_id: typing_extensions.NotRequired[typing.Optional[str]]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

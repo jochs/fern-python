@@ -182,12 +182,6 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        problem_id: typing_extensions.NotRequired[ProblemId]
-        problem_name: typing_extensions.NotRequired[str]
-        problem_version: typing_extensions.NotRequired[int]
-        variable_types: typing_extensions.NotRequired[typing.List[VariableType]]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True

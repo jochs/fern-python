@@ -61,6 +61,9 @@ class SubmissionStatusForTestCase(pydantic.BaseModel):
         pydantic.Field(discriminator="type"),
     ]
 
+    class Partial(typing_extensions.TypedDict):
+        pass
+
     class Validators:
         """
         Use this class to add validators to the Pydantic model.
@@ -139,9 +142,6 @@ class _SubmissionStatusForTestCase:
     class Graded(TestCaseResultWithStdout):
         type: typing_extensions.Literal["graded"]
 
-        class Partial(TestCaseResultWithStdout.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["graded"]]
-
         class Config:
             frozen = True
 
@@ -149,18 +149,11 @@ class _SubmissionStatusForTestCase:
         type: typing_extensions.Literal["gradedV2"]
         value: TestCaseGrade
 
-        class Partial(typing_extensions.TypedDict):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["gradedV2"]]
-            value: typing_extensions.NotRequired[TestCaseGrade]
-
         class Config:
             frozen = True
 
     class Traced(TracedTestCase):
         type: typing_extensions.Literal["traced"]
-
-        class Partial(TracedTestCase.Partial):
-            type: typing_extensions.NotRequired[typing_extensions.Literal["traced"]]
 
         class Config:
             frozen = True

@@ -222,13 +222,6 @@ class RecordingResponseNotification(pydantic.BaseModel):
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}
         return super().dict(**kwargs_with_defaults)
 
-    class Partial(typing_extensions.TypedDict):
-        submission_id: typing_extensions.NotRequired[SubmissionId]
-        test_case_id: typing_extensions.NotRequired[typing.Optional[str]]
-        line_number: typing_extensions.NotRequired[int]
-        lightweight_stack_info: typing_extensions.NotRequired[LightweightStackframeInformation]
-        traced_file: typing_extensions.NotRequired[typing.Optional[TracedFile]]
-
     class Config:
         frozen = True
         allow_population_by_field_name = True
