@@ -26,7 +26,7 @@ jobs:
           pkg-manager: poetry
       - run:
           name: Install Python 3.7.13
-          command: pyenv install 3.17.13
+          command: pyenv install 3.7.13
       - run:
           name: Run tests
           command: poetry run pytest -sv
