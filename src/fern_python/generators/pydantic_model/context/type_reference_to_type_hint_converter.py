@@ -64,7 +64,11 @@ class TypeReferenceToTypeHintConverter:
                     must_import_after_current_declaration=must_import_after_current_declaration,
                 )
             ),
+            literal=self.visit_literal,
         )
+
+    def visit_literal(self, wrapped_type: ir_types.Literal) -> None:
+        raise Exception("Literals are not supported!")
 
     def _get_type_hint_for_named(
         self,
