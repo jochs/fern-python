@@ -79,12 +79,12 @@ class GradedResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: GradedResponse.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: GradedResponse.Partial) -> SubmissionId:
                 ...
 
         class TestCasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, test_cases: typing.Dict[str, TestCaseResultWithStdout], *, values: GradedResponse.Partial
+                self, *, test_cases: typing.Dict[str, TestCaseResultWithStdout], values: GradedResponse.Partial
             ) -> typing.Dict[str, TestCaseResultWithStdout]:
                 ...
 

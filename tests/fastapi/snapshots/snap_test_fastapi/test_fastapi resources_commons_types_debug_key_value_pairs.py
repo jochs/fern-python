@@ -74,11 +74,11 @@ class DebugKeyValuePairs(pydantic.BaseModel):
             return decorator
 
         class KeyValidator(typing_extensions.Protocol):
-            def __call__(self, key: DebugVariableValue, *, values: DebugKeyValuePairs.Partial) -> DebugVariableValue:
+            def __call__(self, *, key: DebugVariableValue, values: DebugKeyValuePairs.Partial) -> DebugVariableValue:
                 ...
 
         class ValueValidator(typing_extensions.Protocol):
-            def __call__(self, value: DebugVariableValue, *, values: DebugKeyValuePairs.Partial) -> DebugVariableValue:
+            def __call__(self, *, value: DebugVariableValue, values: DebugKeyValuePairs.Partial) -> DebugVariableValue:
                 ...
 
     @pydantic.root_validator

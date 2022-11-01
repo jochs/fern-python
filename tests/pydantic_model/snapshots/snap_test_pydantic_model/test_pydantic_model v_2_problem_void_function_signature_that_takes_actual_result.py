@@ -96,13 +96,13 @@ class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
 
         class ParametersValidator(typing_extensions.Protocol):
             def __call__(
-                self, parameters: typing.List[Parameter], *, values: VoidFunctionSignatureThatTakesActualResult.Partial
+                self, *, parameters: typing.List[Parameter], values: VoidFunctionSignatureThatTakesActualResult.Partial
             ) -> typing.List[Parameter]:
                 ...
 
         class ActualResultTypeValidator(typing_extensions.Protocol):
             def __call__(
-                self, actual_result_type: VariableType, *, values: VoidFunctionSignatureThatTakesActualResult.Partial
+                self, *, actual_result_type: VariableType, values: VoidFunctionSignatureThatTakesActualResult.Partial
             ) -> VariableType:
                 ...
 

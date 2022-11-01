@@ -72,11 +72,11 @@ class Migration(pydantic.BaseModel):
             return decorator
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, name: str, *, values: Migration.Partial) -> str:
+            def __call__(self, *, name: str, values: Migration.Partial) -> str:
                 ...
 
         class StatusValidator(typing_extensions.Protocol):
-            def __call__(self, status: MigrationStatus, *, values: Migration.Partial) -> MigrationStatus:
+            def __call__(self, *, status: MigrationStatus, values: Migration.Partial) -> MigrationStatus:
                 ...
 
     @pydantic.root_validator

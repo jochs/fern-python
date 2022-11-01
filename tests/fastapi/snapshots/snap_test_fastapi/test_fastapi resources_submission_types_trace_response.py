@@ -149,31 +149,31 @@ class TraceResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: TraceResponse.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: TraceResponse.Partial) -> SubmissionId:
                 ...
 
         class LineNumberValidator(typing_extensions.Protocol):
-            def __call__(self, line_number: int, *, values: TraceResponse.Partial) -> int:
+            def __call__(self, *, line_number: int, values: TraceResponse.Partial) -> int:
                 ...
 
         class ReturnValueValidator(typing_extensions.Protocol):
             def __call__(
-                self, return_value: typing.Optional[DebugVariableValue], *, values: TraceResponse.Partial
+                self, *, return_value: typing.Optional[DebugVariableValue], values: TraceResponse.Partial
             ) -> typing.Optional[DebugVariableValue]:
                 ...
 
         class ExpressionLocationValidator(typing_extensions.Protocol):
             def __call__(
-                self, expression_location: typing.Optional[ExpressionLocation], *, values: TraceResponse.Partial
+                self, *, expression_location: typing.Optional[ExpressionLocation], values: TraceResponse.Partial
             ) -> typing.Optional[ExpressionLocation]:
                 ...
 
         class StackValidator(typing_extensions.Protocol):
-            def __call__(self, stack: StackInformation, *, values: TraceResponse.Partial) -> StackInformation:
+            def __call__(self, *, stack: StackInformation, values: TraceResponse.Partial) -> StackInformation:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, stdout: typing.Optional[str], *, values: TraceResponse.Partial) -> typing.Optional[str]:
+            def __call__(self, *, stdout: typing.Optional[str], values: TraceResponse.Partial) -> typing.Optional[str]:
                 ...
 
     @pydantic.root_validator

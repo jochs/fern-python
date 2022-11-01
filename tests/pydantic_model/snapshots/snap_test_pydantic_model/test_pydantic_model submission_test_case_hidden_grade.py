@@ -58,7 +58,7 @@ class TestCaseHiddenGrade(pydantic.BaseModel):
             return decorator
 
         class PassedValidator(typing_extensions.Protocol):
-            def __call__(self, passed: bool, *, values: TestCaseHiddenGrade.Partial) -> bool:
+            def __call__(self, *, passed: bool, values: TestCaseHiddenGrade.Partial) -> bool:
                 ...
 
     @pydantic.root_validator

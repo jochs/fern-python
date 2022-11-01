@@ -90,12 +90,12 @@ class SinglyLinkedListNodeAndListValue(pydantic.BaseModel):
             return decorator
 
         class NodeIdValidator(typing_extensions.Protocol):
-            def __call__(self, node_id: NodeId, *, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
+            def __call__(self, *, node_id: NodeId, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
                 ...
 
         class FullListValidator(typing_extensions.Protocol):
             def __call__(
-                self, full_list: SinglyLinkedListValue, *, values: SinglyLinkedListNodeAndListValue.Partial
+                self, *, full_list: SinglyLinkedListValue, values: SinglyLinkedListNodeAndListValue.Partial
             ) -> SinglyLinkedListValue:
                 ...
 

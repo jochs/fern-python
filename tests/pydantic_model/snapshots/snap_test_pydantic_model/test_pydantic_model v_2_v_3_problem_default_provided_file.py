@@ -81,12 +81,12 @@ class DefaultProvidedFile(pydantic.BaseModel):
             return decorator
 
         class FileValidator(typing_extensions.Protocol):
-            def __call__(self, file: FileInfoV2, *, values: DefaultProvidedFile.Partial) -> FileInfoV2:
+            def __call__(self, *, file: FileInfoV2, values: DefaultProvidedFile.Partial) -> FileInfoV2:
                 ...
 
         class RelatedTypesValidator(typing_extensions.Protocol):
             def __call__(
-                self, related_types: typing.List[VariableType], *, values: DefaultProvidedFile.Partial
+                self, *, related_types: typing.List[VariableType], values: DefaultProvidedFile.Partial
             ) -> typing.List[VariableType]:
                 ...
 

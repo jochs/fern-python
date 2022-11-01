@@ -65,7 +65,7 @@ class GetFunctionSignatureResponse(pydantic.BaseModel):
 
         class FunctionByLanguageValidator(typing_extensions.Protocol):
             def __call__(
-                self, function_by_language: typing.Dict[Language, str], *, values: GetFunctionSignatureResponse.Partial
+                self, *, function_by_language: typing.Dict[Language, str], values: GetFunctionSignatureResponse.Partial
             ) -> typing.Dict[Language, str]:
                 ...
 

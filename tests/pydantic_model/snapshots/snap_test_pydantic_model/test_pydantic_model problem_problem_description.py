@@ -61,7 +61,7 @@ class ProblemDescription(pydantic.BaseModel):
 
         class BoardsValidator(typing_extensions.Protocol):
             def __call__(
-                self, boards: typing.List[ProblemDescriptionBoard], *, values: ProblemDescription.Partial
+                self, *, boards: typing.List[ProblemDescriptionBoard], values: ProblemDescription.Partial
             ) -> typing.List[ProblemDescriptionBoard]:
                 ...
 

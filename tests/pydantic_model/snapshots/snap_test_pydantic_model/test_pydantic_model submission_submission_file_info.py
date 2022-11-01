@@ -94,15 +94,15 @@ class SubmissionFileInfo(pydantic.BaseModel):
             return decorator
 
         class DirectoryValidator(typing_extensions.Protocol):
-            def __call__(self, directory: str, *, values: SubmissionFileInfo.Partial) -> str:
+            def __call__(self, *, directory: str, values: SubmissionFileInfo.Partial) -> str:
                 ...
 
         class FilenameValidator(typing_extensions.Protocol):
-            def __call__(self, filename: str, *, values: SubmissionFileInfo.Partial) -> str:
+            def __call__(self, *, filename: str, values: SubmissionFileInfo.Partial) -> str:
                 ...
 
         class ContentsValidator(typing_extensions.Protocol):
-            def __call__(self, contents: str, *, values: SubmissionFileInfo.Partial) -> str:
+            def __call__(self, *, contents: str, values: SubmissionFileInfo.Partial) -> str:
                 ...
 
     @pydantic.root_validator

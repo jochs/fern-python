@@ -151,32 +151,32 @@ class RecordingResponseNotification(pydantic.BaseModel):
 
         class SubmissionIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_id: SubmissionId, *, values: RecordingResponseNotification.Partial
+                self, *, submission_id: SubmissionId, values: RecordingResponseNotification.Partial
             ) -> SubmissionId:
                 ...
 
         class TestCaseIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, test_case_id: typing.Optional[str], *, values: RecordingResponseNotification.Partial
+                self, *, test_case_id: typing.Optional[str], values: RecordingResponseNotification.Partial
             ) -> typing.Optional[str]:
                 ...
 
         class LineNumberValidator(typing_extensions.Protocol):
-            def __call__(self, line_number: int, *, values: RecordingResponseNotification.Partial) -> int:
+            def __call__(self, *, line_number: int, values: RecordingResponseNotification.Partial) -> int:
                 ...
 
         class LightweightStackInfoValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                lightweight_stack_info: LightweightStackframeInformation,
                 *,
+                lightweight_stack_info: LightweightStackframeInformation,
                 values: RecordingResponseNotification.Partial,
             ) -> LightweightStackframeInformation:
                 ...
 
         class TracedFileValidator(typing_extensions.Protocol):
             def __call__(
-                self, traced_file: typing.Optional[TracedFile], *, values: RecordingResponseNotification.Partial
+                self, *, traced_file: typing.Optional[TracedFile], values: RecordingResponseNotification.Partial
             ) -> typing.Optional[TracedFile]:
                 ...
 

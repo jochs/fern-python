@@ -80,13 +80,13 @@ class DoublyLinkedListValue(pydantic.BaseModel):
 
         class HeadValidator(typing_extensions.Protocol):
             def __call__(
-                self, head: typing.Optional[NodeId], *, values: DoublyLinkedListValue.Partial
+                self, *, head: typing.Optional[NodeId], values: DoublyLinkedListValue.Partial
             ) -> typing.Optional[NodeId]:
                 ...
 
         class NodesValidator(typing_extensions.Protocol):
             def __call__(
-                self, nodes: typing.Dict[NodeId, DoublyLinkedListNodeValue], *, values: DoublyLinkedListValue.Partial
+                self, *, nodes: typing.Dict[NodeId, DoublyLinkedListNodeValue], values: DoublyLinkedListValue.Partial
             ) -> typing.Dict[NodeId, DoublyLinkedListNodeValue]:
                 ...
 

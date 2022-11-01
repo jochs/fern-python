@@ -92,15 +92,15 @@ class TestCaseMetadata(pydantic.BaseModel):
             return decorator
 
         class IdValidator(typing_extensions.Protocol):
-            def __call__(self, id: TestCaseId, *, values: TestCaseMetadata.Partial) -> TestCaseId:
+            def __call__(self, *, id: TestCaseId, values: TestCaseMetadata.Partial) -> TestCaseId:
                 ...
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, name: str, *, values: TestCaseMetadata.Partial) -> str:
+            def __call__(self, *, name: str, values: TestCaseMetadata.Partial) -> str:
                 ...
 
         class HiddenValidator(typing_extensions.Protocol):
-            def __call__(self, hidden: bool, *, values: TestCaseMetadata.Partial) -> bool:
+            def __call__(self, *, hidden: bool, values: TestCaseMetadata.Partial) -> bool:
                 ...
 
     @pydantic.root_validator

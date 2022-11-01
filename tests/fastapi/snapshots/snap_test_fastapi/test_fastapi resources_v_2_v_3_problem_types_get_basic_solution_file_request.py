@@ -84,12 +84,12 @@ class GetBasicSolutionFileRequest(pydantic.BaseModel):
             return decorator
 
         class MethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, method_name: str, *, values: GetBasicSolutionFileRequest.Partial) -> str:
+            def __call__(self, *, method_name: str, values: GetBasicSolutionFileRequest.Partial) -> str:
                 ...
 
         class SignatureValidator(typing_extensions.Protocol):
             def __call__(
-                self, signature: NonVoidFunctionSignature, *, values: GetBasicSolutionFileRequest.Partial
+                self, *, signature: NonVoidFunctionSignature, values: GetBasicSolutionFileRequest.Partial
             ) -> NonVoidFunctionSignature:
                 ...
 

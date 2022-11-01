@@ -74,11 +74,11 @@ class Playlist(PlaylistCreateRequest):
             return decorator
 
         class PlaylistIdValidator(typing_extensions.Protocol):
-            def __call__(self, playlist_id: PlaylistId, *, values: Playlist.Partial) -> PlaylistId:
+            def __call__(self, *, playlist_id: PlaylistId, values: Playlist.Partial) -> PlaylistId:
                 ...
 
         class OwnerIdValidator(typing_extensions.Protocol):
-            def __call__(self, owner_id: UserId, *, values: Playlist.Partial) -> UserId:
+            def __call__(self, *, owner_id: UserId, values: Playlist.Partial) -> UserId:
                 ...
 
     @pydantic.root_validator

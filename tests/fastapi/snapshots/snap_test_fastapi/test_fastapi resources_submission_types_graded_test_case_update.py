@@ -79,11 +79,11 @@ class GradedTestCaseUpdate(pydantic.BaseModel):
             return decorator
 
         class TestCaseIdValidator(typing_extensions.Protocol):
-            def __call__(self, test_case_id: TestCaseId, *, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
+            def __call__(self, *, test_case_id: TestCaseId, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
                 ...
 
         class GradeValidator(typing_extensions.Protocol):
-            def __call__(self, grade: TestCaseGrade, *, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
+            def __call__(self, *, grade: TestCaseGrade, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
                 ...
 
     @pydantic.root_validator

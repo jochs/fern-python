@@ -97,15 +97,15 @@ class ExceptionInfo(pydantic.BaseModel):
             return decorator
 
         class ExceptionTypeValidator(typing_extensions.Protocol):
-            def __call__(self, exception_type: str, *, values: ExceptionInfo.Partial) -> str:
+            def __call__(self, *, exception_type: str, values: ExceptionInfo.Partial) -> str:
                 ...
 
         class ExceptionMessageValidator(typing_extensions.Protocol):
-            def __call__(self, exception_message: str, *, values: ExceptionInfo.Partial) -> str:
+            def __call__(self, *, exception_message: str, values: ExceptionInfo.Partial) -> str:
                 ...
 
         class ExceptionStacktraceValidator(typing_extensions.Protocol):
-            def __call__(self, exception_stacktrace: str, *, values: ExceptionInfo.Partial) -> str:
+            def __call__(self, *, exception_stacktrace: str, values: ExceptionInfo.Partial) -> str:
                 ...
 
     @pydantic.root_validator

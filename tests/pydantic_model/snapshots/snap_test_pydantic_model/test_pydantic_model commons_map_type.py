@@ -70,11 +70,11 @@ class MapType(pydantic.BaseModel):
             return decorator
 
         class KeyTypeValidator(typing_extensions.Protocol):
-            def __call__(self, key_type: VariableType, *, values: MapType.Partial) -> VariableType:
+            def __call__(self, *, key_type: VariableType, values: MapType.Partial) -> VariableType:
                 ...
 
         class ValueTypeValidator(typing_extensions.Protocol):
-            def __call__(self, value_type: VariableType, *, values: MapType.Partial) -> VariableType:
+            def __call__(self, *, value_type: VariableType, values: MapType.Partial) -> VariableType:
                 ...
 
     @pydantic.root_validator

@@ -70,11 +70,11 @@ class FileInfo(pydantic.BaseModel):
             return decorator
 
         class FilenameValidator(typing_extensions.Protocol):
-            def __call__(self, filename: str, *, values: FileInfo.Partial) -> str:
+            def __call__(self, *, filename: str, values: FileInfo.Partial) -> str:
                 ...
 
         class ContentsValidator(typing_extensions.Protocol):
-            def __call__(self, contents: str, *, values: FileInfo.Partial) -> str:
+            def __call__(self, *, contents: str, values: FileInfo.Partial) -> str:
                 ...
 
     @pydantic.root_validator

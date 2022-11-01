@@ -82,12 +82,12 @@ class WorkspaceRanResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: WorkspaceRanResponse.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: WorkspaceRanResponse.Partial) -> SubmissionId:
                 ...
 
         class RunDetailsValidator(typing_extensions.Protocol):
             def __call__(
-                self, run_details: WorkspaceRunDetails, *, values: WorkspaceRanResponse.Partial
+                self, *, run_details: WorkspaceRunDetails, values: WorkspaceRanResponse.Partial
             ) -> WorkspaceRunDetails:
                 ...
 

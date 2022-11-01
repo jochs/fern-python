@@ -118,23 +118,23 @@ class TestCaseNonHiddenGrade(pydantic.BaseModel):
             return decorator
 
         class PassedValidator(typing_extensions.Protocol):
-            def __call__(self, passed: bool, *, values: TestCaseNonHiddenGrade.Partial) -> bool:
+            def __call__(self, *, passed: bool, values: TestCaseNonHiddenGrade.Partial) -> bool:
                 ...
 
         class ActualResultValidator(typing_extensions.Protocol):
             def __call__(
-                self, actual_result: typing.Optional[VariableValue], *, values: TestCaseNonHiddenGrade.Partial
+                self, *, actual_result: typing.Optional[VariableValue], values: TestCaseNonHiddenGrade.Partial
             ) -> typing.Optional[VariableValue]:
                 ...
 
         class ExceptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, exception: typing.Optional[ExceptionV2], *, values: TestCaseNonHiddenGrade.Partial
+                self, *, exception: typing.Optional[ExceptionV2], values: TestCaseNonHiddenGrade.Partial
             ) -> typing.Optional[ExceptionV2]:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, stdout: str, *, values: TestCaseNonHiddenGrade.Partial) -> str:
+            def __call__(self, *, stdout: str, values: TestCaseNonHiddenGrade.Partial) -> str:
                 ...
 
     @pydantic.root_validator

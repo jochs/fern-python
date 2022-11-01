@@ -83,12 +83,12 @@ class BinaryTreeNodeAndTreeValue(pydantic.BaseModel):
             return decorator
 
         class NodeIdValidator(typing_extensions.Protocol):
-            def __call__(self, node_id: NodeId, *, values: BinaryTreeNodeAndTreeValue.Partial) -> NodeId:
+            def __call__(self, *, node_id: NodeId, values: BinaryTreeNodeAndTreeValue.Partial) -> NodeId:
                 ...
 
         class FullTreeValidator(typing_extensions.Protocol):
             def __call__(
-                self, full_tree: BinaryTreeValue, *, values: BinaryTreeNodeAndTreeValue.Partial
+                self, *, full_tree: BinaryTreeValue, values: BinaryTreeNodeAndTreeValue.Partial
             ) -> BinaryTreeValue:
                 ...
 

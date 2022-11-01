@@ -169,36 +169,36 @@ class TraceResponseV2(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: TraceResponseV2.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: TraceResponseV2.Partial) -> SubmissionId:
                 ...
 
         class LineNumberValidator(typing_extensions.Protocol):
-            def __call__(self, line_number: int, *, values: TraceResponseV2.Partial) -> int:
+            def __call__(self, *, line_number: int, values: TraceResponseV2.Partial) -> int:
                 ...
 
         class FileValidator(typing_extensions.Protocol):
-            def __call__(self, file: TracedFile, *, values: TraceResponseV2.Partial) -> TracedFile:
+            def __call__(self, *, file: TracedFile, values: TraceResponseV2.Partial) -> TracedFile:
                 ...
 
         class ReturnValueValidator(typing_extensions.Protocol):
             def __call__(
-                self, return_value: typing.Optional[DebugVariableValue], *, values: TraceResponseV2.Partial
+                self, *, return_value: typing.Optional[DebugVariableValue], values: TraceResponseV2.Partial
             ) -> typing.Optional[DebugVariableValue]:
                 ...
 
         class ExpressionLocationValidator(typing_extensions.Protocol):
             def __call__(
-                self, expression_location: typing.Optional[ExpressionLocation], *, values: TraceResponseV2.Partial
+                self, *, expression_location: typing.Optional[ExpressionLocation], values: TraceResponseV2.Partial
             ) -> typing.Optional[ExpressionLocation]:
                 ...
 
         class StackValidator(typing_extensions.Protocol):
-            def __call__(self, stack: StackInformation, *, values: TraceResponseV2.Partial) -> StackInformation:
+            def __call__(self, *, stack: StackInformation, values: TraceResponseV2.Partial) -> StackInformation:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
             def __call__(
-                self, stdout: typing.Optional[str], *, values: TraceResponseV2.Partial
+                self, *, stdout: typing.Optional[str], values: TraceResponseV2.Partial
             ) -> typing.Optional[str]:
                 ...
 

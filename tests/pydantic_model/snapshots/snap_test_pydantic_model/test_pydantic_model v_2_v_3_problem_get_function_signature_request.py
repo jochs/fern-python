@@ -64,7 +64,7 @@ class GetFunctionSignatureRequest(pydantic.BaseModel):
 
         class FunctionSignatureValidator(typing_extensions.Protocol):
             def __call__(
-                self, function_signature: FunctionSignature, *, values: GetFunctionSignatureRequest.Partial
+                self, *, function_signature: FunctionSignature, values: GetFunctionSignatureRequest.Partial
             ) -> FunctionSignature:
                 ...
 

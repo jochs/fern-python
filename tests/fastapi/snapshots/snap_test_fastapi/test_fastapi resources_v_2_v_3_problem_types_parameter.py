@@ -89,15 +89,15 @@ class Parameter(pydantic.BaseModel):
             return decorator
 
         class ParameterIdValidator(typing_extensions.Protocol):
-            def __call__(self, parameter_id: ParameterId, *, values: Parameter.Partial) -> ParameterId:
+            def __call__(self, *, parameter_id: ParameterId, values: Parameter.Partial) -> ParameterId:
                 ...
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, name: str, *, values: Parameter.Partial) -> str:
+            def __call__(self, *, name: str, values: Parameter.Partial) -> str:
                 ...
 
         class VariableTypeValidator(typing_extensions.Protocol):
-            def __call__(self, variable_type: VariableType, *, values: Parameter.Partial) -> VariableType:
+            def __call__(self, *, variable_type: VariableType, values: Parameter.Partial) -> VariableType:
                 ...
 
     @pydantic.root_validator

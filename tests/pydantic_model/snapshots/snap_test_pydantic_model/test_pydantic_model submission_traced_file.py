@@ -70,11 +70,11 @@ class TracedFile(pydantic.BaseModel):
             return decorator
 
         class FilenameValidator(typing_extensions.Protocol):
-            def __call__(self, filename: str, *, values: TracedFile.Partial) -> str:
+            def __call__(self, *, filename: str, values: TracedFile.Partial) -> str:
                 ...
 
         class DirectoryValidator(typing_extensions.Protocol):
-            def __call__(self, directory: str, *, values: TracedFile.Partial) -> str:
+            def __call__(self, *, directory: str, values: TracedFile.Partial) -> str:
                 ...
 
     @pydantic.root_validator

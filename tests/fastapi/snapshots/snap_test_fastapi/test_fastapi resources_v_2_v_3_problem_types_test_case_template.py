@@ -98,17 +98,17 @@ class TestCaseTemplate(pydantic.BaseModel):
 
         class TemplateIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, template_id: TestCaseTemplateId, *, values: TestCaseTemplate.Partial
+                self, *, template_id: TestCaseTemplateId, values: TestCaseTemplate.Partial
             ) -> TestCaseTemplateId:
                 ...
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, name: str, *, values: TestCaseTemplate.Partial) -> str:
+            def __call__(self, *, name: str, values: TestCaseTemplate.Partial) -> str:
                 ...
 
         class ImplementationValidator(typing_extensions.Protocol):
             def __call__(
-                self, implementation: TestCaseImplementation, *, values: TestCaseTemplate.Partial
+                self, *, implementation: TestCaseImplementation, values: TestCaseTemplate.Partial
             ) -> TestCaseImplementation:
                 ...
 

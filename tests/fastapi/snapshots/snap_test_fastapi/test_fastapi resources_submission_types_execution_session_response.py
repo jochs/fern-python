@@ -122,22 +122,22 @@ class ExecutionSessionResponse(pydantic.BaseModel):
             return decorator
 
         class SessionIdValidator(typing_extensions.Protocol):
-            def __call__(self, session_id: str, *, values: ExecutionSessionResponse.Partial) -> str:
+            def __call__(self, *, session_id: str, values: ExecutionSessionResponse.Partial) -> str:
                 ...
 
         class ExecutionSessionUrlValidator(typing_extensions.Protocol):
             def __call__(
-                self, execution_session_url: typing.Optional[str], *, values: ExecutionSessionResponse.Partial
+                self, *, execution_session_url: typing.Optional[str], values: ExecutionSessionResponse.Partial
             ) -> typing.Optional[str]:
                 ...
 
         class LanguageValidator(typing_extensions.Protocol):
-            def __call__(self, language: Language, *, values: ExecutionSessionResponse.Partial) -> Language:
+            def __call__(self, *, language: Language, values: ExecutionSessionResponse.Partial) -> Language:
                 ...
 
         class StatusValidator(typing_extensions.Protocol):
             def __call__(
-                self, status: ExecutionSessionStatus, *, values: ExecutionSessionResponse.Partial
+                self, *, status: ExecutionSessionStatus, values: ExecutionSessionResponse.Partial
             ) -> ExecutionSessionStatus:
                 ...
 

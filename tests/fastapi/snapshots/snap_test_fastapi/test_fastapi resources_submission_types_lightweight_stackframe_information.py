@@ -87,12 +87,12 @@ class LightweightStackframeInformation(pydantic.BaseModel):
             return decorator
 
         class NumStackFramesValidator(typing_extensions.Protocol):
-            def __call__(self, num_stack_frames: int, *, values: LightweightStackframeInformation.Partial) -> int:
+            def __call__(self, *, num_stack_frames: int, values: LightweightStackframeInformation.Partial) -> int:
                 ...
 
         class TopStackFrameMethodNameValidator(typing_extensions.Protocol):
             def __call__(
-                self, top_stack_frame_method_name: str, *, values: LightweightStackframeInformation.Partial
+                self, *, top_stack_frame_method_name: str, values: LightweightStackframeInformation.Partial
             ) -> str:
                 ...
 

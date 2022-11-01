@@ -84,12 +84,12 @@ class InitializeProblemRequest(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: InitializeProblemRequest.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: InitializeProblemRequest.Partial) -> ProblemId:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
             def __call__(
-                self, problem_version: typing.Optional[int], *, values: InitializeProblemRequest.Partial
+                self, *, problem_version: typing.Optional[int], values: InitializeProblemRequest.Partial
             ) -> typing.Optional[int]:
                 ...
 

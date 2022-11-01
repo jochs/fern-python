@@ -76,8 +76,8 @@ class FunctionImplementationForMultipleLanguages(pydantic.BaseModel):
         class CodeByLanguageValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                code_by_language: typing.Dict[Language, FunctionImplementation],
                 *,
+                code_by_language: typing.Dict[Language, FunctionImplementation],
                 values: FunctionImplementationForMultipleLanguages.Partial,
             ) -> typing.Dict[Language, FunctionImplementation]:
                 ...

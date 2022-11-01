@@ -56,7 +56,7 @@ class Files(pydantic.BaseModel):
             return decorator
 
         class FilesValidator(typing_extensions.Protocol):
-            def __call__(self, files: typing.List[FileInfoV2], *, values: Files.Partial) -> typing.List[FileInfoV2]:
+            def __call__(self, *, files: typing.List[FileInfoV2], values: Files.Partial) -> typing.List[FileInfoV2]:
                 ...
 
     @pydantic.root_validator

@@ -86,12 +86,12 @@ class NonVoidFunctionSignature(pydantic.BaseModel):
 
         class ParametersValidator(typing_extensions.Protocol):
             def __call__(
-                self, parameters: typing.List[Parameter], *, values: NonVoidFunctionSignature.Partial
+                self, *, parameters: typing.List[Parameter], values: NonVoidFunctionSignature.Partial
             ) -> typing.List[Parameter]:
                 ...
 
         class ReturnTypeValidator(typing_extensions.Protocol):
-            def __call__(self, return_type: VariableType, *, values: NonVoidFunctionSignature.Partial) -> VariableType:
+            def __call__(self, *, return_type: VariableType, values: NonVoidFunctionSignature.Partial) -> VariableType:
                 ...
 
     @pydantic.root_validator

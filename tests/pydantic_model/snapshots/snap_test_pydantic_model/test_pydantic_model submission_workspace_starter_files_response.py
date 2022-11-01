@@ -64,7 +64,7 @@ class WorkspaceStarterFilesResponse(pydantic.BaseModel):
 
         class FilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, files: typing.Dict[Language, WorkspaceFiles], *, values: WorkspaceStarterFilesResponse.Partial
+                self, *, files: typing.Dict[Language, WorkspaceFiles], values: WorkspaceStarterFilesResponse.Partial
             ) -> typing.Dict[Language, WorkspaceFiles]:
                 ...
 

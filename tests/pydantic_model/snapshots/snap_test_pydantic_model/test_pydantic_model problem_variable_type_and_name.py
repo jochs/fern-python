@@ -80,11 +80,11 @@ class VariableTypeAndName(pydantic.BaseModel):
             return decorator
 
         class VariableTypeValidator(typing_extensions.Protocol):
-            def __call__(self, variable_type: VariableType, *, values: VariableTypeAndName.Partial) -> VariableType:
+            def __call__(self, *, variable_type: VariableType, values: VariableTypeAndName.Partial) -> VariableType:
                 ...
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, name: str, *, values: VariableTypeAndName.Partial) -> str:
+            def __call__(self, *, name: str, values: VariableTypeAndName.Partial) -> str:
                 ...
 
     @pydantic.root_validator

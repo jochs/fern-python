@@ -97,15 +97,15 @@ class TestCaseResult(pydantic.BaseModel):
             return decorator
 
         class ExpectedResultValidator(typing_extensions.Protocol):
-            def __call__(self, expected_result: VariableValue, *, values: TestCaseResult.Partial) -> VariableValue:
+            def __call__(self, *, expected_result: VariableValue, values: TestCaseResult.Partial) -> VariableValue:
                 ...
 
         class ActualResultValidator(typing_extensions.Protocol):
-            def __call__(self, actual_result: ActualResult, *, values: TestCaseResult.Partial) -> ActualResult:
+            def __call__(self, *, actual_result: ActualResult, values: TestCaseResult.Partial) -> ActualResult:
                 ...
 
         class PassedValidator(typing_extensions.Protocol):
-            def __call__(self, passed: bool, *, values: TestCaseResult.Partial) -> bool:
+            def __call__(self, *, passed: bool, values: TestCaseResult.Partial) -> bool:
                 ...
 
     @pydantic.root_validator

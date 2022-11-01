@@ -81,13 +81,13 @@ class VoidFunctionDefinition(pydantic.BaseModel):
 
         class ParametersValidator(typing_extensions.Protocol):
             def __call__(
-                self, parameters: typing.List[Parameter], *, values: VoidFunctionDefinition.Partial
+                self, *, parameters: typing.List[Parameter], values: VoidFunctionDefinition.Partial
             ) -> typing.List[Parameter]:
                 ...
 
         class CodeValidator(typing_extensions.Protocol):
             def __call__(
-                self, code: FunctionImplementationForMultipleLanguages, *, values: VoidFunctionDefinition.Partial
+                self, *, code: FunctionImplementationForMultipleLanguages, values: VoidFunctionDefinition.Partial
             ) -> FunctionImplementationForMultipleLanguages:
                 ...
 

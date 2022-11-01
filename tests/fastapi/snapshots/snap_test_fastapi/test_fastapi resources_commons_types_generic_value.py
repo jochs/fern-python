@@ -79,12 +79,12 @@ class GenericValue(pydantic.BaseModel):
 
         class StringifiedTypeValidator(typing_extensions.Protocol):
             def __call__(
-                self, stringified_type: typing.Optional[str], *, values: GenericValue.Partial
+                self, *, stringified_type: typing.Optional[str], values: GenericValue.Partial
             ) -> typing.Optional[str]:
                 ...
 
         class StringifiedValueValidator(typing_extensions.Protocol):
-            def __call__(self, stringified_value: str, *, values: GenericValue.Partial) -> str:
+            def __call__(self, *, stringified_value: str, values: GenericValue.Partial) -> str:
                 ...
 
     @pydantic.root_validator

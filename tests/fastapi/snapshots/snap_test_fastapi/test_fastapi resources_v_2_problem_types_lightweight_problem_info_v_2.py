@@ -127,20 +127,20 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: LightweightProblemInfoV2.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: LightweightProblemInfoV2.Partial) -> ProblemId:
                 ...
 
         class ProblemNameValidator(typing_extensions.Protocol):
-            def __call__(self, problem_name: str, *, values: LightweightProblemInfoV2.Partial) -> str:
+            def __call__(self, *, problem_name: str, values: LightweightProblemInfoV2.Partial) -> str:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, problem_version: int, *, values: LightweightProblemInfoV2.Partial) -> int:
+            def __call__(self, *, problem_version: int, values: LightweightProblemInfoV2.Partial) -> int:
                 ...
 
         class VariableTypesValidator(typing_extensions.Protocol):
             def __call__(
-                self, variable_types: typing.List[VariableType], *, values: LightweightProblemInfoV2.Partial
+                self, *, variable_types: typing.List[VariableType], values: LightweightProblemInfoV2.Partial
             ) -> typing.List[VariableType]:
                 ...
 

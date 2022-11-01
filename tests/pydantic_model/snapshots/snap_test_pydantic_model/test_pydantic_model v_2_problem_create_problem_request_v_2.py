@@ -187,42 +187,42 @@ class CreateProblemRequestV2(pydantic.BaseModel):
             return decorator
 
         class ProblemNameValidator(typing_extensions.Protocol):
-            def __call__(self, problem_name: str, *, values: CreateProblemRequestV2.Partial) -> str:
+            def __call__(self, *, problem_name: str, values: CreateProblemRequestV2.Partial) -> str:
                 ...
 
         class ProblemDescriptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, problem_description: ProblemDescription, *, values: CreateProblemRequestV2.Partial
+                self, *, problem_description: ProblemDescription, values: CreateProblemRequestV2.Partial
             ) -> ProblemDescription:
                 ...
 
         class CustomFilesValidator(typing_extensions.Protocol):
-            def __call__(self, custom_files: CustomFiles, *, values: CreateProblemRequestV2.Partial) -> CustomFiles:
+            def __call__(self, *, custom_files: CustomFiles, values: CreateProblemRequestV2.Partial) -> CustomFiles:
                 ...
 
         class CustomTestCaseTemplatesValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                custom_test_case_templates: typing.List[TestCaseTemplate],
                 *,
+                custom_test_case_templates: typing.List[TestCaseTemplate],
                 values: CreateProblemRequestV2.Partial,
             ) -> typing.List[TestCaseTemplate]:
                 ...
 
         class TestcasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, testcases: typing.List[TestCaseV2], *, values: CreateProblemRequestV2.Partial
+                self, *, testcases: typing.List[TestCaseV2], values: CreateProblemRequestV2.Partial
             ) -> typing.List[TestCaseV2]:
                 ...
 
         class SupportedLanguagesValidator(typing_extensions.Protocol):
             def __call__(
-                self, supported_languages: typing.List[Language], *, values: CreateProblemRequestV2.Partial
+                self, *, supported_languages: typing.List[Language], values: CreateProblemRequestV2.Partial
             ) -> typing.List[Language]:
                 ...
 
         class IsPublicValidator(typing_extensions.Protocol):
-            def __call__(self, is_public: bool, *, values: CreateProblemRequestV2.Partial) -> bool:
+            def __call__(self, *, is_public: bool, values: CreateProblemRequestV2.Partial) -> bool:
                 ...
 
     @pydantic.root_validator

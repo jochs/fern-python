@@ -112,21 +112,21 @@ class GetExecutionSessionStateResponse(pydantic.BaseModel):
         class StatesValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                states: typing.Dict[str, ExecutionSessionState],
                 *,
+                states: typing.Dict[str, ExecutionSessionState],
                 values: GetExecutionSessionStateResponse.Partial,
             ) -> typing.Dict[str, ExecutionSessionState]:
                 ...
 
         class NumWarmingInstancesValidator(typing_extensions.Protocol):
             def __call__(
-                self, num_warming_instances: typing.Optional[int], *, values: GetExecutionSessionStateResponse.Partial
+                self, *, num_warming_instances: typing.Optional[int], values: GetExecutionSessionStateResponse.Partial
             ) -> typing.Optional[int]:
                 ...
 
         class WarmingSessionIdsValidator(typing_extensions.Protocol):
             def __call__(
-                self, warming_session_ids: typing.List[str], *, values: GetExecutionSessionStateResponse.Partial
+                self, *, warming_session_ids: typing.List[str], values: GetExecutionSessionStateResponse.Partial
             ) -> typing.List[str]:
                 ...
 

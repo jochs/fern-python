@@ -80,12 +80,12 @@ class TracedTestCase(pydantic.BaseModel):
 
         class ResultValidator(typing_extensions.Protocol):
             def __call__(
-                self, result: TestCaseResultWithStdout, *, values: TracedTestCase.Partial
+                self, *, result: TestCaseResultWithStdout, values: TracedTestCase.Partial
             ) -> TestCaseResultWithStdout:
                 ...
 
         class TraceResponsesSizeValidator(typing_extensions.Protocol):
-            def __call__(self, trace_responses_size: int, *, values: TracedTestCase.Partial) -> int:
+            def __call__(self, *, trace_responses_size: int, values: TracedTestCase.Partial) -> int:
                 ...
 
     @pydantic.root_validator

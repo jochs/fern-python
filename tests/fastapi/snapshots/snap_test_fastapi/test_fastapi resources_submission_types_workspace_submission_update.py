@@ -85,12 +85,12 @@ class WorkspaceSubmissionUpdate(pydantic.BaseModel):
             return decorator
 
         class UpdateTimeValidator(typing_extensions.Protocol):
-            def __call__(self, update_time: dt.datetime, *, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
+            def __call__(self, *, update_time: dt.datetime, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
                 ...
 
         class UpdateInfoValidator(typing_extensions.Protocol):
             def __call__(
-                self, update_info: WorkspaceSubmissionUpdateInfo, *, values: WorkspaceSubmissionUpdate.Partial
+                self, *, update_info: WorkspaceSubmissionUpdateInfo, values: WorkspaceSubmissionUpdate.Partial
             ) -> WorkspaceSubmissionUpdateInfo:
                 ...
 

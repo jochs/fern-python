@@ -180,39 +180,39 @@ class CreateProblemRequest(pydantic.BaseModel):
             return decorator
 
         class ProblemNameValidator(typing_extensions.Protocol):
-            def __call__(self, problem_name: str, *, values: CreateProblemRequest.Partial) -> str:
+            def __call__(self, *, problem_name: str, values: CreateProblemRequest.Partial) -> str:
                 ...
 
         class ProblemDescriptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, problem_description: ProblemDescription, *, values: CreateProblemRequest.Partial
+                self, *, problem_description: ProblemDescription, values: CreateProblemRequest.Partial
             ) -> ProblemDescription:
                 ...
 
         class FilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, files: typing.Dict[Language, ProblemFiles], *, values: CreateProblemRequest.Partial
+                self, *, files: typing.Dict[Language, ProblemFiles], values: CreateProblemRequest.Partial
             ) -> typing.Dict[Language, ProblemFiles]:
                 ...
 
         class InputParamsValidator(typing_extensions.Protocol):
             def __call__(
-                self, input_params: typing.List[VariableTypeAndName], *, values: CreateProblemRequest.Partial
+                self, *, input_params: typing.List[VariableTypeAndName], values: CreateProblemRequest.Partial
             ) -> typing.List[VariableTypeAndName]:
                 ...
 
         class OutputTypeValidator(typing_extensions.Protocol):
-            def __call__(self, output_type: VariableType, *, values: CreateProblemRequest.Partial) -> VariableType:
+            def __call__(self, *, output_type: VariableType, values: CreateProblemRequest.Partial) -> VariableType:
                 ...
 
         class TestcasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, testcases: typing.List[TestCaseWithExpectedResult], *, values: CreateProblemRequest.Partial
+                self, *, testcases: typing.List[TestCaseWithExpectedResult], values: CreateProblemRequest.Partial
             ) -> typing.List[TestCaseWithExpectedResult]:
                 ...
 
         class MethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, method_name: str, *, values: CreateProblemRequest.Partial) -> str:
+            def __call__(self, *, method_name: str, values: CreateProblemRequest.Partial) -> str:
                 ...
 
     @pydantic.root_validator

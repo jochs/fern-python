@@ -122,22 +122,22 @@ class WorkspaceSubmitRequest(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: WorkspaceSubmitRequest.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: WorkspaceSubmitRequest.Partial) -> SubmissionId:
                 ...
 
         class LanguageValidator(typing_extensions.Protocol):
-            def __call__(self, language: Language, *, values: WorkspaceSubmitRequest.Partial) -> Language:
+            def __call__(self, *, language: Language, values: WorkspaceSubmitRequest.Partial) -> Language:
                 ...
 
         class SubmissionFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_files: typing.List[SubmissionFileInfo], *, values: WorkspaceSubmitRequest.Partial
+                self, *, submission_files: typing.List[SubmissionFileInfo], values: WorkspaceSubmitRequest.Partial
             ) -> typing.List[SubmissionFileInfo]:
                 ...
 
         class UserIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, user_id: typing.Optional[str], *, values: WorkspaceSubmitRequest.Partial
+                self, *, user_id: typing.Optional[str], values: WorkspaceSubmitRequest.Partial
             ) -> typing.Optional[str]:
                 ...
 

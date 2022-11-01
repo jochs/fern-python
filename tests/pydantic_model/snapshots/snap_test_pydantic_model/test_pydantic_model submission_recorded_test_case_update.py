@@ -84,11 +84,11 @@ class RecordedTestCaseUpdate(pydantic.BaseModel):
             return decorator
 
         class TestCaseIdValidator(typing_extensions.Protocol):
-            def __call__(self, test_case_id: TestCaseId, *, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
+            def __call__(self, *, test_case_id: TestCaseId, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
                 ...
 
         class TraceResponsesSizeValidator(typing_extensions.Protocol):
-            def __call__(self, trace_responses_size: int, *, values: RecordedTestCaseUpdate.Partial) -> int:
+            def __call__(self, *, trace_responses_size: int, values: RecordedTestCaseUpdate.Partial) -> int:
                 ...
 
     @pydantic.root_validator

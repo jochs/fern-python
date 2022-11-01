@@ -60,7 +60,7 @@ class FinishedResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: FinishedResponse.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: FinishedResponse.Partial) -> SubmissionId:
                 ...
 
     @pydantic.root_validator

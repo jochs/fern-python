@@ -76,13 +76,13 @@ class BinaryTreeValue(pydantic.BaseModel):
 
         class RootValidator(typing_extensions.Protocol):
             def __call__(
-                self, root: typing.Optional[NodeId], *, values: BinaryTreeValue.Partial
+                self, *, root: typing.Optional[NodeId], values: BinaryTreeValue.Partial
             ) -> typing.Optional[NodeId]:
                 ...
 
         class NodesValidator(typing_extensions.Protocol):
             def __call__(
-                self, nodes: typing.Dict[NodeId, BinaryTreeNodeValue], *, values: BinaryTreeValue.Partial
+                self, *, nodes: typing.Dict[NodeId, BinaryTreeNodeValue], values: BinaryTreeValue.Partial
             ) -> typing.Dict[NodeId, BinaryTreeNodeValue]:
                 ...
 

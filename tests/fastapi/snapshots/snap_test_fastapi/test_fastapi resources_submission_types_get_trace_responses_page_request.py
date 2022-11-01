@@ -61,7 +61,7 @@ class GetTraceResponsesPageRequest(pydantic.BaseModel):
 
         class OffsetValidator(typing_extensions.Protocol):
             def __call__(
-                self, offset: typing.Optional[int], *, values: GetTraceResponsesPageRequest.Partial
+                self, *, offset: typing.Optional[int], values: GetTraceResponsesPageRequest.Partial
             ) -> typing.Optional[int]:
                 ...
 

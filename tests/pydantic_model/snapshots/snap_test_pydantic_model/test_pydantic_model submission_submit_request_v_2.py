@@ -155,32 +155,32 @@ class SubmitRequestV2(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: SubmitRequestV2.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: SubmitRequestV2.Partial) -> SubmissionId:
                 ...
 
         class LanguageValidator(typing_extensions.Protocol):
-            def __call__(self, language: Language, *, values: SubmitRequestV2.Partial) -> Language:
+            def __call__(self, *, language: Language, values: SubmitRequestV2.Partial) -> Language:
                 ...
 
         class SubmissionFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_files: typing.List[SubmissionFileInfo], *, values: SubmitRequestV2.Partial
+                self, *, submission_files: typing.List[SubmissionFileInfo], values: SubmitRequestV2.Partial
             ) -> typing.List[SubmissionFileInfo]:
                 ...
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: SubmitRequestV2.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: SubmitRequestV2.Partial) -> ProblemId:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
             def __call__(
-                self, problem_version: typing.Optional[int], *, values: SubmitRequestV2.Partial
+                self, *, problem_version: typing.Optional[int], values: SubmitRequestV2.Partial
             ) -> typing.Optional[int]:
                 ...
 
         class UserIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, user_id: typing.Optional[str], *, values: SubmitRequestV2.Partial
+                self, *, user_id: typing.Optional[str], values: SubmitRequestV2.Partial
             ) -> typing.Optional[str]:
                 ...
 

@@ -78,11 +78,11 @@ class TestCaseResultWithStdout(pydantic.BaseModel):
             return decorator
 
         class ResultValidator(typing_extensions.Protocol):
-            def __call__(self, result: TestCaseResult, *, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
+            def __call__(self, *, result: TestCaseResult, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, stdout: str, *, values: TestCaseResultWithStdout.Partial) -> str:
+            def __call__(self, *, stdout: str, values: TestCaseResultWithStdout.Partial) -> str:
                 ...
 
     @pydantic.root_validator

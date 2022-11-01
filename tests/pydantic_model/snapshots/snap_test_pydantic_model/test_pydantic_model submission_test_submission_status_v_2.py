@@ -123,20 +123,20 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
 
         class UpdatesValidator(typing_extensions.Protocol):
             def __call__(
-                self, updates: typing.List[TestSubmissionUpdate], *, values: TestSubmissionStatusV2.Partial
+                self, *, updates: typing.List[TestSubmissionUpdate], values: TestSubmissionStatusV2.Partial
             ) -> typing.List[TestSubmissionUpdate]:
                 ...
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: TestSubmissionStatusV2.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: TestSubmissionStatusV2.Partial) -> ProblemId:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, problem_version: int, *, values: TestSubmissionStatusV2.Partial) -> int:
+            def __call__(self, *, problem_version: int, values: TestSubmissionStatusV2.Partial) -> int:
                 ...
 
         class ProblemInfoValidator(typing_extensions.Protocol):
-            def __call__(self, problem_info: ProblemInfoV2, *, values: TestSubmissionStatusV2.Partial) -> ProblemInfoV2:
+            def __call__(self, *, problem_info: ProblemInfoV2, values: TestSubmissionStatusV2.Partial) -> ProblemInfoV2:
                 ...
 
     @pydantic.root_validator

@@ -88,15 +88,15 @@ class StackFrame(pydantic.BaseModel):
             return decorator
 
         class MethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, method_name: str, *, values: StackFrame.Partial) -> str:
+            def __call__(self, *, method_name: str, values: StackFrame.Partial) -> str:
                 ...
 
         class LineNumberValidator(typing_extensions.Protocol):
-            def __call__(self, line_number: int, *, values: StackFrame.Partial) -> int:
+            def __call__(self, *, line_number: int, values: StackFrame.Partial) -> int:
                 ...
 
         class ScopesValidator(typing_extensions.Protocol):
-            def __call__(self, scopes: typing.List[Scope], *, values: StackFrame.Partial) -> typing.List[Scope]:
+            def __call__(self, *, scopes: typing.List[Scope], values: StackFrame.Partial) -> typing.List[Scope]:
                 ...
 
     @pydantic.root_validator

@@ -114,22 +114,22 @@ class DoublyLinkedListNodeValue(pydantic.BaseModel):
             return decorator
 
         class NodeIdValidator(typing_extensions.Protocol):
-            def __call__(self, node_id: NodeId, *, values: DoublyLinkedListNodeValue.Partial) -> NodeId:
+            def __call__(self, *, node_id: NodeId, values: DoublyLinkedListNodeValue.Partial) -> NodeId:
                 ...
 
         class ValValidator(typing_extensions.Protocol):
-            def __call__(self, val: float, *, values: DoublyLinkedListNodeValue.Partial) -> float:
+            def __call__(self, *, val: float, values: DoublyLinkedListNodeValue.Partial) -> float:
                 ...
 
         class NextValidator(typing_extensions.Protocol):
             def __call__(
-                self, next: typing.Optional[NodeId], *, values: DoublyLinkedListNodeValue.Partial
+                self, *, next: typing.Optional[NodeId], values: DoublyLinkedListNodeValue.Partial
             ) -> typing.Optional[NodeId]:
                 ...
 
         class PrevValidator(typing_extensions.Protocol):
             def __call__(
-                self, prev: typing.Optional[NodeId], *, values: DoublyLinkedListNodeValue.Partial
+                self, *, prev: typing.Optional[NodeId], values: DoublyLinkedListNodeValue.Partial
             ) -> typing.Optional[NodeId]:
                 ...
 

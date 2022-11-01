@@ -61,7 +61,7 @@ class TestCaseExpects(pydantic.BaseModel):
 
         class ExpectedStdoutValidator(typing_extensions.Protocol):
             def __call__(
-                self, expected_stdout: typing.Optional[str], *, values: TestCaseExpects.Partial
+                self, *, expected_stdout: typing.Optional[str], values: TestCaseExpects.Partial
             ) -> typing.Optional[str]:
                 ...
 

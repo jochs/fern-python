@@ -68,7 +68,7 @@ class GetDefaultStarterFilesResponse(pydantic.BaseModel):
 
         class FilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, files: typing.Dict[Language, ProblemFiles], *, values: GetDefaultStarterFilesResponse.Partial
+                self, *, files: typing.Dict[Language, ProblemFiles], values: GetDefaultStarterFilesResponse.Partial
             ) -> typing.Dict[Language, ProblemFiles]:
                 ...
 

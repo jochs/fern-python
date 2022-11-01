@@ -78,12 +78,12 @@ class WorkspaceFiles(pydantic.BaseModel):
             return decorator
 
         class MainFileValidator(typing_extensions.Protocol):
-            def __call__(self, main_file: FileInfo, *, values: WorkspaceFiles.Partial) -> FileInfo:
+            def __call__(self, *, main_file: FileInfo, values: WorkspaceFiles.Partial) -> FileInfo:
                 ...
 
         class ReadOnlyFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, read_only_files: typing.List[FileInfo], *, values: WorkspaceFiles.Partial
+                self, *, read_only_files: typing.List[FileInfo], values: WorkspaceFiles.Partial
             ) -> typing.List[FileInfo]:
                 ...
 

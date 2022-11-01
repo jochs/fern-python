@@ -54,7 +54,7 @@ class RuntimeError(pydantic.BaseModel):
             return decorator
 
         class MessageValidator(typing_extensions.Protocol):
-            def __call__(self, message: str, *, values: RuntimeError.Partial) -> str:
+            def __call__(self, *, message: str, values: RuntimeError.Partial) -> str:
                 ...
 
     @pydantic.root_validator

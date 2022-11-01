@@ -123,13 +123,12 @@ class FieldValidatorGenerator(ValidatorGenerator):
             declaration=AST.FunctionDeclaration(
                 name="__call__",
                 signature=AST.FunctionSignature(
-                    parameters=[
+                    parameters=[],
+                    named_parameters=[
                         AST.FunctionParameter(
                             name=self.field.name,
                             type_hint=self.field.type_hint,
                         ),
-                    ],
-                    named_parameters=[
                         AST.FunctionParameter(
                             name=PydanticModel.VALIDATOR_VALUES_PARAMETER_NAME,
                             type_hint=AST.TypeHint(type=self._model.get_reference_to_partial_class()),

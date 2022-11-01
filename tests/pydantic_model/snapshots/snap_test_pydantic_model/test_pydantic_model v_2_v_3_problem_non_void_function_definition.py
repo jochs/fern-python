@@ -83,13 +83,13 @@ class NonVoidFunctionDefinition(pydantic.BaseModel):
 
         class SignatureValidator(typing_extensions.Protocol):
             def __call__(
-                self, signature: NonVoidFunctionSignature, *, values: NonVoidFunctionDefinition.Partial
+                self, *, signature: NonVoidFunctionSignature, values: NonVoidFunctionDefinition.Partial
             ) -> NonVoidFunctionSignature:
                 ...
 
         class CodeValidator(typing_extensions.Protocol):
             def __call__(
-                self, code: FunctionImplementationForMultipleLanguages, *, values: NonVoidFunctionDefinition.Partial
+                self, *, code: FunctionImplementationForMultipleLanguages, values: NonVoidFunctionDefinition.Partial
             ) -> FunctionImplementationForMultipleLanguages:
                 ...
 

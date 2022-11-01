@@ -96,8 +96,8 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
         class GetActualResultValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                get_actual_result: NonVoidFunctionDefinition,
                 *,
+                get_actual_result: NonVoidFunctionDefinition,
                 values: TestCaseWithActualResultImplementation.Partial,
             ) -> NonVoidFunctionDefinition:
                 ...
@@ -105,8 +105,8 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
         class AssertCorrectnessCheckValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                assert_correctness_check: AssertCorrectnessCheck,
                 *,
+                assert_correctness_check: AssertCorrectnessCheck,
                 values: TestCaseWithActualResultImplementation.Partial,
             ) -> AssertCorrectnessCheck:
                 ...

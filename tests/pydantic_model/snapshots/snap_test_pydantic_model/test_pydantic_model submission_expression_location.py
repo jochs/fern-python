@@ -76,11 +76,11 @@ class ExpressionLocation(pydantic.BaseModel):
             return decorator
 
         class StartValidator(typing_extensions.Protocol):
-            def __call__(self, start: int, *, values: ExpressionLocation.Partial) -> int:
+            def __call__(self, *, start: int, values: ExpressionLocation.Partial) -> int:
                 ...
 
         class OffsetValidator(typing_extensions.Protocol):
-            def __call__(self, offset: int, *, values: ExpressionLocation.Partial) -> int:
+            def __call__(self, *, offset: int, values: ExpressionLocation.Partial) -> int:
                 ...
 
     @pydantic.root_validator

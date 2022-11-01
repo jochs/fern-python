@@ -158,31 +158,31 @@ class ExecutionSessionState(pydantic.BaseModel):
 
         class LastTimeContactedValidator(typing_extensions.Protocol):
             def __call__(
-                self, last_time_contacted: typing.Optional[str], *, values: ExecutionSessionState.Partial
+                self, *, last_time_contacted: typing.Optional[str], values: ExecutionSessionState.Partial
             ) -> typing.Optional[str]:
                 ...
 
         class SessionIdValidator(typing_extensions.Protocol):
-            def __call__(self, session_id: str, *, values: ExecutionSessionState.Partial) -> str:
+            def __call__(self, *, session_id: str, values: ExecutionSessionState.Partial) -> str:
                 ...
 
         class IsWarmInstanceValidator(typing_extensions.Protocol):
-            def __call__(self, is_warm_instance: bool, *, values: ExecutionSessionState.Partial) -> bool:
+            def __call__(self, *, is_warm_instance: bool, values: ExecutionSessionState.Partial) -> bool:
                 ...
 
         class AwsTaskIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, aws_task_id: typing.Optional[str], *, values: ExecutionSessionState.Partial
+                self, *, aws_task_id: typing.Optional[str], values: ExecutionSessionState.Partial
             ) -> typing.Optional[str]:
                 ...
 
         class LanguageValidator(typing_extensions.Protocol):
-            def __call__(self, language: Language, *, values: ExecutionSessionState.Partial) -> Language:
+            def __call__(self, *, language: Language, values: ExecutionSessionState.Partial) -> Language:
                 ...
 
         class StatusValidator(typing_extensions.Protocol):
             def __call__(
-                self, status: ExecutionSessionStatus, *, values: ExecutionSessionState.Partial
+                self, *, status: ExecutionSessionStatus, values: ExecutionSessionState.Partial
             ) -> ExecutionSessionStatus:
                 ...
 

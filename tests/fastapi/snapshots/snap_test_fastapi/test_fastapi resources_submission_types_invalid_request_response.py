@@ -80,13 +80,13 @@ class InvalidRequestResponse(pydantic.BaseModel):
 
         class RequestValidator(typing_extensions.Protocol):
             def __call__(
-                self, request: SubmissionRequest, *, values: InvalidRequestResponse.Partial
+                self, *, request: SubmissionRequest, values: InvalidRequestResponse.Partial
             ) -> SubmissionRequest:
                 ...
 
         class CauseValidator(typing_extensions.Protocol):
             def __call__(
-                self, cause: InvalidRequestCause, *, values: InvalidRequestResponse.Partial
+                self, *, cause: InvalidRequestCause, values: InvalidRequestResponse.Partial
             ) -> InvalidRequestCause:
                 ...
 

@@ -58,7 +58,7 @@ class InternalError(pydantic.BaseModel):
             return decorator
 
         class ExceptionInfoValidator(typing_extensions.Protocol):
-            def __call__(self, exception_info: ExceptionInfo, *, values: InternalError.Partial) -> ExceptionInfo:
+            def __call__(self, *, exception_info: ExceptionInfo, values: InternalError.Partial) -> ExceptionInfo:
                 ...
 
     @pydantic.root_validator

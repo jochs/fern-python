@@ -83,13 +83,13 @@ class TestCaseImplementation(pydantic.BaseModel):
 
         class DescriptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, description: TestCaseImplementationDescription, *, values: TestCaseImplementation.Partial
+                self, *, description: TestCaseImplementationDescription, values: TestCaseImplementation.Partial
             ) -> TestCaseImplementationDescription:
                 ...
 
         class FunctionValidator(typing_extensions.Protocol):
             def __call__(
-                self, function: TestCaseFunction, *, values: TestCaseImplementation.Partial
+                self, *, function: TestCaseFunction, values: TestCaseImplementation.Partial
             ) -> TestCaseFunction:
                 ...
 

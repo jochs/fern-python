@@ -221,51 +221,51 @@ class ProblemInfo(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: ProblemInfo.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: ProblemInfo.Partial) -> ProblemId:
                 ...
 
         class ProblemDescriptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, problem_description: ProblemDescription, *, values: ProblemInfo.Partial
+                self, *, problem_description: ProblemDescription, values: ProblemInfo.Partial
             ) -> ProblemDescription:
                 ...
 
         class ProblemNameValidator(typing_extensions.Protocol):
-            def __call__(self, problem_name: str, *, values: ProblemInfo.Partial) -> str:
+            def __call__(self, *, problem_name: str, values: ProblemInfo.Partial) -> str:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, problem_version: int, *, values: ProblemInfo.Partial) -> int:
+            def __call__(self, *, problem_version: int, values: ProblemInfo.Partial) -> int:
                 ...
 
         class FilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, files: typing.Dict[Language, ProblemFiles], *, values: ProblemInfo.Partial
+                self, *, files: typing.Dict[Language, ProblemFiles], values: ProblemInfo.Partial
             ) -> typing.Dict[Language, ProblemFiles]:
                 ...
 
         class InputParamsValidator(typing_extensions.Protocol):
             def __call__(
-                self, input_params: typing.List[VariableTypeAndName], *, values: ProblemInfo.Partial
+                self, *, input_params: typing.List[VariableTypeAndName], values: ProblemInfo.Partial
             ) -> typing.List[VariableTypeAndName]:
                 ...
 
         class OutputTypeValidator(typing_extensions.Protocol):
-            def __call__(self, output_type: VariableType, *, values: ProblemInfo.Partial) -> VariableType:
+            def __call__(self, *, output_type: VariableType, values: ProblemInfo.Partial) -> VariableType:
                 ...
 
         class TestcasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, testcases: typing.List[TestCaseWithExpectedResult], *, values: ProblemInfo.Partial
+                self, *, testcases: typing.List[TestCaseWithExpectedResult], values: ProblemInfo.Partial
             ) -> typing.List[TestCaseWithExpectedResult]:
                 ...
 
         class MethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, method_name: str, *, values: ProblemInfo.Partial) -> str:
+            def __call__(self, *, method_name: str, values: ProblemInfo.Partial) -> str:
                 ...
 
         class SupportsCustomTestCasesValidator(typing_extensions.Protocol):
-            def __call__(self, supports_custom_test_cases: bool, *, values: ProblemInfo.Partial) -> bool:
+            def __call__(self, *, supports_custom_test_cases: bool, values: ProblemInfo.Partial) -> bool:
                 ...
 
     @pydantic.root_validator

@@ -70,12 +70,12 @@ class ListType(pydantic.BaseModel):
             return decorator
 
         class ValueTypeValidator(typing_extensions.Protocol):
-            def __call__(self, value_type: VariableType, *, values: ListType.Partial) -> VariableType:
+            def __call__(self, *, value_type: VariableType, values: ListType.Partial) -> VariableType:
                 ...
 
         class IsFixedLengthValidator(typing_extensions.Protocol):
             def __call__(
-                self, is_fixed_length: typing.Optional[bool], *, values: ListType.Partial
+                self, *, is_fixed_length: typing.Optional[bool], values: ListType.Partial
             ) -> typing.Optional[bool]:
                 ...
 

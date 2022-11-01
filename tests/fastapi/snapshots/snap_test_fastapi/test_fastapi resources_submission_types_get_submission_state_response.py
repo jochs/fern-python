@@ -127,21 +127,21 @@ class GetSubmissionStateResponse(pydantic.BaseModel):
 
         class TimeSubmittedValidator(typing_extensions.Protocol):
             def __call__(
-                self, time_submitted: typing.Optional[dt.datetime], *, values: GetSubmissionStateResponse.Partial
+                self, *, time_submitted: typing.Optional[dt.datetime], values: GetSubmissionStateResponse.Partial
             ) -> typing.Optional[dt.datetime]:
                 ...
 
         class SubmissionValidator(typing_extensions.Protocol):
-            def __call__(self, submission: str, *, values: GetSubmissionStateResponse.Partial) -> str:
+            def __call__(self, *, submission: str, values: GetSubmissionStateResponse.Partial) -> str:
                 ...
 
         class LanguageValidator(typing_extensions.Protocol):
-            def __call__(self, language: Language, *, values: GetSubmissionStateResponse.Partial) -> Language:
+            def __call__(self, *, language: Language, values: GetSubmissionStateResponse.Partial) -> Language:
                 ...
 
         class SubmissionTypeStateValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_type_state: SubmissionTypeState, *, values: GetSubmissionStateResponse.Partial
+                self, *, submission_type_state: SubmissionTypeState, values: GetSubmissionStateResponse.Partial
             ) -> SubmissionTypeState:
                 ...
 

@@ -231,51 +231,51 @@ class ProblemInfoV2(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: ProblemInfoV2.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: ProblemInfoV2.Partial) -> ProblemId:
                 ...
 
         class ProblemDescriptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, problem_description: ProblemDescription, *, values: ProblemInfoV2.Partial
+                self, *, problem_description: ProblemDescription, values: ProblemInfoV2.Partial
             ) -> ProblemDescription:
                 ...
 
         class ProblemNameValidator(typing_extensions.Protocol):
-            def __call__(self, problem_name: str, *, values: ProblemInfoV2.Partial) -> str:
+            def __call__(self, *, problem_name: str, values: ProblemInfoV2.Partial) -> str:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, problem_version: int, *, values: ProblemInfoV2.Partial) -> int:
+            def __call__(self, *, problem_version: int, values: ProblemInfoV2.Partial) -> int:
                 ...
 
         class SupportedLanguagesValidator(typing_extensions.Protocol):
             def __call__(
-                self, supported_languages: typing.List[Language], *, values: ProblemInfoV2.Partial
+                self, *, supported_languages: typing.List[Language], values: ProblemInfoV2.Partial
             ) -> typing.List[Language]:
                 ...
 
         class CustomFilesValidator(typing_extensions.Protocol):
-            def __call__(self, custom_files: CustomFiles, *, values: ProblemInfoV2.Partial) -> CustomFiles:
+            def __call__(self, *, custom_files: CustomFiles, values: ProblemInfoV2.Partial) -> CustomFiles:
                 ...
 
         class GeneratedFilesValidator(typing_extensions.Protocol):
-            def __call__(self, generated_files: GeneratedFiles, *, values: ProblemInfoV2.Partial) -> GeneratedFiles:
+            def __call__(self, *, generated_files: GeneratedFiles, values: ProblemInfoV2.Partial) -> GeneratedFiles:
                 ...
 
         class CustomTestCaseTemplatesValidator(typing_extensions.Protocol):
             def __call__(
-                self, custom_test_case_templates: typing.List[TestCaseTemplate], *, values: ProblemInfoV2.Partial
+                self, *, custom_test_case_templates: typing.List[TestCaseTemplate], values: ProblemInfoV2.Partial
             ) -> typing.List[TestCaseTemplate]:
                 ...
 
         class TestcasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, testcases: typing.List[TestCaseV2], *, values: ProblemInfoV2.Partial
+                self, *, testcases: typing.List[TestCaseV2], values: ProblemInfoV2.Partial
             ) -> typing.List[TestCaseV2]:
                 ...
 
         class IsPublicValidator(typing_extensions.Protocol):
-            def __call__(self, is_public: bool, *, values: ProblemInfoV2.Partial) -> bool:
+            def __call__(self, *, is_public: bool, values: ProblemInfoV2.Partial) -> bool:
                 ...
 
     @pydantic.root_validator

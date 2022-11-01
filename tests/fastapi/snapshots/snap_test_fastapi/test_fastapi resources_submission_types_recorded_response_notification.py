@@ -107,17 +107,17 @@ class RecordedResponseNotification(pydantic.BaseModel):
 
         class SubmissionIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_id: SubmissionId, *, values: RecordedResponseNotification.Partial
+                self, *, submission_id: SubmissionId, values: RecordedResponseNotification.Partial
             ) -> SubmissionId:
                 ...
 
         class TraceResponsesSizeValidator(typing_extensions.Protocol):
-            def __call__(self, trace_responses_size: int, *, values: RecordedResponseNotification.Partial) -> int:
+            def __call__(self, *, trace_responses_size: int, values: RecordedResponseNotification.Partial) -> int:
                 ...
 
         class TestCaseIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, test_case_id: typing.Optional[str], *, values: RecordedResponseNotification.Partial
+                self, *, test_case_id: typing.Optional[str], values: RecordedResponseNotification.Partial
             ) -> typing.Optional[str]:
                 ...
 

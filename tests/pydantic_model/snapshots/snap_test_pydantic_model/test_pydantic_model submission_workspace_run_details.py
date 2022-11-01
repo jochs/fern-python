@@ -100,18 +100,18 @@ class WorkspaceRunDetails(pydantic.BaseModel):
 
         class ExceptionV2Validator(typing_extensions.Protocol):
             def __call__(
-                self, exception_v_2: typing.Optional[ExceptionV2], *, values: WorkspaceRunDetails.Partial
+                self, *, exception_v_2: typing.Optional[ExceptionV2], values: WorkspaceRunDetails.Partial
             ) -> typing.Optional[ExceptionV2]:
                 ...
 
         class ExceptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, exception: typing.Optional[ExceptionInfo], *, values: WorkspaceRunDetails.Partial
+                self, *, exception: typing.Optional[ExceptionInfo], values: WorkspaceRunDetails.Partial
             ) -> typing.Optional[ExceptionInfo]:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, stdout: str, *, values: WorkspaceRunDetails.Partial) -> str:
+            def __call__(self, *, stdout: str, values: WorkspaceRunDetails.Partial) -> str:
                 ...
 
     @pydantic.root_validator

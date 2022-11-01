@@ -57,7 +57,7 @@ class Scope(pydantic.BaseModel):
 
         class VariablesValidator(typing_extensions.Protocol):
             def __call__(
-                self, variables: typing.Dict[str, DebugVariableValue], *, values: Scope.Partial
+                self, *, variables: typing.Dict[str, DebugVariableValue], values: Scope.Partial
             ) -> typing.Dict[str, DebugVariableValue]:
                 ...
 

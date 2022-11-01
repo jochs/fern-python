@@ -61,7 +61,7 @@ class WorkspaceSubmissionState(pydantic.BaseModel):
 
         class StatusValidator(typing_extensions.Protocol):
             def __call__(
-                self, status: WorkspaceSubmissionStatus, *, values: WorkspaceSubmissionState.Partial
+                self, *, status: WorkspaceSubmissionStatus, values: WorkspaceSubmissionState.Partial
             ) -> WorkspaceSubmissionStatus:
                 ...
 

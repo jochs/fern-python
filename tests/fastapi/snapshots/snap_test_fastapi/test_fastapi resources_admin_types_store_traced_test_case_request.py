@@ -84,13 +84,13 @@ class StoreTracedTestCaseRequest(pydantic.BaseModel):
 
         class ResultValidator(typing_extensions.Protocol):
             def __call__(
-                self, result: TestCaseResultWithStdout, *, values: StoreTracedTestCaseRequest.Partial
+                self, *, result: TestCaseResultWithStdout, values: StoreTracedTestCaseRequest.Partial
             ) -> TestCaseResultWithStdout:
                 ...
 
         class TraceResponsesValidator(typing_extensions.Protocol):
             def __call__(
-                self, trace_responses: typing.List[TraceResponse], *, values: StoreTracedTestCaseRequest.Partial
+                self, *, trace_responses: typing.List[TraceResponse], values: StoreTracedTestCaseRequest.Partial
             ) -> typing.List[TraceResponse]:
                 ...
 

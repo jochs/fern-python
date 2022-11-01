@@ -64,7 +64,7 @@ class SubmissionIdNotFound(pydantic.BaseModel):
 
         class MissingSubmissionIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, missing_submission_id: SubmissionId, *, values: SubmissionIdNotFound.Partial
+                self, *, missing_submission_id: SubmissionId, values: SubmissionIdNotFound.Partial
             ) -> SubmissionId:
                 ...
 

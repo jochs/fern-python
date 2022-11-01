@@ -85,12 +85,12 @@ class TestCaseWithExpectedResult(pydantic.BaseModel):
             return decorator
 
         class TestCaseValidator(typing_extensions.Protocol):
-            def __call__(self, test_case: TestCase, *, values: TestCaseWithExpectedResult.Partial) -> TestCase:
+            def __call__(self, *, test_case: TestCase, values: TestCaseWithExpectedResult.Partial) -> TestCase:
                 ...
 
         class ExpectedResultValidator(typing_extensions.Protocol):
             def __call__(
-                self, expected_result: VariableValue, *, values: TestCaseWithExpectedResult.Partial
+                self, *, expected_result: VariableValue, values: TestCaseWithExpectedResult.Partial
             ) -> VariableValue:
                 ...
 

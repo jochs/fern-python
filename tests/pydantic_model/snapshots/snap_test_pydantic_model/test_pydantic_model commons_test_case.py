@@ -72,12 +72,12 @@ class TestCase(pydantic.BaseModel):
             return decorator
 
         class IdValidator(typing_extensions.Protocol):
-            def __call__(self, id: str, *, values: TestCase.Partial) -> str:
+            def __call__(self, *, id: str, values: TestCase.Partial) -> str:
                 ...
 
         class ParamsValidator(typing_extensions.Protocol):
             def __call__(
-                self, params: typing.List[VariableValue], *, values: TestCase.Partial
+                self, *, params: typing.List[VariableValue], values: TestCase.Partial
             ) -> typing.List[VariableValue]:
                 ...
 

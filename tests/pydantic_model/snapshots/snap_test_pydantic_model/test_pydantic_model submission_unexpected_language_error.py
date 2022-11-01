@@ -84,11 +84,11 @@ class UnexpectedLanguageError(pydantic.BaseModel):
             return decorator
 
         class ExpectedLanguageValidator(typing_extensions.Protocol):
-            def __call__(self, expected_language: Language, *, values: UnexpectedLanguageError.Partial) -> Language:
+            def __call__(self, *, expected_language: Language, values: UnexpectedLanguageError.Partial) -> Language:
                 ...
 
         class ActualLanguageValidator(typing_extensions.Protocol):
-            def __call__(self, actual_language: Language, *, values: UnexpectedLanguageError.Partial) -> Language:
+            def __call__(self, *, actual_language: Language, values: UnexpectedLanguageError.Partial) -> Language:
                 ...
 
     @pydantic.root_validator

@@ -79,12 +79,12 @@ class TestSubmissionUpdate(pydantic.BaseModel):
             return decorator
 
         class UpdateTimeValidator(typing_extensions.Protocol):
-            def __call__(self, update_time: dt.datetime, *, values: TestSubmissionUpdate.Partial) -> dt.datetime:
+            def __call__(self, *, update_time: dt.datetime, values: TestSubmissionUpdate.Partial) -> dt.datetime:
                 ...
 
         class UpdateInfoValidator(typing_extensions.Protocol):
             def __call__(
-                self, update_info: TestSubmissionUpdateInfo, *, values: TestSubmissionUpdate.Partial
+                self, *, update_info: TestSubmissionUpdateInfo, values: TestSubmissionUpdate.Partial
             ) -> TestSubmissionUpdateInfo:
                 ...
 

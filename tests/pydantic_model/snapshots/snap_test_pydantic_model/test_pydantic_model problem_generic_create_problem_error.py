@@ -98,15 +98,15 @@ class GenericCreateProblemError(pydantic.BaseModel):
             return decorator
 
         class MessageValidator(typing_extensions.Protocol):
-            def __call__(self, message: str, *, values: GenericCreateProblemError.Partial) -> str:
+            def __call__(self, *, message: str, values: GenericCreateProblemError.Partial) -> str:
                 ...
 
         class TypeValidator(typing_extensions.Protocol):
-            def __call__(self, type: str, *, values: GenericCreateProblemError.Partial) -> str:
+            def __call__(self, *, type: str, values: GenericCreateProblemError.Partial) -> str:
                 ...
 
         class StacktraceValidator(typing_extensions.Protocol):
-            def __call__(self, stacktrace: str, *, values: GenericCreateProblemError.Partial) -> str:
+            def __call__(self, *, stacktrace: str, values: GenericCreateProblemError.Partial) -> str:
                 ...
 
     @pydantic.root_validator

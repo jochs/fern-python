@@ -61,7 +61,7 @@ class WorkspaceTracedUpdate(pydantic.BaseModel):
             return decorator
 
         class TraceResponsesSizeValidator(typing_extensions.Protocol):
-            def __call__(self, trace_responses_size: int, *, values: WorkspaceTracedUpdate.Partial) -> int:
+            def __call__(self, *, trace_responses_size: int, values: WorkspaceTracedUpdate.Partial) -> int:
                 ...
 
     @pydantic.root_validator

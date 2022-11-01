@@ -65,7 +65,7 @@ class DeepEqualityCorrectnessCheck(pydantic.BaseModel):
 
         class ExpectedValueParameterIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, expected_value_parameter_id: ParameterId, *, values: DeepEqualityCorrectnessCheck.Partial
+                self, *, expected_value_parameter_id: ParameterId, values: DeepEqualityCorrectnessCheck.Partial
             ) -> ParameterId:
                 ...
 

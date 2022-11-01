@@ -58,7 +58,7 @@ class LangServerRequest(pydantic.BaseModel):
             return decorator
 
         class RequestValidator(typing_extensions.Protocol):
-            def __call__(self, request: typing.Any, *, values: LangServerRequest.Partial) -> typing.Any:
+            def __call__(self, *, request: typing.Any, values: LangServerRequest.Partial) -> typing.Any:
                 ...
 
     @pydantic.root_validator

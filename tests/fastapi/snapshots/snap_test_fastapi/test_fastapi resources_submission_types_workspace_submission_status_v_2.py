@@ -62,7 +62,7 @@ class WorkspaceSubmissionStatusV2(pydantic.BaseModel):
 
         class UpdatesValidator(typing_extensions.Protocol):
             def __call__(
-                self, updates: typing.List[WorkspaceSubmissionUpdate], *, values: WorkspaceSubmissionStatusV2.Partial
+                self, *, updates: typing.List[WorkspaceSubmissionUpdate], values: WorkspaceSubmissionStatusV2.Partial
             ) -> typing.List[WorkspaceSubmissionUpdate]:
                 ...
 

@@ -73,7 +73,7 @@ class GetGeneratedTestCaseTemplateFileRequest(pydantic.BaseModel):
 
         class TemplateValidator(typing_extensions.Protocol):
             def __call__(
-                self, template: TestCaseTemplate, *, values: GetGeneratedTestCaseTemplateFileRequest.Partial
+                self, *, template: TestCaseTemplate, values: GetGeneratedTestCaseTemplateFileRequest.Partial
             ) -> TestCaseTemplate:
                 ...
 

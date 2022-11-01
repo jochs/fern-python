@@ -108,18 +108,18 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
 
         class InputParamsValidator(typing_extensions.Protocol):
             def __call__(
-                self, input_params: typing.List[VariableTypeAndName], *, values: GetDefaultStarterFilesRequest.Partial
+                self, *, input_params: typing.List[VariableTypeAndName], values: GetDefaultStarterFilesRequest.Partial
             ) -> typing.List[VariableTypeAndName]:
                 ...
 
         class OutputTypeValidator(typing_extensions.Protocol):
             def __call__(
-                self, output_type: VariableType, *, values: GetDefaultStarterFilesRequest.Partial
+                self, *, output_type: VariableType, values: GetDefaultStarterFilesRequest.Partial
             ) -> VariableType:
                 ...
 
         class MethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, method_name: str, *, values: GetDefaultStarterFilesRequest.Partial) -> str:
+            def __call__(self, *, method_name: str, values: GetDefaultStarterFilesRequest.Partial) -> str:
                 ...
 
     @pydantic.root_validator

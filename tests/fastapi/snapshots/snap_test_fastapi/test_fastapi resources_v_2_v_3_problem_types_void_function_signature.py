@@ -61,7 +61,7 @@ class VoidFunctionSignature(pydantic.BaseModel):
 
         class ParametersValidator(typing_extensions.Protocol):
             def __call__(
-                self, parameters: typing.List[Parameter], *, values: VoidFunctionSignature.Partial
+                self, *, parameters: typing.List[Parameter], values: VoidFunctionSignature.Partial
             ) -> typing.List[Parameter]:
                 ...
 

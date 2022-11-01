@@ -102,19 +102,19 @@ class FileInfoV2(pydantic.BaseModel):
             return decorator
 
         class FilenameValidator(typing_extensions.Protocol):
-            def __call__(self, filename: str, *, values: FileInfoV2.Partial) -> str:
+            def __call__(self, *, filename: str, values: FileInfoV2.Partial) -> str:
                 ...
 
         class DirectoryValidator(typing_extensions.Protocol):
-            def __call__(self, directory: str, *, values: FileInfoV2.Partial) -> str:
+            def __call__(self, *, directory: str, values: FileInfoV2.Partial) -> str:
                 ...
 
         class ContentsValidator(typing_extensions.Protocol):
-            def __call__(self, contents: str, *, values: FileInfoV2.Partial) -> str:
+            def __call__(self, *, contents: str, values: FileInfoV2.Partial) -> str:
                 ...
 
         class EditableValidator(typing_extensions.Protocol):
-            def __call__(self, editable: bool, *, values: FileInfoV2.Partial) -> bool:
+            def __call__(self, *, editable: bool, values: FileInfoV2.Partial) -> bool:
                 ...
 
     @pydantic.root_validator

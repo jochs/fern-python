@@ -85,12 +85,12 @@ class CustomTestCasesUnsupported(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
                 ...
 
         class SubmissionIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_id: SubmissionId, *, values: CustomTestCasesUnsupported.Partial
+                self, *, submission_id: SubmissionId, values: CustomTestCasesUnsupported.Partial
             ) -> SubmissionId:
                 ...
 

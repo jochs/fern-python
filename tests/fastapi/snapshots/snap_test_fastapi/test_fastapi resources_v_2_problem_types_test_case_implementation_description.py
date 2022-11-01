@@ -70,8 +70,8 @@ class TestCaseImplementationDescription(pydantic.BaseModel):
         class BoardsValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                boards: typing.List[TestCaseImplementationDescriptionBoard],
                 *,
+                boards: typing.List[TestCaseImplementationDescriptionBoard],
                 values: TestCaseImplementationDescription.Partial,
             ) -> typing.List[TestCaseImplementationDescriptionBoard]:
                 ...

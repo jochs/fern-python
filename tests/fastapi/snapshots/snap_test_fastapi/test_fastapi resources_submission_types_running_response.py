@@ -77,12 +77,12 @@ class RunningResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: RunningResponse.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: RunningResponse.Partial) -> SubmissionId:
                 ...
 
         class StateValidator(typing_extensions.Protocol):
             def __call__(
-                self, state: RunningSubmissionState, *, values: RunningResponse.Partial
+                self, *, state: RunningSubmissionState, values: RunningResponse.Partial
             ) -> RunningSubmissionState:
                 ...
 

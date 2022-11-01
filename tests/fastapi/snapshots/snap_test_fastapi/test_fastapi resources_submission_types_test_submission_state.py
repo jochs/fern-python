@@ -122,24 +122,24 @@ class TestSubmissionState(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, problem_id: ProblemId, *, values: TestSubmissionState.Partial) -> ProblemId:
+            def __call__(self, *, problem_id: ProblemId, values: TestSubmissionState.Partial) -> ProblemId:
                 ...
 
         class DefaultTestCasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, default_test_cases: typing.List[TestCase], *, values: TestSubmissionState.Partial
+                self, *, default_test_cases: typing.List[TestCase], values: TestSubmissionState.Partial
             ) -> typing.List[TestCase]:
                 ...
 
         class CustomTestCasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, custom_test_cases: typing.List[TestCase], *, values: TestSubmissionState.Partial
+                self, *, custom_test_cases: typing.List[TestCase], values: TestSubmissionState.Partial
             ) -> typing.List[TestCase]:
                 ...
 
         class StatusValidator(typing_extensions.Protocol):
             def __call__(
-                self, status: TestSubmissionStatus, *, values: TestSubmissionState.Partial
+                self, *, status: TestSubmissionStatus, values: TestSubmissionState.Partial
             ) -> TestSubmissionStatus:
                 ...
 

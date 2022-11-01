@@ -61,7 +61,7 @@ class UpdateProblemResponse(pydantic.BaseModel):
             return decorator
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, problem_version: int, *, values: UpdateProblemResponse.Partial) -> int:
+            def __call__(self, *, problem_version: int, values: UpdateProblemResponse.Partial) -> int:
                 ...
 
     @pydantic.root_validator

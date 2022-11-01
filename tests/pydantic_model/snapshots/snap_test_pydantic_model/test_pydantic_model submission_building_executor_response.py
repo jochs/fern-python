@@ -83,13 +83,13 @@ class BuildingExecutorResponse(pydantic.BaseModel):
 
         class SubmissionIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_id: SubmissionId, *, values: BuildingExecutorResponse.Partial
+                self, *, submission_id: SubmissionId, values: BuildingExecutorResponse.Partial
             ) -> SubmissionId:
                 ...
 
         class StatusValidator(typing_extensions.Protocol):
             def __call__(
-                self, status: ExecutionSessionStatus, *, values: BuildingExecutorResponse.Partial
+                self, *, status: ExecutionSessionStatus, values: BuildingExecutorResponse.Partial
             ) -> ExecutionSessionStatus:
                 ...
 

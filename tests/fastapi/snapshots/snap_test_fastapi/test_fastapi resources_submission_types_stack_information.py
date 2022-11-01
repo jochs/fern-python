@@ -82,12 +82,12 @@ class StackInformation(pydantic.BaseModel):
             return decorator
 
         class NumStackFramesValidator(typing_extensions.Protocol):
-            def __call__(self, num_stack_frames: int, *, values: StackInformation.Partial) -> int:
+            def __call__(self, *, num_stack_frames: int, values: StackInformation.Partial) -> int:
                 ...
 
         class TopStackFrameValidator(typing_extensions.Protocol):
             def __call__(
-                self, top_stack_frame: typing.Optional[StackFrame], *, values: StackInformation.Partial
+                self, *, top_stack_frame: typing.Optional[StackFrame], values: StackInformation.Partial
             ) -> typing.Optional[StackFrame]:
                 ...
 

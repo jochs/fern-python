@@ -67,8 +67,8 @@ class GetBasicSolutionFileResponse(pydantic.BaseModel):
         class SolutionFileByLanguageValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                solution_file_by_language: typing.Dict[Language, FileInfoV2],
                 *,
+                solution_file_by_language: typing.Dict[Language, FileInfoV2],
                 values: GetBasicSolutionFileResponse.Partial,
             ) -> typing.Dict[Language, FileInfoV2]:
                 ...

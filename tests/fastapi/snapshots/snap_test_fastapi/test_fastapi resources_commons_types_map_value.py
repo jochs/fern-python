@@ -55,7 +55,7 @@ class MapValue(pydantic.BaseModel):
 
         class KeyValuePairsValidator(typing_extensions.Protocol):
             def __call__(
-                self, key_value_pairs: typing.List[KeyValuePair], *, values: MapValue.Partial
+                self, *, key_value_pairs: typing.List[KeyValuePair], values: MapValue.Partial
             ) -> typing.List[KeyValuePair]:
                 ...
 

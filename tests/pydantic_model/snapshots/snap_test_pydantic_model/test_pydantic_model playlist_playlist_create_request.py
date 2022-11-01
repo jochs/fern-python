@@ -78,12 +78,12 @@ class PlaylistCreateRequest(pydantic.BaseModel):
             return decorator
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, name: str, *, values: PlaylistCreateRequest.Partial) -> str:
+            def __call__(self, *, name: str, values: PlaylistCreateRequest.Partial) -> str:
                 ...
 
         class ProblemsValidator(typing_extensions.Protocol):
             def __call__(
-                self, problems: typing.List[ProblemId], *, values: PlaylistCreateRequest.Partial
+                self, *, problems: typing.List[ProblemId], values: PlaylistCreateRequest.Partial
             ) -> typing.List[ProblemId]:
                 ...
 

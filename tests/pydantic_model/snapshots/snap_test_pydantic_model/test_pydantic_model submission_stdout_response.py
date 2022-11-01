@@ -76,11 +76,11 @@ class StdoutResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, submission_id: SubmissionId, *, values: StdoutResponse.Partial) -> SubmissionId:
+            def __call__(self, *, submission_id: SubmissionId, values: StdoutResponse.Partial) -> SubmissionId:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, stdout: str, *, values: StdoutResponse.Partial) -> str:
+            def __call__(self, *, stdout: str, values: StdoutResponse.Partial) -> str:
                 ...
 
     @pydantic.root_validator

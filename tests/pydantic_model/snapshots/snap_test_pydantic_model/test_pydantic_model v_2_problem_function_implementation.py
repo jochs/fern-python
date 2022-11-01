@@ -76,12 +76,12 @@ class FunctionImplementation(pydantic.BaseModel):
             return decorator
 
         class ImplValidator(typing_extensions.Protocol):
-            def __call__(self, impl: str, *, values: FunctionImplementation.Partial) -> str:
+            def __call__(self, *, impl: str, values: FunctionImplementation.Partial) -> str:
                 ...
 
         class ImportsValidator(typing_extensions.Protocol):
             def __call__(
-                self, imports: typing.Optional[str], *, values: FunctionImplementation.Partial
+                self, *, imports: typing.Optional[str], values: FunctionImplementation.Partial
             ) -> typing.Optional[str]:
                 ...
 

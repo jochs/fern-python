@@ -82,13 +82,13 @@ class TraceResponsesPageV2(pydantic.BaseModel):
 
         class OffsetValidator(typing_extensions.Protocol):
             def __call__(
-                self, offset: typing.Optional[int], *, values: TraceResponsesPageV2.Partial
+                self, *, offset: typing.Optional[int], values: TraceResponsesPageV2.Partial
             ) -> typing.Optional[int]:
                 ...
 
         class TraceResponsesValidator(typing_extensions.Protocol):
             def __call__(
-                self, trace_responses: typing.List[TraceResponseV2], *, values: TraceResponsesPageV2.Partial
+                self, *, trace_responses: typing.List[TraceResponseV2], values: TraceResponsesPageV2.Partial
             ) -> typing.List[TraceResponseV2]:
                 ...
 

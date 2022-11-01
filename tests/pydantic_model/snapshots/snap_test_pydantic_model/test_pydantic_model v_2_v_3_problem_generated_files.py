@@ -102,19 +102,19 @@ class GeneratedFiles(pydantic.BaseModel):
 
         class GeneratedTestCaseFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, generated_test_case_files: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
+                self, *, generated_test_case_files: typing.Dict[Language, Files], values: GeneratedFiles.Partial
             ) -> typing.Dict[Language, Files]:
                 ...
 
         class GeneratedTemplateFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, generated_template_files: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
+                self, *, generated_template_files: typing.Dict[Language, Files], values: GeneratedFiles.Partial
             ) -> typing.Dict[Language, Files]:
                 ...
 
         class OtherValidator(typing_extensions.Protocol):
             def __call__(
-                self, other: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
+                self, *, other: typing.Dict[Language, Files], values: GeneratedFiles.Partial
             ) -> typing.Dict[Language, Files]:
                 ...
 

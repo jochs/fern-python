@@ -70,11 +70,11 @@ class KeyValuePair(pydantic.BaseModel):
             return decorator
 
         class KeyValidator(typing_extensions.Protocol):
-            def __call__(self, key: VariableValue, *, values: KeyValuePair.Partial) -> VariableValue:
+            def __call__(self, *, key: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
                 ...
 
         class ValueValidator(typing_extensions.Protocol):
-            def __call__(self, value: VariableValue, *, values: KeyValuePair.Partial) -> VariableValue:
+            def __call__(self, *, value: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
                 ...
 
     @pydantic.root_validator

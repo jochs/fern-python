@@ -57,7 +57,7 @@ class DebugMapValue(pydantic.BaseModel):
 
         class KeyValuePairsValidator(typing_extensions.Protocol):
             def __call__(
-                self, key_value_pairs: typing.List[DebugKeyValuePairs], *, values: DebugMapValue.Partial
+                self, *, key_value_pairs: typing.List[DebugKeyValuePairs], values: DebugMapValue.Partial
             ) -> typing.List[DebugKeyValuePairs]:
                 ...
 

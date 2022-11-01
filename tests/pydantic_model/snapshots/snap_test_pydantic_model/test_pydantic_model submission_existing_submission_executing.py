@@ -64,7 +64,7 @@ class ExistingSubmissionExecuting(pydantic.BaseModel):
 
         class SubmissionIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, submission_id: SubmissionId, *, values: ExistingSubmissionExecuting.Partial
+                self, *, submission_id: SubmissionId, values: ExistingSubmissionExecuting.Partial
             ) -> SubmissionId:
                 ...
 

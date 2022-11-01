@@ -110,24 +110,24 @@ class TestCaseV2(pydantic.BaseModel):
             return decorator
 
         class MetadataValidator(typing_extensions.Protocol):
-            def __call__(self, metadata: TestCaseMetadata, *, values: TestCaseV2.Partial) -> TestCaseMetadata:
+            def __call__(self, *, metadata: TestCaseMetadata, values: TestCaseV2.Partial) -> TestCaseMetadata:
                 ...
 
         class ImplementationValidator(typing_extensions.Protocol):
             def __call__(
-                self, implementation: TestCaseImplementationReference, *, values: TestCaseV2.Partial
+                self, *, implementation: TestCaseImplementationReference, values: TestCaseV2.Partial
             ) -> TestCaseImplementationReference:
                 ...
 
         class ArgumentsValidator(typing_extensions.Protocol):
             def __call__(
-                self, arguments: typing.Dict[ParameterId, VariableValue], *, values: TestCaseV2.Partial
+                self, *, arguments: typing.Dict[ParameterId, VariableValue], values: TestCaseV2.Partial
             ) -> typing.Dict[ParameterId, VariableValue]:
                 ...
 
         class ExpectsValidator(typing_extensions.Protocol):
             def __call__(
-                self, expects: typing.Optional[TestCaseExpects], *, values: TestCaseV2.Partial
+                self, *, expects: typing.Optional[TestCaseExpects], values: TestCaseV2.Partial
             ) -> typing.Optional[TestCaseExpects]:
                 ...
 

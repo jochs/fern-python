@@ -86,13 +86,13 @@ class StoreTracedWorkspaceRequest(pydantic.BaseModel):
 
         class WorkspaceRunDetailsValidator(typing_extensions.Protocol):
             def __call__(
-                self, workspace_run_details: WorkspaceRunDetails, *, values: StoreTracedWorkspaceRequest.Partial
+                self, *, workspace_run_details: WorkspaceRunDetails, values: StoreTracedWorkspaceRequest.Partial
             ) -> WorkspaceRunDetails:
                 ...
 
         class TraceResponsesValidator(typing_extensions.Protocol):
             def __call__(
-                self, trace_responses: typing.List[TraceResponse], *, values: StoreTracedWorkspaceRequest.Partial
+                self, *, trace_responses: typing.List[TraceResponse], values: StoreTracedWorkspaceRequest.Partial
             ) -> typing.List[TraceResponse]:
                 ...
 
