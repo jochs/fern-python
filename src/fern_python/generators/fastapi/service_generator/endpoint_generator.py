@@ -3,7 +3,6 @@ from typing import List
 import fern.ir.pydantic as ir_types
 
 from fern_python.codegen import AST
-from fern_python.codegen.ast.ast_node.ast_node import AstNode
 from fern_python.external_dependencies import FastAPI
 from fern_python.external_dependencies.starlette import Starlette
 
