@@ -28,11 +28,11 @@ class ErroredResponse(pydantic.BaseModel):
                 ...
 
             @ErroredResponse.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: ErroredResponse.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: ErroredResponse.Partial) -> SubmissionId:
                 ...
 
             @ErroredResponse.Validators.field("error_info")
-            def validate_error_info(v: ErrorInfo, values: ErroredResponse.Partial) -> ErrorInfo:
+            def validate_error_info(error_info: ErrorInfo, values: ErroredResponse.Partial) -> ErrorInfo:
                 ...
         """
 
@@ -79,11 +79,11 @@ class ErroredResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: ErroredResponse.Partial) -> SubmissionId:
+            def __call__(self, submission_id: SubmissionId, *, values: ErroredResponse.Partial) -> SubmissionId:
                 ...
 
         class ErrorInfoValidator(typing_extensions.Protocol):
-            def __call__(self, v: ErrorInfo, *, values: ErroredResponse.Partial) -> ErrorInfo:
+            def __call__(self, error_info: ErrorInfo, *, values: ErroredResponse.Partial) -> ErrorInfo:
                 ...
 
     @pydantic.root_validator
@@ -93,16 +93,16 @@ class ErroredResponse(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: ErroredResponse.Partial) -> SubmissionId:
+    def _validate_submission_id(cls, submission_id: SubmissionId, values: ErroredResponse.Partial) -> SubmissionId:
         for validator in ErroredResponse.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     @pydantic.validator("error_info")
-    def _validate_error_info(cls, v: ErrorInfo, values: ErroredResponse.Partial) -> ErrorInfo:
+    def _validate_error_info(cls, error_info: ErrorInfo, values: ErroredResponse.Partial) -> ErrorInfo:
         for validator in ErroredResponse.Validators._error_info_validators:
-            v = validator(v, values=values)
-        return v
+            error_info = validator(error_info, values=values)
+        return error_info
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

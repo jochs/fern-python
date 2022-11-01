@@ -27,11 +27,11 @@ class VariableTypeAndName(pydantic.BaseModel):
                 ...
 
             @VariableTypeAndName.Validators.field("variable_type")
-            def validate_variable_type(v: VariableType, values: VariableTypeAndName.Partial) -> VariableType:
+            def validate_variable_type(variable_type: VariableType, values: VariableTypeAndName.Partial) -> VariableType:
                 ...
 
             @VariableTypeAndName.Validators.field("name")
-            def validate_name(v: str, values: VariableTypeAndName.Partial) -> str:
+            def validate_name(name: str, values: VariableTypeAndName.Partial) -> str:
                 ...
         """
 
@@ -80,11 +80,11 @@ class VariableTypeAndName(pydantic.BaseModel):
             return decorator
 
         class VariableTypeValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableType, *, values: VariableTypeAndName.Partial) -> VariableType:
+            def __call__(self, variable_type: VariableType, *, values: VariableTypeAndName.Partial) -> VariableType:
                 ...
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: VariableTypeAndName.Partial) -> str:
+            def __call__(self, name: str, *, values: VariableTypeAndName.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -94,16 +94,16 @@ class VariableTypeAndName(pydantic.BaseModel):
         return values
 
     @pydantic.validator("variable_type")
-    def _validate_variable_type(cls, v: VariableType, values: VariableTypeAndName.Partial) -> VariableType:
+    def _validate_variable_type(cls, variable_type: VariableType, values: VariableTypeAndName.Partial) -> VariableType:
         for validator in VariableTypeAndName.Validators._variable_type_validators:
-            v = validator(v, values=values)
-        return v
+            variable_type = validator(variable_type, values=values)
+        return variable_type
 
     @pydantic.validator("name")
-    def _validate_name(cls, v: str, values: VariableTypeAndName.Partial) -> str:
+    def _validate_name(cls, name: str, values: VariableTypeAndName.Partial) -> str:
         for validator in VariableTypeAndName.Validators._name_validators:
-            v = validator(v, values=values)
-        return v
+            name = validator(name, values=values)
+        return name
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

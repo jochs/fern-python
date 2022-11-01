@@ -30,15 +30,15 @@ class GeneratedFiles(pydantic.BaseModel):
                 ...
 
             @GeneratedFiles.Validators.field("generated_test_case_files")
-            def validate_generated_test_case_files(v: typing.Dict[Language, Files], values: GeneratedFiles.Partial) -> typing.Dict[Language, Files]:
+            def validate_generated_test_case_files(generated_test_case_files: typing.Dict[Language, Files], values: GeneratedFiles.Partial) -> typing.Dict[Language, Files]:
                 ...
 
             @GeneratedFiles.Validators.field("generated_template_files")
-            def validate_generated_template_files(v: typing.Dict[Language, Files], values: GeneratedFiles.Partial) -> typing.Dict[Language, Files]:
+            def validate_generated_template_files(generated_template_files: typing.Dict[Language, Files], values: GeneratedFiles.Partial) -> typing.Dict[Language, Files]:
                 ...
 
             @GeneratedFiles.Validators.field("other")
-            def validate_other(v: typing.Dict[Language, Files], values: GeneratedFiles.Partial) -> typing.Dict[Language, Files]:
+            def validate_other(other: typing.Dict[Language, Files], values: GeneratedFiles.Partial) -> typing.Dict[Language, Files]:
                 ...
         """
 
@@ -102,19 +102,19 @@ class GeneratedFiles(pydantic.BaseModel):
 
         class GeneratedTestCaseFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
+                self, generated_test_case_files: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
             ) -> typing.Dict[Language, Files]:
                 ...
 
         class GeneratedTemplateFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
+                self, generated_template_files: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
             ) -> typing.Dict[Language, Files]:
                 ...
 
         class OtherValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
+                self, other: typing.Dict[Language, Files], *, values: GeneratedFiles.Partial
             ) -> typing.Dict[Language, Files]:
                 ...
 
@@ -126,27 +126,27 @@ class GeneratedFiles(pydantic.BaseModel):
 
     @pydantic.validator("generated_test_case_files")
     def _validate_generated_test_case_files(
-        cls, v: typing.Dict[Language, Files], values: GeneratedFiles.Partial
+        cls, generated_test_case_files: typing.Dict[Language, Files], values: GeneratedFiles.Partial
     ) -> typing.Dict[Language, Files]:
         for validator in GeneratedFiles.Validators._generated_test_case_files_validators:
-            v = validator(v, values=values)
-        return v
+            generated_test_case_files = validator(generated_test_case_files, values=values)
+        return generated_test_case_files
 
     @pydantic.validator("generated_template_files")
     def _validate_generated_template_files(
-        cls, v: typing.Dict[Language, Files], values: GeneratedFiles.Partial
+        cls, generated_template_files: typing.Dict[Language, Files], values: GeneratedFiles.Partial
     ) -> typing.Dict[Language, Files]:
         for validator in GeneratedFiles.Validators._generated_template_files_validators:
-            v = validator(v, values=values)
-        return v
+            generated_template_files = validator(generated_template_files, values=values)
+        return generated_template_files
 
     @pydantic.validator("other")
     def _validate_other(
-        cls, v: typing.Dict[Language, Files], values: GeneratedFiles.Partial
+        cls, other: typing.Dict[Language, Files], values: GeneratedFiles.Partial
     ) -> typing.Dict[Language, Files]:
         for validator in GeneratedFiles.Validators._other_validators:
-            v = validator(v, values=values)
-        return v
+            other = validator(other, values=values)
+        return other
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

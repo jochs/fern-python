@@ -25,11 +25,11 @@ class TracedFile(pydantic.BaseModel):
                 ...
 
             @TracedFile.Validators.field("filename")
-            def validate_filename(v: str, values: TracedFile.Partial) -> str:
+            def validate_filename(filename: str, values: TracedFile.Partial) -> str:
                 ...
 
             @TracedFile.Validators.field("directory")
-            def validate_directory(v: str, values: TracedFile.Partial) -> str:
+            def validate_directory(directory: str, values: TracedFile.Partial) -> str:
                 ...
         """
 
@@ -70,11 +70,11 @@ class TracedFile(pydantic.BaseModel):
             return decorator
 
         class FilenameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: TracedFile.Partial) -> str:
+            def __call__(self, filename: str, *, values: TracedFile.Partial) -> str:
                 ...
 
         class DirectoryValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: TracedFile.Partial) -> str:
+            def __call__(self, directory: str, *, values: TracedFile.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -84,16 +84,16 @@ class TracedFile(pydantic.BaseModel):
         return values
 
     @pydantic.validator("filename")
-    def _validate_filename(cls, v: str, values: TracedFile.Partial) -> str:
+    def _validate_filename(cls, filename: str, values: TracedFile.Partial) -> str:
         for validator in TracedFile.Validators._filename_validators:
-            v = validator(v, values=values)
-        return v
+            filename = validator(filename, values=values)
+        return filename
 
     @pydantic.validator("directory")
-    def _validate_directory(cls, v: str, values: TracedFile.Partial) -> str:
+    def _validate_directory(cls, directory: str, values: TracedFile.Partial) -> str:
         for validator in TracedFile.Validators._directory_validators:
-            v = validator(v, values=values)
-        return v
+            directory = validator(directory, values=values)
+        return directory
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

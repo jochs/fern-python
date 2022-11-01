@@ -23,7 +23,7 @@ class LangServerRequest(pydantic.BaseModel):
                 ...
 
             @LangServerRequest.Validators.field("request")
-            def validate_request(v: typing.Any, values: LangServerRequest.Partial) -> typing.Any:
+            def validate_request(request: typing.Any, values: LangServerRequest.Partial) -> typing.Any:
                 ...
         """
 
@@ -58,7 +58,7 @@ class LangServerRequest(pydantic.BaseModel):
             return decorator
 
         class RequestValidator(typing_extensions.Protocol):
-            def __call__(self, v: typing.Any, *, values: LangServerRequest.Partial) -> typing.Any:
+            def __call__(self, request: typing.Any, *, values: LangServerRequest.Partial) -> typing.Any:
                 ...
 
     @pydantic.root_validator
@@ -68,10 +68,10 @@ class LangServerRequest(pydantic.BaseModel):
         return values
 
     @pydantic.validator("request")
-    def _validate_request(cls, v: typing.Any, values: LangServerRequest.Partial) -> typing.Any:
+    def _validate_request(cls, request: typing.Any, values: LangServerRequest.Partial) -> typing.Any:
         for validator in LangServerRequest.Validators._request_validators:
-            v = validator(v, values=values)
-        return v
+            request = validator(request, values=values)
+        return request
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

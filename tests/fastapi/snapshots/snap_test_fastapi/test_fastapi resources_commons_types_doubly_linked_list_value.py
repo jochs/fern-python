@@ -28,11 +28,11 @@ class DoublyLinkedListValue(pydantic.BaseModel):
                 ...
 
             @DoublyLinkedListValue.Validators.field("head")
-            def validate_head(v: typing.Optional[NodeId], values: DoublyLinkedListValue.Partial) -> typing.Optional[NodeId]:
+            def validate_head(head: typing.Optional[NodeId], values: DoublyLinkedListValue.Partial) -> typing.Optional[NodeId]:
                 ...
 
             @DoublyLinkedListValue.Validators.field("nodes")
-            def validate_nodes(v: typing.Dict[NodeId, DoublyLinkedListNodeValue], values: DoublyLinkedListValue.Partial) -> typing.Dict[NodeId, DoublyLinkedListNodeValue]:
+            def validate_nodes(nodes: typing.Dict[NodeId, DoublyLinkedListNodeValue], values: DoublyLinkedListValue.Partial) -> typing.Dict[NodeId, DoublyLinkedListNodeValue]:
                 ...
         """
 
@@ -80,13 +80,13 @@ class DoublyLinkedListValue(pydantic.BaseModel):
 
         class HeadValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[NodeId], *, values: DoublyLinkedListValue.Partial
+                self, head: typing.Optional[NodeId], *, values: DoublyLinkedListValue.Partial
             ) -> typing.Optional[NodeId]:
                 ...
 
         class NodesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[NodeId, DoublyLinkedListNodeValue], *, values: DoublyLinkedListValue.Partial
+                self, nodes: typing.Dict[NodeId, DoublyLinkedListNodeValue], *, values: DoublyLinkedListValue.Partial
             ) -> typing.Dict[NodeId, DoublyLinkedListNodeValue]:
                 ...
 
@@ -98,19 +98,19 @@ class DoublyLinkedListValue(pydantic.BaseModel):
 
     @pydantic.validator("head")
     def _validate_head(
-        cls, v: typing.Optional[NodeId], values: DoublyLinkedListValue.Partial
+        cls, head: typing.Optional[NodeId], values: DoublyLinkedListValue.Partial
     ) -> typing.Optional[NodeId]:
         for validator in DoublyLinkedListValue.Validators._head_validators:
-            v = validator(v, values=values)
-        return v
+            head = validator(head, values=values)
+        return head
 
     @pydantic.validator("nodes")
     def _validate_nodes(
-        cls, v: typing.Dict[NodeId, DoublyLinkedListNodeValue], values: DoublyLinkedListValue.Partial
+        cls, nodes: typing.Dict[NodeId, DoublyLinkedListNodeValue], values: DoublyLinkedListValue.Partial
     ) -> typing.Dict[NodeId, DoublyLinkedListNodeValue]:
         for validator in DoublyLinkedListValue.Validators._nodes_validators:
-            v = validator(v, values=values)
-        return v
+            nodes = validator(nodes, values=values)
+        return nodes
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

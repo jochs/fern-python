@@ -28,11 +28,11 @@ class GradedTestCaseUpdate(pydantic.BaseModel):
                 ...
 
             @GradedTestCaseUpdate.Validators.field("test_case_id")
-            def validate_test_case_id(v: TestCaseId, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
+            def validate_test_case_id(test_case_id: TestCaseId, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
                 ...
 
             @GradedTestCaseUpdate.Validators.field("grade")
-            def validate_grade(v: TestCaseGrade, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
+            def validate_grade(grade: TestCaseGrade, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
                 ...
         """
 
@@ -79,11 +79,11 @@ class GradedTestCaseUpdate(pydantic.BaseModel):
             return decorator
 
         class TestCaseIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCaseId, *, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
+            def __call__(self, test_case_id: TestCaseId, *, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
                 ...
 
         class GradeValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCaseGrade, *, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
+            def __call__(self, grade: TestCaseGrade, *, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
                 ...
 
     @pydantic.root_validator
@@ -93,16 +93,16 @@ class GradedTestCaseUpdate(pydantic.BaseModel):
         return values
 
     @pydantic.validator("test_case_id")
-    def _validate_test_case_id(cls, v: TestCaseId, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
+    def _validate_test_case_id(cls, test_case_id: TestCaseId, values: GradedTestCaseUpdate.Partial) -> TestCaseId:
         for validator in GradedTestCaseUpdate.Validators._test_case_id_validators:
-            v = validator(v, values=values)
-        return v
+            test_case_id = validator(test_case_id, values=values)
+        return test_case_id
 
     @pydantic.validator("grade")
-    def _validate_grade(cls, v: TestCaseGrade, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
+    def _validate_grade(cls, grade: TestCaseGrade, values: GradedTestCaseUpdate.Partial) -> TestCaseGrade:
         for validator in GradedTestCaseUpdate.Validators._grade_validators:
-            v = validator(v, values=values)
-        return v
+            grade = validator(grade, values=values)
+        return grade
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

@@ -36,27 +36,27 @@ class ExecutionSessionState(pydantic.BaseModel):
                 ...
 
             @ExecutionSessionState.Validators.field("last_time_contacted")
-            def validate_last_time_contacted(v: typing.Optional[str], values: ExecutionSessionState.Partial) -> typing.Optional[str]:
+            def validate_last_time_contacted(last_time_contacted: typing.Optional[str], values: ExecutionSessionState.Partial) -> typing.Optional[str]:
                 ...
 
             @ExecutionSessionState.Validators.field("session_id")
-            def validate_session_id(v: str, values: ExecutionSessionState.Partial) -> str:
+            def validate_session_id(session_id: str, values: ExecutionSessionState.Partial) -> str:
                 ...
 
             @ExecutionSessionState.Validators.field("is_warm_instance")
-            def validate_is_warm_instance(v: bool, values: ExecutionSessionState.Partial) -> bool:
+            def validate_is_warm_instance(is_warm_instance: bool, values: ExecutionSessionState.Partial) -> bool:
                 ...
 
             @ExecutionSessionState.Validators.field("aws_task_id")
-            def validate_aws_task_id(v: typing.Optional[str], values: ExecutionSessionState.Partial) -> typing.Optional[str]:
+            def validate_aws_task_id(aws_task_id: typing.Optional[str], values: ExecutionSessionState.Partial) -> typing.Optional[str]:
                 ...
 
             @ExecutionSessionState.Validators.field("language")
-            def validate_language(v: Language, values: ExecutionSessionState.Partial) -> Language:
+            def validate_language(language: Language, values: ExecutionSessionState.Partial) -> Language:
                 ...
 
             @ExecutionSessionState.Validators.field("status")
-            def validate_status(v: ExecutionSessionStatus, values: ExecutionSessionState.Partial) -> ExecutionSessionStatus:
+            def validate_status(status: ExecutionSessionStatus, values: ExecutionSessionState.Partial) -> ExecutionSessionStatus:
                 ...
         """
 
@@ -158,31 +158,31 @@ class ExecutionSessionState(pydantic.BaseModel):
 
         class LastTimeContactedValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[str], *, values: ExecutionSessionState.Partial
+                self, last_time_contacted: typing.Optional[str], *, values: ExecutionSessionState.Partial
             ) -> typing.Optional[str]:
                 ...
 
         class SessionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: ExecutionSessionState.Partial) -> str:
+            def __call__(self, session_id: str, *, values: ExecutionSessionState.Partial) -> str:
                 ...
 
         class IsWarmInstanceValidator(typing_extensions.Protocol):
-            def __call__(self, v: bool, *, values: ExecutionSessionState.Partial) -> bool:
+            def __call__(self, is_warm_instance: bool, *, values: ExecutionSessionState.Partial) -> bool:
                 ...
 
         class AwsTaskIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[str], *, values: ExecutionSessionState.Partial
+                self, aws_task_id: typing.Optional[str], *, values: ExecutionSessionState.Partial
             ) -> typing.Optional[str]:
                 ...
 
         class LanguageValidator(typing_extensions.Protocol):
-            def __call__(self, v: Language, *, values: ExecutionSessionState.Partial) -> Language:
+            def __call__(self, language: Language, *, values: ExecutionSessionState.Partial) -> Language:
                 ...
 
         class StatusValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: ExecutionSessionStatus, *, values: ExecutionSessionState.Partial
+                self, status: ExecutionSessionStatus, *, values: ExecutionSessionState.Partial
             ) -> ExecutionSessionStatus:
                 ...
 
@@ -194,45 +194,45 @@ class ExecutionSessionState(pydantic.BaseModel):
 
     @pydantic.validator("last_time_contacted")
     def _validate_last_time_contacted(
-        cls, v: typing.Optional[str], values: ExecutionSessionState.Partial
+        cls, last_time_contacted: typing.Optional[str], values: ExecutionSessionState.Partial
     ) -> typing.Optional[str]:
         for validator in ExecutionSessionState.Validators._last_time_contacted_validators:
-            v = validator(v, values=values)
-        return v
+            last_time_contacted = validator(last_time_contacted, values=values)
+        return last_time_contacted
 
     @pydantic.validator("session_id")
-    def _validate_session_id(cls, v: str, values: ExecutionSessionState.Partial) -> str:
+    def _validate_session_id(cls, session_id: str, values: ExecutionSessionState.Partial) -> str:
         for validator in ExecutionSessionState.Validators._session_id_validators:
-            v = validator(v, values=values)
-        return v
+            session_id = validator(session_id, values=values)
+        return session_id
 
     @pydantic.validator("is_warm_instance")
-    def _validate_is_warm_instance(cls, v: bool, values: ExecutionSessionState.Partial) -> bool:
+    def _validate_is_warm_instance(cls, is_warm_instance: bool, values: ExecutionSessionState.Partial) -> bool:
         for validator in ExecutionSessionState.Validators._is_warm_instance_validators:
-            v = validator(v, values=values)
-        return v
+            is_warm_instance = validator(is_warm_instance, values=values)
+        return is_warm_instance
 
     @pydantic.validator("aws_task_id")
     def _validate_aws_task_id(
-        cls, v: typing.Optional[str], values: ExecutionSessionState.Partial
+        cls, aws_task_id: typing.Optional[str], values: ExecutionSessionState.Partial
     ) -> typing.Optional[str]:
         for validator in ExecutionSessionState.Validators._aws_task_id_validators:
-            v = validator(v, values=values)
-        return v
+            aws_task_id = validator(aws_task_id, values=values)
+        return aws_task_id
 
     @pydantic.validator("language")
-    def _validate_language(cls, v: Language, values: ExecutionSessionState.Partial) -> Language:
+    def _validate_language(cls, language: Language, values: ExecutionSessionState.Partial) -> Language:
         for validator in ExecutionSessionState.Validators._language_validators:
-            v = validator(v, values=values)
-        return v
+            language = validator(language, values=values)
+        return language
 
     @pydantic.validator("status")
     def _validate_status(
-        cls, v: ExecutionSessionStatus, values: ExecutionSessionState.Partial
+        cls, status: ExecutionSessionStatus, values: ExecutionSessionState.Partial
     ) -> ExecutionSessionStatus:
         for validator in ExecutionSessionState.Validators._status_validators:
-            v = validator(v, values=values)
-        return v
+            status = validator(status, values=values)
+        return status
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

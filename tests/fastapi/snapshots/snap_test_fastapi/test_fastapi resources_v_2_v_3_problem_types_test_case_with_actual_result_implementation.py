@@ -28,11 +28,11 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
                 ...
 
             @TestCaseWithActualResultImplementation.Validators.field("get_actual_result")
-            def validate_get_actual_result(v: NonVoidFunctionDefinition, values: TestCaseWithActualResultImplementation.Partial) -> NonVoidFunctionDefinition:
+            def validate_get_actual_result(get_actual_result: NonVoidFunctionDefinition, values: TestCaseWithActualResultImplementation.Partial) -> NonVoidFunctionDefinition:
                 ...
 
             @TestCaseWithActualResultImplementation.Validators.field("assert_correctness_check")
-            def validate_assert_correctness_check(v: AssertCorrectnessCheck, values: TestCaseWithActualResultImplementation.Partial) -> AssertCorrectnessCheck:
+            def validate_assert_correctness_check(assert_correctness_check: AssertCorrectnessCheck, values: TestCaseWithActualResultImplementation.Partial) -> AssertCorrectnessCheck:
                 ...
         """
 
@@ -95,13 +95,19 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
 
         class GetActualResultValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: NonVoidFunctionDefinition, *, values: TestCaseWithActualResultImplementation.Partial
+                self,
+                get_actual_result: NonVoidFunctionDefinition,
+                *,
+                values: TestCaseWithActualResultImplementation.Partial,
             ) -> NonVoidFunctionDefinition:
                 ...
 
         class AssertCorrectnessCheckValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: AssertCorrectnessCheck, *, values: TestCaseWithActualResultImplementation.Partial
+                self,
+                assert_correctness_check: AssertCorrectnessCheck,
+                *,
+                values: TestCaseWithActualResultImplementation.Partial,
             ) -> AssertCorrectnessCheck:
                 ...
 
@@ -115,19 +121,19 @@ class TestCaseWithActualResultImplementation(pydantic.BaseModel):
 
     @pydantic.validator("get_actual_result")
     def _validate_get_actual_result(
-        cls, v: NonVoidFunctionDefinition, values: TestCaseWithActualResultImplementation.Partial
+        cls, get_actual_result: NonVoidFunctionDefinition, values: TestCaseWithActualResultImplementation.Partial
     ) -> NonVoidFunctionDefinition:
         for validator in TestCaseWithActualResultImplementation.Validators._get_actual_result_validators:
-            v = validator(v, values=values)
-        return v
+            get_actual_result = validator(get_actual_result, values=values)
+        return get_actual_result
 
     @pydantic.validator("assert_correctness_check")
     def _validate_assert_correctness_check(
-        cls, v: AssertCorrectnessCheck, values: TestCaseWithActualResultImplementation.Partial
+        cls, assert_correctness_check: AssertCorrectnessCheck, values: TestCaseWithActualResultImplementation.Partial
     ) -> AssertCorrectnessCheck:
         for validator in TestCaseWithActualResultImplementation.Validators._assert_correctness_check_validators:
-            v = validator(v, values=values)
-        return v
+            assert_correctness_check = validator(assert_correctness_check, values=values)
+        return assert_correctness_check
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

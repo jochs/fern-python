@@ -27,11 +27,11 @@ class ProblemFiles(pydantic.BaseModel):
                 ...
 
             @ProblemFiles.Validators.field("solution_file")
-            def validate_solution_file(v: FileInfo, values: ProblemFiles.Partial) -> FileInfo:
+            def validate_solution_file(solution_file: FileInfo, values: ProblemFiles.Partial) -> FileInfo:
                 ...
 
             @ProblemFiles.Validators.field("read_only_files")
-            def validate_read_only_files(v: typing.List[FileInfo], values: ProblemFiles.Partial) -> typing.List[FileInfo]:
+            def validate_read_only_files(read_only_files: typing.List[FileInfo], values: ProblemFiles.Partial) -> typing.List[FileInfo]:
                 ...
         """
 
@@ -76,11 +76,13 @@ class ProblemFiles(pydantic.BaseModel):
             return decorator
 
         class SolutionFileValidator(typing_extensions.Protocol):
-            def __call__(self, v: FileInfo, *, values: ProblemFiles.Partial) -> FileInfo:
+            def __call__(self, solution_file: FileInfo, *, values: ProblemFiles.Partial) -> FileInfo:
                 ...
 
         class ReadOnlyFilesValidator(typing_extensions.Protocol):
-            def __call__(self, v: typing.List[FileInfo], *, values: ProblemFiles.Partial) -> typing.List[FileInfo]:
+            def __call__(
+                self, read_only_files: typing.List[FileInfo], *, values: ProblemFiles.Partial
+            ) -> typing.List[FileInfo]:
                 ...
 
     @pydantic.root_validator
@@ -90,16 +92,18 @@ class ProblemFiles(pydantic.BaseModel):
         return values
 
     @pydantic.validator("solution_file")
-    def _validate_solution_file(cls, v: FileInfo, values: ProblemFiles.Partial) -> FileInfo:
+    def _validate_solution_file(cls, solution_file: FileInfo, values: ProblemFiles.Partial) -> FileInfo:
         for validator in ProblemFiles.Validators._solution_file_validators:
-            v = validator(v, values=values)
-        return v
+            solution_file = validator(solution_file, values=values)
+        return solution_file
 
     @pydantic.validator("read_only_files")
-    def _validate_read_only_files(cls, v: typing.List[FileInfo], values: ProblemFiles.Partial) -> typing.List[FileInfo]:
+    def _validate_read_only_files(
+        cls, read_only_files: typing.List[FileInfo], values: ProblemFiles.Partial
+    ) -> typing.List[FileInfo]:
         for validator in ProblemFiles.Validators._read_only_files_validators:
-            v = validator(v, values=values)
-        return v
+            read_only_files = validator(read_only_files, values=values)
+        return read_only_files
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

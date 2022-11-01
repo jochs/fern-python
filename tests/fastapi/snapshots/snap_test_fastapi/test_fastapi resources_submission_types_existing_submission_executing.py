@@ -25,7 +25,7 @@ class ExistingSubmissionExecuting(pydantic.BaseModel):
                 ...
 
             @ExistingSubmissionExecuting.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: ExistingSubmissionExecuting.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: ExistingSubmissionExecuting.Partial) -> SubmissionId:
                 ...
         """
 
@@ -63,7 +63,9 @@ class ExistingSubmissionExecuting(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: ExistingSubmissionExecuting.Partial) -> SubmissionId:
+            def __call__(
+                self, submission_id: SubmissionId, *, values: ExistingSubmissionExecuting.Partial
+            ) -> SubmissionId:
                 ...
 
     @pydantic.root_validator
@@ -73,10 +75,12 @@ class ExistingSubmissionExecuting(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: ExistingSubmissionExecuting.Partial) -> SubmissionId:
+    def _validate_submission_id(
+        cls, submission_id: SubmissionId, values: ExistingSubmissionExecuting.Partial
+    ) -> SubmissionId:
         for validator in ExistingSubmissionExecuting.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

@@ -23,7 +23,7 @@ class UpdateProblemResponse(pydantic.BaseModel):
                 ...
 
             @UpdateProblemResponse.Validators.field("problem_version")
-            def validate_problem_version(v: int, values: UpdateProblemResponse.Partial) -> int:
+            def validate_problem_version(problem_version: int, values: UpdateProblemResponse.Partial) -> int:
                 ...
         """
 
@@ -61,7 +61,7 @@ class UpdateProblemResponse(pydantic.BaseModel):
             return decorator
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: UpdateProblemResponse.Partial) -> int:
+            def __call__(self, problem_version: int, *, values: UpdateProblemResponse.Partial) -> int:
                 ...
 
     @pydantic.root_validator
@@ -71,10 +71,10 @@ class UpdateProblemResponse(pydantic.BaseModel):
         return values
 
     @pydantic.validator("problem_version")
-    def _validate_problem_version(cls, v: int, values: UpdateProblemResponse.Partial) -> int:
+    def _validate_problem_version(cls, problem_version: int, values: UpdateProblemResponse.Partial) -> int:
         for validator in UpdateProblemResponse.Validators._problem_version_validators:
-            v = validator(v, values=values)
-        return v
+            problem_version = validator(problem_version, values=values)
+        return problem_version
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

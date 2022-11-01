@@ -26,7 +26,7 @@ class GetDefaultStarterFilesResponse(pydantic.BaseModel):
                 ...
 
             @GetDefaultStarterFilesResponse.Validators.field("files")
-            def validate_files(v: typing.Dict[Language, ProblemFiles], values: GetDefaultStarterFilesResponse.Partial) -> typing.Dict[Language, ProblemFiles]:
+            def validate_files(files: typing.Dict[Language, ProblemFiles], values: GetDefaultStarterFilesResponse.Partial) -> typing.Dict[Language, ProblemFiles]:
                 ...
         """
 
@@ -68,7 +68,7 @@ class GetDefaultStarterFilesResponse(pydantic.BaseModel):
 
         class FilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[Language, ProblemFiles], *, values: GetDefaultStarterFilesResponse.Partial
+                self, files: typing.Dict[Language, ProblemFiles], *, values: GetDefaultStarterFilesResponse.Partial
             ) -> typing.Dict[Language, ProblemFiles]:
                 ...
 
@@ -80,11 +80,11 @@ class GetDefaultStarterFilesResponse(pydantic.BaseModel):
 
     @pydantic.validator("files")
     def _validate_files(
-        cls, v: typing.Dict[Language, ProblemFiles], values: GetDefaultStarterFilesResponse.Partial
+        cls, files: typing.Dict[Language, ProblemFiles], values: GetDefaultStarterFilesResponse.Partial
     ) -> typing.Dict[Language, ProblemFiles]:
         for validator in GetDefaultStarterFilesResponse.Validators._files_validators:
-            v = validator(v, values=values)
-        return v
+            files = validator(files, values=values)
+        return files
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

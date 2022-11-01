@@ -30,15 +30,15 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
                 ...
 
             @GetDefaultStarterFilesRequest.Validators.field("input_params")
-            def validate_input_params(v: typing.List[VariableTypeAndName], values: GetDefaultStarterFilesRequest.Partial) -> typing.List[VariableTypeAndName]:
+            def validate_input_params(input_params: typing.List[VariableTypeAndName], values: GetDefaultStarterFilesRequest.Partial) -> typing.List[VariableTypeAndName]:
                 ...
 
             @GetDefaultStarterFilesRequest.Validators.field("output_type")
-            def validate_output_type(v: VariableType, values: GetDefaultStarterFilesRequest.Partial) -> VariableType:
+            def validate_output_type(output_type: VariableType, values: GetDefaultStarterFilesRequest.Partial) -> VariableType:
                 ...
 
             @GetDefaultStarterFilesRequest.Validators.field("method_name")
-            def validate_method_name(v: str, values: GetDefaultStarterFilesRequest.Partial) -> str:
+            def validate_method_name(method_name: str, values: GetDefaultStarterFilesRequest.Partial) -> str:
                 ...
         """
 
@@ -108,16 +108,18 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
 
         class InputParamsValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.List[VariableTypeAndName], *, values: GetDefaultStarterFilesRequest.Partial
+                self, input_params: typing.List[VariableTypeAndName], *, values: GetDefaultStarterFilesRequest.Partial
             ) -> typing.List[VariableTypeAndName]:
                 ...
 
         class OutputTypeValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableType, *, values: GetDefaultStarterFilesRequest.Partial) -> VariableType:
+            def __call__(
+                self, output_type: VariableType, *, values: GetDefaultStarterFilesRequest.Partial
+            ) -> VariableType:
                 ...
 
         class MethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: GetDefaultStarterFilesRequest.Partial) -> str:
+            def __call__(self, method_name: str, *, values: GetDefaultStarterFilesRequest.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -128,23 +130,25 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
 
     @pydantic.validator("input_params")
     def _validate_input_params(
-        cls, v: typing.List[VariableTypeAndName], values: GetDefaultStarterFilesRequest.Partial
+        cls, input_params: typing.List[VariableTypeAndName], values: GetDefaultStarterFilesRequest.Partial
     ) -> typing.List[VariableTypeAndName]:
         for validator in GetDefaultStarterFilesRequest.Validators._input_params_validators:
-            v = validator(v, values=values)
-        return v
+            input_params = validator(input_params, values=values)
+        return input_params
 
     @pydantic.validator("output_type")
-    def _validate_output_type(cls, v: VariableType, values: GetDefaultStarterFilesRequest.Partial) -> VariableType:
+    def _validate_output_type(
+        cls, output_type: VariableType, values: GetDefaultStarterFilesRequest.Partial
+    ) -> VariableType:
         for validator in GetDefaultStarterFilesRequest.Validators._output_type_validators:
-            v = validator(v, values=values)
-        return v
+            output_type = validator(output_type, values=values)
+        return output_type
 
     @pydantic.validator("method_name")
-    def _validate_method_name(cls, v: str, values: GetDefaultStarterFilesRequest.Partial) -> str:
+    def _validate_method_name(cls, method_name: str, values: GetDefaultStarterFilesRequest.Partial) -> str:
         for validator in GetDefaultStarterFilesRequest.Validators._method_name_validators:
-            v = validator(v, values=values)
-        return v
+            method_name = validator(method_name, values=values)
+        return method_name
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

@@ -25,11 +25,11 @@ class KeyValuePair(pydantic.BaseModel):
                 ...
 
             @KeyValuePair.Validators.field("key")
-            def validate_key(v: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
+            def validate_key(key: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
                 ...
 
             @KeyValuePair.Validators.field("value")
-            def validate_value(v: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
+            def validate_value(value: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
                 ...
         """
 
@@ -70,11 +70,11 @@ class KeyValuePair(pydantic.BaseModel):
             return decorator
 
         class KeyValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableValue, *, values: KeyValuePair.Partial) -> VariableValue:
+            def __call__(self, key: VariableValue, *, values: KeyValuePair.Partial) -> VariableValue:
                 ...
 
         class ValueValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableValue, *, values: KeyValuePair.Partial) -> VariableValue:
+            def __call__(self, value: VariableValue, *, values: KeyValuePair.Partial) -> VariableValue:
                 ...
 
     @pydantic.root_validator
@@ -84,16 +84,16 @@ class KeyValuePair(pydantic.BaseModel):
         return values
 
     @pydantic.validator("key")
-    def _validate_key(cls, v: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
+    def _validate_key(cls, key: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
         for validator in KeyValuePair.Validators._key_validators:
-            v = validator(v, values=values)
-        return v
+            key = validator(key, values=values)
+        return key
 
     @pydantic.validator("value")
-    def _validate_value(cls, v: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
+    def _validate_value(cls, value: VariableValue, values: KeyValuePair.Partial) -> VariableValue:
         for validator in KeyValuePair.Validators._value_validators:
-            v = validator(v, values=values)
-        return v
+            value = validator(value, values=values)
+        return value
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

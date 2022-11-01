@@ -11,7 +11,6 @@ from .pydantic_field import PydanticField
 
 
 class PydanticModel:
-    VALIDATOR_FIELD_VALUE_PARAMETER_NAME = "v"
     VALIDATOR_VALUES_PARAMETER_NAME = "values"
 
     _PARTIAL_CLASS_NAME = "Partial"
@@ -142,7 +141,7 @@ class PydanticModel:
                 signature=AST.FunctionSignature(
                     parameters=[
                         AST.FunctionParameter(
-                            name=PydanticModel.VALIDATOR_FIELD_VALUE_PARAMETER_NAME,
+                            name=field_name,
                             type_hint=field_type,
                         ),
                         AST.FunctionParameter(

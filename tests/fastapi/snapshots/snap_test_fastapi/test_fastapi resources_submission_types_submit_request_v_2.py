@@ -38,27 +38,27 @@ class SubmitRequestV2(pydantic.BaseModel):
                 ...
 
             @SubmitRequestV2.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: SubmitRequestV2.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: SubmitRequestV2.Partial) -> SubmissionId:
                 ...
 
             @SubmitRequestV2.Validators.field("language")
-            def validate_language(v: Language, values: SubmitRequestV2.Partial) -> Language:
+            def validate_language(language: Language, values: SubmitRequestV2.Partial) -> Language:
                 ...
 
             @SubmitRequestV2.Validators.field("submission_files")
-            def validate_submission_files(v: typing.List[SubmissionFileInfo], values: SubmitRequestV2.Partial) -> typing.List[SubmissionFileInfo]:
+            def validate_submission_files(submission_files: typing.List[SubmissionFileInfo], values: SubmitRequestV2.Partial) -> typing.List[SubmissionFileInfo]:
                 ...
 
             @SubmitRequestV2.Validators.field("problem_id")
-            def validate_problem_id(v: ProblemId, values: SubmitRequestV2.Partial) -> ProblemId:
+            def validate_problem_id(problem_id: ProblemId, values: SubmitRequestV2.Partial) -> ProblemId:
                 ...
 
             @SubmitRequestV2.Validators.field("problem_version")
-            def validate_problem_version(v: typing.Optional[int], values: SubmitRequestV2.Partial) -> typing.Optional[int]:
+            def validate_problem_version(problem_version: typing.Optional[int], values: SubmitRequestV2.Partial) -> typing.Optional[int]:
                 ...
 
             @SubmitRequestV2.Validators.field("user_id")
-            def validate_user_id(v: typing.Optional[str], values: SubmitRequestV2.Partial) -> typing.Optional[str]:
+            def validate_user_id(user_id: typing.Optional[str], values: SubmitRequestV2.Partial) -> typing.Optional[str]:
                 ...
         """
 
@@ -155,29 +155,33 @@ class SubmitRequestV2(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: SubmitRequestV2.Partial) -> SubmissionId:
+            def __call__(self, submission_id: SubmissionId, *, values: SubmitRequestV2.Partial) -> SubmissionId:
                 ...
 
         class LanguageValidator(typing_extensions.Protocol):
-            def __call__(self, v: Language, *, values: SubmitRequestV2.Partial) -> Language:
+            def __call__(self, language: Language, *, values: SubmitRequestV2.Partial) -> Language:
                 ...
 
         class SubmissionFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.List[SubmissionFileInfo], *, values: SubmitRequestV2.Partial
+                self, submission_files: typing.List[SubmissionFileInfo], *, values: SubmitRequestV2.Partial
             ) -> typing.List[SubmissionFileInfo]:
                 ...
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: ProblemId, *, values: SubmitRequestV2.Partial) -> ProblemId:
+            def __call__(self, problem_id: ProblemId, *, values: SubmitRequestV2.Partial) -> ProblemId:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, v: typing.Optional[int], *, values: SubmitRequestV2.Partial) -> typing.Optional[int]:
+            def __call__(
+                self, problem_version: typing.Optional[int], *, values: SubmitRequestV2.Partial
+            ) -> typing.Optional[int]:
                 ...
 
         class UserIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: typing.Optional[str], *, values: SubmitRequestV2.Partial) -> typing.Optional[str]:
+            def __call__(
+                self, user_id: typing.Optional[str], *, values: SubmitRequestV2.Partial
+            ) -> typing.Optional[str]:
                 ...
 
     @pydantic.root_validator
@@ -187,44 +191,44 @@ class SubmitRequestV2(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: SubmitRequestV2.Partial) -> SubmissionId:
+    def _validate_submission_id(cls, submission_id: SubmissionId, values: SubmitRequestV2.Partial) -> SubmissionId:
         for validator in SubmitRequestV2.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     @pydantic.validator("language")
-    def _validate_language(cls, v: Language, values: SubmitRequestV2.Partial) -> Language:
+    def _validate_language(cls, language: Language, values: SubmitRequestV2.Partial) -> Language:
         for validator in SubmitRequestV2.Validators._language_validators:
-            v = validator(v, values=values)
-        return v
+            language = validator(language, values=values)
+        return language
 
     @pydantic.validator("submission_files")
     def _validate_submission_files(
-        cls, v: typing.List[SubmissionFileInfo], values: SubmitRequestV2.Partial
+        cls, submission_files: typing.List[SubmissionFileInfo], values: SubmitRequestV2.Partial
     ) -> typing.List[SubmissionFileInfo]:
         for validator in SubmitRequestV2.Validators._submission_files_validators:
-            v = validator(v, values=values)
-        return v
+            submission_files = validator(submission_files, values=values)
+        return submission_files
 
     @pydantic.validator("problem_id")
-    def _validate_problem_id(cls, v: ProblemId, values: SubmitRequestV2.Partial) -> ProblemId:
+    def _validate_problem_id(cls, problem_id: ProblemId, values: SubmitRequestV2.Partial) -> ProblemId:
         for validator in SubmitRequestV2.Validators._problem_id_validators:
-            v = validator(v, values=values)
-        return v
+            problem_id = validator(problem_id, values=values)
+        return problem_id
 
     @pydantic.validator("problem_version")
     def _validate_problem_version(
-        cls, v: typing.Optional[int], values: SubmitRequestV2.Partial
+        cls, problem_version: typing.Optional[int], values: SubmitRequestV2.Partial
     ) -> typing.Optional[int]:
         for validator in SubmitRequestV2.Validators._problem_version_validators:
-            v = validator(v, values=values)
-        return v
+            problem_version = validator(problem_version, values=values)
+        return problem_version
 
     @pydantic.validator("user_id")
-    def _validate_user_id(cls, v: typing.Optional[str], values: SubmitRequestV2.Partial) -> typing.Optional[str]:
+    def _validate_user_id(cls, user_id: typing.Optional[str], values: SubmitRequestV2.Partial) -> typing.Optional[str]:
         for validator in SubmitRequestV2.Validators._user_id_validators:
-            v = validator(v, values=values)
-        return v
+            user_id = validator(user_id, values=values)
+        return user_id
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

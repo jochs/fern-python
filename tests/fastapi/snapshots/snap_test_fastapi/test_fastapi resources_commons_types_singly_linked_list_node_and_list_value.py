@@ -28,11 +28,11 @@ class SinglyLinkedListNodeAndListValue(pydantic.BaseModel):
                 ...
 
             @SinglyLinkedListNodeAndListValue.Validators.field("node_id")
-            def validate_node_id(v: NodeId, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
+            def validate_node_id(node_id: NodeId, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
                 ...
 
             @SinglyLinkedListNodeAndListValue.Validators.field("full_list")
-            def validate_full_list(v: SinglyLinkedListValue, values: SinglyLinkedListNodeAndListValue.Partial) -> SinglyLinkedListValue:
+            def validate_full_list(full_list: SinglyLinkedListValue, values: SinglyLinkedListNodeAndListValue.Partial) -> SinglyLinkedListValue:
                 ...
         """
 
@@ -90,12 +90,12 @@ class SinglyLinkedListNodeAndListValue(pydantic.BaseModel):
             return decorator
 
         class NodeIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: NodeId, *, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
+            def __call__(self, node_id: NodeId, *, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
                 ...
 
         class FullListValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: SinglyLinkedListValue, *, values: SinglyLinkedListNodeAndListValue.Partial
+                self, full_list: SinglyLinkedListValue, *, values: SinglyLinkedListNodeAndListValue.Partial
             ) -> SinglyLinkedListValue:
                 ...
 
@@ -106,18 +106,18 @@ class SinglyLinkedListNodeAndListValue(pydantic.BaseModel):
         return values
 
     @pydantic.validator("node_id")
-    def _validate_node_id(cls, v: NodeId, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
+    def _validate_node_id(cls, node_id: NodeId, values: SinglyLinkedListNodeAndListValue.Partial) -> NodeId:
         for validator in SinglyLinkedListNodeAndListValue.Validators._node_id_validators:
-            v = validator(v, values=values)
-        return v
+            node_id = validator(node_id, values=values)
+        return node_id
 
     @pydantic.validator("full_list")
     def _validate_full_list(
-        cls, v: SinglyLinkedListValue, values: SinglyLinkedListNodeAndListValue.Partial
+        cls, full_list: SinglyLinkedListValue, values: SinglyLinkedListNodeAndListValue.Partial
     ) -> SinglyLinkedListValue:
         for validator in SinglyLinkedListNodeAndListValue.Validators._full_list_validators:
-            v = validator(v, values=values)
-        return v
+            full_list = validator(full_list, values=values)
+        return full_list
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

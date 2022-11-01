@@ -25,7 +25,7 @@ class ProblemDescription(pydantic.BaseModel):
                 ...
 
             @ProblemDescription.Validators.field("boards")
-            def validate_boards(v: typing.List[ProblemDescriptionBoard], values: ProblemDescription.Partial) -> typing.List[ProblemDescriptionBoard]:
+            def validate_boards(boards: typing.List[ProblemDescriptionBoard], values: ProblemDescription.Partial) -> typing.List[ProblemDescriptionBoard]:
                 ...
         """
 
@@ -61,7 +61,7 @@ class ProblemDescription(pydantic.BaseModel):
 
         class BoardsValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.List[ProblemDescriptionBoard], *, values: ProblemDescription.Partial
+                self, boards: typing.List[ProblemDescriptionBoard], *, values: ProblemDescription.Partial
             ) -> typing.List[ProblemDescriptionBoard]:
                 ...
 
@@ -73,11 +73,11 @@ class ProblemDescription(pydantic.BaseModel):
 
     @pydantic.validator("boards")
     def _validate_boards(
-        cls, v: typing.List[ProblemDescriptionBoard], values: ProblemDescription.Partial
+        cls, boards: typing.List[ProblemDescriptionBoard], values: ProblemDescription.Partial
     ) -> typing.List[ProblemDescriptionBoard]:
         for validator in ProblemDescription.Validators._boards_validators:
-            v = validator(v, values=values)
-        return v
+            boards = validator(boards, values=values)
+        return boards
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

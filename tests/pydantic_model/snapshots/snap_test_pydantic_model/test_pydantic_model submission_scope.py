@@ -25,7 +25,7 @@ class Scope(pydantic.BaseModel):
                 ...
 
             @Scope.Validators.field("variables")
-            def validate_variables(v: typing.Dict[str, DebugVariableValue], values: Scope.Partial) -> typing.Dict[str, DebugVariableValue]:
+            def validate_variables(variables: typing.Dict[str, DebugVariableValue], values: Scope.Partial) -> typing.Dict[str, DebugVariableValue]:
                 ...
         """
 
@@ -57,7 +57,7 @@ class Scope(pydantic.BaseModel):
 
         class VariablesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[str, DebugVariableValue], *, values: Scope.Partial
+                self, variables: typing.Dict[str, DebugVariableValue], *, values: Scope.Partial
             ) -> typing.Dict[str, DebugVariableValue]:
                 ...
 
@@ -69,11 +69,11 @@ class Scope(pydantic.BaseModel):
 
     @pydantic.validator("variables")
     def _validate_variables(
-        cls, v: typing.Dict[str, DebugVariableValue], values: Scope.Partial
+        cls, variables: typing.Dict[str, DebugVariableValue], values: Scope.Partial
     ) -> typing.Dict[str, DebugVariableValue]:
         for validator in Scope.Validators._variables_validators:
-            v = validator(v, values=values)
-        return v
+            variables = validator(variables, values=values)
+        return variables
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

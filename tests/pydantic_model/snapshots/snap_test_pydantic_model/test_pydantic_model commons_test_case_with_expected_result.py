@@ -28,11 +28,11 @@ class TestCaseWithExpectedResult(pydantic.BaseModel):
                 ...
 
             @TestCaseWithExpectedResult.Validators.field("test_case")
-            def validate_test_case(v: TestCase, values: TestCaseWithExpectedResult.Partial) -> TestCase:
+            def validate_test_case(test_case: TestCase, values: TestCaseWithExpectedResult.Partial) -> TestCase:
                 ...
 
             @TestCaseWithExpectedResult.Validators.field("expected_result")
-            def validate_expected_result(v: VariableValue, values: TestCaseWithExpectedResult.Partial) -> VariableValue:
+            def validate_expected_result(expected_result: VariableValue, values: TestCaseWithExpectedResult.Partial) -> VariableValue:
                 ...
         """
 
@@ -85,11 +85,13 @@ class TestCaseWithExpectedResult(pydantic.BaseModel):
             return decorator
 
         class TestCaseValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCase, *, values: TestCaseWithExpectedResult.Partial) -> TestCase:
+            def __call__(self, test_case: TestCase, *, values: TestCaseWithExpectedResult.Partial) -> TestCase:
                 ...
 
         class ExpectedResultValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableValue, *, values: TestCaseWithExpectedResult.Partial) -> VariableValue:
+            def __call__(
+                self, expected_result: VariableValue, *, values: TestCaseWithExpectedResult.Partial
+            ) -> VariableValue:
                 ...
 
     @pydantic.root_validator
@@ -99,16 +101,18 @@ class TestCaseWithExpectedResult(pydantic.BaseModel):
         return values
 
     @pydantic.validator("test_case")
-    def _validate_test_case(cls, v: TestCase, values: TestCaseWithExpectedResult.Partial) -> TestCase:
+    def _validate_test_case(cls, test_case: TestCase, values: TestCaseWithExpectedResult.Partial) -> TestCase:
         for validator in TestCaseWithExpectedResult.Validators._test_case_validators:
-            v = validator(v, values=values)
-        return v
+            test_case = validator(test_case, values=values)
+        return test_case
 
     @pydantic.validator("expected_result")
-    def _validate_expected_result(cls, v: VariableValue, values: TestCaseWithExpectedResult.Partial) -> VariableValue:
+    def _validate_expected_result(
+        cls, expected_result: VariableValue, values: TestCaseWithExpectedResult.Partial
+    ) -> VariableValue:
         for validator in TestCaseWithExpectedResult.Validators._expected_result_validators:
-            v = validator(v, values=values)
-        return v
+            expected_result = validator(expected_result, values=values)
+        return expected_result
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

@@ -25,7 +25,7 @@ class WorkspaceSubmissionState(pydantic.BaseModel):
                 ...
 
             @WorkspaceSubmissionState.Validators.field("status")
-            def validate_status(v: WorkspaceSubmissionStatus, values: WorkspaceSubmissionState.Partial) -> WorkspaceSubmissionStatus:
+            def validate_status(status: WorkspaceSubmissionStatus, values: WorkspaceSubmissionState.Partial) -> WorkspaceSubmissionStatus:
                 ...
         """
 
@@ -61,7 +61,7 @@ class WorkspaceSubmissionState(pydantic.BaseModel):
 
         class StatusValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: WorkspaceSubmissionStatus, *, values: WorkspaceSubmissionState.Partial
+                self, status: WorkspaceSubmissionStatus, *, values: WorkspaceSubmissionState.Partial
             ) -> WorkspaceSubmissionStatus:
                 ...
 
@@ -73,11 +73,11 @@ class WorkspaceSubmissionState(pydantic.BaseModel):
 
     @pydantic.validator("status")
     def _validate_status(
-        cls, v: WorkspaceSubmissionStatus, values: WorkspaceSubmissionState.Partial
+        cls, status: WorkspaceSubmissionStatus, values: WorkspaceSubmissionState.Partial
     ) -> WorkspaceSubmissionStatus:
         for validator in WorkspaceSubmissionState.Validators._status_validators:
-            v = validator(v, values=values)
-        return v
+            status = validator(status, values=values)
+        return status
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

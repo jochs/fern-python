@@ -25,11 +25,11 @@ class LightweightStackframeInformation(pydantic.BaseModel):
                 ...
 
             @LightweightStackframeInformation.Validators.field("num_stack_frames")
-            def validate_num_stack_frames(v: int, values: LightweightStackframeInformation.Partial) -> int:
+            def validate_num_stack_frames(num_stack_frames: int, values: LightweightStackframeInformation.Partial) -> int:
                 ...
 
             @LightweightStackframeInformation.Validators.field("top_stack_frame_method_name")
-            def validate_top_stack_frame_method_name(v: str, values: LightweightStackframeInformation.Partial) -> str:
+            def validate_top_stack_frame_method_name(top_stack_frame_method_name: str, values: LightweightStackframeInformation.Partial) -> str:
                 ...
         """
 
@@ -87,11 +87,13 @@ class LightweightStackframeInformation(pydantic.BaseModel):
             return decorator
 
         class NumStackFramesValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: LightweightStackframeInformation.Partial) -> int:
+            def __call__(self, num_stack_frames: int, *, values: LightweightStackframeInformation.Partial) -> int:
                 ...
 
         class TopStackFrameMethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: LightweightStackframeInformation.Partial) -> str:
+            def __call__(
+                self, top_stack_frame_method_name: str, *, values: LightweightStackframeInformation.Partial
+            ) -> str:
                 ...
 
     @pydantic.root_validator
@@ -101,16 +103,18 @@ class LightweightStackframeInformation(pydantic.BaseModel):
         return values
 
     @pydantic.validator("num_stack_frames")
-    def _validate_num_stack_frames(cls, v: int, values: LightweightStackframeInformation.Partial) -> int:
+    def _validate_num_stack_frames(cls, num_stack_frames: int, values: LightweightStackframeInformation.Partial) -> int:
         for validator in LightweightStackframeInformation.Validators._num_stack_frames_validators:
-            v = validator(v, values=values)
-        return v
+            num_stack_frames = validator(num_stack_frames, values=values)
+        return num_stack_frames
 
     @pydantic.validator("top_stack_frame_method_name")
-    def _validate_top_stack_frame_method_name(cls, v: str, values: LightweightStackframeInformation.Partial) -> str:
+    def _validate_top_stack_frame_method_name(
+        cls, top_stack_frame_method_name: str, values: LightweightStackframeInformation.Partial
+    ) -> str:
         for validator in LightweightStackframeInformation.Validators._top_stack_frame_method_name_validators:
-            v = validator(v, values=values)
-        return v
+            top_stack_frame_method_name = validator(top_stack_frame_method_name, values=values)
+        return top_stack_frame_method_name
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

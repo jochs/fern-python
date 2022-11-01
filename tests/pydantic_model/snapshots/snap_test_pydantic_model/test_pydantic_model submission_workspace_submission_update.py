@@ -28,11 +28,11 @@ class WorkspaceSubmissionUpdate(pydantic.BaseModel):
                 ...
 
             @WorkspaceSubmissionUpdate.Validators.field("update_time")
-            def validate_update_time(v: dt.datetime, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
+            def validate_update_time(update_time: dt.datetime, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
                 ...
 
             @WorkspaceSubmissionUpdate.Validators.field("update_info")
-            def validate_update_info(v: WorkspaceSubmissionUpdateInfo, values: WorkspaceSubmissionUpdate.Partial) -> WorkspaceSubmissionUpdateInfo:
+            def validate_update_info(update_info: WorkspaceSubmissionUpdateInfo, values: WorkspaceSubmissionUpdate.Partial) -> WorkspaceSubmissionUpdateInfo:
                 ...
         """
 
@@ -85,12 +85,12 @@ class WorkspaceSubmissionUpdate(pydantic.BaseModel):
             return decorator
 
         class UpdateTimeValidator(typing_extensions.Protocol):
-            def __call__(self, v: dt.datetime, *, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
+            def __call__(self, update_time: dt.datetime, *, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
                 ...
 
         class UpdateInfoValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: WorkspaceSubmissionUpdateInfo, *, values: WorkspaceSubmissionUpdate.Partial
+                self, update_info: WorkspaceSubmissionUpdateInfo, *, values: WorkspaceSubmissionUpdate.Partial
             ) -> WorkspaceSubmissionUpdateInfo:
                 ...
 
@@ -101,18 +101,18 @@ class WorkspaceSubmissionUpdate(pydantic.BaseModel):
         return values
 
     @pydantic.validator("update_time")
-    def _validate_update_time(cls, v: dt.datetime, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
+    def _validate_update_time(cls, update_time: dt.datetime, values: WorkspaceSubmissionUpdate.Partial) -> dt.datetime:
         for validator in WorkspaceSubmissionUpdate.Validators._update_time_validators:
-            v = validator(v, values=values)
-        return v
+            update_time = validator(update_time, values=values)
+        return update_time
 
     @pydantic.validator("update_info")
     def _validate_update_info(
-        cls, v: WorkspaceSubmissionUpdateInfo, values: WorkspaceSubmissionUpdate.Partial
+        cls, update_info: WorkspaceSubmissionUpdateInfo, values: WorkspaceSubmissionUpdate.Partial
     ) -> WorkspaceSubmissionUpdateInfo:
         for validator in WorkspaceSubmissionUpdate.Validators._update_info_validators:
-            v = validator(v, values=values)
-        return v
+            update_info = validator(update_info, values=values)
+        return update_info
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

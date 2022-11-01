@@ -29,15 +29,15 @@ class TestCaseMetadata(pydantic.BaseModel):
                 ...
 
             @TestCaseMetadata.Validators.field("id")
-            def validate_id(v: TestCaseId, values: TestCaseMetadata.Partial) -> TestCaseId:
+            def validate_id(id: TestCaseId, values: TestCaseMetadata.Partial) -> TestCaseId:
                 ...
 
             @TestCaseMetadata.Validators.field("name")
-            def validate_name(v: str, values: TestCaseMetadata.Partial) -> str:
+            def validate_name(name: str, values: TestCaseMetadata.Partial) -> str:
                 ...
 
             @TestCaseMetadata.Validators.field("hidden")
-            def validate_hidden(v: bool, values: TestCaseMetadata.Partial) -> bool:
+            def validate_hidden(hidden: bool, values: TestCaseMetadata.Partial) -> bool:
                 ...
         """
 
@@ -92,15 +92,15 @@ class TestCaseMetadata(pydantic.BaseModel):
             return decorator
 
         class IdValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCaseId, *, values: TestCaseMetadata.Partial) -> TestCaseId:
+            def __call__(self, id: TestCaseId, *, values: TestCaseMetadata.Partial) -> TestCaseId:
                 ...
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: TestCaseMetadata.Partial) -> str:
+            def __call__(self, name: str, *, values: TestCaseMetadata.Partial) -> str:
                 ...
 
         class HiddenValidator(typing_extensions.Protocol):
-            def __call__(self, v: bool, *, values: TestCaseMetadata.Partial) -> bool:
+            def __call__(self, hidden: bool, *, values: TestCaseMetadata.Partial) -> bool:
                 ...
 
     @pydantic.root_validator
@@ -110,22 +110,22 @@ class TestCaseMetadata(pydantic.BaseModel):
         return values
 
     @pydantic.validator("id")
-    def _validate_id(cls, v: TestCaseId, values: TestCaseMetadata.Partial) -> TestCaseId:
+    def _validate_id(cls, id: TestCaseId, values: TestCaseMetadata.Partial) -> TestCaseId:
         for validator in TestCaseMetadata.Validators._id_validators:
-            v = validator(v, values=values)
-        return v
+            id = validator(id, values=values)
+        return id
 
     @pydantic.validator("name")
-    def _validate_name(cls, v: str, values: TestCaseMetadata.Partial) -> str:
+    def _validate_name(cls, name: str, values: TestCaseMetadata.Partial) -> str:
         for validator in TestCaseMetadata.Validators._name_validators:
-            v = validator(v, values=values)
-        return v
+            name = validator(name, values=values)
+        return name
 
     @pydantic.validator("hidden")
-    def _validate_hidden(cls, v: bool, values: TestCaseMetadata.Partial) -> bool:
+    def _validate_hidden(cls, hidden: bool, values: TestCaseMetadata.Partial) -> bool:
         for validator in TestCaseMetadata.Validators._hidden_validators:
-            v = validator(v, values=values)
-        return v
+            hidden = validator(hidden, values=values)
+        return hidden
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

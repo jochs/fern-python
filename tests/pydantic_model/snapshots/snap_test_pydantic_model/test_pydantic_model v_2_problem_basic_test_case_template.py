@@ -33,19 +33,19 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
                 ...
 
             @BasicTestCaseTemplate.Validators.field("template_id")
-            def validate_template_id(v: TestCaseTemplateId, values: BasicTestCaseTemplate.Partial) -> TestCaseTemplateId:
+            def validate_template_id(template_id: TestCaseTemplateId, values: BasicTestCaseTemplate.Partial) -> TestCaseTemplateId:
                 ...
 
             @BasicTestCaseTemplate.Validators.field("name")
-            def validate_name(v: str, values: BasicTestCaseTemplate.Partial) -> str:
+            def validate_name(name: str, values: BasicTestCaseTemplate.Partial) -> str:
                 ...
 
             @BasicTestCaseTemplate.Validators.field("description")
-            def validate_description(v: TestCaseImplementationDescription, values: BasicTestCaseTemplate.Partial) -> TestCaseImplementationDescription:
+            def validate_description(description: TestCaseImplementationDescription, values: BasicTestCaseTemplate.Partial) -> TestCaseImplementationDescription:
                 ...
 
             @BasicTestCaseTemplate.Validators.field("expected_value_parameter_id")
-            def validate_expected_value_parameter_id(v: ParameterId, values: BasicTestCaseTemplate.Partial) -> ParameterId:
+            def validate_expected_value_parameter_id(expected_value_parameter_id: ParameterId, values: BasicTestCaseTemplate.Partial) -> ParameterId:
                 ...
         """
 
@@ -122,21 +122,25 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
             return decorator
 
         class TemplateIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCaseTemplateId, *, values: BasicTestCaseTemplate.Partial) -> TestCaseTemplateId:
+            def __call__(
+                self, template_id: TestCaseTemplateId, *, values: BasicTestCaseTemplate.Partial
+            ) -> TestCaseTemplateId:
                 ...
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: BasicTestCaseTemplate.Partial) -> str:
+            def __call__(self, name: str, *, values: BasicTestCaseTemplate.Partial) -> str:
                 ...
 
         class DescriptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: TestCaseImplementationDescription, *, values: BasicTestCaseTemplate.Partial
+                self, description: TestCaseImplementationDescription, *, values: BasicTestCaseTemplate.Partial
             ) -> TestCaseImplementationDescription:
                 ...
 
         class ExpectedValueParameterIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: ParameterId, *, values: BasicTestCaseTemplate.Partial) -> ParameterId:
+            def __call__(
+                self, expected_value_parameter_id: ParameterId, *, values: BasicTestCaseTemplate.Partial
+            ) -> ParameterId:
                 ...
 
     @pydantic.root_validator
@@ -146,32 +150,34 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
         return values
 
     @pydantic.validator("template_id")
-    def _validate_template_id(cls, v: TestCaseTemplateId, values: BasicTestCaseTemplate.Partial) -> TestCaseTemplateId:
+    def _validate_template_id(
+        cls, template_id: TestCaseTemplateId, values: BasicTestCaseTemplate.Partial
+    ) -> TestCaseTemplateId:
         for validator in BasicTestCaseTemplate.Validators._template_id_validators:
-            v = validator(v, values=values)
-        return v
+            template_id = validator(template_id, values=values)
+        return template_id
 
     @pydantic.validator("name")
-    def _validate_name(cls, v: str, values: BasicTestCaseTemplate.Partial) -> str:
+    def _validate_name(cls, name: str, values: BasicTestCaseTemplate.Partial) -> str:
         for validator in BasicTestCaseTemplate.Validators._name_validators:
-            v = validator(v, values=values)
-        return v
+            name = validator(name, values=values)
+        return name
 
     @pydantic.validator("description")
     def _validate_description(
-        cls, v: TestCaseImplementationDescription, values: BasicTestCaseTemplate.Partial
+        cls, description: TestCaseImplementationDescription, values: BasicTestCaseTemplate.Partial
     ) -> TestCaseImplementationDescription:
         for validator in BasicTestCaseTemplate.Validators._description_validators:
-            v = validator(v, values=values)
-        return v
+            description = validator(description, values=values)
+        return description
 
     @pydantic.validator("expected_value_parameter_id")
     def _validate_expected_value_parameter_id(
-        cls, v: ParameterId, values: BasicTestCaseTemplate.Partial
+        cls, expected_value_parameter_id: ParameterId, values: BasicTestCaseTemplate.Partial
     ) -> ParameterId:
         for validator in BasicTestCaseTemplate.Validators._expected_value_parameter_id_validators:
-            v = validator(v, values=values)
-        return v
+            expected_value_parameter_id = validator(expected_value_parameter_id, values=values)
+        return expected_value_parameter_id
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

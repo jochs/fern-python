@@ -28,11 +28,11 @@ class InvalidRequestResponse(pydantic.BaseModel):
                 ...
 
             @InvalidRequestResponse.Validators.field("request")
-            def validate_request(v: SubmissionRequest, values: InvalidRequestResponse.Partial) -> SubmissionRequest:
+            def validate_request(request: SubmissionRequest, values: InvalidRequestResponse.Partial) -> SubmissionRequest:
                 ...
 
             @InvalidRequestResponse.Validators.field("cause")
-            def validate_cause(v: InvalidRequestCause, values: InvalidRequestResponse.Partial) -> InvalidRequestCause:
+            def validate_cause(cause: InvalidRequestCause, values: InvalidRequestResponse.Partial) -> InvalidRequestCause:
                 ...
         """
 
@@ -79,12 +79,14 @@ class InvalidRequestResponse(pydantic.BaseModel):
             return decorator
 
         class RequestValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionRequest, *, values: InvalidRequestResponse.Partial) -> SubmissionRequest:
+            def __call__(
+                self, request: SubmissionRequest, *, values: InvalidRequestResponse.Partial
+            ) -> SubmissionRequest:
                 ...
 
         class CauseValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: InvalidRequestCause, *, values: InvalidRequestResponse.Partial
+                self, cause: InvalidRequestCause, *, values: InvalidRequestResponse.Partial
             ) -> InvalidRequestCause:
                 ...
 
@@ -95,16 +97,16 @@ class InvalidRequestResponse(pydantic.BaseModel):
         return values
 
     @pydantic.validator("request")
-    def _validate_request(cls, v: SubmissionRequest, values: InvalidRequestResponse.Partial) -> SubmissionRequest:
+    def _validate_request(cls, request: SubmissionRequest, values: InvalidRequestResponse.Partial) -> SubmissionRequest:
         for validator in InvalidRequestResponse.Validators._request_validators:
-            v = validator(v, values=values)
-        return v
+            request = validator(request, values=values)
+        return request
 
     @pydantic.validator("cause")
-    def _validate_cause(cls, v: InvalidRequestCause, values: InvalidRequestResponse.Partial) -> InvalidRequestCause:
+    def _validate_cause(cls, cause: InvalidRequestCause, values: InvalidRequestResponse.Partial) -> InvalidRequestCause:
         for validator in InvalidRequestResponse.Validators._cause_validators:
-            v = validator(v, values=values)
-        return v
+            cause = validator(cause, values=values)
+        return cause
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

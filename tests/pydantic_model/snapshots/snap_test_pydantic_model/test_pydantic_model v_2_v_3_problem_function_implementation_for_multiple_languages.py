@@ -26,7 +26,7 @@ class FunctionImplementationForMultipleLanguages(pydantic.BaseModel):
                 ...
 
             @FunctionImplementationForMultipleLanguages.Validators.field("code_by_language")
-            def validate_code_by_language(v: typing.Dict[Language, FunctionImplementation], values: FunctionImplementationForMultipleLanguages.Partial) -> typing.Dict[Language, FunctionImplementation]:
+            def validate_code_by_language(code_by_language: typing.Dict[Language, FunctionImplementation], values: FunctionImplementationForMultipleLanguages.Partial) -> typing.Dict[Language, FunctionImplementation]:
                 ...
         """
 
@@ -76,7 +76,7 @@ class FunctionImplementationForMultipleLanguages(pydantic.BaseModel):
         class CodeByLanguageValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                v: typing.Dict[Language, FunctionImplementation],
+                code_by_language: typing.Dict[Language, FunctionImplementation],
                 *,
                 values: FunctionImplementationForMultipleLanguages.Partial,
             ) -> typing.Dict[Language, FunctionImplementation]:
@@ -93,12 +93,12 @@ class FunctionImplementationForMultipleLanguages(pydantic.BaseModel):
     @pydantic.validator("code_by_language")
     def _validate_code_by_language(
         cls,
-        v: typing.Dict[Language, FunctionImplementation],
+        code_by_language: typing.Dict[Language, FunctionImplementation],
         values: FunctionImplementationForMultipleLanguages.Partial,
     ) -> typing.Dict[Language, FunctionImplementation]:
         for validator in FunctionImplementationForMultipleLanguages.Validators._code_by_language_validators:
-            v = validator(v, values=values)
-        return v
+            code_by_language = validator(code_by_language, values=values)
+        return code_by_language
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

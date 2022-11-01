@@ -25,7 +25,7 @@ class StoppedResponse(pydantic.BaseModel):
                 ...
 
             @StoppedResponse.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: StoppedResponse.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: StoppedResponse.Partial) -> SubmissionId:
                 ...
         """
 
@@ -60,7 +60,7 @@ class StoppedResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: StoppedResponse.Partial) -> SubmissionId:
+            def __call__(self, submission_id: SubmissionId, *, values: StoppedResponse.Partial) -> SubmissionId:
                 ...
 
     @pydantic.root_validator
@@ -70,10 +70,10 @@ class StoppedResponse(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: StoppedResponse.Partial) -> SubmissionId:
+    def _validate_submission_id(cls, submission_id: SubmissionId, values: StoppedResponse.Partial) -> SubmissionId:
         for validator in StoppedResponse.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

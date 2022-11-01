@@ -28,11 +28,11 @@ class NonVoidFunctionDefinition(pydantic.BaseModel):
                 ...
 
             @NonVoidFunctionDefinition.Validators.field("signature")
-            def validate_signature(v: NonVoidFunctionSignature, values: NonVoidFunctionDefinition.Partial) -> NonVoidFunctionSignature:
+            def validate_signature(signature: NonVoidFunctionSignature, values: NonVoidFunctionDefinition.Partial) -> NonVoidFunctionSignature:
                 ...
 
             @NonVoidFunctionDefinition.Validators.field("code")
-            def validate_code(v: FunctionImplementationForMultipleLanguages, values: NonVoidFunctionDefinition.Partial) -> FunctionImplementationForMultipleLanguages:
+            def validate_code(code: FunctionImplementationForMultipleLanguages, values: NonVoidFunctionDefinition.Partial) -> FunctionImplementationForMultipleLanguages:
                 ...
         """
 
@@ -83,13 +83,13 @@ class NonVoidFunctionDefinition(pydantic.BaseModel):
 
         class SignatureValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: NonVoidFunctionSignature, *, values: NonVoidFunctionDefinition.Partial
+                self, signature: NonVoidFunctionSignature, *, values: NonVoidFunctionDefinition.Partial
             ) -> NonVoidFunctionSignature:
                 ...
 
         class CodeValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: FunctionImplementationForMultipleLanguages, *, values: NonVoidFunctionDefinition.Partial
+                self, code: FunctionImplementationForMultipleLanguages, *, values: NonVoidFunctionDefinition.Partial
             ) -> FunctionImplementationForMultipleLanguages:
                 ...
 
@@ -101,19 +101,19 @@ class NonVoidFunctionDefinition(pydantic.BaseModel):
 
     @pydantic.validator("signature")
     def _validate_signature(
-        cls, v: NonVoidFunctionSignature, values: NonVoidFunctionDefinition.Partial
+        cls, signature: NonVoidFunctionSignature, values: NonVoidFunctionDefinition.Partial
     ) -> NonVoidFunctionSignature:
         for validator in NonVoidFunctionDefinition.Validators._signature_validators:
-            v = validator(v, values=values)
-        return v
+            signature = validator(signature, values=values)
+        return signature
 
     @pydantic.validator("code")
     def _validate_code(
-        cls, v: FunctionImplementationForMultipleLanguages, values: NonVoidFunctionDefinition.Partial
+        cls, code: FunctionImplementationForMultipleLanguages, values: NonVoidFunctionDefinition.Partial
     ) -> FunctionImplementationForMultipleLanguages:
         for validator in NonVoidFunctionDefinition.Validators._code_validators:
-            v = validator(v, values=values)
-        return v
+            code = validator(code, values=values)
+        return code
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

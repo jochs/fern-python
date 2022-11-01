@@ -28,11 +28,11 @@ class BinaryTreeValue(pydantic.BaseModel):
                 ...
 
             @BinaryTreeValue.Validators.field("root")
-            def validate_root(v: typing.Optional[NodeId], values: BinaryTreeValue.Partial) -> typing.Optional[NodeId]:
+            def validate_root(root: typing.Optional[NodeId], values: BinaryTreeValue.Partial) -> typing.Optional[NodeId]:
                 ...
 
             @BinaryTreeValue.Validators.field("nodes")
-            def validate_nodes(v: typing.Dict[NodeId, BinaryTreeNodeValue], values: BinaryTreeValue.Partial) -> typing.Dict[NodeId, BinaryTreeNodeValue]:
+            def validate_nodes(nodes: typing.Dict[NodeId, BinaryTreeNodeValue], values: BinaryTreeValue.Partial) -> typing.Dict[NodeId, BinaryTreeNodeValue]:
                 ...
         """
 
@@ -76,13 +76,13 @@ class BinaryTreeValue(pydantic.BaseModel):
 
         class RootValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[NodeId], *, values: BinaryTreeValue.Partial
+                self, root: typing.Optional[NodeId], *, values: BinaryTreeValue.Partial
             ) -> typing.Optional[NodeId]:
                 ...
 
         class NodesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[NodeId, BinaryTreeNodeValue], *, values: BinaryTreeValue.Partial
+                self, nodes: typing.Dict[NodeId, BinaryTreeNodeValue], *, values: BinaryTreeValue.Partial
             ) -> typing.Dict[NodeId, BinaryTreeNodeValue]:
                 ...
 
@@ -93,18 +93,18 @@ class BinaryTreeValue(pydantic.BaseModel):
         return values
 
     @pydantic.validator("root")
-    def _validate_root(cls, v: typing.Optional[NodeId], values: BinaryTreeValue.Partial) -> typing.Optional[NodeId]:
+    def _validate_root(cls, root: typing.Optional[NodeId], values: BinaryTreeValue.Partial) -> typing.Optional[NodeId]:
         for validator in BinaryTreeValue.Validators._root_validators:
-            v = validator(v, values=values)
-        return v
+            root = validator(root, values=values)
+        return root
 
     @pydantic.validator("nodes")
     def _validate_nodes(
-        cls, v: typing.Dict[NodeId, BinaryTreeNodeValue], values: BinaryTreeValue.Partial
+        cls, nodes: typing.Dict[NodeId, BinaryTreeNodeValue], values: BinaryTreeValue.Partial
     ) -> typing.Dict[NodeId, BinaryTreeNodeValue]:
         for validator in BinaryTreeValue.Validators._nodes_validators:
-            v = validator(v, values=values)
-        return v
+            nodes = validator(nodes, values=values)
+        return nodes
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

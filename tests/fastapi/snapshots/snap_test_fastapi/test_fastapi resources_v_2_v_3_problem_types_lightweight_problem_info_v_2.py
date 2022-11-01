@@ -32,19 +32,19 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
                 ...
 
             @LightweightProblemInfoV2.Validators.field("problem_id")
-            def validate_problem_id(v: ProblemId, values: LightweightProblemInfoV2.Partial) -> ProblemId:
+            def validate_problem_id(problem_id: ProblemId, values: LightweightProblemInfoV2.Partial) -> ProblemId:
                 ...
 
             @LightweightProblemInfoV2.Validators.field("problem_name")
-            def validate_problem_name(v: str, values: LightweightProblemInfoV2.Partial) -> str:
+            def validate_problem_name(problem_name: str, values: LightweightProblemInfoV2.Partial) -> str:
                 ...
 
             @LightweightProblemInfoV2.Validators.field("problem_version")
-            def validate_problem_version(v: int, values: LightweightProblemInfoV2.Partial) -> int:
+            def validate_problem_version(problem_version: int, values: LightweightProblemInfoV2.Partial) -> int:
                 ...
 
             @LightweightProblemInfoV2.Validators.field("variable_types")
-            def validate_variable_types(v: typing.List[VariableType], values: LightweightProblemInfoV2.Partial) -> typing.List[VariableType]:
+            def validate_variable_types(variable_types: typing.List[VariableType], values: LightweightProblemInfoV2.Partial) -> typing.List[VariableType]:
                 ...
         """
 
@@ -127,20 +127,20 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: ProblemId, *, values: LightweightProblemInfoV2.Partial) -> ProblemId:
+            def __call__(self, problem_id: ProblemId, *, values: LightweightProblemInfoV2.Partial) -> ProblemId:
                 ...
 
         class ProblemNameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: LightweightProblemInfoV2.Partial) -> str:
+            def __call__(self, problem_name: str, *, values: LightweightProblemInfoV2.Partial) -> str:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: LightweightProblemInfoV2.Partial) -> int:
+            def __call__(self, problem_version: int, *, values: LightweightProblemInfoV2.Partial) -> int:
                 ...
 
         class VariableTypesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.List[VariableType], *, values: LightweightProblemInfoV2.Partial
+                self, variable_types: typing.List[VariableType], *, values: LightweightProblemInfoV2.Partial
             ) -> typing.List[VariableType]:
                 ...
 
@@ -151,30 +151,30 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
         return values
 
     @pydantic.validator("problem_id")
-    def _validate_problem_id(cls, v: ProblemId, values: LightweightProblemInfoV2.Partial) -> ProblemId:
+    def _validate_problem_id(cls, problem_id: ProblemId, values: LightweightProblemInfoV2.Partial) -> ProblemId:
         for validator in LightweightProblemInfoV2.Validators._problem_id_validators:
-            v = validator(v, values=values)
-        return v
+            problem_id = validator(problem_id, values=values)
+        return problem_id
 
     @pydantic.validator("problem_name")
-    def _validate_problem_name(cls, v: str, values: LightweightProblemInfoV2.Partial) -> str:
+    def _validate_problem_name(cls, problem_name: str, values: LightweightProblemInfoV2.Partial) -> str:
         for validator in LightweightProblemInfoV2.Validators._problem_name_validators:
-            v = validator(v, values=values)
-        return v
+            problem_name = validator(problem_name, values=values)
+        return problem_name
 
     @pydantic.validator("problem_version")
-    def _validate_problem_version(cls, v: int, values: LightweightProblemInfoV2.Partial) -> int:
+    def _validate_problem_version(cls, problem_version: int, values: LightweightProblemInfoV2.Partial) -> int:
         for validator in LightweightProblemInfoV2.Validators._problem_version_validators:
-            v = validator(v, values=values)
-        return v
+            problem_version = validator(problem_version, values=values)
+        return problem_version
 
     @pydantic.validator("variable_types")
     def _validate_variable_types(
-        cls, v: typing.List[VariableType], values: LightweightProblemInfoV2.Partial
+        cls, variable_types: typing.List[VariableType], values: LightweightProblemInfoV2.Partial
     ) -> typing.List[VariableType]:
         for validator in LightweightProblemInfoV2.Validators._variable_types_validators:
-            v = validator(v, values=values)
-        return v
+            variable_types = validator(variable_types, values=values)
+        return variable_types
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

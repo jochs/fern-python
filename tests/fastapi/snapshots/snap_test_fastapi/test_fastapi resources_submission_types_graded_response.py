@@ -28,11 +28,11 @@ class GradedResponse(pydantic.BaseModel):
                 ...
 
             @GradedResponse.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: GradedResponse.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: GradedResponse.Partial) -> SubmissionId:
                 ...
 
             @GradedResponse.Validators.field("test_cases")
-            def validate_test_cases(v: typing.Dict[str, TestCaseResultWithStdout], values: GradedResponse.Partial) -> typing.Dict[str, TestCaseResultWithStdout]:
+            def validate_test_cases(test_cases: typing.Dict[str, TestCaseResultWithStdout], values: GradedResponse.Partial) -> typing.Dict[str, TestCaseResultWithStdout]:
                 ...
         """
 
@@ -79,12 +79,12 @@ class GradedResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: GradedResponse.Partial) -> SubmissionId:
+            def __call__(self, submission_id: SubmissionId, *, values: GradedResponse.Partial) -> SubmissionId:
                 ...
 
         class TestCasesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[str, TestCaseResultWithStdout], *, values: GradedResponse.Partial
+                self, test_cases: typing.Dict[str, TestCaseResultWithStdout], *, values: GradedResponse.Partial
             ) -> typing.Dict[str, TestCaseResultWithStdout]:
                 ...
 
@@ -95,18 +95,18 @@ class GradedResponse(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: GradedResponse.Partial) -> SubmissionId:
+    def _validate_submission_id(cls, submission_id: SubmissionId, values: GradedResponse.Partial) -> SubmissionId:
         for validator in GradedResponse.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     @pydantic.validator("test_cases")
     def _validate_test_cases(
-        cls, v: typing.Dict[str, TestCaseResultWithStdout], values: GradedResponse.Partial
+        cls, test_cases: typing.Dict[str, TestCaseResultWithStdout], values: GradedResponse.Partial
     ) -> typing.Dict[str, TestCaseResultWithStdout]:
         for validator in GradedResponse.Validators._test_cases_validators:
-            v = validator(v, values=values)
-        return v
+            test_cases = validator(test_cases, values=values)
+        return test_cases
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

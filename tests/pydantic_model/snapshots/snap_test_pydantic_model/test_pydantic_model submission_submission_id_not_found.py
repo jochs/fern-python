@@ -25,7 +25,7 @@ class SubmissionIdNotFound(pydantic.BaseModel):
                 ...
 
             @SubmissionIdNotFound.Validators.field("missing_submission_id")
-            def validate_missing_submission_id(v: SubmissionId, values: SubmissionIdNotFound.Partial) -> SubmissionId:
+            def validate_missing_submission_id(missing_submission_id: SubmissionId, values: SubmissionIdNotFound.Partial) -> SubmissionId:
                 ...
         """
 
@@ -63,7 +63,9 @@ class SubmissionIdNotFound(pydantic.BaseModel):
             return decorator
 
         class MissingSubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: SubmissionIdNotFound.Partial) -> SubmissionId:
+            def __call__(
+                self, missing_submission_id: SubmissionId, *, values: SubmissionIdNotFound.Partial
+            ) -> SubmissionId:
                 ...
 
     @pydantic.root_validator
@@ -73,10 +75,12 @@ class SubmissionIdNotFound(pydantic.BaseModel):
         return values
 
     @pydantic.validator("missing_submission_id")
-    def _validate_missing_submission_id(cls, v: SubmissionId, values: SubmissionIdNotFound.Partial) -> SubmissionId:
+    def _validate_missing_submission_id(
+        cls, missing_submission_id: SubmissionId, values: SubmissionIdNotFound.Partial
+    ) -> SubmissionId:
         for validator in SubmissionIdNotFound.Validators._missing_submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            missing_submission_id = validator(missing_submission_id, values=values)
+        return missing_submission_id
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

@@ -29,15 +29,15 @@ class RecordedResponseNotification(pydantic.BaseModel):
                 ...
 
             @RecordedResponseNotification.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: RecordedResponseNotification.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: RecordedResponseNotification.Partial) -> SubmissionId:
                 ...
 
             @RecordedResponseNotification.Validators.field("trace_responses_size")
-            def validate_trace_responses_size(v: int, values: RecordedResponseNotification.Partial) -> int:
+            def validate_trace_responses_size(trace_responses_size: int, values: RecordedResponseNotification.Partial) -> int:
                 ...
 
             @RecordedResponseNotification.Validators.field("test_case_id")
-            def validate_test_case_id(v: typing.Optional[str], values: RecordedResponseNotification.Partial) -> typing.Optional[str]:
+            def validate_test_case_id(test_case_id: typing.Optional[str], values: RecordedResponseNotification.Partial) -> typing.Optional[str]:
                 ...
         """
 
@@ -106,16 +106,18 @@ class RecordedResponseNotification(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: RecordedResponseNotification.Partial) -> SubmissionId:
+            def __call__(
+                self, submission_id: SubmissionId, *, values: RecordedResponseNotification.Partial
+            ) -> SubmissionId:
                 ...
 
         class TraceResponsesSizeValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: RecordedResponseNotification.Partial) -> int:
+            def __call__(self, trace_responses_size: int, *, values: RecordedResponseNotification.Partial) -> int:
                 ...
 
         class TestCaseIdValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[str], *, values: RecordedResponseNotification.Partial
+                self, test_case_id: typing.Optional[str], *, values: RecordedResponseNotification.Partial
             ) -> typing.Optional[str]:
                 ...
 
@@ -126,24 +128,28 @@ class RecordedResponseNotification(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: RecordedResponseNotification.Partial) -> SubmissionId:
+    def _validate_submission_id(
+        cls, submission_id: SubmissionId, values: RecordedResponseNotification.Partial
+    ) -> SubmissionId:
         for validator in RecordedResponseNotification.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     @pydantic.validator("trace_responses_size")
-    def _validate_trace_responses_size(cls, v: int, values: RecordedResponseNotification.Partial) -> int:
+    def _validate_trace_responses_size(
+        cls, trace_responses_size: int, values: RecordedResponseNotification.Partial
+    ) -> int:
         for validator in RecordedResponseNotification.Validators._trace_responses_size_validators:
-            v = validator(v, values=values)
-        return v
+            trace_responses_size = validator(trace_responses_size, values=values)
+        return trace_responses_size
 
     @pydantic.validator("test_case_id")
     def _validate_test_case_id(
-        cls, v: typing.Optional[str], values: RecordedResponseNotification.Partial
+        cls, test_case_id: typing.Optional[str], values: RecordedResponseNotification.Partial
     ) -> typing.Optional[str]:
         for validator in RecordedResponseNotification.Validators._test_case_id_validators:
-            v = validator(v, values=values)
-        return v
+            test_case_id = validator(test_case_id, values=values)
+        return test_case_id
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

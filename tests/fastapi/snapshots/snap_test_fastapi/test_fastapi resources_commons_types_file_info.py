@@ -25,11 +25,11 @@ class FileInfo(pydantic.BaseModel):
                 ...
 
             @FileInfo.Validators.field("filename")
-            def validate_filename(v: str, values: FileInfo.Partial) -> str:
+            def validate_filename(filename: str, values: FileInfo.Partial) -> str:
                 ...
 
             @FileInfo.Validators.field("contents")
-            def validate_contents(v: str, values: FileInfo.Partial) -> str:
+            def validate_contents(contents: str, values: FileInfo.Partial) -> str:
                 ...
         """
 
@@ -70,11 +70,11 @@ class FileInfo(pydantic.BaseModel):
             return decorator
 
         class FilenameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: FileInfo.Partial) -> str:
+            def __call__(self, filename: str, *, values: FileInfo.Partial) -> str:
                 ...
 
         class ContentsValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: FileInfo.Partial) -> str:
+            def __call__(self, contents: str, *, values: FileInfo.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -84,16 +84,16 @@ class FileInfo(pydantic.BaseModel):
         return values
 
     @pydantic.validator("filename")
-    def _validate_filename(cls, v: str, values: FileInfo.Partial) -> str:
+    def _validate_filename(cls, filename: str, values: FileInfo.Partial) -> str:
         for validator in FileInfo.Validators._filename_validators:
-            v = validator(v, values=values)
-        return v
+            filename = validator(filename, values=values)
+        return filename
 
     @pydantic.validator("contents")
-    def _validate_contents(cls, v: str, values: FileInfo.Partial) -> str:
+    def _validate_contents(cls, contents: str, values: FileInfo.Partial) -> str:
         for validator in FileInfo.Validators._contents_validators:
-            v = validator(v, values=values)
-        return v
+            contents = validator(contents, values=values)
+        return contents
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

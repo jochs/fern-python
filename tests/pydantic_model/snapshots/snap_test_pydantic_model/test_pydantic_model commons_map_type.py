@@ -25,11 +25,11 @@ class MapType(pydantic.BaseModel):
                 ...
 
             @MapType.Validators.field("key_type")
-            def validate_key_type(v: VariableType, values: MapType.Partial) -> VariableType:
+            def validate_key_type(key_type: VariableType, values: MapType.Partial) -> VariableType:
                 ...
 
             @MapType.Validators.field("value_type")
-            def validate_value_type(v: VariableType, values: MapType.Partial) -> VariableType:
+            def validate_value_type(value_type: VariableType, values: MapType.Partial) -> VariableType:
                 ...
         """
 
@@ -70,11 +70,11 @@ class MapType(pydantic.BaseModel):
             return decorator
 
         class KeyTypeValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableType, *, values: MapType.Partial) -> VariableType:
+            def __call__(self, key_type: VariableType, *, values: MapType.Partial) -> VariableType:
                 ...
 
         class ValueTypeValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableType, *, values: MapType.Partial) -> VariableType:
+            def __call__(self, value_type: VariableType, *, values: MapType.Partial) -> VariableType:
                 ...
 
     @pydantic.root_validator
@@ -84,16 +84,16 @@ class MapType(pydantic.BaseModel):
         return values
 
     @pydantic.validator("key_type")
-    def _validate_key_type(cls, v: VariableType, values: MapType.Partial) -> VariableType:
+    def _validate_key_type(cls, key_type: VariableType, values: MapType.Partial) -> VariableType:
         for validator in MapType.Validators._key_type_validators:
-            v = validator(v, values=values)
-        return v
+            key_type = validator(key_type, values=values)
+        return key_type
 
     @pydantic.validator("value_type")
-    def _validate_value_type(cls, v: VariableType, values: MapType.Partial) -> VariableType:
+    def _validate_value_type(cls, value_type: VariableType, values: MapType.Partial) -> VariableType:
         for validator in MapType.Validators._value_type_validators:
-            v = validator(v, values=values)
-        return v
+            value_type = validator(value_type, values=values)
+        return value_type
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

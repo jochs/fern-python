@@ -27,11 +27,11 @@ class TestCaseResultWithStdout(pydantic.BaseModel):
                 ...
 
             @TestCaseResultWithStdout.Validators.field("result")
-            def validate_result(v: TestCaseResult, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
+            def validate_result(result: TestCaseResult, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
                 ...
 
             @TestCaseResultWithStdout.Validators.field("stdout")
-            def validate_stdout(v: str, values: TestCaseResultWithStdout.Partial) -> str:
+            def validate_stdout(stdout: str, values: TestCaseResultWithStdout.Partial) -> str:
                 ...
         """
 
@@ -78,11 +78,11 @@ class TestCaseResultWithStdout(pydantic.BaseModel):
             return decorator
 
         class ResultValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCaseResult, *, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
+            def __call__(self, result: TestCaseResult, *, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: TestCaseResultWithStdout.Partial) -> str:
+            def __call__(self, stdout: str, *, values: TestCaseResultWithStdout.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -92,16 +92,16 @@ class TestCaseResultWithStdout(pydantic.BaseModel):
         return values
 
     @pydantic.validator("result")
-    def _validate_result(cls, v: TestCaseResult, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
+    def _validate_result(cls, result: TestCaseResult, values: TestCaseResultWithStdout.Partial) -> TestCaseResult:
         for validator in TestCaseResultWithStdout.Validators._result_validators:
-            v = validator(v, values=values)
-        return v
+            result = validator(result, values=values)
+        return result
 
     @pydantic.validator("stdout")
-    def _validate_stdout(cls, v: str, values: TestCaseResultWithStdout.Partial) -> str:
+    def _validate_stdout(cls, stdout: str, values: TestCaseResultWithStdout.Partial) -> str:
         for validator in TestCaseResultWithStdout.Validators._stdout_validators:
-            v = validator(v, values=values)
-        return v
+            stdout = validator(stdout, values=values)
+        return stdout
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

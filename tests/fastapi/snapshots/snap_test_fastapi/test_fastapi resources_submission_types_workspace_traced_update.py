@@ -23,7 +23,7 @@ class WorkspaceTracedUpdate(pydantic.BaseModel):
                 ...
 
             @WorkspaceTracedUpdate.Validators.field("trace_responses_size")
-            def validate_trace_responses_size(v: int, values: WorkspaceTracedUpdate.Partial) -> int:
+            def validate_trace_responses_size(trace_responses_size: int, values: WorkspaceTracedUpdate.Partial) -> int:
                 ...
         """
 
@@ -61,7 +61,7 @@ class WorkspaceTracedUpdate(pydantic.BaseModel):
             return decorator
 
         class TraceResponsesSizeValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: WorkspaceTracedUpdate.Partial) -> int:
+            def __call__(self, trace_responses_size: int, *, values: WorkspaceTracedUpdate.Partial) -> int:
                 ...
 
     @pydantic.root_validator
@@ -71,10 +71,10 @@ class WorkspaceTracedUpdate(pydantic.BaseModel):
         return values
 
     @pydantic.validator("trace_responses_size")
-    def _validate_trace_responses_size(cls, v: int, values: WorkspaceTracedUpdate.Partial) -> int:
+    def _validate_trace_responses_size(cls, trace_responses_size: int, values: WorkspaceTracedUpdate.Partial) -> int:
         for validator in WorkspaceTracedUpdate.Validators._trace_responses_size_validators:
-            v = validator(v, values=values)
-        return v
+            trace_responses_size = validator(trace_responses_size, values=values)
+        return trace_responses_size
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

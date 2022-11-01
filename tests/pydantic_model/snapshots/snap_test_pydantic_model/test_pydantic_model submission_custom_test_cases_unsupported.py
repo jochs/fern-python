@@ -28,11 +28,11 @@ class CustomTestCasesUnsupported(pydantic.BaseModel):
                 ...
 
             @CustomTestCasesUnsupported.Validators.field("problem_id")
-            def validate_problem_id(v: ProblemId, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
+            def validate_problem_id(problem_id: ProblemId, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
                 ...
 
             @CustomTestCasesUnsupported.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: CustomTestCasesUnsupported.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: CustomTestCasesUnsupported.Partial) -> SubmissionId:
                 ...
         """
 
@@ -85,11 +85,13 @@ class CustomTestCasesUnsupported(pydantic.BaseModel):
             return decorator
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: ProblemId, *, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
+            def __call__(self, problem_id: ProblemId, *, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
                 ...
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: CustomTestCasesUnsupported.Partial) -> SubmissionId:
+            def __call__(
+                self, submission_id: SubmissionId, *, values: CustomTestCasesUnsupported.Partial
+            ) -> SubmissionId:
                 ...
 
     @pydantic.root_validator
@@ -99,16 +101,18 @@ class CustomTestCasesUnsupported(pydantic.BaseModel):
         return values
 
     @pydantic.validator("problem_id")
-    def _validate_problem_id(cls, v: ProblemId, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
+    def _validate_problem_id(cls, problem_id: ProblemId, values: CustomTestCasesUnsupported.Partial) -> ProblemId:
         for validator in CustomTestCasesUnsupported.Validators._problem_id_validators:
-            v = validator(v, values=values)
-        return v
+            problem_id = validator(problem_id, values=values)
+        return problem_id
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: CustomTestCasesUnsupported.Partial) -> SubmissionId:
+    def _validate_submission_id(
+        cls, submission_id: SubmissionId, values: CustomTestCasesUnsupported.Partial
+    ) -> SubmissionId:
         for validator in CustomTestCasesUnsupported.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

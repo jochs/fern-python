@@ -25,11 +25,11 @@ class ListType(pydantic.BaseModel):
                 ...
 
             @ListType.Validators.field("value_type")
-            def validate_value_type(v: VariableType, values: ListType.Partial) -> VariableType:
+            def validate_value_type(value_type: VariableType, values: ListType.Partial) -> VariableType:
                 ...
 
             @ListType.Validators.field("is_fixed_length")
-            def validate_is_fixed_length(v: typing.Optional[bool], values: ListType.Partial) -> typing.Optional[bool]:
+            def validate_is_fixed_length(is_fixed_length: typing.Optional[bool], values: ListType.Partial) -> typing.Optional[bool]:
                 ...
         """
 
@@ -70,11 +70,13 @@ class ListType(pydantic.BaseModel):
             return decorator
 
         class ValueTypeValidator(typing_extensions.Protocol):
-            def __call__(self, v: VariableType, *, values: ListType.Partial) -> VariableType:
+            def __call__(self, value_type: VariableType, *, values: ListType.Partial) -> VariableType:
                 ...
 
         class IsFixedLengthValidator(typing_extensions.Protocol):
-            def __call__(self, v: typing.Optional[bool], *, values: ListType.Partial) -> typing.Optional[bool]:
+            def __call__(
+                self, is_fixed_length: typing.Optional[bool], *, values: ListType.Partial
+            ) -> typing.Optional[bool]:
                 ...
 
     @pydantic.root_validator
@@ -84,16 +86,18 @@ class ListType(pydantic.BaseModel):
         return values
 
     @pydantic.validator("value_type")
-    def _validate_value_type(cls, v: VariableType, values: ListType.Partial) -> VariableType:
+    def _validate_value_type(cls, value_type: VariableType, values: ListType.Partial) -> VariableType:
         for validator in ListType.Validators._value_type_validators:
-            v = validator(v, values=values)
-        return v
+            value_type = validator(value_type, values=values)
+        return value_type
 
     @pydantic.validator("is_fixed_length")
-    def _validate_is_fixed_length(cls, v: typing.Optional[bool], values: ListType.Partial) -> typing.Optional[bool]:
+    def _validate_is_fixed_length(
+        cls, is_fixed_length: typing.Optional[bool], values: ListType.Partial
+    ) -> typing.Optional[bool]:
         for validator in ListType.Validators._is_fixed_length_validators:
-            v = validator(v, values=values)
-        return v
+            is_fixed_length = validator(is_fixed_length, values=values)
+        return is_fixed_length
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

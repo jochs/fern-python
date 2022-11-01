@@ -25,11 +25,11 @@ class ExpressionLocation(pydantic.BaseModel):
                 ...
 
             @ExpressionLocation.Validators.field("start")
-            def validate_start(v: int, values: ExpressionLocation.Partial) -> int:
+            def validate_start(start: int, values: ExpressionLocation.Partial) -> int:
                 ...
 
             @ExpressionLocation.Validators.field("offset")
-            def validate_offset(v: int, values: ExpressionLocation.Partial) -> int:
+            def validate_offset(offset: int, values: ExpressionLocation.Partial) -> int:
                 ...
         """
 
@@ -76,11 +76,11 @@ class ExpressionLocation(pydantic.BaseModel):
             return decorator
 
         class StartValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: ExpressionLocation.Partial) -> int:
+            def __call__(self, start: int, *, values: ExpressionLocation.Partial) -> int:
                 ...
 
         class OffsetValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: ExpressionLocation.Partial) -> int:
+            def __call__(self, offset: int, *, values: ExpressionLocation.Partial) -> int:
                 ...
 
     @pydantic.root_validator
@@ -90,16 +90,16 @@ class ExpressionLocation(pydantic.BaseModel):
         return values
 
     @pydantic.validator("start")
-    def _validate_start(cls, v: int, values: ExpressionLocation.Partial) -> int:
+    def _validate_start(cls, start: int, values: ExpressionLocation.Partial) -> int:
         for validator in ExpressionLocation.Validators._start_validators:
-            v = validator(v, values=values)
-        return v
+            start = validator(start, values=values)
+        return start
 
     @pydantic.validator("offset")
-    def _validate_offset(cls, v: int, values: ExpressionLocation.Partial) -> int:
+    def _validate_offset(cls, offset: int, values: ExpressionLocation.Partial) -> int:
         for validator in ExpressionLocation.Validators._offset_validators:
-            v = validator(v, values=values)
-        return v
+            offset = validator(offset, values=values)
+        return offset
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

@@ -29,15 +29,15 @@ class SinglyLinkedListNodeValue(pydantic.BaseModel):
                 ...
 
             @SinglyLinkedListNodeValue.Validators.field("node_id")
-            def validate_node_id(v: NodeId, values: SinglyLinkedListNodeValue.Partial) -> NodeId:
+            def validate_node_id(node_id: NodeId, values: SinglyLinkedListNodeValue.Partial) -> NodeId:
                 ...
 
             @SinglyLinkedListNodeValue.Validators.field("val")
-            def validate_val(v: float, values: SinglyLinkedListNodeValue.Partial) -> float:
+            def validate_val(val: float, values: SinglyLinkedListNodeValue.Partial) -> float:
                 ...
 
             @SinglyLinkedListNodeValue.Validators.field("next")
-            def validate_next(v: typing.Optional[NodeId], values: SinglyLinkedListNodeValue.Partial) -> typing.Optional[NodeId]:
+            def validate_next(next: typing.Optional[NodeId], values: SinglyLinkedListNodeValue.Partial) -> typing.Optional[NodeId]:
                 ...
         """
 
@@ -96,16 +96,16 @@ class SinglyLinkedListNodeValue(pydantic.BaseModel):
             return decorator
 
         class NodeIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: NodeId, *, values: SinglyLinkedListNodeValue.Partial) -> NodeId:
+            def __call__(self, node_id: NodeId, *, values: SinglyLinkedListNodeValue.Partial) -> NodeId:
                 ...
 
         class ValValidator(typing_extensions.Protocol):
-            def __call__(self, v: float, *, values: SinglyLinkedListNodeValue.Partial) -> float:
+            def __call__(self, val: float, *, values: SinglyLinkedListNodeValue.Partial) -> float:
                 ...
 
         class NextValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[NodeId], *, values: SinglyLinkedListNodeValue.Partial
+                self, next: typing.Optional[NodeId], *, values: SinglyLinkedListNodeValue.Partial
             ) -> typing.Optional[NodeId]:
                 ...
 
@@ -116,24 +116,24 @@ class SinglyLinkedListNodeValue(pydantic.BaseModel):
         return values
 
     @pydantic.validator("node_id")
-    def _validate_node_id(cls, v: NodeId, values: SinglyLinkedListNodeValue.Partial) -> NodeId:
+    def _validate_node_id(cls, node_id: NodeId, values: SinglyLinkedListNodeValue.Partial) -> NodeId:
         for validator in SinglyLinkedListNodeValue.Validators._node_id_validators:
-            v = validator(v, values=values)
-        return v
+            node_id = validator(node_id, values=values)
+        return node_id
 
     @pydantic.validator("val")
-    def _validate_val(cls, v: float, values: SinglyLinkedListNodeValue.Partial) -> float:
+    def _validate_val(cls, val: float, values: SinglyLinkedListNodeValue.Partial) -> float:
         for validator in SinglyLinkedListNodeValue.Validators._val_validators:
-            v = validator(v, values=values)
-        return v
+            val = validator(val, values=values)
+        return val
 
     @pydantic.validator("next")
     def _validate_next(
-        cls, v: typing.Optional[NodeId], values: SinglyLinkedListNodeValue.Partial
+        cls, next: typing.Optional[NodeId], values: SinglyLinkedListNodeValue.Partial
     ) -> typing.Optional[NodeId]:
         for validator in SinglyLinkedListNodeValue.Validators._next_validators:
-            v = validator(v, values=values)
-        return v
+            next = validator(next, values=values)
+        return next
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

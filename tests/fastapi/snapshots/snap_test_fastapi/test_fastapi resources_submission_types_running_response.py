@@ -28,11 +28,11 @@ class RunningResponse(pydantic.BaseModel):
                 ...
 
             @RunningResponse.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: RunningResponse.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: RunningResponse.Partial) -> SubmissionId:
                 ...
 
             @RunningResponse.Validators.field("state")
-            def validate_state(v: RunningSubmissionState, values: RunningResponse.Partial) -> RunningSubmissionState:
+            def validate_state(state: RunningSubmissionState, values: RunningResponse.Partial) -> RunningSubmissionState:
                 ...
         """
 
@@ -77,11 +77,13 @@ class RunningResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: RunningResponse.Partial) -> SubmissionId:
+            def __call__(self, submission_id: SubmissionId, *, values: RunningResponse.Partial) -> SubmissionId:
                 ...
 
         class StateValidator(typing_extensions.Protocol):
-            def __call__(self, v: RunningSubmissionState, *, values: RunningResponse.Partial) -> RunningSubmissionState:
+            def __call__(
+                self, state: RunningSubmissionState, *, values: RunningResponse.Partial
+            ) -> RunningSubmissionState:
                 ...
 
     @pydantic.root_validator
@@ -91,16 +93,16 @@ class RunningResponse(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: RunningResponse.Partial) -> SubmissionId:
+    def _validate_submission_id(cls, submission_id: SubmissionId, values: RunningResponse.Partial) -> SubmissionId:
         for validator in RunningResponse.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     @pydantic.validator("state")
-    def _validate_state(cls, v: RunningSubmissionState, values: RunningResponse.Partial) -> RunningSubmissionState:
+    def _validate_state(cls, state: RunningSubmissionState, values: RunningResponse.Partial) -> RunningSubmissionState:
         for validator in RunningResponse.Validators._state_validators:
-            v = validator(v, values=values)
-        return v
+            state = validator(state, values=values)
+        return state
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

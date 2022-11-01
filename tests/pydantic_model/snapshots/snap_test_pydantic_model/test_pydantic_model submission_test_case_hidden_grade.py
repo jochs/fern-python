@@ -23,7 +23,7 @@ class TestCaseHiddenGrade(pydantic.BaseModel):
                 ...
 
             @TestCaseHiddenGrade.Validators.field("passed")
-            def validate_passed(v: bool, values: TestCaseHiddenGrade.Partial) -> bool:
+            def validate_passed(passed: bool, values: TestCaseHiddenGrade.Partial) -> bool:
                 ...
         """
 
@@ -58,7 +58,7 @@ class TestCaseHiddenGrade(pydantic.BaseModel):
             return decorator
 
         class PassedValidator(typing_extensions.Protocol):
-            def __call__(self, v: bool, *, values: TestCaseHiddenGrade.Partial) -> bool:
+            def __call__(self, passed: bool, *, values: TestCaseHiddenGrade.Partial) -> bool:
                 ...
 
     @pydantic.root_validator
@@ -68,10 +68,10 @@ class TestCaseHiddenGrade(pydantic.BaseModel):
         return values
 
     @pydantic.validator("passed")
-    def _validate_passed(cls, v: bool, values: TestCaseHiddenGrade.Partial) -> bool:
+    def _validate_passed(cls, passed: bool, values: TestCaseHiddenGrade.Partial) -> bool:
         for validator in TestCaseHiddenGrade.Validators._passed_validators:
-            v = validator(v, values=values)
-        return v
+            passed = validator(passed, values=values)
+        return passed
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

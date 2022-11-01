@@ -23,7 +23,7 @@ class RuntimeError(pydantic.BaseModel):
                 ...
 
             @RuntimeError.Validators.field("message")
-            def validate_message(v: str, values: RuntimeError.Partial) -> str:
+            def validate_message(message: str, values: RuntimeError.Partial) -> str:
                 ...
         """
 
@@ -54,7 +54,7 @@ class RuntimeError(pydantic.BaseModel):
             return decorator
 
         class MessageValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: RuntimeError.Partial) -> str:
+            def __call__(self, message: str, *, values: RuntimeError.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -64,10 +64,10 @@ class RuntimeError(pydantic.BaseModel):
         return values
 
     @pydantic.validator("message")
-    def _validate_message(cls, v: str, values: RuntimeError.Partial) -> str:
+    def _validate_message(cls, message: str, values: RuntimeError.Partial) -> str:
         for validator in RuntimeError.Validators._message_validators:
-            v = validator(v, values=values)
-        return v
+            message = validator(message, values=values)
+        return message
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

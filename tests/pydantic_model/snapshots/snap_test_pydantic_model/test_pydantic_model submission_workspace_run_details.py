@@ -30,15 +30,15 @@ class WorkspaceRunDetails(pydantic.BaseModel):
                 ...
 
             @WorkspaceRunDetails.Validators.field("exception_v_2")
-            def validate_exception_v_2(v: typing.Optional[ExceptionV2], values: WorkspaceRunDetails.Partial) -> typing.Optional[ExceptionV2]:
+            def validate_exception_v_2(exception_v_2: typing.Optional[ExceptionV2], values: WorkspaceRunDetails.Partial) -> typing.Optional[ExceptionV2]:
                 ...
 
             @WorkspaceRunDetails.Validators.field("exception")
-            def validate_exception(v: typing.Optional[ExceptionInfo], values: WorkspaceRunDetails.Partial) -> typing.Optional[ExceptionInfo]:
+            def validate_exception(exception: typing.Optional[ExceptionInfo], values: WorkspaceRunDetails.Partial) -> typing.Optional[ExceptionInfo]:
                 ...
 
             @WorkspaceRunDetails.Validators.field("stdout")
-            def validate_stdout(v: str, values: WorkspaceRunDetails.Partial) -> str:
+            def validate_stdout(stdout: str, values: WorkspaceRunDetails.Partial) -> str:
                 ...
         """
 
@@ -100,18 +100,18 @@ class WorkspaceRunDetails(pydantic.BaseModel):
 
         class ExceptionV2Validator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[ExceptionV2], *, values: WorkspaceRunDetails.Partial
+                self, exception_v_2: typing.Optional[ExceptionV2], *, values: WorkspaceRunDetails.Partial
             ) -> typing.Optional[ExceptionV2]:
                 ...
 
         class ExceptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Optional[ExceptionInfo], *, values: WorkspaceRunDetails.Partial
+                self, exception: typing.Optional[ExceptionInfo], *, values: WorkspaceRunDetails.Partial
             ) -> typing.Optional[ExceptionInfo]:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: WorkspaceRunDetails.Partial) -> str:
+            def __call__(self, stdout: str, *, values: WorkspaceRunDetails.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -122,25 +122,25 @@ class WorkspaceRunDetails(pydantic.BaseModel):
 
     @pydantic.validator("exception_v_2")
     def _validate_exception_v_2(
-        cls, v: typing.Optional[ExceptionV2], values: WorkspaceRunDetails.Partial
+        cls, exception_v_2: typing.Optional[ExceptionV2], values: WorkspaceRunDetails.Partial
     ) -> typing.Optional[ExceptionV2]:
         for validator in WorkspaceRunDetails.Validators._exception_v_2_validators:
-            v = validator(v, values=values)
-        return v
+            exception_v_2 = validator(exception_v_2, values=values)
+        return exception_v_2
 
     @pydantic.validator("exception")
     def _validate_exception(
-        cls, v: typing.Optional[ExceptionInfo], values: WorkspaceRunDetails.Partial
+        cls, exception: typing.Optional[ExceptionInfo], values: WorkspaceRunDetails.Partial
     ) -> typing.Optional[ExceptionInfo]:
         for validator in WorkspaceRunDetails.Validators._exception_validators:
-            v = validator(v, values=values)
-        return v
+            exception = validator(exception, values=values)
+        return exception
 
     @pydantic.validator("stdout")
-    def _validate_stdout(cls, v: str, values: WorkspaceRunDetails.Partial) -> str:
+    def _validate_stdout(cls, stdout: str, values: WorkspaceRunDetails.Partial) -> str:
         for validator in WorkspaceRunDetails.Validators._stdout_validators:
-            v = validator(v, values=values)
-        return v
+            stdout = validator(stdout, values=values)
+        return stdout
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

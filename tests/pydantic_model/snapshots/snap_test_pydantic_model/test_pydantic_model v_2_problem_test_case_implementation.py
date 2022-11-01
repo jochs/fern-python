@@ -28,11 +28,11 @@ class TestCaseImplementation(pydantic.BaseModel):
                 ...
 
             @TestCaseImplementation.Validators.field("description")
-            def validate_description(v: TestCaseImplementationDescription, values: TestCaseImplementation.Partial) -> TestCaseImplementationDescription:
+            def validate_description(description: TestCaseImplementationDescription, values: TestCaseImplementation.Partial) -> TestCaseImplementationDescription:
                 ...
 
             @TestCaseImplementation.Validators.field("function")
-            def validate_function(v: TestCaseFunction, values: TestCaseImplementation.Partial) -> TestCaseFunction:
+            def validate_function(function: TestCaseFunction, values: TestCaseImplementation.Partial) -> TestCaseFunction:
                 ...
         """
 
@@ -83,12 +83,14 @@ class TestCaseImplementation(pydantic.BaseModel):
 
         class DescriptionValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: TestCaseImplementationDescription, *, values: TestCaseImplementation.Partial
+                self, description: TestCaseImplementationDescription, *, values: TestCaseImplementation.Partial
             ) -> TestCaseImplementationDescription:
                 ...
 
         class FunctionValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCaseFunction, *, values: TestCaseImplementation.Partial) -> TestCaseFunction:
+            def __call__(
+                self, function: TestCaseFunction, *, values: TestCaseImplementation.Partial
+            ) -> TestCaseFunction:
                 ...
 
     @pydantic.root_validator
@@ -99,17 +101,17 @@ class TestCaseImplementation(pydantic.BaseModel):
 
     @pydantic.validator("description")
     def _validate_description(
-        cls, v: TestCaseImplementationDescription, values: TestCaseImplementation.Partial
+        cls, description: TestCaseImplementationDescription, values: TestCaseImplementation.Partial
     ) -> TestCaseImplementationDescription:
         for validator in TestCaseImplementation.Validators._description_validators:
-            v = validator(v, values=values)
-        return v
+            description = validator(description, values=values)
+        return description
 
     @pydantic.validator("function")
-    def _validate_function(cls, v: TestCaseFunction, values: TestCaseImplementation.Partial) -> TestCaseFunction:
+    def _validate_function(cls, function: TestCaseFunction, values: TestCaseImplementation.Partial) -> TestCaseFunction:
         for validator in TestCaseImplementation.Validators._function_validators:
-            v = validator(v, values=values)
-        return v
+            function = validator(function, values=values)
+        return function
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

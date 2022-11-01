@@ -27,11 +27,11 @@ class StdoutResponse(pydantic.BaseModel):
                 ...
 
             @StdoutResponse.Validators.field("submission_id")
-            def validate_submission_id(v: SubmissionId, values: StdoutResponse.Partial) -> SubmissionId:
+            def validate_submission_id(submission_id: SubmissionId, values: StdoutResponse.Partial) -> SubmissionId:
                 ...
 
             @StdoutResponse.Validators.field("stdout")
-            def validate_stdout(v: str, values: StdoutResponse.Partial) -> str:
+            def validate_stdout(stdout: str, values: StdoutResponse.Partial) -> str:
                 ...
         """
 
@@ -76,11 +76,11 @@ class StdoutResponse(pydantic.BaseModel):
             return decorator
 
         class SubmissionIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: SubmissionId, *, values: StdoutResponse.Partial) -> SubmissionId:
+            def __call__(self, submission_id: SubmissionId, *, values: StdoutResponse.Partial) -> SubmissionId:
                 ...
 
         class StdoutValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: StdoutResponse.Partial) -> str:
+            def __call__(self, stdout: str, *, values: StdoutResponse.Partial) -> str:
                 ...
 
     @pydantic.root_validator
@@ -90,16 +90,16 @@ class StdoutResponse(pydantic.BaseModel):
         return values
 
     @pydantic.validator("submission_id")
-    def _validate_submission_id(cls, v: SubmissionId, values: StdoutResponse.Partial) -> SubmissionId:
+    def _validate_submission_id(cls, submission_id: SubmissionId, values: StdoutResponse.Partial) -> SubmissionId:
         for validator in StdoutResponse.Validators._submission_id_validators:
-            v = validator(v, values=values)
-        return v
+            submission_id = validator(submission_id, values=values)
+        return submission_id
 
     @pydantic.validator("stdout")
-    def _validate_stdout(cls, v: str, values: StdoutResponse.Partial) -> str:
+    def _validate_stdout(cls, stdout: str, values: StdoutResponse.Partial) -> str:
         for validator in StdoutResponse.Validators._stdout_validators:
-            v = validator(v, values=values)
-        return v
+            stdout = validator(stdout, values=values)
+        return stdout
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

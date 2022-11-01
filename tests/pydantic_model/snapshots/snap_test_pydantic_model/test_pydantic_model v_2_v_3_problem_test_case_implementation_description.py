@@ -25,7 +25,7 @@ class TestCaseImplementationDescription(pydantic.BaseModel):
                 ...
 
             @TestCaseImplementationDescription.Validators.field("boards")
-            def validate_boards(v: typing.List[TestCaseImplementationDescriptionBoard], values: TestCaseImplementationDescription.Partial) -> typing.List[TestCaseImplementationDescriptionBoard]:
+            def validate_boards(boards: typing.List[TestCaseImplementationDescriptionBoard], values: TestCaseImplementationDescription.Partial) -> typing.List[TestCaseImplementationDescriptionBoard]:
                 ...
         """
 
@@ -70,7 +70,7 @@ class TestCaseImplementationDescription(pydantic.BaseModel):
         class BoardsValidator(typing_extensions.Protocol):
             def __call__(
                 self,
-                v: typing.List[TestCaseImplementationDescriptionBoard],
+                boards: typing.List[TestCaseImplementationDescriptionBoard],
                 *,
                 values: TestCaseImplementationDescription.Partial,
             ) -> typing.List[TestCaseImplementationDescriptionBoard]:
@@ -84,11 +84,13 @@ class TestCaseImplementationDescription(pydantic.BaseModel):
 
     @pydantic.validator("boards")
     def _validate_boards(
-        cls, v: typing.List[TestCaseImplementationDescriptionBoard], values: TestCaseImplementationDescription.Partial
+        cls,
+        boards: typing.List[TestCaseImplementationDescriptionBoard],
+        values: TestCaseImplementationDescription.Partial,
     ) -> typing.List[TestCaseImplementationDescriptionBoard]:
         for validator in TestCaseImplementationDescription.Validators._boards_validators:
-            v = validator(v, values=values)
-        return v
+            boards = validator(boards, values=values)
+        return boards
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

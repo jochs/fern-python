@@ -28,11 +28,11 @@ class TestSubmissionUpdate(pydantic.BaseModel):
                 ...
 
             @TestSubmissionUpdate.Validators.field("update_time")
-            def validate_update_time(v: dt.datetime, values: TestSubmissionUpdate.Partial) -> dt.datetime:
+            def validate_update_time(update_time: dt.datetime, values: TestSubmissionUpdate.Partial) -> dt.datetime:
                 ...
 
             @TestSubmissionUpdate.Validators.field("update_info")
-            def validate_update_info(v: TestSubmissionUpdateInfo, values: TestSubmissionUpdate.Partial) -> TestSubmissionUpdateInfo:
+            def validate_update_info(update_info: TestSubmissionUpdateInfo, values: TestSubmissionUpdate.Partial) -> TestSubmissionUpdateInfo:
                 ...
         """
 
@@ -79,12 +79,12 @@ class TestSubmissionUpdate(pydantic.BaseModel):
             return decorator
 
         class UpdateTimeValidator(typing_extensions.Protocol):
-            def __call__(self, v: dt.datetime, *, values: TestSubmissionUpdate.Partial) -> dt.datetime:
+            def __call__(self, update_time: dt.datetime, *, values: TestSubmissionUpdate.Partial) -> dt.datetime:
                 ...
 
         class UpdateInfoValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: TestSubmissionUpdateInfo, *, values: TestSubmissionUpdate.Partial
+                self, update_info: TestSubmissionUpdateInfo, *, values: TestSubmissionUpdate.Partial
             ) -> TestSubmissionUpdateInfo:
                 ...
 
@@ -95,18 +95,18 @@ class TestSubmissionUpdate(pydantic.BaseModel):
         return values
 
     @pydantic.validator("update_time")
-    def _validate_update_time(cls, v: dt.datetime, values: TestSubmissionUpdate.Partial) -> dt.datetime:
+    def _validate_update_time(cls, update_time: dt.datetime, values: TestSubmissionUpdate.Partial) -> dt.datetime:
         for validator in TestSubmissionUpdate.Validators._update_time_validators:
-            v = validator(v, values=values)
-        return v
+            update_time = validator(update_time, values=values)
+        return update_time
 
     @pydantic.validator("update_info")
     def _validate_update_info(
-        cls, v: TestSubmissionUpdateInfo, values: TestSubmissionUpdate.Partial
+        cls, update_info: TestSubmissionUpdateInfo, values: TestSubmissionUpdate.Partial
     ) -> TestSubmissionUpdateInfo:
         for validator in TestSubmissionUpdate.Validators._update_info_validators:
-            v = validator(v, values=values)
-        return v
+            update_info = validator(update_info, values=values)
+        return update_info
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

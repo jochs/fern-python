@@ -34,19 +34,19 @@ class BasicCustomFiles(pydantic.BaseModel):
                 ...
 
             @BasicCustomFiles.Validators.field("method_name")
-            def validate_method_name(v: str, values: BasicCustomFiles.Partial) -> str:
+            def validate_method_name(method_name: str, values: BasicCustomFiles.Partial) -> str:
                 ...
 
             @BasicCustomFiles.Validators.field("signature")
-            def validate_signature(v: NonVoidFunctionSignature, values: BasicCustomFiles.Partial) -> NonVoidFunctionSignature:
+            def validate_signature(signature: NonVoidFunctionSignature, values: BasicCustomFiles.Partial) -> NonVoidFunctionSignature:
                 ...
 
             @BasicCustomFiles.Validators.field("additional_files")
-            def validate_additional_files(v: typing.Dict[Language, Files], values: BasicCustomFiles.Partial) -> typing.Dict[Language, Files]:
+            def validate_additional_files(additional_files: typing.Dict[Language, Files], values: BasicCustomFiles.Partial) -> typing.Dict[Language, Files]:
                 ...
 
             @BasicCustomFiles.Validators.field("basic_test_case_template")
-            def validate_basic_test_case_template(v: BasicTestCaseTemplate, values: BasicCustomFiles.Partial) -> BasicTestCaseTemplate:
+            def validate_basic_test_case_template(basic_test_case_template: BasicTestCaseTemplate, values: BasicCustomFiles.Partial) -> BasicTestCaseTemplate:
                 ...
         """
 
@@ -122,23 +122,25 @@ class BasicCustomFiles(pydantic.BaseModel):
             return decorator
 
         class MethodNameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: BasicCustomFiles.Partial) -> str:
+            def __call__(self, method_name: str, *, values: BasicCustomFiles.Partial) -> str:
                 ...
 
         class SignatureValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: NonVoidFunctionSignature, *, values: BasicCustomFiles.Partial
+                self, signature: NonVoidFunctionSignature, *, values: BasicCustomFiles.Partial
             ) -> NonVoidFunctionSignature:
                 ...
 
         class AdditionalFilesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.Dict[Language, Files], *, values: BasicCustomFiles.Partial
+                self, additional_files: typing.Dict[Language, Files], *, values: BasicCustomFiles.Partial
             ) -> typing.Dict[Language, Files]:
                 ...
 
         class BasicTestCaseTemplateValidator(typing_extensions.Protocol):
-            def __call__(self, v: BasicTestCaseTemplate, *, values: BasicCustomFiles.Partial) -> BasicTestCaseTemplate:
+            def __call__(
+                self, basic_test_case_template: BasicTestCaseTemplate, *, values: BasicCustomFiles.Partial
+            ) -> BasicTestCaseTemplate:
                 ...
 
     @pydantic.root_validator
@@ -148,34 +150,34 @@ class BasicCustomFiles(pydantic.BaseModel):
         return values
 
     @pydantic.validator("method_name")
-    def _validate_method_name(cls, v: str, values: BasicCustomFiles.Partial) -> str:
+    def _validate_method_name(cls, method_name: str, values: BasicCustomFiles.Partial) -> str:
         for validator in BasicCustomFiles.Validators._method_name_validators:
-            v = validator(v, values=values)
-        return v
+            method_name = validator(method_name, values=values)
+        return method_name
 
     @pydantic.validator("signature")
     def _validate_signature(
-        cls, v: NonVoidFunctionSignature, values: BasicCustomFiles.Partial
+        cls, signature: NonVoidFunctionSignature, values: BasicCustomFiles.Partial
     ) -> NonVoidFunctionSignature:
         for validator in BasicCustomFiles.Validators._signature_validators:
-            v = validator(v, values=values)
-        return v
+            signature = validator(signature, values=values)
+        return signature
 
     @pydantic.validator("additional_files")
     def _validate_additional_files(
-        cls, v: typing.Dict[Language, Files], values: BasicCustomFiles.Partial
+        cls, additional_files: typing.Dict[Language, Files], values: BasicCustomFiles.Partial
     ) -> typing.Dict[Language, Files]:
         for validator in BasicCustomFiles.Validators._additional_files_validators:
-            v = validator(v, values=values)
-        return v
+            additional_files = validator(additional_files, values=values)
+        return additional_files
 
     @pydantic.validator("basic_test_case_template")
     def _validate_basic_test_case_template(
-        cls, v: BasicTestCaseTemplate, values: BasicCustomFiles.Partial
+        cls, basic_test_case_template: BasicTestCaseTemplate, values: BasicCustomFiles.Partial
     ) -> BasicTestCaseTemplate:
         for validator in BasicCustomFiles.Validators._basic_test_case_template_validators:
-            v = validator(v, values=values)
-        return v
+            basic_test_case_template = validator(basic_test_case_template, values=values)
+        return basic_test_case_template
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

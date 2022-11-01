@@ -33,19 +33,19 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
                 ...
 
             @TestSubmissionStatusV2.Validators.field("updates")
-            def validate_updates(v: typing.List[TestSubmissionUpdate], values: TestSubmissionStatusV2.Partial) -> typing.List[TestSubmissionUpdate]:
+            def validate_updates(updates: typing.List[TestSubmissionUpdate], values: TestSubmissionStatusV2.Partial) -> typing.List[TestSubmissionUpdate]:
                 ...
 
             @TestSubmissionStatusV2.Validators.field("problem_id")
-            def validate_problem_id(v: ProblemId, values: TestSubmissionStatusV2.Partial) -> ProblemId:
+            def validate_problem_id(problem_id: ProblemId, values: TestSubmissionStatusV2.Partial) -> ProblemId:
                 ...
 
             @TestSubmissionStatusV2.Validators.field("problem_version")
-            def validate_problem_version(v: int, values: TestSubmissionStatusV2.Partial) -> int:
+            def validate_problem_version(problem_version: int, values: TestSubmissionStatusV2.Partial) -> int:
                 ...
 
             @TestSubmissionStatusV2.Validators.field("problem_info")
-            def validate_problem_info(v: ProblemInfoV2, values: TestSubmissionStatusV2.Partial) -> ProblemInfoV2:
+            def validate_problem_info(problem_info: ProblemInfoV2, values: TestSubmissionStatusV2.Partial) -> ProblemInfoV2:
                 ...
         """
 
@@ -123,20 +123,20 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
 
         class UpdatesValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.List[TestSubmissionUpdate], *, values: TestSubmissionStatusV2.Partial
+                self, updates: typing.List[TestSubmissionUpdate], *, values: TestSubmissionStatusV2.Partial
             ) -> typing.List[TestSubmissionUpdate]:
                 ...
 
         class ProblemIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: ProblemId, *, values: TestSubmissionStatusV2.Partial) -> ProblemId:
+            def __call__(self, problem_id: ProblemId, *, values: TestSubmissionStatusV2.Partial) -> ProblemId:
                 ...
 
         class ProblemVersionValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: TestSubmissionStatusV2.Partial) -> int:
+            def __call__(self, problem_version: int, *, values: TestSubmissionStatusV2.Partial) -> int:
                 ...
 
         class ProblemInfoValidator(typing_extensions.Protocol):
-            def __call__(self, v: ProblemInfoV2, *, values: TestSubmissionStatusV2.Partial) -> ProblemInfoV2:
+            def __call__(self, problem_info: ProblemInfoV2, *, values: TestSubmissionStatusV2.Partial) -> ProblemInfoV2:
                 ...
 
     @pydantic.root_validator
@@ -147,29 +147,31 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
 
     @pydantic.validator("updates")
     def _validate_updates(
-        cls, v: typing.List[TestSubmissionUpdate], values: TestSubmissionStatusV2.Partial
+        cls, updates: typing.List[TestSubmissionUpdate], values: TestSubmissionStatusV2.Partial
     ) -> typing.List[TestSubmissionUpdate]:
         for validator in TestSubmissionStatusV2.Validators._updates_validators:
-            v = validator(v, values=values)
-        return v
+            updates = validator(updates, values=values)
+        return updates
 
     @pydantic.validator("problem_id")
-    def _validate_problem_id(cls, v: ProblemId, values: TestSubmissionStatusV2.Partial) -> ProblemId:
+    def _validate_problem_id(cls, problem_id: ProblemId, values: TestSubmissionStatusV2.Partial) -> ProblemId:
         for validator in TestSubmissionStatusV2.Validators._problem_id_validators:
-            v = validator(v, values=values)
-        return v
+            problem_id = validator(problem_id, values=values)
+        return problem_id
 
     @pydantic.validator("problem_version")
-    def _validate_problem_version(cls, v: int, values: TestSubmissionStatusV2.Partial) -> int:
+    def _validate_problem_version(cls, problem_version: int, values: TestSubmissionStatusV2.Partial) -> int:
         for validator in TestSubmissionStatusV2.Validators._problem_version_validators:
-            v = validator(v, values=values)
-        return v
+            problem_version = validator(problem_version, values=values)
+        return problem_version
 
     @pydantic.validator("problem_info")
-    def _validate_problem_info(cls, v: ProblemInfoV2, values: TestSubmissionStatusV2.Partial) -> ProblemInfoV2:
+    def _validate_problem_info(
+        cls, problem_info: ProblemInfoV2, values: TestSubmissionStatusV2.Partial
+    ) -> ProblemInfoV2:
         for validator in TestSubmissionStatusV2.Validators._problem_info_validators:
-            v = validator(v, values=values)
-        return v
+            problem_info = validator(problem_info, values=values)
+        return problem_info
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

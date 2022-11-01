@@ -27,11 +27,11 @@ class RecordedTestCaseUpdate(pydantic.BaseModel):
                 ...
 
             @RecordedTestCaseUpdate.Validators.field("test_case_id")
-            def validate_test_case_id(v: TestCaseId, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
+            def validate_test_case_id(test_case_id: TestCaseId, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
                 ...
 
             @RecordedTestCaseUpdate.Validators.field("trace_responses_size")
-            def validate_trace_responses_size(v: int, values: RecordedTestCaseUpdate.Partial) -> int:
+            def validate_trace_responses_size(trace_responses_size: int, values: RecordedTestCaseUpdate.Partial) -> int:
                 ...
         """
 
@@ -84,11 +84,11 @@ class RecordedTestCaseUpdate(pydantic.BaseModel):
             return decorator
 
         class TestCaseIdValidator(typing_extensions.Protocol):
-            def __call__(self, v: TestCaseId, *, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
+            def __call__(self, test_case_id: TestCaseId, *, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
                 ...
 
         class TraceResponsesSizeValidator(typing_extensions.Protocol):
-            def __call__(self, v: int, *, values: RecordedTestCaseUpdate.Partial) -> int:
+            def __call__(self, trace_responses_size: int, *, values: RecordedTestCaseUpdate.Partial) -> int:
                 ...
 
     @pydantic.root_validator
@@ -98,16 +98,16 @@ class RecordedTestCaseUpdate(pydantic.BaseModel):
         return values
 
     @pydantic.validator("test_case_id")
-    def _validate_test_case_id(cls, v: TestCaseId, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
+    def _validate_test_case_id(cls, test_case_id: TestCaseId, values: RecordedTestCaseUpdate.Partial) -> TestCaseId:
         for validator in RecordedTestCaseUpdate.Validators._test_case_id_validators:
-            v = validator(v, values=values)
-        return v
+            test_case_id = validator(test_case_id, values=values)
+        return test_case_id
 
     @pydantic.validator("trace_responses_size")
-    def _validate_trace_responses_size(cls, v: int, values: RecordedTestCaseUpdate.Partial) -> int:
+    def _validate_trace_responses_size(cls, trace_responses_size: int, values: RecordedTestCaseUpdate.Partial) -> int:
         for validator in RecordedTestCaseUpdate.Validators._trace_responses_size_validators:
-            v = validator(v, values=values)
-        return v
+            trace_responses_size = validator(trace_responses_size, values=values)
+        return trace_responses_size
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

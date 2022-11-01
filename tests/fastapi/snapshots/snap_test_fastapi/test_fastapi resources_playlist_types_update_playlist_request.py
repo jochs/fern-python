@@ -27,11 +27,11 @@ class UpdatePlaylistRequest(pydantic.BaseModel):
                 ...
 
             @UpdatePlaylistRequest.Validators.field("name")
-            def validate_name(v: str, values: UpdatePlaylistRequest.Partial) -> str:
+            def validate_name(name: str, values: UpdatePlaylistRequest.Partial) -> str:
                 ...
 
             @UpdatePlaylistRequest.Validators.field("problems")
-            def validate_problems(v: typing.List[ProblemId], values: UpdatePlaylistRequest.Partial) -> typing.List[ProblemId]:
+            def validate_problems(problems: typing.List[ProblemId], values: UpdatePlaylistRequest.Partial) -> typing.List[ProblemId]:
                 ...
         """
 
@@ -78,12 +78,12 @@ class UpdatePlaylistRequest(pydantic.BaseModel):
             return decorator
 
         class NameValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: UpdatePlaylistRequest.Partial) -> str:
+            def __call__(self, name: str, *, values: UpdatePlaylistRequest.Partial) -> str:
                 ...
 
         class ProblemsValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.List[ProblemId], *, values: UpdatePlaylistRequest.Partial
+                self, problems: typing.List[ProblemId], *, values: UpdatePlaylistRequest.Partial
             ) -> typing.List[ProblemId]:
                 ...
 
@@ -94,18 +94,18 @@ class UpdatePlaylistRequest(pydantic.BaseModel):
         return values
 
     @pydantic.validator("name")
-    def _validate_name(cls, v: str, values: UpdatePlaylistRequest.Partial) -> str:
+    def _validate_name(cls, name: str, values: UpdatePlaylistRequest.Partial) -> str:
         for validator in UpdatePlaylistRequest.Validators._name_validators:
-            v = validator(v, values=values)
-        return v
+            name = validator(name, values=values)
+        return name
 
     @pydantic.validator("problems")
     def _validate_problems(
-        cls, v: typing.List[ProblemId], values: UpdatePlaylistRequest.Partial
+        cls, problems: typing.List[ProblemId], values: UpdatePlaylistRequest.Partial
     ) -> typing.List[ProblemId]:
         for validator in UpdatePlaylistRequest.Validators._problems_validators:
-            v = validator(v, values=values)
-        return v
+            problems = validator(problems, values=values)
+        return problems
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

@@ -27,11 +27,11 @@ class TestCase(pydantic.BaseModel):
                 ...
 
             @TestCase.Validators.field("id")
-            def validate_id(v: str, values: TestCase.Partial) -> str:
+            def validate_id(id: str, values: TestCase.Partial) -> str:
                 ...
 
             @TestCase.Validators.field("params")
-            def validate_params(v: typing.List[VariableValue], values: TestCase.Partial) -> typing.List[VariableValue]:
+            def validate_params(params: typing.List[VariableValue], values: TestCase.Partial) -> typing.List[VariableValue]:
                 ...
         """
 
@@ -72,12 +72,12 @@ class TestCase(pydantic.BaseModel):
             return decorator
 
         class IdValidator(typing_extensions.Protocol):
-            def __call__(self, v: str, *, values: TestCase.Partial) -> str:
+            def __call__(self, id: str, *, values: TestCase.Partial) -> str:
                 ...
 
         class ParamsValidator(typing_extensions.Protocol):
             def __call__(
-                self, v: typing.List[VariableValue], *, values: TestCase.Partial
+                self, params: typing.List[VariableValue], *, values: TestCase.Partial
             ) -> typing.List[VariableValue]:
                 ...
 
@@ -88,16 +88,18 @@ class TestCase(pydantic.BaseModel):
         return values
 
     @pydantic.validator("id")
-    def _validate_id(cls, v: str, values: TestCase.Partial) -> str:
+    def _validate_id(cls, id: str, values: TestCase.Partial) -> str:
         for validator in TestCase.Validators._id_validators:
-            v = validator(v, values=values)
-        return v
+            id = validator(id, values=values)
+        return id
 
     @pydantic.validator("params")
-    def _validate_params(cls, v: typing.List[VariableValue], values: TestCase.Partial) -> typing.List[VariableValue]:
+    def _validate_params(
+        cls, params: typing.List[VariableValue], values: TestCase.Partial
+    ) -> typing.List[VariableValue]:
         for validator in TestCase.Validators._params_validators:
-            v = validator(v, values=values)
-        return v
+            params = validator(params, values=values)
+        return params
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, **kwargs}

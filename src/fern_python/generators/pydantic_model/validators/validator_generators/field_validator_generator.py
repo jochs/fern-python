@@ -26,7 +26,7 @@ class FieldValidatorGenerator(ValidatorGenerator):
         return f"_{self.field.name}_validators"
 
     def _write_validator_body(self, writer: AST.NodeWriter) -> None:
-        field_value_parameter_name = PydanticModel.VALIDATOR_FIELD_VALUE_PARAMETER_NAME
+        field_value_parameter_name = self.field.name
 
         INDIVIDUAL_VALIDATOR_NAME = "validator"
         writer.write(f"for {INDIVIDUAL_VALIDATOR_NAME} in ")
@@ -96,7 +96,7 @@ class FieldValidatorGenerator(ValidatorGenerator):
             writer.write(".".join(reference_to_decorator))
             writer.write_line(f'("{field_name}")')
 
-            writer.write(f"def validate_{field_name}({PydanticModel.VALIDATOR_FIELD_VALUE_PARAMETER_NAME}: ")
+            writer.write(f"def validate_{field_name}({field_name}: ")
             writer.write_node(field_type)
             writer.write(f", {PydanticModel.VALIDATOR_VALUES_PARAMETER_NAME}: ")
             writer.write_node(AST.ReferenceNode(self._model.get_reference_to_partial_class()))
@@ -125,7 +125,7 @@ class FieldValidatorGenerator(ValidatorGenerator):
                 signature=AST.FunctionSignature(
                     parameters=[
                         AST.FunctionParameter(
-                            name=PydanticModel.VALIDATOR_FIELD_VALUE_PARAMETER_NAME,
+                            name=self.field.name,
                             type_hint=self.field.type_hint,
                         ),
                     ],
