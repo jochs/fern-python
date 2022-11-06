@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional, Sequence, Set
+from typing import List, Sequence, Set
 
 from ....ast_node import AstNode, AstNodeMetadata, NodeWriter
 from ....references import ClassReference, Module, Reference, ReferenceImport
@@ -46,7 +46,7 @@ class ClassDeclaration(AstNode):
         declaration: FunctionDeclaration,
         decorator: ClassMethodDecorator = None,
         no_implicit_decorator: bool = False,
-        docstring: Optional[str] = None,
+        docstring: Docstring = None,
     ) -> FunctionDeclaration:
         def augment_signature(signature: FunctionSignature) -> FunctionSignature:
             parameters = (
@@ -89,7 +89,7 @@ class ClassDeclaration(AstNode):
         self,
         name: str,
         signature: FunctionSignature,
-        docstring: Optional[str] = None,
+        docstring: Docstring = None,
     ) -> FunctionDeclaration:
         return self.add_method(
             declaration=FunctionDeclaration(

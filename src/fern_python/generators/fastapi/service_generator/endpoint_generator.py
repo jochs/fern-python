@@ -54,7 +54,7 @@ class EndpointGenerator:
                 named_parameters=[parameter.to_function_parameter() for parameter in self._parameters],
                 return_type=self._get_return_type(),
             ),
-            docstring=self._endpoint.docs,
+            docstring=AST.Docstring(self._endpoint.docs) if self._endpoint.docs is not None else None,
         )
 
     def _get_return_type(self) -> AST.TypeHint:
