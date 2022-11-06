@@ -22,12 +22,14 @@ class FunctionDeclaration(AstNode):
         body: CodeWriter,
         overloads: Sequence[FunctionSignature] = None,
         decorators: Sequence[AstNode] = None,
+        docstring: Optional[str] = None,
     ):
         self.name = name
         self.signature = signature
         self.overloads = overloads or []
         self.body = body
         self.decorators = decorators or []
+        self.docstring = docstring
 
     def get_metadata(self) -> AstNodeMetadata:
         metadata = AstNodeMetadata()
@@ -70,6 +72,10 @@ class FunctionDeclaration(AstNode):
         writer.write(f"def {self.name}")
         writer.write_node(signature)
         with writer.indent():
+            if self.docstring is not None:
+                writer.write_line('"""')
+                writer.write_line(self.docstring)
+                writer.write_line('"""')
             if body is None:
                 writer.write("...")
             else:
