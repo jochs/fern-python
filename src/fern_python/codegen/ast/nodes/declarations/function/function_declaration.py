@@ -3,8 +3,8 @@ from typing import Optional, Sequence
 from ....ast_node import AstNode, AstNodeMetadata, NodeWriter
 from ....references import Module, Reference, ReferenceImport
 from ...code_writer import CodeWriter
-from .function_signature import FunctionSignature
 from ...docstring import Docstring
+from .function_signature import FunctionSignature
 
 OVERLOAD_DECORATOR = Reference(
     qualified_name_excluding_import=("overload",),
