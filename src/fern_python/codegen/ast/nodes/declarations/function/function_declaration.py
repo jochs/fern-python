@@ -48,8 +48,6 @@ class FunctionDeclaration(AstNode):
         return metadata
 
     def write(self, writer: NodeWriter) -> None:
-        if self.docstring is not None:
-            print(self.docstring)
         for overload in self.overloads:
             self._write(writer, signature=overload, body=None)
         self._write(writer, signature=self.signature, body=self.body)

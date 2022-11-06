@@ -27,18 +27,30 @@ class AbstractProblemInfoServicV2(AbstractFernService):
 
     @abc.abstractmethod
     def get_lightweight_problems(self) -> typing.List[LightweightProblemInfoV2]:
+        """
+        Returns lightweight versions of all problems
+        """
         ...
 
     @abc.abstractmethod
     def get_problems(self) -> typing.List[ProblemInfoV2]:
+        """
+        Returns latest versions of all problems
+        """
         ...
 
     @abc.abstractmethod
     def get_latest_problem(self, *, problem_id: str) -> ProblemInfoV2:
+        """
+        Returns latest version of a problem
+        """
         ...
 
     @abc.abstractmethod
     def get_problem_version(self, *, problem_id: str, problem_version: int) -> ProblemInfoV2:
+        """
+        Returns requested version of a problem
+        """
         ...
 
     """

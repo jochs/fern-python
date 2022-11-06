@@ -32,26 +32,41 @@ class AbstractPlaylistCrudService(AbstractFernService):
 
     @abc.abstractmethod
     def create_playlist(self, *, body: PlaylistCreateRequest, service_param: int, auth: ApiAuth) -> Playlist:
+        """
+        Create a new playlist
+        """
         ...
 
     @abc.abstractmethod
     def get_playlists(
         self, *, service_param: int, limit: typing.Optional[int], other_field: str, auth: ApiAuth
     ) -> typing.List[Playlist]:
+        """
+        Returns the user's playlists
+        """
         ...
 
     @abc.abstractmethod
     def get_playlist(self, *, service_param: int, playlist_id: str) -> Playlist:
+        """
+        Returns a playlist
+        """
         ...
 
     @abc.abstractmethod
     def update_playlist(
         self, *, body: typing.Optional[UpdatePlaylistRequest], service_param: int, playlist_id: str, auth: ApiAuth
     ) -> typing.Optional[Playlist]:
+        """
+        Updates a playlist
+        """
         ...
 
     @abc.abstractmethod
     def delete_playlist(self, *, service_param: int, playlist_id: str, auth: ApiAuth) -> None:
+        """
+        Deletes a playlist
+        """
         ...
 
     """

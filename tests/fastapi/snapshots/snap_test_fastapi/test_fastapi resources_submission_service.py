@@ -29,14 +29,23 @@ class AbstractExecutionSesssionManagementService(AbstractFernService):
 
     @abc.abstractmethod
     def create_execution_session(self, *, language: Language) -> ExecutionSessionResponse:
+        """
+        Returns sessionId and execution server URL for session. Spins up server.
+        """
         ...
 
     @abc.abstractmethod
     def get_execution_session(self, *, session_id: str) -> typing.Optional[ExecutionSessionResponse]:
+        """
+        Returns execution server URL for session. Returns empty if session isn't registered.
+        """
         ...
 
     @abc.abstractmethod
     def stop_execution_session(self, *, session_id: str) -> None:
+        """
+        Stops execution session.
+        """
         ...
 
     @abc.abstractmethod

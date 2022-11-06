@@ -46,7 +46,6 @@ class ClassDeclaration(AstNode):
         declaration: FunctionDeclaration,
         decorator: ClassMethodDecorator = None,
         no_implicit_decorator: bool = False,
-        docstring: Docstring = None,
     ) -> FunctionDeclaration:
         def augment_signature(signature: FunctionSignature) -> FunctionSignature:
             parameters = (
@@ -78,7 +77,7 @@ class ClassDeclaration(AstNode):
             body=declaration.body,
             decorators=decorators,
             overloads=[augment_signature(overload) for overload in declaration.overloads],
-            docstring=docstring,
+            docstring=declaration.docstring,
         )
 
         self.statements.append(declaration)

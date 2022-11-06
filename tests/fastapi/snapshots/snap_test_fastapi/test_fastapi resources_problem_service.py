@@ -31,18 +31,30 @@ class AbstractProblemCrudService(AbstractFernService):
 
     @abc.abstractmethod
     def create_problem(self, *, body: CreateProblemRequest) -> CreateProblemResponse:
+        """
+        Creates a problem
+        """
         ...
 
     @abc.abstractmethod
     def update_problem(self, *, body: CreateProblemRequest, problem_id: str) -> UpdateProblemResponse:
+        """
+        Updates a problem
+        """
         ...
 
     @abc.abstractmethod
     def delete_problem(self, *, problem_id: str) -> None:
+        """
+        Soft deletes a problem
+        """
         ...
 
     @abc.abstractmethod
     def get_default_starter_files(self, *, body: GetDefaultStarterFilesRequest) -> GetDefaultStarterFilesResponse:
+        """
+        Returns default starter files for problem
+        """
         ...
 
     @abc.abstractmethod
