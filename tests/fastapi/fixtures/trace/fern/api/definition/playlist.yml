@@ -16,7 +16,7 @@ types:
   UpdatePlaylistRequest:
     properties:
       name: string
-      problems: 
+      problems:
         type: list<commons.ProblemId>
         docs: The problems that make up the playlist.
   PlaylistIdNotFoundErrorBody:
