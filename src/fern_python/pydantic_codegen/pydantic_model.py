@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import dataclasses
-import shlex
 from types import TracebackType
 from typing import List, Optional, Sequence, Type, Union
 
