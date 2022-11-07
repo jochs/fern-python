@@ -273,13 +273,13 @@ def get_field_name_initializer(
             writer.write(f'alias="{json_field_name}"')
         if default_factory is not None:
             if arg_present:
-                writer.write(",")
-            writer.write(" default_factory=")
+                writer.write(", ")
+            writer.write("default_factory=")
             writer.write_node(default_factory)
         if description is not None:
             if arg_present:
-                writer.write(",")
-            writer.write(f'(description="""{description}"""')
+                writer.write(", ")
+            writer.write(f'description="""{description}"""')
         writer.write(")")
 
     return write

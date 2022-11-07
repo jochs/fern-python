@@ -38,4 +38,5 @@ class ObjectGenerator(AbstractTypeGenerator):
                     pascal_case_field_name=property.name.pascal_case,
                     type_reference=property.value_type,
                     json_field_name=property.name.wire_value,
+                    description=property.docs,
                 )
