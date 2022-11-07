@@ -15,13 +15,13 @@ from .test_case_v_2 import TestCaseV2
 
 
 class CreateProblemRequestV2(pydantic.BaseModel):
-    problem_name: str
-    problem_description: ProblemDescription
-    custom_files: CustomFiles
-    custom_test_case_templates: typing.List[TestCaseTemplate]
+    problem_name: str = pydantic.Field(alias="problemName")
+    problem_description: ProblemDescription = pydantic.Field(alias="problemDescription")
+    custom_files: CustomFiles = pydantic.Field(alias="customFiles")
+    custom_test_case_templates: typing.List[TestCaseTemplate] = pydantic.Field(alias="customTestCaseTemplates")
     testcases: typing.List[TestCaseV2]
-    supported_languages: typing.List[Language]
-    is_public: bool
+    supported_languages: typing.List[Language] = pydantic.Field(alias="supportedLanguages")
+    is_public: bool = pydantic.Field(alias="isPublic")
 
     class Partial(typing_extensions.TypedDict):
         problem_name: typing_extensions.NotRequired[str]
@@ -286,3 +286,4 @@ class CreateProblemRequestV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

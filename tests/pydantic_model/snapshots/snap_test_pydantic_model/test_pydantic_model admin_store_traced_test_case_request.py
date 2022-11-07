@@ -13,7 +13,7 @@ from ..submission.trace_response import TraceResponse
 
 class StoreTracedTestCaseRequest(pydantic.BaseModel):
     result: TestCaseResultWithStdout
-    trace_responses: typing.List[TraceResponse]
+    trace_responses: typing.List[TraceResponse] = pydantic.Field(alias="traceResponses")
 
     class Partial(typing_extensions.TypedDict):
         result: typing_extensions.NotRequired[TestCaseResultWithStdout]
@@ -126,3 +126,4 @@ class StoreTracedTestCaseRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

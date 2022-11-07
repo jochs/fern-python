@@ -12,8 +12,8 @@ from .test_submission_update_info import TestSubmissionUpdateInfo
 
 
 class TestSubmissionUpdate(pydantic.BaseModel):
-    update_time: dt.datetime
-    update_info: TestSubmissionUpdateInfo
+    update_time: dt.datetime = pydantic.Field(alias="updateTime")
+    update_info: TestSubmissionUpdateInfo = pydantic.Field(alias="updateInfo")
 
     class Partial(typing_extensions.TypedDict):
         update_time: typing_extensions.NotRequired[dt.datetime]
@@ -118,3 +118,4 @@ class TestSubmissionUpdate(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

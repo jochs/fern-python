@@ -9,9 +9,9 @@ import typing_extensions
 
 
 class ExceptionInfo(pydantic.BaseModel):
-    exception_type: str
-    exception_message: str
-    exception_stacktrace: str
+    exception_type: str = pydantic.Field(alias="exceptionType")
+    exception_message: str = pydantic.Field(alias="exceptionMessage")
+    exception_stacktrace: str = pydantic.Field(alias="exceptionStacktrace")
 
     class Partial(typing_extensions.TypedDict):
         exception_type: typing_extensions.NotRequired[str]
@@ -142,3 +142,4 @@ class ExceptionInfo(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

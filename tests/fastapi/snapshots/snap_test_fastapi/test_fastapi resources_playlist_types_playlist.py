@@ -14,7 +14,7 @@ from .playlist_id import PlaylistId
 
 class Playlist(PlaylistCreateRequest):
     playlist_id: PlaylistId
-    owner_id: UserId
+    owner_id: UserId = pydantic.Field(alias="owner-id")
 
     class Partial(PlaylistCreateRequest.Partial):
         playlist_id: typing_extensions.NotRequired[PlaylistId]
@@ -109,3 +109,4 @@ class Playlist(PlaylistCreateRequest):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

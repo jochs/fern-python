@@ -263,7 +263,7 @@ def get_field_name_initializer(
     alias: Optional[str], default_factory: Optional[AST.Expression], description: Optional[str]
 ) -> Union[AST.CodeWriterFunction, None]:
 
-    if alias is None or default_factory is None or description is None:
+    if alias is None and default_factory is None and description is None:
         return None
 
     def write(writer: AST.NodeWriter) -> None:

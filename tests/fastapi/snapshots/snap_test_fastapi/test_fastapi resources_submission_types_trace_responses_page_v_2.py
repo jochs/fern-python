@@ -11,8 +11,13 @@ from .trace_response_v_2 import TraceResponseV2
 
 
 class TraceResponsesPageV2(pydantic.BaseModel):
-    offset: typing.Optional[int]
-    trace_responses: typing.List[TraceResponseV2]
+    offset: typing.Optional[int] = pydantic.Field(
+        description="""
+    If present, use this to load subseqent pages.
+    The offset is the id of the next trace response to load.
+    """
+    )
+    trace_responses: typing.List[TraceResponseV2] = pydantic.Field(alias="traceResponses")
 
     class Partial(typing_extensions.TypedDict):
         offset: typing_extensions.NotRequired[typing.Optional[int]]
@@ -122,3 +127,4 @@ class TraceResponsesPageV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

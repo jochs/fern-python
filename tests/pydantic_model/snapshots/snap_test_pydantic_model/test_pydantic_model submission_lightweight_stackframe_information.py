@@ -9,8 +9,8 @@ import typing_extensions
 
 
 class LightweightStackframeInformation(pydantic.BaseModel):
-    num_stack_frames: int
-    top_stack_frame_method_name: str
+    num_stack_frames: int = pydantic.Field(alias="numStackFrames")
+    top_stack_frame_method_name: str = pydantic.Field(alias="topStackFrameMethodName")
 
     class Partial(typing_extensions.TypedDict):
         num_stack_frames: typing_extensions.NotRequired[int]
@@ -122,3 +122,4 @@ class LightweightStackframeInformation(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

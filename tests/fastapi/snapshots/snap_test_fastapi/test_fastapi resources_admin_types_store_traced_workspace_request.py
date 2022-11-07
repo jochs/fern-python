@@ -12,8 +12,8 @@ from ...submission.types.workspace_run_details import WorkspaceRunDetails
 
 
 class StoreTracedWorkspaceRequest(pydantic.BaseModel):
-    workspace_run_details: WorkspaceRunDetails
-    trace_responses: typing.List[TraceResponse]
+    workspace_run_details: WorkspaceRunDetails = pydantic.Field(alias="workspaceRunDetails")
+    trace_responses: typing.List[TraceResponse] = pydantic.Field(alias="traceResponses")
 
     class Partial(typing_extensions.TypedDict):
         workspace_run_details: typing_extensions.NotRequired[WorkspaceRunDetails]
@@ -128,3 +128,4 @@ class StoreTracedWorkspaceRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

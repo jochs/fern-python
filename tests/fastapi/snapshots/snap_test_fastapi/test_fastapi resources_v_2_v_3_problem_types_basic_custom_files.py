@@ -14,10 +14,10 @@ from .non_void_function_signature import NonVoidFunctionSignature
 
 
 class BasicCustomFiles(pydantic.BaseModel):
-    method_name: str
+    method_name: str = pydantic.Field(alias="methodName")
     signature: NonVoidFunctionSignature
-    additional_files: typing.Dict[Language, Files]
-    basic_test_case_template: BasicTestCaseTemplate
+    additional_files: typing.Dict[Language, Files] = pydantic.Field(alias="additionalFiles")
+    basic_test_case_template: BasicTestCaseTemplate = pydantic.Field(alias="basicTestCaseTemplate")
 
     class Partial(typing_extensions.TypedDict):
         method_name: typing_extensions.NotRequired[str]
@@ -187,3 +187,4 @@ class BasicCustomFiles(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

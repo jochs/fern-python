@@ -13,7 +13,7 @@ from .parameter import Parameter
 
 class NonVoidFunctionSignature(pydantic.BaseModel):
     parameters: typing.List[Parameter]
-    return_type: VariableType
+    return_type: VariableType = pydantic.Field(alias="returnType")
 
     class Partial(typing_extensions.TypedDict):
         parameters: typing_extensions.NotRequired[typing.List[Parameter]]
@@ -124,3 +124,4 @@ class NonVoidFunctionSignature(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

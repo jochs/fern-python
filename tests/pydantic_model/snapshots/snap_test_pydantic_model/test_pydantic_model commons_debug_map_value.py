@@ -9,7 +9,7 @@ import typing_extensions
 
 
 class DebugMapValue(pydantic.BaseModel):
-    key_value_pairs: typing.List[DebugKeyValuePairs]
+    key_value_pairs: typing.List[DebugKeyValuePairs] = pydantic.Field(alias="keyValuePairs")
 
     class Partial(typing_extensions.TypedDict):
         key_value_pairs: typing_extensions.NotRequired[typing.List[DebugKeyValuePairs]]
@@ -85,6 +85,7 @@ class DebugMapValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 from .debug_key_value_pairs import DebugKeyValuePairs  # noqa: E402

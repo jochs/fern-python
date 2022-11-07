@@ -9,7 +9,7 @@ import typing_extensions
 
 
 class UpdateProblemResponse(pydantic.BaseModel):
-    problem_version: int
+    problem_version: int = pydantic.Field(alias="problemVersion")
 
     class Partial(typing_extensions.TypedDict):
         problem_version: typing_extensions.NotRequired[int]
@@ -86,3 +86,4 @@ class UpdateProblemResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

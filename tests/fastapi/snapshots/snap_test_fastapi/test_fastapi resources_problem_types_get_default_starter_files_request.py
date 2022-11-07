@@ -12,9 +12,9 @@ from .variable_type_and_name import VariableTypeAndName
 
 
 class GetDefaultStarterFilesRequest(pydantic.BaseModel):
-    input_params: typing.List[VariableTypeAndName]
-    output_type: VariableType
-    method_name: str
+    input_params: typing.List[VariableTypeAndName] = pydantic.Field(alias="inputParams")
+    output_type: VariableType = pydantic.Field(alias="outputType")
+    method_name: str = pydantic.Field(alias="methodName")
 
     class Partial(typing_extensions.TypedDict):
         input_params: typing_extensions.NotRequired[typing.List[VariableTypeAndName]]
@@ -156,3 +156,4 @@ class GetDefaultStarterFilesRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

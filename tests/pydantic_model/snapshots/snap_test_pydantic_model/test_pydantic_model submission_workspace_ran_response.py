@@ -12,8 +12,8 @@ from .workspace_run_details import WorkspaceRunDetails
 
 
 class WorkspaceRanResponse(pydantic.BaseModel):
-    submission_id: SubmissionId
-    run_details: WorkspaceRunDetails
+    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
+    run_details: WorkspaceRunDetails = pydantic.Field(alias="runDetails")
 
     class Partial(typing_extensions.TypedDict):
         submission_id: typing_extensions.NotRequired[SubmissionId]
@@ -117,3 +117,4 @@ class WorkspaceRanResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

@@ -11,8 +11,8 @@ from ..commons.file_info import FileInfo
 
 
 class ProblemFiles(pydantic.BaseModel):
-    solution_file: FileInfo
-    read_only_files: typing.List[FileInfo]
+    solution_file: FileInfo = pydantic.Field(alias="solutionFile")
+    read_only_files: typing.List[FileInfo] = pydantic.Field(alias="readOnlyFiles")
 
     class Partial(typing_extensions.TypedDict):
         solution_file: typing_extensions.NotRequired[FileInfo]
@@ -111,3 +111,4 @@ class ProblemFiles(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

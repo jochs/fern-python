@@ -12,8 +12,8 @@ from .execution_session_status import ExecutionSessionStatus
 
 
 class ExecutionSessionResponse(pydantic.BaseModel):
-    session_id: str
-    execution_session_url: typing.Optional[str]
+    session_id: str = pydantic.Field(alias="sessionId")
+    execution_session_url: typing.Optional[str] = pydantic.Field(alias="executionSessionUrl")
     language: Language
     status: ExecutionSessionStatus
 
@@ -185,3 +185,4 @@ class ExecutionSessionResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

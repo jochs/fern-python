@@ -11,7 +11,7 @@ from .function_signature import FunctionSignature
 
 
 class GetFunctionSignatureRequest(pydantic.BaseModel):
-    function_signature: FunctionSignature
+    function_signature: FunctionSignature = pydantic.Field(alias="functionSignature")
 
     class Partial(typing_extensions.TypedDict):
         function_signature: typing_extensions.NotRequired[FunctionSignature]
@@ -92,3 +92,4 @@ class GetFunctionSignatureRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

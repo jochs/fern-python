@@ -14,9 +14,9 @@ from .test_submission_update import TestSubmissionUpdate
 
 class TestSubmissionStatusV2(pydantic.BaseModel):
     updates: typing.List[TestSubmissionUpdate]
-    problem_id: ProblemId
-    problem_version: int
-    problem_info: ProblemInfoV2
+    problem_id: ProblemId = pydantic.Field(alias="problemId")
+    problem_version: int = pydantic.Field(alias="problemVersion")
+    problem_info: ProblemInfoV2 = pydantic.Field(alias="problemInfo")
 
     class Partial(typing_extensions.TypedDict):
         updates: typing_extensions.NotRequired[typing.List[TestSubmissionUpdate]]
@@ -181,3 +181,4 @@ class TestSubmissionStatusV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

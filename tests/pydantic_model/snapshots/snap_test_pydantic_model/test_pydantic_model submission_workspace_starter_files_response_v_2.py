@@ -12,7 +12,7 @@ from ..v_2.problem.files import Files
 
 
 class WorkspaceStarterFilesResponseV2(pydantic.BaseModel):
-    files_by_language: typing.Dict[Language, Files]
+    files_by_language: typing.Dict[Language, Files] = pydantic.Field(alias="filesByLanguage")
 
     class Partial(typing_extensions.TypedDict):
         files_by_language: typing_extensions.NotRequired[typing.Dict[Language, Files]]
@@ -98,3 +98,4 @@ class WorkspaceStarterFilesResponseV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

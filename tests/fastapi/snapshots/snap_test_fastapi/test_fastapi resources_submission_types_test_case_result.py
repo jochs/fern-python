@@ -12,8 +12,8 @@ from .actual_result import ActualResult
 
 
 class TestCaseResult(pydantic.BaseModel):
-    expected_result: VariableValue
-    actual_result: ActualResult
+    expected_result: VariableValue = pydantic.Field(alias="expectedResult")
+    actual_result: ActualResult = pydantic.Field(alias="actualResult")
     passed: bool
 
     class Partial(typing_extensions.TypedDict):
@@ -142,3 +142,4 @@ class TestCaseResult(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

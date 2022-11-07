@@ -13,7 +13,7 @@ from .file_info_v_2 import FileInfoV2
 
 class DefaultProvidedFile(pydantic.BaseModel):
     file: FileInfoV2
-    related_types: typing.List[VariableType]
+    related_types: typing.List[VariableType] = pydantic.Field(alias="relatedTypes")
 
     class Partial(typing_extensions.TypedDict):
         file: typing_extensions.NotRequired[FileInfoV2]
@@ -120,3 +120,4 @@ class DefaultProvidedFile(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

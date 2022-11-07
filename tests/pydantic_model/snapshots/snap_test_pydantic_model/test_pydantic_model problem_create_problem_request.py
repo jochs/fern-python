@@ -16,13 +16,13 @@ from .variable_type_and_name import VariableTypeAndName
 
 
 class CreateProblemRequest(pydantic.BaseModel):
-    problem_name: str
-    problem_description: ProblemDescription
+    problem_name: str = pydantic.Field(alias="problemName")
+    problem_description: ProblemDescription = pydantic.Field(alias="problemDescription")
     files: typing.Dict[Language, ProblemFiles]
-    input_params: typing.List[VariableTypeAndName]
-    output_type: VariableType
+    input_params: typing.List[VariableTypeAndName] = pydantic.Field(alias="inputParams")
+    output_type: VariableType = pydantic.Field(alias="outputType")
     testcases: typing.List[TestCaseWithExpectedResult]
-    method_name: str
+    method_name: str = pydantic.Field(alias="methodName")
 
     class Partial(typing_extensions.TypedDict):
         problem_name: typing_extensions.NotRequired[str]
@@ -279,3 +279,4 @@ class CreateProblemRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

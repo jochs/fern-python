@@ -11,7 +11,7 @@ from .exception_info import ExceptionInfo
 
 
 class InternalError(pydantic.BaseModel):
-    exception_info: ExceptionInfo
+    exception_info: ExceptionInfo = pydantic.Field(alias="exceptionInfo")
 
     class Partial(typing_extensions.TypedDict):
         exception_info: typing_extensions.NotRequired[ExceptionInfo]
@@ -83,3 +83,4 @@ class InternalError(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

@@ -9,7 +9,7 @@ import typing_extensions
 
 
 class TestCaseExpects(pydantic.BaseModel):
-    expected_stdout: typing.Optional[str]
+    expected_stdout: typing.Optional[str] = pydantic.Field(alias="expectedStdout")
 
     class Partial(typing_extensions.TypedDict):
         expected_stdout: typing_extensions.NotRequired[typing.Optional[str]]
@@ -87,3 +87,4 @@ class TestCaseExpects(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

@@ -12,7 +12,7 @@ from .exception_v_2 import ExceptionV2
 
 
 class WorkspaceRunDetails(pydantic.BaseModel):
-    exception_v_2: typing.Optional[ExceptionV2]
+    exception_v_2: typing.Optional[ExceptionV2] = pydantic.Field(alias="exceptionV2")
     exception: typing.Optional[ExceptionInfo]
     stdout: str
 
@@ -152,3 +152,4 @@ class WorkspaceRunDetails(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

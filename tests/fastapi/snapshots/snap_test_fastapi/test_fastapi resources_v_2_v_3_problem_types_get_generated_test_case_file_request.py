@@ -13,7 +13,7 @@ from .test_case_v_2 import TestCaseV2
 
 class GetGeneratedTestCaseFileRequest(pydantic.BaseModel):
     template: typing.Optional[TestCaseTemplate]
-    test_case: TestCaseV2
+    test_case: TestCaseV2 = pydantic.Field(alias="testCase")
 
     class Partial(typing_extensions.TypedDict):
         template: typing_extensions.NotRequired[typing.Optional[TestCaseTemplate]]
@@ -129,3 +129,4 @@ class GetGeneratedTestCaseFileRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

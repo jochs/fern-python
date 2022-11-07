@@ -16,7 +16,7 @@ class VoidFunctionDefinitionThatTakesActualResult(pydantic.BaseModel):
     The generated signature will include an additional param, actualResult
     """
 
-    additional_parameters: typing.List[Parameter]
+    additional_parameters: typing.List[Parameter] = pydantic.Field(alias="additionalParameters")
     code: FunctionImplementationForMultipleLanguages
 
     class Partial(typing_extensions.TypedDict):
@@ -147,3 +147,4 @@ class VoidFunctionDefinitionThatTakesActualResult(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

@@ -9,8 +9,8 @@ import typing_extensions
 
 
 class GenericValue(pydantic.BaseModel):
-    stringified_type: typing.Optional[str]
-    stringified_value: str
+    stringified_type: typing.Optional[str] = pydantic.Field(alias="stringifiedType")
+    stringified_value: str = pydantic.Field(alias="stringifiedValue")
 
     class Partial(typing_extensions.TypedDict):
         stringified_type: typing_extensions.NotRequired[typing.Optional[str]]
@@ -113,3 +113,4 @@ class GenericValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

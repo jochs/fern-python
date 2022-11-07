@@ -12,7 +12,7 @@ from .test_case_template_id import TestCaseTemplateId
 
 
 class TestCaseTemplate(pydantic.BaseModel):
-    template_id: TestCaseTemplateId
+    template_id: TestCaseTemplateId = pydantic.Field(alias="templateId")
     name: str
     implementation: TestCaseImplementation
 
@@ -146,3 +146,4 @@ class TestCaseTemplate(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

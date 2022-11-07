@@ -12,8 +12,8 @@ from .variable_value import VariableValue
 
 
 class TestCaseWithExpectedResult(pydantic.BaseModel):
-    test_case: TestCase
-    expected_result: VariableValue
+    test_case: TestCase = pydantic.Field(alias="testCase")
+    expected_result: VariableValue = pydantic.Field(alias="expectedResult")
 
     class Partial(typing_extensions.TypedDict):
         test_case: typing_extensions.NotRequired[TestCase]
@@ -120,3 +120,4 @@ class TestCaseWithExpectedResult(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

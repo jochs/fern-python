@@ -12,8 +12,8 @@ from .submission_id import SubmissionId
 
 
 class CustomTestCasesUnsupported(pydantic.BaseModel):
-    problem_id: ProblemId
-    submission_id: SubmissionId
+    problem_id: ProblemId = pydantic.Field(alias="problemId")
+    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
 
     class Partial(typing_extensions.TypedDict):
         problem_id: typing_extensions.NotRequired[ProblemId]
@@ -120,3 +120,4 @@ class CustomTestCasesUnsupported(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

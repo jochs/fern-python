@@ -12,8 +12,8 @@ from .workspace_submission_update_info import WorkspaceSubmissionUpdateInfo
 
 
 class WorkspaceSubmissionUpdate(pydantic.BaseModel):
-    update_time: dt.datetime
-    update_info: WorkspaceSubmissionUpdateInfo
+    update_time: dt.datetime = pydantic.Field(alias="updateTime")
+    update_info: WorkspaceSubmissionUpdateInfo = pydantic.Field(alias="updateInfo")
 
     class Partial(typing_extensions.TypedDict):
         update_time: typing_extensions.NotRequired[dt.datetime]
@@ -124,3 +124,4 @@ class WorkspaceSubmissionUpdate(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

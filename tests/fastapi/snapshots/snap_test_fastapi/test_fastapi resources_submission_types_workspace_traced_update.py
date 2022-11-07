@@ -9,7 +9,7 @@ import typing_extensions
 
 
 class WorkspaceTracedUpdate(pydantic.BaseModel):
-    trace_responses_size: int
+    trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
 
     class Partial(typing_extensions.TypedDict):
         trace_responses_size: typing_extensions.NotRequired[int]
@@ -86,3 +86,4 @@ class WorkspaceTracedUpdate(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

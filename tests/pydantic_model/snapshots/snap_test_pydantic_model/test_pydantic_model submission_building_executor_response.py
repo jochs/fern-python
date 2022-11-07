@@ -12,7 +12,7 @@ from .submission_id import SubmissionId
 
 
 class BuildingExecutorResponse(pydantic.BaseModel):
-    submission_id: SubmissionId
+    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
     status: ExecutionSessionStatus
 
     class Partial(typing_extensions.TypedDict):
@@ -121,3 +121,4 @@ class BuildingExecutorResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

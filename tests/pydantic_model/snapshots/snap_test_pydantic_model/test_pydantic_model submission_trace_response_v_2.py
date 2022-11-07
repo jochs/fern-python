@@ -15,11 +15,11 @@ from .traced_file import TracedFile
 
 
 class TraceResponseV2(pydantic.BaseModel):
-    submission_id: SubmissionId
-    line_number: int
+    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
+    line_number: int = pydantic.Field(alias="lineNumber")
     file: TracedFile
-    return_value: typing.Optional[DebugVariableValue]
-    expression_location: typing.Optional[ExpressionLocation]
+    return_value: typing.Optional[DebugVariableValue] = pydantic.Field(alias="returnValue")
+    expression_location: typing.Optional[ExpressionLocation] = pydantic.Field(alias="expressionLocation")
     stack: StackInformation
     stdout: typing.Optional[str]
 
@@ -262,3 +262,4 @@ class TraceResponseV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

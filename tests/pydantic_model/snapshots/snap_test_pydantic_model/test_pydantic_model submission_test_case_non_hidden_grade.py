@@ -13,7 +13,7 @@ from .exception_v_2 import ExceptionV2
 
 class TestCaseNonHiddenGrade(pydantic.BaseModel):
     passed: bool
-    actual_result: typing.Optional[VariableValue]
+    actual_result: typing.Optional[VariableValue] = pydantic.Field(alias="actualResult")
     exception: typing.Optional[ExceptionV2]
     stdout: str
 
@@ -181,3 +181,4 @@ class TestCaseNonHiddenGrade(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

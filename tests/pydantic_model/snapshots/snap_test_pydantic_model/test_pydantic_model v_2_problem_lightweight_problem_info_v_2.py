@@ -12,10 +12,10 @@ from ...commons.variable_type import VariableType
 
 
 class LightweightProblemInfoV2(pydantic.BaseModel):
-    problem_id: ProblemId
-    problem_name: str
-    problem_version: int
-    variable_types: typing.List[VariableType]
+    problem_id: ProblemId = pydantic.Field(alias="problemId")
+    problem_name: str = pydantic.Field(alias="problemName")
+    problem_version: int = pydantic.Field(alias="problemVersion")
+    variable_types: typing.List[VariableType] = pydantic.Field(alias="variableTypes")
 
     class Partial(typing_extensions.TypedDict):
         problem_id: typing_extensions.NotRequired[ProblemId]
@@ -186,3 +186,4 @@ class LightweightProblemInfoV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True

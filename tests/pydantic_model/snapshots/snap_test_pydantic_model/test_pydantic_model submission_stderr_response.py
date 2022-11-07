@@ -11,7 +11,7 @@ from .submission_id import SubmissionId
 
 
 class StderrResponse(pydantic.BaseModel):
-    submission_id: SubmissionId
+    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
     stderr: str
 
     class Partial(typing_extensions.TypedDict):
@@ -111,3 +111,4 @@ class StderrResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
