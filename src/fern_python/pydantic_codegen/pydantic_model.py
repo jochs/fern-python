@@ -281,7 +281,10 @@ def get_field_name_initializer(
                 writer.write(", ")
             is_multi_line = description.count("\n") > 1
             if is_multi_line:
-                writer.write(f'description="""{description}"""')
+                writer.write_line('description="""')
+                writer.write(f"{description}")
+                writer.write_newline_if_last_line_not()
+                writer.write_line('"""')
             else:
                 writer.write(f'description="{description}"')
         writer.write(")")

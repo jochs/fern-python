@@ -24,7 +24,8 @@ class CreateProblemRequest(pydantic.BaseModel):
     testcases: typing.List[TestCaseWithExpectedResult]
     method_name: str = pydantic.Field(
         alias="methodName",
-        description="""The name of the `method` that the student has to complete.
+        description="""
+    The name of the `method` that the student has to complete.
     The method name cannot include the following characters:
       - Greater Than `>`
       - Less Than `<``
