@@ -31,7 +31,6 @@ class CreateProblemRequest(pydantic.BaseModel):
             "  - Less Than `<``\n"
             "  - Equals `=`\n"
             "  - Period `.`\n"
-            "\n"
         ),
     )
 

@@ -285,9 +285,10 @@ def get_field_name_initializer(
             if len(lines) > 0:
                 writer.write_line("description=(")
                 for i, line in enumerate(lines):
-                    # only add the last line if not empty
-                    if i == (len(lines) - 1) and not line:
-                        writer.write_line(f'"{line}\\n"')
+                    if i == (len(lines) - 1):
+                        # only add the last line if not empty
+                        if line:
+                            writer.write_line(f'"{line}\\n"')
                     else:
                         writer.write_line(f'"{line}\\n"')
                 writer.write_line(")")
