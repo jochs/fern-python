@@ -12,8 +12,8 @@ from .execution_session_state import ExecutionSessionState
 
 class GetExecutionSessionStateResponse(pydantic.BaseModel):
     states: typing.Dict[str, ExecutionSessionState]
-    num_warming_instances: typing.Optional[int] = pydantic.Field(alias="numWarmingInstances")
-    warming_session_ids: typing.List[str] = pydantic.Field(alias="warmingSessionIds")
+    num_warming_instances: typing.Optional[int]
+    warming_session_ids: typing.List[str]
 
     class Partial(typing_extensions.TypedDict):
         states: typing_extensions.NotRequired[typing.Dict[str, ExecutionSessionState]]
@@ -167,4 +167,3 @@ class GetExecutionSessionStateResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

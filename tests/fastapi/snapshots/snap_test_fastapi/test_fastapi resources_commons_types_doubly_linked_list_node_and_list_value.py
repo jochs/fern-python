@@ -12,8 +12,8 @@ from .node_id import NodeId
 
 
 class DoublyLinkedListNodeAndListValue(pydantic.BaseModel):
-    node_id: NodeId = pydantic.Field(alias="nodeId")
-    full_list: DoublyLinkedListValue = pydantic.Field(alias="fullList")
+    node_id: NodeId
+    full_list: DoublyLinkedListValue
 
     class Partial(typing_extensions.TypedDict):
         node_id: typing_extensions.NotRequired[NodeId]
@@ -129,4 +129,3 @@ class DoublyLinkedListNodeAndListValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

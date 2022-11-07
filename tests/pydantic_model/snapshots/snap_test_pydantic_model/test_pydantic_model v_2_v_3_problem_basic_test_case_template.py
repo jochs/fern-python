@@ -13,10 +13,10 @@ from .test_case_template_id import TestCaseTemplateId
 
 
 class BasicTestCaseTemplate(pydantic.BaseModel):
-    template_id: TestCaseTemplateId = pydantic.Field(alias="templateId")
+    template_id: TestCaseTemplateId
     name: str
     description: TestCaseImplementationDescription
-    expected_value_parameter_id: ParameterId = pydantic.Field(alias="expectedValueParameterId")
+    expected_value_parameter_id: ParameterId
 
     class Partial(typing_extensions.TypedDict):
         template_id: typing_extensions.NotRequired[TestCaseTemplateId]
@@ -183,4 +183,3 @@ class BasicTestCaseTemplate(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

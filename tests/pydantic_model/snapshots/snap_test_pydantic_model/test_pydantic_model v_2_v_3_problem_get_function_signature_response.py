@@ -11,7 +11,7 @@ from ....commons.language import Language
 
 
 class GetFunctionSignatureResponse(pydantic.BaseModel):
-    function_by_language: typing.Dict[Language, str] = pydantic.Field(alias="functionByLanguage")
+    function_by_language: typing.Dict[Language, str]
 
     class Partial(typing_extensions.TypedDict):
         function_by_language: typing_extensions.NotRequired[typing.Dict[Language, str]]
@@ -93,4 +93,3 @@ class GetFunctionSignatureResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

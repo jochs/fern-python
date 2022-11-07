@@ -12,8 +12,8 @@ from .files import Files
 
 
 class GeneratedFiles(pydantic.BaseModel):
-    generated_test_case_files: typing.Dict[Language, Files] = pydantic.Field(alias="generatedTestCaseFiles")
-    generated_template_files: typing.Dict[Language, Files] = pydantic.Field(alias="generatedTemplateFiles")
+    generated_test_case_files: typing.Dict[Language, Files]
+    generated_template_files: typing.Dict[Language, Files]
     other: typing.Dict[Language, Files]
 
     class Partial(typing_extensions.TypedDict):
@@ -158,4 +158,3 @@ class GeneratedFiles(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

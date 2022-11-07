@@ -14,10 +14,10 @@ from .submission_id import SubmissionId
 
 
 class TraceResponse(pydantic.BaseModel):
-    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
-    line_number: int = pydantic.Field(alias="lineNumber")
-    return_value: typing.Optional[DebugVariableValue] = pydantic.Field(alias="returnValue")
-    expression_location: typing.Optional[ExpressionLocation] = pydantic.Field(alias="expressionLocation")
+    submission_id: SubmissionId
+    line_number: int
+    return_value: typing.Optional[DebugVariableValue]
+    expression_location: typing.Optional[ExpressionLocation]
     stack: StackInformation
     stdout: typing.Optional[str]
 
@@ -232,4 +232,3 @@ class TraceResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

@@ -12,8 +12,8 @@ from .node_id import NodeId
 
 
 class BinaryTreeNodeAndTreeValue(pydantic.BaseModel):
-    node_id: NodeId = pydantic.Field(alias="nodeId")
-    full_tree: BinaryTreeValue = pydantic.Field(alias="fullTree")
+    node_id: NodeId
+    full_tree: BinaryTreeValue
 
     class Partial(typing_extensions.TypedDict):
         node_id: typing_extensions.NotRequired[NodeId]
@@ -118,4 +118,3 @@ class BinaryTreeNodeAndTreeValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

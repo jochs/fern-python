@@ -9,8 +9,8 @@ import typing_extensions
 
 
 class MapType(pydantic.BaseModel):
-    key_type: VariableType = pydantic.Field(alias="keyType")
-    value_type: VariableType = pydantic.Field(alias="valueType")
+    key_type: VariableType
+    value_type: VariableType
 
     class Partial(typing_extensions.TypedDict):
         key_type: typing_extensions.NotRequired[VariableType]
@@ -105,7 +105,6 @@ class MapType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 from .variable_type import VariableType  # noqa: E402

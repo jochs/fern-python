@@ -11,7 +11,7 @@ from .node_id import NodeId
 
 
 class BinaryTreeNodeValue(pydantic.BaseModel):
-    node_id: NodeId = pydantic.Field(alias="nodeId")
+    node_id: NodeId
     val: float
     right: typing.Optional[NodeId]
     left: typing.Optional[NodeId]
@@ -175,4 +175,3 @@ class BinaryTreeNodeValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

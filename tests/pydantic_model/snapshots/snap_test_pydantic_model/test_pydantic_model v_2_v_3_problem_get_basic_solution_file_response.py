@@ -12,7 +12,7 @@ from .file_info_v_2 import FileInfoV2
 
 
 class GetBasicSolutionFileResponse(pydantic.BaseModel):
-    solution_file_by_language: typing.Dict[Language, FileInfoV2] = pydantic.Field(alias="solutionFileByLanguage")
+    solution_file_by_language: typing.Dict[Language, FileInfoV2]
 
     class Partial(typing_extensions.TypedDict):
         solution_file_by_language: typing_extensions.NotRequired[typing.Dict[Language, FileInfoV2]]
@@ -94,4 +94,3 @@ class GetBasicSolutionFileResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

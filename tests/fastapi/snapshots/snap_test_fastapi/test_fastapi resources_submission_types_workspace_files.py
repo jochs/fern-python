@@ -11,8 +11,8 @@ from ...commons.types.file_info import FileInfo
 
 
 class WorkspaceFiles(pydantic.BaseModel):
-    main_file: FileInfo = pydantic.Field(alias="mainFile")
-    read_only_files: typing.List[FileInfo] = pydantic.Field(alias="readOnlyFiles")
+    main_file: FileInfo
+    read_only_files: typing.List[FileInfo]
 
     class Partial(typing_extensions.TypedDict):
         main_file: typing_extensions.NotRequired[FileInfo]
@@ -115,4 +115,3 @@ class WorkspaceFiles(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

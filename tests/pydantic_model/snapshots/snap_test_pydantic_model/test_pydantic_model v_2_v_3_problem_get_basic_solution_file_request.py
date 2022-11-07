@@ -11,7 +11,7 @@ from .non_void_function_signature import NonVoidFunctionSignature
 
 
 class GetBasicSolutionFileRequest(pydantic.BaseModel):
-    method_name: str = pydantic.Field(alias="methodName")
+    method_name: str
     signature: NonVoidFunctionSignature
 
     class Partial(typing_extensions.TypedDict):
@@ -123,4 +123,3 @@ class GetBasicSolutionFileRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

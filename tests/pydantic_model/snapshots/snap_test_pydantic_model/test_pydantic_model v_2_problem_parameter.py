@@ -12,9 +12,9 @@ from .parameter_id import ParameterId
 
 
 class Parameter(pydantic.BaseModel):
-    parameter_id: ParameterId = pydantic.Field(alias="parameterId")
+    parameter_id: ParameterId
     name: str
-    variable_type: VariableType = pydantic.Field(alias="variableType")
+    variable_type: VariableType
 
     class Partial(typing_extensions.TypedDict):
         parameter_id: typing_extensions.NotRequired[ParameterId]
@@ -134,4 +134,3 @@ class Parameter(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

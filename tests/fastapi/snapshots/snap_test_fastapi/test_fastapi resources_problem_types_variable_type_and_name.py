@@ -11,7 +11,7 @@ from ...commons.types.variable_type import VariableType
 
 
 class VariableTypeAndName(pydantic.BaseModel):
-    variable_type: VariableType = pydantic.Field(alias="variableType")
+    variable_type: VariableType
     name: str
 
     class Partial(typing_extensions.TypedDict):
@@ -115,4 +115,3 @@ class VariableTypeAndName(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

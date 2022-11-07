@@ -12,7 +12,7 @@ from .trace_response import TraceResponse
 
 class TraceResponsesPage(pydantic.BaseModel):
     offset: typing.Optional[int]
-    trace_responses: typing.List[TraceResponse] = pydantic.Field(alias="traceResponses")
+    trace_responses: typing.List[TraceResponse]
 
     class Partial(typing_extensions.TypedDict):
         offset: typing_extensions.NotRequired[typing.Optional[int]]
@@ -120,4 +120,3 @@ class TraceResponsesPage(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

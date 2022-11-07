@@ -11,8 +11,8 @@ from ..v_2.problem.test_case_id import TestCaseId
 
 
 class RecordedTestCaseUpdate(pydantic.BaseModel):
-    test_case_id: TestCaseId = pydantic.Field(alias="testCaseId")
-    trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
+    test_case_id: TestCaseId
+    trace_responses_size: int
 
     class Partial(typing_extensions.TypedDict):
         test_case_id: typing_extensions.NotRequired[TestCaseId]
@@ -119,4 +119,3 @@ class RecordedTestCaseUpdate(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

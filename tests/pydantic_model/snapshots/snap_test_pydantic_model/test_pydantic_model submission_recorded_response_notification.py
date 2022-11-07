@@ -11,9 +11,9 @@ from .submission_id import SubmissionId
 
 
 class RecordedResponseNotification(pydantic.BaseModel):
-    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
-    trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
-    test_case_id: typing.Optional[str] = pydantic.Field(alias="testCaseId")
+    submission_id: SubmissionId
+    trace_responses_size: int
+    test_case_id: typing.Optional[str]
 
     class Partial(typing_extensions.TypedDict):
         submission_id: typing_extensions.NotRequired[SubmissionId]
@@ -155,4 +155,3 @@ class RecordedResponseNotification(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

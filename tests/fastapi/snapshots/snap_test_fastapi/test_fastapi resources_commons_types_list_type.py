@@ -9,11 +9,8 @@ import typing_extensions
 
 
 class ListType(pydantic.BaseModel):
-    value_type: VariableType = pydantic.Field(alias="valueType")
-    is_fixed_length: typing.Optional[bool] = pydantic.Field(
-        alias="isFixedLength",
-        description="Whether this list is fixed-size (for languages that supports fixed-size lists). Defaults to false.",
-    )
+    value_type: VariableType
+    is_fixed_length: typing.Optional[bool]
 
     class Partial(typing_extensions.TypedDict):
         value_type: typing_extensions.NotRequired[VariableType]
@@ -108,7 +105,6 @@ class ListType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 from .variable_type import VariableType  # noqa: E402

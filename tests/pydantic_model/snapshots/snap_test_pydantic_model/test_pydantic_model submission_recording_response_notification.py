@@ -13,11 +13,11 @@ from .traced_file import TracedFile
 
 
 class RecordingResponseNotification(pydantic.BaseModel):
-    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
-    test_case_id: typing.Optional[str] = pydantic.Field(alias="testCaseId")
-    line_number: int = pydantic.Field(alias="lineNumber")
-    lightweight_stack_info: LightweightStackframeInformation = pydantic.Field(alias="lightweightStackInfo")
-    traced_file: typing.Optional[TracedFile] = pydantic.Field(alias="tracedFile")
+    submission_id: SubmissionId
+    test_case_id: typing.Optional[str]
+    line_number: int
+    lightweight_stack_info: LightweightStackframeInformation
+    traced_file: typing.Optional[TracedFile]
 
     class Partial(typing_extensions.TypedDict):
         submission_id: typing_extensions.NotRequired[SubmissionId]
@@ -227,4 +227,3 @@ class RecordingResponseNotification(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

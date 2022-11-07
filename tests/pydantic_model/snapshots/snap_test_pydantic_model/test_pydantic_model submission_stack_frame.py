@@ -11,8 +11,8 @@ from .scope import Scope
 
 
 class StackFrame(pydantic.BaseModel):
-    method_name: str = pydantic.Field(alias="methodName")
-    line_number: int = pydantic.Field(alias="lineNumber")
+    method_name: str
+    line_number: int
     scopes: typing.List[Scope]
 
     class Partial(typing_extensions.TypedDict):
@@ -133,4 +133,3 @@ class StackFrame(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

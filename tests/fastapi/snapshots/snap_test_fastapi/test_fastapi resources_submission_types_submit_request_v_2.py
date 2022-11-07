@@ -14,12 +14,12 @@ from .submission_id import SubmissionId
 
 
 class SubmitRequestV2(pydantic.BaseModel):
-    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
+    submission_id: SubmissionId
     language: Language
-    submission_files: typing.List[SubmissionFileInfo] = pydantic.Field(alias="submissionFiles")
-    problem_id: ProblemId = pydantic.Field(alias="problemId")
-    problem_version: typing.Optional[int] = pydantic.Field(alias="problemVersion")
-    user_id: typing.Optional[str] = pydantic.Field(alias="userId")
+    submission_files: typing.List[SubmissionFileInfo]
+    problem_id: ProblemId
+    problem_version: typing.Optional[int]
+    user_id: typing.Optional[str]
 
     class Partial(typing_extensions.TypedDict):
         submission_id: typing_extensions.NotRequired[SubmissionId]
@@ -236,4 +236,3 @@ class SubmitRequestV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

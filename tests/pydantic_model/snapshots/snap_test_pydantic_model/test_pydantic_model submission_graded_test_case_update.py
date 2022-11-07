@@ -12,7 +12,7 @@ from .test_case_grade import TestCaseGrade
 
 
 class GradedTestCaseUpdate(pydantic.BaseModel):
-    test_case_id: TestCaseId = pydantic.Field(alias="testCaseId")
+    test_case_id: TestCaseId
     grade: TestCaseGrade
 
     class Partial(typing_extensions.TypedDict):
@@ -114,4 +114,3 @@ class GradedTestCaseUpdate(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

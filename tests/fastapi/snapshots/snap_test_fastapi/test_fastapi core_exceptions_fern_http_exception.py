@@ -22,12 +22,11 @@ class FernHTTPException(abc.ABC, fastapi.HTTPException):
 
     class Body(pydantic.BaseModel):
         error: typing.Optional[str]
-        error_instance_id: uuid.UUID = pydantic.Field(alias="errorInstanceId", default_factory=uuid.uuid4)
+        error_instance_id: uuid.UUID
         content: typing.Optional[typing.Any]
 
         class Config:
             frozen = True
-            allow_population_by_field_name = True
 
     def to_json_response(self) -> fastapi.responses.JSONResponse:
         body = FernHTTPException.Body(error=self.name, content=self.content or http.HTTPStatus(self.status_code).phrase)

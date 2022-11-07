@@ -11,8 +11,8 @@ from ..commons.language import Language
 
 
 class UnexpectedLanguageError(pydantic.BaseModel):
-    expected_language: Language = pydantic.Field(alias="expectedLanguage")
-    actual_language: Language = pydantic.Field(alias="actualLanguage")
+    expected_language: Language
+    actual_language: Language
 
     class Partial(typing_extensions.TypedDict):
         expected_language: typing_extensions.NotRequired[Language]
@@ -119,4 +119,3 @@ class UnexpectedLanguageError(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

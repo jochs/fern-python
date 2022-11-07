@@ -11,7 +11,7 @@ from .parameter_id import ParameterId
 
 
 class DeepEqualityCorrectnessCheck(pydantic.BaseModel):
-    expected_value_parameter_id: ParameterId = pydantic.Field(alias="expectedValueParameterId")
+    expected_value_parameter_id: ParameterId
 
     class Partial(typing_extensions.TypedDict):
         expected_value_parameter_id: typing_extensions.NotRequired[ParameterId]
@@ -91,4 +91,3 @@ class DeepEqualityCorrectnessCheck(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

@@ -9,7 +9,7 @@ import typing_extensions
 
 
 class MapValue(pydantic.BaseModel):
-    key_value_pairs: typing.List[KeyValuePair] = pydantic.Field(alias="keyValuePairs")
+    key_value_pairs: typing.List[KeyValuePair]
 
     class Partial(typing_extensions.TypedDict):
         key_value_pairs: typing_extensions.NotRequired[typing.List[KeyValuePair]]
@@ -81,7 +81,6 @@ class MapValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 from .key_value_pair import KeyValuePair  # noqa: E402

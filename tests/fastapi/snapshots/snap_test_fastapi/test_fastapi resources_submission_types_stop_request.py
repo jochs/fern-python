@@ -11,7 +11,7 @@ from .submission_id import SubmissionId
 
 
 class StopRequest(pydantic.BaseModel):
-    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
+    submission_id: SubmissionId
 
     class Partial(typing_extensions.TypedDict):
         submission_id: typing_extensions.NotRequired[SubmissionId]
@@ -83,4 +83,3 @@ class StopRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

@@ -11,8 +11,8 @@ from ...commons.types.problem_id import ProblemId
 
 
 class InitializeProblemRequest(pydantic.BaseModel):
-    problem_id: ProblemId = pydantic.Field(alias="problemId")
-    problem_version: typing.Optional[int] = pydantic.Field(alias="problemVersion")
+    problem_id: ProblemId
+    problem_version: typing.Optional[int]
 
     class Partial(typing_extensions.TypedDict):
         problem_id: typing_extensions.NotRequired[ProblemId]
@@ -123,4 +123,3 @@ class InitializeProblemRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

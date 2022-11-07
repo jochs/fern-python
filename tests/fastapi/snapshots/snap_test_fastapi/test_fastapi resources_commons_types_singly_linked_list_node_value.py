@@ -11,7 +11,7 @@ from .node_id import NodeId
 
 
 class SinglyLinkedListNodeValue(pydantic.BaseModel):
-    node_id: NodeId = pydantic.Field(alias="nodeId")
+    node_id: NodeId
     val: float
     next: typing.Optional[NodeId]
 
@@ -145,4 +145,3 @@ class SinglyLinkedListNodeValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

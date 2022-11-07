@@ -11,7 +11,7 @@ from .submission_id import SubmissionId
 
 
 class SubmissionIdNotFound(pydantic.BaseModel):
-    missing_submission_id: SubmissionId = pydantic.Field(alias="missingSubmissionId")
+    missing_submission_id: SubmissionId
 
     class Partial(typing_extensions.TypedDict):
         missing_submission_id: typing_extensions.NotRequired[SubmissionId]
@@ -88,4 +88,3 @@ class SubmissionIdNotFound(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

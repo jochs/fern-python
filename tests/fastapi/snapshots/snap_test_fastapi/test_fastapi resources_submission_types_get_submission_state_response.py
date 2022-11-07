@@ -13,10 +13,10 @@ from .submission_type_state import SubmissionTypeState
 
 
 class GetSubmissionStateResponse(pydantic.BaseModel):
-    time_submitted: typing.Optional[dt.datetime] = pydantic.Field(alias="timeSubmitted")
+    time_submitted: typing.Optional[dt.datetime]
     submission: str
     language: Language
-    submission_type_state: SubmissionTypeState = pydantic.Field(alias="submissionTypeState")
+    submission_type_state: SubmissionTypeState
 
     class Partial(typing_extensions.TypedDict):
         time_submitted: typing_extensions.NotRequired[typing.Optional[dt.datetime]]
@@ -189,4 +189,3 @@ class GetSubmissionStateResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

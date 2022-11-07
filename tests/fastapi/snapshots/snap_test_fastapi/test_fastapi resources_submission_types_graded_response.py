@@ -12,8 +12,8 @@ from .test_case_result_with_stdout import TestCaseResultWithStdout
 
 
 class GradedResponse(pydantic.BaseModel):
-    submission_id: SubmissionId = pydantic.Field(alias="submissionId")
-    test_cases: typing.Dict[str, TestCaseResultWithStdout] = pydantic.Field(alias="testCases")
+    submission_id: SubmissionId
+    test_cases: typing.Dict[str, TestCaseResultWithStdout]
 
     class Partial(typing_extensions.TypedDict):
         submission_id: typing_extensions.NotRequired[SubmissionId]
@@ -118,4 +118,3 @@ class GradedResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

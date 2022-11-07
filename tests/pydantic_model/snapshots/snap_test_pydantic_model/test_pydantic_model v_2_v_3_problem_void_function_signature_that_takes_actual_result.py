@@ -13,7 +13,7 @@ from .parameter import Parameter
 
 class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
     parameters: typing.List[Parameter]
-    actual_result_type: VariableType = pydantic.Field(alias="actualResultType")
+    actual_result_type: VariableType
 
     class Partial(typing_extensions.TypedDict):
         parameters: typing_extensions.NotRequired[typing.List[Parameter]]
@@ -140,4 +140,3 @@ class VoidFunctionSignatureThatTakesActualResult(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True

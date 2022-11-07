@@ -13,9 +13,9 @@ from .test_submission_status import TestSubmissionStatus
 
 
 class TestSubmissionState(pydantic.BaseModel):
-    problem_id: ProblemId = pydantic.Field(alias="problemId")
-    default_test_cases: typing.List[TestCase] = pydantic.Field(alias="defaultTestCases")
-    custom_test_cases: typing.List[TestCase] = pydantic.Field(alias="customTestCases")
+    problem_id: ProblemId
+    default_test_cases: typing.List[TestCase]
+    custom_test_cases: typing.List[TestCase]
     status: TestSubmissionStatus
 
     class Partial(typing_extensions.TypedDict):
@@ -187,4 +187,3 @@ class TestSubmissionState(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
