@@ -16,7 +16,7 @@ class ExecutionSessionState(pydantic.BaseModel):
     session_id: str = pydantic.Field(
         alias="sessionId",
         description="""
-    The auto-generated session id.  Formatted as a uuid.
+    The auto-generated session id. Formatted as a uuid.
     """,
     )
     is_warm_instance: bool = pydantic.Field(alias="isWarmInstance")
