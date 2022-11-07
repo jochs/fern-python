@@ -281,12 +281,16 @@ def get_field_name_initializer(
         if description is not None:
             if arg_present:
                 writer.write(", ")
-            is_multi_line = description.count("\n") > 0
-            if is_multi_line:
-                writer.write_line('description="""')
-                writer.write(f"{description}")
-                writer.write_newline_if_last_line_not()
-                writer.write_line('"""')
+            lines = description.split("\n")
+            if len(lines) > 0:
+                writer.write_line("description=(")
+                for i, line in enumerate(lines):
+                    # only add the last line if not empty
+                    if i == (len(lines) - 1) and not line:
+                        writer.write_line(f'"{line}\\n"')
+                    else:
+                        writer.write_line(f'"{line}\\n"')
+                writer.write_line(")")
             else:
                 writer.write(f'description="{description}"')
         writer.write(")")
