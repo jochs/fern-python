@@ -44,3 +44,4 @@ class VariableDeclaration(AstNode):
             writer.write_node(self.docstring)
             writer.write_newline_if_last_line_not()
             writer.write_line('"""')
+            writer.write_line()

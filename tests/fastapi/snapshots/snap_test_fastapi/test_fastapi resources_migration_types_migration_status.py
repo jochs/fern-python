@@ -11,10 +11,12 @@ class MigrationStatus(str, enum.Enum):
     """
     The migration is running
     """
+
     FAILED = "FAILED"
     """
     The migration is failed
     """
+
     FINISHED = "FINISHED"
 
     def visit(
