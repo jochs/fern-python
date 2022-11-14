@@ -1,4 +1,5 @@
 from typing import Optional
+
 from .....ast.nodes.docstring.docstring import Docstring
 from ....ast_node import AstNode, AstNodeMetadata, NodeWriter
 from ...expressions import Expression
