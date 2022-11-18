@@ -14,9 +14,9 @@ types:
       traceResponses:
         type: list<submission.TraceResponse>
         docs: the trace responses from the "server"
-  
-  Test: 
-    union: 
+
+  Test:
+    union:
       and: boolean
       or: boolean
 
