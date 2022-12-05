@@ -1,10 +1,13 @@
 from __future__ import annotations
+from ast import Module
 
 import dataclasses
 from types import TracebackType
 from typing import List, Optional, Sequence, Type, Union
 
 from fern_python.codegen import AST, ClassParent, LocalClassReference, SourceFile
+from fern_python.codegen.ast.nodes.reference_node.reference_node import ReferenceNode
+from fern_python.codegen.ast.references.reference import Reference, ReferenceImport
 from fern_python.external_dependencies import Pydantic
 
 from .pydantic_field import PydanticField
@@ -23,6 +26,7 @@ class PydanticModel:
         base_models: Sequence[AST.ClassReference] = None,
         parent: ClassParent = None,
         docstring: Optional[str] = None,
+        forbid_extra_fields: bool = False,
     ):
         self._source_file = source_file
         self._class_declaration = AST.ClassDeclaration(
@@ -35,6 +39,7 @@ class PydanticModel:
         self._has_aliases = False
         self._root_type: Optional[AST.TypeHint] = None
         self._fields: List[PydanticField] = []
+        self._forbid_extra_fields = forbid_extra_fields
         self.frozen = True
         self.name = name
 
@@ -241,6 +246,14 @@ class PydanticModel:
                 AST.VariableDeclaration(
                     name="allow_population_by_field_name",
                     initializer=AST.Expression("True"),
+                )
+            )
+
+        if self._forbid_extra_fields:
+            config.add_class_var(
+                AST.VariableDeclaration(
+                    name="extra",
+                    initializer=Pydantic.Extra.forbid,
                 )
             )
 
