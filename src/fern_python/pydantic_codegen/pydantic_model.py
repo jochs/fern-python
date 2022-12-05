@@ -1,13 +1,10 @@
 from __future__ import annotations
-from ast import Module
 
 import dataclasses
 from types import TracebackType
 from typing import List, Optional, Sequence, Type, Union
 
 from fern_python.codegen import AST, ClassParent, LocalClassReference, SourceFile
-from fern_python.codegen.ast.nodes.reference_node.reference_node import ReferenceNode
-from fern_python.codegen.ast.references.reference import Reference, ReferenceImport
 from fern_python.external_dependencies import Pydantic
 
 from .pydantic_field import PydanticField
