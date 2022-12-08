@@ -49,7 +49,8 @@ class FieldValidatorGenerator(ValidatorGenerator):
             if self.extended:
                 writer.write(f"{field_value_parameter_name} = ")
                 writer.write_line(
-                    f"super().{validator_method_name}({field_value_parameter_name}, {PydanticModel.VALIDATOR_VALUES_PARAMETER_NAME})"
+                    f"super().{validator_method_name}"
+                    f"({field_value_parameter_name}, {PydanticModel.VALIDATOR_VALUES_PARAMETER_NAME})"
                 )
 
             INDIVIDUAL_VALIDATOR_NAME = "validator"
