@@ -1,4 +1,5 @@
 from fern import ErrorDiscriminationByPropertyStrategy, NameAndWireValue
+
 from fern_python.codegen import AST, LocalClassReference, Project, SourceFile
 from fern_python.external_dependencies import FastAPI
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
