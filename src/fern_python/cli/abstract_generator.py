@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-import fern.ir.pydantic as ir_types
+import .pydantic as ir_types
 from generator_exec.resources import GeneratorConfig
 from generator_exec.resources.config import GeneratorPublishConfig
 
