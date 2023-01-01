@@ -61,12 +61,6 @@ types:
       type: string
       stacktrace: string
 
-  GetDefaultStarterFilesRequest:
-    properties:
-      inputParams: list<VariableTypeAndName>
-      outputType: commons.VariableType
-      methodName: string
-
   GetDefaultStarterFilesResponse:
     properties:
       files: map<commons.Language, ProblemFiles>
@@ -104,5 +98,11 @@ services:
           docs: Returns default starter files for problem
           method: POST
           path: /default-starter-files
-          request: GetDefaultStarterFilesRequest
+          request:
+            name: GetDefaultStarterFilesRequest
+            body:
+              properties:
+                inputParams: list<VariableTypeAndName>
+                outputType: commons.VariableType
+                methodName: string
           response: GetDefaultStarterFilesResponse

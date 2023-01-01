@@ -1,17 +1,22 @@
 imports:
   commons: commons.yml
 types:
-  PlaylistId: string
-  Playlist:
-    extends: PlaylistCreateRequest
-    properties:
-      playlist_id: PlaylistId
-      owner-id: commons.UserId
+  PlaylistId: 
+    type: string
+    examples:
+      - name: Example1
+        value: some-playlist-id
 
   PlaylistCreateRequest:
     properties:
       name: string
       problems: list<commons.ProblemId>
+
+  Playlist:
+    extends: PlaylistCreateRequest
+    properties:
+      playlist_id: PlaylistId
+      owner-id: commons.UserId
 
   UpdatePlaylistRequest:
     properties:
@@ -40,9 +45,11 @@ services:
           docs: Returns the user's playlists
           method: GET
           path: /all
-          query-parameters:
-            limit: optional<integer>
           response: list<Playlist>
+          request:
+            name: GetPlaylistsRequest
+            query-parameters:
+              limit: optional<integer>
 
         getPlaylist:
           docs: Returns a playlist
@@ -62,7 +69,9 @@ services:
           path: /{playlistId}
           path-parameters:
             playlistId: PlaylistId
-          request: optional<UpdatePlaylistRequest>
+          request:
+            body:
+              type: optional<UpdatePlaylistRequest>
           response: optional<Playlist>
           errors:
             - PlaylistIdNotFoundError
