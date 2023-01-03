@@ -286,4 +286,10 @@ class _VariableType:
             frozen = True
 
 
+_VariableType.ListType.update_forward_refs(
+    VariableType=VariableType, ListType=commons_list_type_ListType, MapType=commons_map_type_MapType
+)
+_VariableType.MapType.update_forward_refs(
+    VariableType=VariableType, ListType=commons_list_type_ListType, MapType=commons_map_type_MapType
+)
 VariableType.update_forward_refs()

@@ -7,8 +7,26 @@ import typing
 import pydantic
 import typing_extensions
 
+from .....commons.types.language import Language
+from .....commons.types.list_type import ListType
+from .....commons.types.map_type import MapType
+from .....commons.types.variable_type import VariableType
+from .assert_correctness_check import AssertCorrectnessCheck
+from .deep_equality_correctness_check import DeepEqualityCorrectnessCheck
+from .function_implementation import FunctionImplementation
+from .function_implementation_for_multiple_languages import FunctionImplementationForMultipleLanguages
+from .non_void_function_definition import NonVoidFunctionDefinition
+from .non_void_function_signature import NonVoidFunctionSignature
+from .parameter import Parameter
+from .parameter_id import ParameterId
+from .test_case_function import TestCaseFunction
 from .test_case_implementation import TestCaseImplementation
+from .test_case_implementation_description import TestCaseImplementationDescription
+from .test_case_implementation_description_board import TestCaseImplementationDescriptionBoard
 from .test_case_template_id import TestCaseTemplateId
+from .test_case_with_actual_result_implementation import TestCaseWithActualResultImplementation
+from .void_function_definition import VoidFunctionDefinition
+from .void_function_definition_that_takes_actual_result import VoidFunctionDefinitionThatTakesActualResult
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -126,4 +144,24 @@ class _TestCaseImplementationReference:
             frozen = True
 
 
+_TestCaseImplementationReference.Implementation.update_forward_refs(
+    TestCaseImplementationDescription=TestCaseImplementationDescription,
+    TestCaseImplementationDescriptionBoard=TestCaseImplementationDescriptionBoard,
+    ParameterId=ParameterId,
+    TestCaseFunction=TestCaseFunction,
+    TestCaseWithActualResultImplementation=TestCaseWithActualResultImplementation,
+    NonVoidFunctionDefinition=NonVoidFunctionDefinition,
+    NonVoidFunctionSignature=NonVoidFunctionSignature,
+    Parameter=Parameter,
+    VariableType=VariableType,
+    ListType=ListType,
+    MapType=MapType,
+    FunctionImplementationForMultipleLanguages=FunctionImplementationForMultipleLanguages,
+    Language=Language,
+    FunctionImplementation=FunctionImplementation,
+    AssertCorrectnessCheck=AssertCorrectnessCheck,
+    DeepEqualityCorrectnessCheck=DeepEqualityCorrectnessCheck,
+    VoidFunctionDefinitionThatTakesActualResult=VoidFunctionDefinitionThatTakesActualResult,
+    VoidFunctionDefinition=VoidFunctionDefinition,
+)
 TestCaseImplementationReference.update_forward_refs()

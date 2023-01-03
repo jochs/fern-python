@@ -8,6 +8,8 @@ import pydantic
 import typing_extensions
 
 from .error_info import ErrorInfo
+from .exception_info import ExceptionInfo
+from .exception_v_2 import ExceptionV2
 from .running_submission_state import RunningSubmissionState
 from .workspace_run_details import WorkspaceRunDetails
 from .workspace_traced_update import WorkspaceTracedUpdate
@@ -238,4 +240,6 @@ class _WorkspaceSubmissionUpdateInfo:
             frozen = True
 
 
+_WorkspaceSubmissionUpdateInfo.Ran.update_forward_refs(ExceptionV2=ExceptionV2, ExceptionInfo=ExceptionInfo)
+_WorkspaceSubmissionUpdateInfo.TracedV2.update_forward_refs()
 WorkspaceSubmissionUpdateInfo.update_forward_refs()

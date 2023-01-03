@@ -7,10 +7,14 @@ import typing
 import pydantic
 import typing_extensions
 
+from ..commons.language import Language
+from ..commons.problem_id import ProblemId
 from .initialize_problem_request import (
     InitializeProblemRequest as submission_initialize_problem_request_InitializeProblemRequest,
 )
 from .stop_request import StopRequest
+from .submission_file_info import SubmissionFileInfo
+from .submission_id import SubmissionId
 from .submit_request_v_2 import SubmitRequestV2
 from .workspace_submit_request import WorkspaceSubmitRequest
 
@@ -202,4 +206,12 @@ class _SubmissionRequest:
             frozen = True
 
 
+_SubmissionRequest.InitializeProblemRequest.update_forward_refs(ProblemId=ProblemId)
+_SubmissionRequest.SubmitV2.update_forward_refs(
+    SubmissionId=SubmissionId, Language=Language, SubmissionFileInfo=SubmissionFileInfo, ProblemId=ProblemId
+)
+_SubmissionRequest.WorkspaceSubmit.update_forward_refs(
+    SubmissionId=SubmissionId, Language=Language, SubmissionFileInfo=SubmissionFileInfo
+)
+_SubmissionRequest.Stop.update_forward_refs(SubmissionId=SubmissionId)
 SubmissionRequest.update_forward_refs()

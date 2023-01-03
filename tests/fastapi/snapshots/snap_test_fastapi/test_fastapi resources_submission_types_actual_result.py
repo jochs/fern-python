@@ -122,4 +122,5 @@ class _ActualResult:
             frozen = True
 
 
+_ActualResult.Exception.update_forward_refs()
 ActualResult.update_forward_refs()

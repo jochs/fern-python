@@ -7,17 +7,58 @@ import typing
 import pydantic
 import typing_extensions
 
+from ..commons.binary_tree_node_value import BinaryTreeNodeValue
+from ..commons.binary_tree_value import BinaryTreeValue
+from ..commons.doubly_linked_list_node_value import DoublyLinkedListNodeValue
+from ..commons.doubly_linked_list_value import DoublyLinkedListValue
+from ..commons.key_value_pair import KeyValuePair
+from ..commons.language import Language
+from ..commons.map_value import MapValue
+from ..commons.node_id import NodeId
+from ..commons.problem_id import ProblemId
+from ..commons.singly_linked_list_node_value import SinglyLinkedListNodeValue
+from ..commons.singly_linked_list_value import SinglyLinkedListValue
+from ..commons.variable_value import VariableValue
+from ..v_2.problem.test_case_id import TestCaseId
+from .actual_result import ActualResult
 from .building_executor_response import BuildingExecutorResponse
+from .compile_error import CompileError
+from .custom_test_cases_unsupported import CustomTestCasesUnsupported
+from .error_info import ErrorInfo
 from .errored_response import ErroredResponse
+from .exception_info import ExceptionInfo
+from .exception_v_2 import ExceptionV2
+from .execution_session_status import ExecutionSessionStatus
 from .finished_response import FinishedResponse
 from .graded_response import GradedResponse
 from .graded_response_v_2 import GradedResponseV2
+from .initialize_problem_request import InitializeProblemRequest
+from .internal_error import InternalError
+from .invalid_request_cause import InvalidRequestCause
 from .invalid_request_response import InvalidRequestResponse
+from .lightweight_stackframe_information import LightweightStackframeInformation
 from .recorded_response_notification import RecordedResponseNotification
 from .recording_response_notification import RecordingResponseNotification
 from .running_response import RunningResponse
+from .running_submission_state import RunningSubmissionState
+from .runtime_error import RuntimeError
+from .stop_request import StopRequest
 from .stopped_response import StoppedResponse
+from .submission_file_info import SubmissionFileInfo
+from .submission_id import SubmissionId
+from .submission_id_not_found import SubmissionIdNotFound
+from .submission_request import SubmissionRequest
+from .submit_request_v_2 import SubmitRequestV2
+from .test_case_grade import TestCaseGrade
+from .test_case_hidden_grade import TestCaseHiddenGrade
+from .test_case_non_hidden_grade import TestCaseNonHiddenGrade
+from .test_case_result import TestCaseResult
+from .test_case_result_with_stdout import TestCaseResultWithStdout
+from .traced_file import TracedFile
+from .unexpected_language_error import UnexpectedLanguageError
 from .workspace_ran_response import WorkspaceRanResponse
+from .workspace_run_details import WorkspaceRunDetails
+from .workspace_submit_request import WorkspaceSubmitRequest
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -315,4 +356,82 @@ class _CodeExecutionUpdate:
             frozen = True
 
 
+_CodeExecutionUpdate.BuildingExecutor.update_forward_refs(
+    SubmissionId=SubmissionId, ExecutionSessionStatus=ExecutionSessionStatus
+)
+_CodeExecutionUpdate.Running.update_forward_refs(
+    SubmissionId=SubmissionId, RunningSubmissionState=RunningSubmissionState
+)
+_CodeExecutionUpdate.Errored.update_forward_refs(
+    SubmissionId=SubmissionId,
+    ErrorInfo=ErrorInfo,
+    CompileError=CompileError,
+    RuntimeError=RuntimeError,
+    InternalError=InternalError,
+    ExceptionInfo=ExceptionInfo,
+)
+_CodeExecutionUpdate.Stopped.update_forward_refs(SubmissionId=SubmissionId)
+_CodeExecutionUpdate.Graded.update_forward_refs(
+    SubmissionId=SubmissionId,
+    TestCaseResultWithStdout=TestCaseResultWithStdout,
+    TestCaseResult=TestCaseResult,
+    VariableValue=VariableValue,
+    MapValue=MapValue,
+    KeyValuePair=KeyValuePair,
+    BinaryTreeValue=BinaryTreeValue,
+    NodeId=NodeId,
+    BinaryTreeNodeValue=BinaryTreeNodeValue,
+    SinglyLinkedListValue=SinglyLinkedListValue,
+    SinglyLinkedListNodeValue=SinglyLinkedListNodeValue,
+    DoublyLinkedListValue=DoublyLinkedListValue,
+    DoublyLinkedListNodeValue=DoublyLinkedListNodeValue,
+    ActualResult=ActualResult,
+    ExceptionInfo=ExceptionInfo,
+    ExceptionV2=ExceptionV2,
+)
+_CodeExecutionUpdate.GradedV2.update_forward_refs(
+    SubmissionId=SubmissionId,
+    TestCaseId=TestCaseId,
+    TestCaseGrade=TestCaseGrade,
+    TestCaseHiddenGrade=TestCaseHiddenGrade,
+    TestCaseNonHiddenGrade=TestCaseNonHiddenGrade,
+    VariableValue=VariableValue,
+    MapValue=MapValue,
+    KeyValuePair=KeyValuePair,
+    BinaryTreeValue=BinaryTreeValue,
+    NodeId=NodeId,
+    BinaryTreeNodeValue=BinaryTreeNodeValue,
+    SinglyLinkedListValue=SinglyLinkedListValue,
+    SinglyLinkedListNodeValue=SinglyLinkedListNodeValue,
+    DoublyLinkedListValue=DoublyLinkedListValue,
+    DoublyLinkedListNodeValue=DoublyLinkedListNodeValue,
+    ExceptionV2=ExceptionV2,
+    ExceptionInfo=ExceptionInfo,
+)
+_CodeExecutionUpdate.WorkspaceRan.update_forward_refs(
+    SubmissionId=SubmissionId,
+    WorkspaceRunDetails=WorkspaceRunDetails,
+    ExceptionV2=ExceptionV2,
+    ExceptionInfo=ExceptionInfo,
+)
+_CodeExecutionUpdate.Recording.update_forward_refs(
+    SubmissionId=SubmissionId, LightweightStackframeInformation=LightweightStackframeInformation, TracedFile=TracedFile
+)
+_CodeExecutionUpdate.Recorded.update_forward_refs(SubmissionId=SubmissionId)
+_CodeExecutionUpdate.InvalidRequest.update_forward_refs(
+    SubmissionRequest=SubmissionRequest,
+    InitializeProblemRequest=InitializeProblemRequest,
+    ProblemId=ProblemId,
+    SubmitRequestV2=SubmitRequestV2,
+    SubmissionId=SubmissionId,
+    Language=Language,
+    SubmissionFileInfo=SubmissionFileInfo,
+    WorkspaceSubmitRequest=WorkspaceSubmitRequest,
+    StopRequest=StopRequest,
+    InvalidRequestCause=InvalidRequestCause,
+    SubmissionIdNotFound=SubmissionIdNotFound,
+    CustomTestCasesUnsupported=CustomTestCasesUnsupported,
+    UnexpectedLanguageError=UnexpectedLanguageError,
+)
+_CodeExecutionUpdate.Finished.update_forward_refs(SubmissionId=SubmissionId)
 CodeExecutionUpdate.update_forward_refs()

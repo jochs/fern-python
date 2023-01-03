@@ -287,4 +287,14 @@ class _VariableType:
             frozen = True
 
 
+_VariableType.ListType.update_forward_refs(
+    VariableType=VariableType,
+    ListType=resources_commons_types_list_type_ListType,
+    MapType=resources_commons_types_map_type_MapType,
+)
+_VariableType.MapType.update_forward_refs(
+    VariableType=VariableType,
+    ListType=resources_commons_types_list_type_ListType,
+    MapType=resources_commons_types_map_type_MapType,
+)
 VariableType.update_forward_refs()

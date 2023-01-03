@@ -7,7 +7,21 @@ import typing
 import pydantic
 import typing_extensions
 
+from ...commons.types.binary_tree_node_value import BinaryTreeNodeValue
+from ...commons.types.binary_tree_value import BinaryTreeValue
+from ...commons.types.doubly_linked_list_node_value import DoublyLinkedListNodeValue
+from ...commons.types.doubly_linked_list_value import DoublyLinkedListValue
+from ...commons.types.key_value_pair import KeyValuePair
+from ...commons.types.map_value import MapValue
+from ...commons.types.node_id import NodeId
+from ...commons.types.singly_linked_list_node_value import SinglyLinkedListNodeValue
+from ...commons.types.singly_linked_list_value import SinglyLinkedListValue
+from ...commons.types.variable_value import VariableValue
+from .actual_result import ActualResult
+from .exception_info import ExceptionInfo
+from .exception_v_2 import ExceptionV2
 from .test_case_grade import TestCaseGrade
+from .test_case_result import TestCaseResult
 from .test_case_result_with_stdout import TestCaseResultWithStdout
 from .traced_test_case import TracedTestCase
 
@@ -153,4 +167,37 @@ class _SubmissionStatusForTestCase:
             frozen = True
 
 
+_SubmissionStatusForTestCase.Graded.update_forward_refs(
+    TestCaseResult=TestCaseResult,
+    VariableValue=VariableValue,
+    MapValue=MapValue,
+    KeyValuePair=KeyValuePair,
+    BinaryTreeValue=BinaryTreeValue,
+    NodeId=NodeId,
+    BinaryTreeNodeValue=BinaryTreeNodeValue,
+    SinglyLinkedListValue=SinglyLinkedListValue,
+    SinglyLinkedListNodeValue=SinglyLinkedListNodeValue,
+    DoublyLinkedListValue=DoublyLinkedListValue,
+    DoublyLinkedListNodeValue=DoublyLinkedListNodeValue,
+    ActualResult=ActualResult,
+    ExceptionInfo=ExceptionInfo,
+    ExceptionV2=ExceptionV2,
+)
+_SubmissionStatusForTestCase.Traced.update_forward_refs(
+    TestCaseResultWithStdout=TestCaseResultWithStdout,
+    TestCaseResult=TestCaseResult,
+    VariableValue=VariableValue,
+    MapValue=MapValue,
+    KeyValuePair=KeyValuePair,
+    BinaryTreeValue=BinaryTreeValue,
+    NodeId=NodeId,
+    BinaryTreeNodeValue=BinaryTreeNodeValue,
+    SinglyLinkedListValue=SinglyLinkedListValue,
+    SinglyLinkedListNodeValue=SinglyLinkedListNodeValue,
+    DoublyLinkedListValue=DoublyLinkedListValue,
+    DoublyLinkedListNodeValue=DoublyLinkedListNodeValue,
+    ActualResult=ActualResult,
+    ExceptionInfo=ExceptionInfo,
+    ExceptionV2=ExceptionV2,
+)
 SubmissionStatusForTestCase.update_forward_refs()

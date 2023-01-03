@@ -8,9 +8,23 @@ import pydantic
 import typing_extensions
 
 from .binary_tree_node_and_tree_value import BinaryTreeNodeAndTreeValue
+from .binary_tree_node_value import (
+    BinaryTreeNodeValue as resources_commons_types_binary_tree_node_value_BinaryTreeNodeValue,
+)
+from .binary_tree_value import BinaryTreeValue
+from .debug_key_value_pairs import DebugKeyValuePairs
 from .doubly_linked_list_node_and_list_value import DoublyLinkedListNodeAndListValue
+from .doubly_linked_list_node_value import (
+    DoublyLinkedListNodeValue as resources_commons_types_doubly_linked_list_node_value_DoublyLinkedListNodeValue,
+)
+from .doubly_linked_list_value import DoublyLinkedListValue
 from .generic_value import GenericValue as resources_commons_types_generic_value_GenericValue
+from .node_id import NodeId
 from .singly_linked_list_node_and_list_value import SinglyLinkedListNodeAndListValue
+from .singly_linked_list_node_value import (
+    SinglyLinkedListNodeValue as resources_commons_types_singly_linked_list_node_value_SinglyLinkedListNodeValue,
+)
+from .singly_linked_list_value import SinglyLinkedListValue
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -360,4 +374,36 @@ class _DebugVariableValue:
             frozen = True
 
 
+_DebugVariableValue.MapValue.update_forward_refs(
+    DebugKeyValuePairs=DebugKeyValuePairs,
+    DebugVariableValue=DebugVariableValue,
+    DebugMapValue=DebugMapValue,
+    BinaryTreeNodeAndTreeValue=BinaryTreeNodeAndTreeValue,
+    NodeId=NodeId,
+    BinaryTreeValue=BinaryTreeValue,
+    BinaryTreeNodeValue=resources_commons_types_binary_tree_node_value_BinaryTreeNodeValue,
+    SinglyLinkedListNodeAndListValue=SinglyLinkedListNodeAndListValue,
+    SinglyLinkedListValue=SinglyLinkedListValue,
+    SinglyLinkedListNodeValue=resources_commons_types_singly_linked_list_node_value_SinglyLinkedListNodeValue,
+    DoublyLinkedListNodeAndListValue=DoublyLinkedListNodeAndListValue,
+    DoublyLinkedListValue=DoublyLinkedListValue,
+    DoublyLinkedListNodeValue=resources_commons_types_doubly_linked_list_node_value_DoublyLinkedListNodeValue,
+    GenericValue=resources_commons_types_generic_value_GenericValue,
+)
+_DebugVariableValue.BinaryTreeNodeValue.update_forward_refs(
+    NodeId=NodeId,
+    BinaryTreeValue=BinaryTreeValue,
+    BinaryTreeNodeValue=resources_commons_types_binary_tree_node_value_BinaryTreeNodeValue,
+)
+_DebugVariableValue.SinglyLinkedListNodeValue.update_forward_refs(
+    NodeId=NodeId,
+    SinglyLinkedListValue=SinglyLinkedListValue,
+    SinglyLinkedListNodeValue=resources_commons_types_singly_linked_list_node_value_SinglyLinkedListNodeValue,
+)
+_DebugVariableValue.DoublyLinkedListNodeValue.update_forward_refs(
+    NodeId=NodeId,
+    DoublyLinkedListValue=DoublyLinkedListValue,
+    DoublyLinkedListNodeValue=resources_commons_types_doubly_linked_list_node_value_DoublyLinkedListNodeValue,
+)
+_DebugVariableValue.GenericValue.update_forward_refs()
 DebugVariableValue.update_forward_refs()

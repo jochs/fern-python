@@ -8,8 +8,19 @@ import pydantic
 import typing_extensions
 
 from ....commons.language import Language
+from ....commons.list_type import ListType
+from ....commons.map_type import MapType
+from ....commons.variable_type import VariableType
 from .basic_custom_files import BasicCustomFiles
+from .basic_test_case_template import BasicTestCaseTemplate
+from .file_info_v_2 import FileInfoV2
 from .files import Files
+from .non_void_function_signature import NonVoidFunctionSignature
+from .parameter import Parameter
+from .parameter_id import ParameterId
+from .test_case_implementation_description import TestCaseImplementationDescription
+from .test_case_implementation_description_board import TestCaseImplementationDescriptionBoard
+from .test_case_template_id import TestCaseTemplateId
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -104,4 +115,19 @@ class _CustomFiles:
             frozen = True
 
 
+_CustomFiles.Basic.update_forward_refs(
+    NonVoidFunctionSignature=NonVoidFunctionSignature,
+    Parameter=Parameter,
+    ParameterId=ParameterId,
+    VariableType=VariableType,
+    ListType=ListType,
+    MapType=MapType,
+    Language=Language,
+    Files=Files,
+    FileInfoV2=FileInfoV2,
+    BasicTestCaseTemplate=BasicTestCaseTemplate,
+    TestCaseTemplateId=TestCaseTemplateId,
+    TestCaseImplementationDescription=TestCaseImplementationDescription,
+    TestCaseImplementationDescriptionBoard=TestCaseImplementationDescriptionBoard,
+)
 CustomFiles.update_forward_refs()

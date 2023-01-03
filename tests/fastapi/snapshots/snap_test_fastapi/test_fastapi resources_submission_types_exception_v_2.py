@@ -100,4 +100,5 @@ class _ExceptionV2:
             frozen = True
 
 
+_ExceptionV2.Generic.update_forward_refs()
 ExceptionV2.update_forward_refs()

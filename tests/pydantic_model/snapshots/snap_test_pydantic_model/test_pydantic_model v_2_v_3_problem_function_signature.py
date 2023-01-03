@@ -7,7 +7,12 @@ import typing
 import pydantic
 import typing_extensions
 
+from ....commons.list_type import ListType
+from ....commons.map_type import MapType
+from ....commons.variable_type import VariableType
 from .non_void_function_signature import NonVoidFunctionSignature
+from .parameter import Parameter
+from .parameter_id import ParameterId
 from .void_function_signature import VoidFunctionSignature
 from .void_function_signature_that_takes_actual_result import VoidFunctionSignatureThatTakesActualResult
 
@@ -145,4 +150,13 @@ class _FunctionSignature:
             frozen = True
 
 
+_FunctionSignature.Void.update_forward_refs(
+    Parameter=Parameter, ParameterId=ParameterId, VariableType=VariableType, ListType=ListType, MapType=MapType
+)
+_FunctionSignature.NonVoid.update_forward_refs(
+    Parameter=Parameter, ParameterId=ParameterId, VariableType=VariableType, ListType=ListType, MapType=MapType
+)
+_FunctionSignature.VoidThatTakesActualResult.update_forward_refs(
+    Parameter=Parameter, ParameterId=ParameterId, VariableType=VariableType, ListType=ListType, MapType=MapType
+)
 FunctionSignature.update_forward_refs()

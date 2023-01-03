@@ -132,6 +132,23 @@ class UnionGenerator(AbstractTypeGenerator):
                         ),
                     )
 
+                    # if any of our inherited fields are forward refs, we need to call
+                    # update_forwards_refs(). To be safe, let's always call update_forward_refs().
+                    if shape.properties_type == "samePropertiesAsObject":
+                        # when calling update_forward_refs, Pydantic will throw
+                        # if an inherited field's type is not defined in this
+                        # file. https://github.com/pydantic/pydantic/issues/4902.
+                        # as a workaround, we explicitly pass references to update_forward_refs
+                        # so they are in scope
+                        internal_pydantic_model_for_single_union_type.update_forward_refs(
+                            [
+                                self._context.get_class_reference_for_type_name(type_name=referenced_type)
+                                for referenced_type in self._context.get_declaration_for_type_name(
+                                    shape
+                                ).referenced_types
+                            ]
+                        )
+
             root_type = AST.TypeHint.union(
                 *(
                     AST.TypeHint(type=internal_single_union_type)
