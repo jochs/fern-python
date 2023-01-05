@@ -362,6 +362,6 @@ class _DebugVariableValue:
 
 
 _DebugVariableValue.MapValue.update_forward_refs(
-    DebugMapValue=DebugMapValue, DebugKeyValuePairs=DebugKeyValuePairs, DebugVariableValue=DebugVariableValue
+    DebugKeyValuePairs=DebugKeyValuePairs, DebugMapValue=DebugMapValue, DebugVariableValue=DebugVariableValue
 )
 DebugVariableValue.update_forward_refs()

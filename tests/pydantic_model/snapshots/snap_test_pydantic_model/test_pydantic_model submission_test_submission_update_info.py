@@ -221,6 +221,6 @@ class _TestSubmissionUpdateInfo:
 
 
 _TestSubmissionUpdateInfo.GradedTestCase.update_forward_refs(
-    MapValue=MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
+    KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue
 )
 TestSubmissionUpdateInfo.update_forward_refs()

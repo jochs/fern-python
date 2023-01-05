@@ -108,5 +108,5 @@ class _SubmissionTypeState:
             frozen = True
 
 
-_SubmissionTypeState.Test.update_forward_refs(KeyValuePair=KeyValuePair, VariableValue=VariableValue, MapValue=MapValue)
+_SubmissionTypeState.Test.update_forward_refs(KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue)
 SubmissionTypeState.update_forward_refs()

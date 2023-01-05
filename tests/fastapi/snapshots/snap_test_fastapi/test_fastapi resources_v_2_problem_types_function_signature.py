@@ -149,9 +149,9 @@ class _FunctionSignature:
             frozen = True
 
 
-_FunctionSignature.Void.update_forward_refs(VariableType=VariableType, MapType=MapType, ListType=ListType)
-_FunctionSignature.NonVoid.update_forward_refs(VariableType=VariableType, MapType=MapType, ListType=ListType)
+_FunctionSignature.Void.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)
+_FunctionSignature.NonVoid.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)
 _FunctionSignature.VoidThatTakesActualResult.update_forward_refs(
-    VariableType=VariableType, MapType=MapType, ListType=ListType
+    ListType=ListType, MapType=MapType, VariableType=VariableType
 )
 FunctionSignature.update_forward_refs()

@@ -316,6 +316,6 @@ class _VariableValue:
 
 
 _VariableValue.MapValue.update_forward_refs(
-    MapValue=commons_map_value_MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
+    KeyValuePair=KeyValuePair, MapValue=commons_map_value_MapValue, VariableValue=VariableValue
 )
 VariableValue.update_forward_refs()

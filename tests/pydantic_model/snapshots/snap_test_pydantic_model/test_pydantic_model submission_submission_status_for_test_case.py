@@ -156,9 +156,9 @@ class _SubmissionStatusForTestCase:
 
 
 _SubmissionStatusForTestCase.Graded.update_forward_refs(
-    MapValue=MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
+    KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue
 )
 _SubmissionStatusForTestCase.Traced.update_forward_refs(
-    MapValue=MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
+    KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue
 )
 SubmissionStatusForTestCase.update_forward_refs()

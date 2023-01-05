@@ -130,6 +130,6 @@ class _TestCaseImplementationReference:
 
 
 _TestCaseImplementationReference.Implementation.update_forward_refs(
-    VariableType=VariableType, MapType=MapType, ListType=ListType
+    ListType=ListType, MapType=MapType, VariableType=VariableType
 )
 TestCaseImplementationReference.update_forward_refs()

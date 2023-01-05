@@ -105,5 +105,5 @@ class _TestCaseGrade:
             frozen = True
 
 
-_TestCaseGrade.NonHidden.update_forward_refs(MapValue=MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair)
+_TestCaseGrade.NonHidden.update_forward_refs(KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue)
 TestCaseGrade.update_forward_refs()

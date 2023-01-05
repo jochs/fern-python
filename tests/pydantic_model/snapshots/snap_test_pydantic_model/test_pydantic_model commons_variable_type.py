@@ -287,9 +287,9 @@ class _VariableType:
 
 
 _VariableType.ListType.update_forward_refs(
-    MapType=commons_map_type_MapType, VariableType=VariableType, ListType=commons_list_type_ListType
+    ListType=commons_list_type_ListType, MapType=commons_map_type_MapType, VariableType=VariableType
 )
 _VariableType.MapType.update_forward_refs(
-    MapType=commons_map_type_MapType, VariableType=VariableType, ListType=commons_list_type_ListType
+    ListType=commons_list_type_ListType, MapType=commons_map_type_MapType, VariableType=VariableType
 )
 VariableType.update_forward_refs()

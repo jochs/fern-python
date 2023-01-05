@@ -107,6 +107,6 @@ class _TestCaseFunction:
             frozen = True
 
 
-_TestCaseFunction.WithActualResult.update_forward_refs(MapType=MapType, VariableType=VariableType, ListType=ListType)
-_TestCaseFunction.Custom.update_forward_refs(MapType=MapType, VariableType=VariableType, ListType=ListType)
+_TestCaseFunction.WithActualResult.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)
+_TestCaseFunction.Custom.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)
 TestCaseFunction.update_forward_refs()

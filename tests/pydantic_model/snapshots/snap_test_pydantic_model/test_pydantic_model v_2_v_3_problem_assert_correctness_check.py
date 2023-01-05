@@ -108,5 +108,5 @@ class _AssertCorrectnessCheck:
             frozen = True
 
 
-_AssertCorrectnessCheck.Custom.update_forward_refs(MapType=MapType, VariableType=VariableType, ListType=ListType)
+_AssertCorrectnessCheck.Custom.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)
 AssertCorrectnessCheck.update_forward_refs()

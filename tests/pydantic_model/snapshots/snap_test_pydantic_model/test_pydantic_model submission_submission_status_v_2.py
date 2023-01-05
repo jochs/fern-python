@@ -111,11 +111,11 @@ class _SubmissionStatusV2:
 
 
 _SubmissionStatusV2.Test.update_forward_refs(
-    VariableValue=VariableValue,
+    KeyValuePair=KeyValuePair,
+    ListType=ListType,
     MapType=MapType,
     MapValue=MapValue,
     VariableType=VariableType,
-    KeyValuePair=KeyValuePair,
-    ListType=ListType,
+    VariableValue=VariableValue,
 )
 SubmissionStatusV2.update_forward_refs()

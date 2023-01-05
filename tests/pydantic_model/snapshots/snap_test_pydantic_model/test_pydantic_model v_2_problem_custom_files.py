@@ -107,5 +107,5 @@ class _CustomFiles:
             frozen = True
 
 
-_CustomFiles.Basic.update_forward_refs(MapType=MapType, VariableType=VariableType, ListType=ListType)
+_CustomFiles.Basic.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)
 CustomFiles.update_forward_refs()

@@ -239,7 +239,11 @@ class PydanticModel:
                             "update_forward_refs",
                         ),
                     ),
-                    kwargs=[(get_named_import_or_throw(reference), AST.Expression(reference)) for reference in localns]
+                    kwargs=sorted(
+                        [(get_named_import_or_throw(reference), AST.Expression(reference)) for reference in localns],
+                        # sort by name for consistency
+                        key=lambda kwarg: kwarg[0],
+                    )
                     if localns is not None
                     else None,
                 )

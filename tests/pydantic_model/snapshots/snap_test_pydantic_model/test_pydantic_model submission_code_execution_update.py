@@ -319,9 +319,9 @@ class _CodeExecutionUpdate:
 
 
 _CodeExecutionUpdate.Graded.update_forward_refs(
-    MapValue=MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
+    KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue
 )
 _CodeExecutionUpdate.GradedV2.update_forward_refs(
-    MapValue=MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
+    KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue
 )
 CodeExecutionUpdate.update_forward_refs()
