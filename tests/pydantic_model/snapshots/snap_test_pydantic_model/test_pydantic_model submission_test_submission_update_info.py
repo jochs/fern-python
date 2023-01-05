@@ -7,26 +7,13 @@ import typing
 import pydantic
 import typing_extensions
 
-from ..commons.binary_tree_node_value import BinaryTreeNodeValue
-from ..commons.binary_tree_value import BinaryTreeValue
-from ..commons.doubly_linked_list_node_value import DoublyLinkedListNodeValue
-from ..commons.doubly_linked_list_value import DoublyLinkedListValue
 from ..commons.key_value_pair import KeyValuePair
 from ..commons.map_value import MapValue
-from ..commons.node_id import NodeId
-from ..commons.singly_linked_list_node_value import SinglyLinkedListNodeValue
-from ..commons.singly_linked_list_value import SinglyLinkedListValue
 from ..commons.variable_value import VariableValue
-from ..v_2.problem.test_case_id import TestCaseId
 from .error_info import ErrorInfo
-from .exception_info import ExceptionInfo
-from .exception_v_2 import ExceptionV2
 from .graded_test_case_update import GradedTestCaseUpdate
 from .recorded_test_case_update import RecordedTestCaseUpdate
 from .running_submission_state import RunningSubmissionState
-from .test_case_grade import TestCaseGrade
-from .test_case_hidden_grade import TestCaseHiddenGrade
-from .test_case_non_hidden_grade import TestCaseNonHiddenGrade
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -234,22 +221,6 @@ class _TestSubmissionUpdateInfo:
 
 
 _TestSubmissionUpdateInfo.GradedTestCase.update_forward_refs(
-    TestCaseId=TestCaseId,
-    TestCaseGrade=TestCaseGrade,
-    TestCaseHiddenGrade=TestCaseHiddenGrade,
-    TestCaseNonHiddenGrade=TestCaseNonHiddenGrade,
-    VariableValue=VariableValue,
-    MapValue=MapValue,
-    KeyValuePair=KeyValuePair,
-    BinaryTreeValue=BinaryTreeValue,
-    NodeId=NodeId,
-    BinaryTreeNodeValue=BinaryTreeNodeValue,
-    SinglyLinkedListValue=SinglyLinkedListValue,
-    SinglyLinkedListNodeValue=SinglyLinkedListNodeValue,
-    DoublyLinkedListValue=DoublyLinkedListValue,
-    DoublyLinkedListNodeValue=DoublyLinkedListNodeValue,
-    ExceptionV2=ExceptionV2,
-    ExceptionInfo=ExceptionInfo,
+    MapValue=MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
 )
-_TestSubmissionUpdateInfo.RecordedTestCase.update_forward_refs(TestCaseId=TestCaseId)
 TestSubmissionUpdateInfo.update_forward_refs()

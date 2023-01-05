@@ -83,5 +83,4 @@ class _CreateProblemError:
             allow_population_by_field_name = True
 
 
-_CreateProblemError.Generic.update_forward_refs()
 CreateProblemError.update_forward_refs()

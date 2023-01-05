@@ -7,72 +7,14 @@ import typing
 import pydantic
 import typing_extensions
 
-from ..commons.binary_tree_node_value import BinaryTreeNodeValue
-from ..commons.binary_tree_value import BinaryTreeValue
-from ..commons.doubly_linked_list_node_value import DoublyLinkedListNodeValue
-from ..commons.doubly_linked_list_value import DoublyLinkedListValue
 from ..commons.key_value_pair import KeyValuePair
-from ..commons.language import Language
 from ..commons.list_type import ListType
 from ..commons.map_type import MapType
 from ..commons.map_value import MapValue
-from ..commons.node_id import NodeId
-from ..commons.problem_id import ProblemId
-from ..commons.singly_linked_list_node_value import SinglyLinkedListNodeValue
-from ..commons.singly_linked_list_value import SinglyLinkedListValue
 from ..commons.variable_type import VariableType
 from ..commons.variable_value import VariableValue
-from ..problem.problem_description import ProblemDescription
-from ..problem.problem_description_board import ProblemDescriptionBoard
-from ..v_2.problem.assert_correctness_check import AssertCorrectnessCheck
-from ..v_2.problem.basic_custom_files import BasicCustomFiles
-from ..v_2.problem.basic_test_case_template import BasicTestCaseTemplate
-from ..v_2.problem.custom_files import CustomFiles
-from ..v_2.problem.deep_equality_correctness_check import DeepEqualityCorrectnessCheck
-from ..v_2.problem.file_info_v_2 import FileInfoV2
-from ..v_2.problem.files import Files
-from ..v_2.problem.function_implementation import FunctionImplementation
-from ..v_2.problem.function_implementation_for_multiple_languages import FunctionImplementationForMultipleLanguages
-from ..v_2.problem.generated_files import GeneratedFiles
-from ..v_2.problem.non_void_function_definition import NonVoidFunctionDefinition
-from ..v_2.problem.non_void_function_signature import NonVoidFunctionSignature
-from ..v_2.problem.parameter import Parameter
-from ..v_2.problem.parameter_id import ParameterId
-from ..v_2.problem.problem_info_v_2 import ProblemInfoV2
-from ..v_2.problem.test_case_expects import TestCaseExpects
-from ..v_2.problem.test_case_function import TestCaseFunction
-from ..v_2.problem.test_case_id import TestCaseId
-from ..v_2.problem.test_case_implementation import TestCaseImplementation
-from ..v_2.problem.test_case_implementation_description import TestCaseImplementationDescription
-from ..v_2.problem.test_case_implementation_description_board import TestCaseImplementationDescriptionBoard
-from ..v_2.problem.test_case_implementation_reference import TestCaseImplementationReference
-from ..v_2.problem.test_case_metadata import TestCaseMetadata
-from ..v_2.problem.test_case_template import TestCaseTemplate
-from ..v_2.problem.test_case_template_id import TestCaseTemplateId
-from ..v_2.problem.test_case_v_2 import TestCaseV2
-from ..v_2.problem.test_case_with_actual_result_implementation import TestCaseWithActualResultImplementation
-from ..v_2.problem.void_function_definition import VoidFunctionDefinition
-from ..v_2.problem.void_function_definition_that_takes_actual_result import VoidFunctionDefinitionThatTakesActualResult
-from .compile_error import CompileError
-from .error_info import ErrorInfo
-from .exception_info import ExceptionInfo
-from .exception_v_2 import ExceptionV2
-from .graded_test_case_update import GradedTestCaseUpdate
-from .internal_error import InternalError
-from .recorded_test_case_update import RecordedTestCaseUpdate
-from .running_submission_state import RunningSubmissionState
-from .runtime_error import RuntimeError
-from .test_case_grade import TestCaseGrade
-from .test_case_hidden_grade import TestCaseHiddenGrade
-from .test_case_non_hidden_grade import TestCaseNonHiddenGrade
 from .test_submission_status_v_2 import TestSubmissionStatusV2
-from .test_submission_update import TestSubmissionUpdate
-from .test_submission_update_info import TestSubmissionUpdateInfo
-from .workspace_run_details import WorkspaceRunDetails
 from .workspace_submission_status_v_2 import WorkspaceSubmissionStatusV2
-from .workspace_submission_update import WorkspaceSubmissionUpdate
-from .workspace_submission_update_info import WorkspaceSubmissionUpdateInfo
-from .workspace_traced_update import WorkspaceTracedUpdate
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -169,78 +111,11 @@ class _SubmissionStatusV2:
 
 
 _SubmissionStatusV2.Test.update_forward_refs(
-    TestSubmissionUpdate=TestSubmissionUpdate,
-    TestSubmissionUpdateInfo=TestSubmissionUpdateInfo,
-    RunningSubmissionState=RunningSubmissionState,
-    ErrorInfo=ErrorInfo,
-    CompileError=CompileError,
-    RuntimeError=RuntimeError,
-    InternalError=InternalError,
-    ExceptionInfo=ExceptionInfo,
-    GradedTestCaseUpdate=GradedTestCaseUpdate,
-    TestCaseId=TestCaseId,
-    TestCaseGrade=TestCaseGrade,
-    TestCaseHiddenGrade=TestCaseHiddenGrade,
-    TestCaseNonHiddenGrade=TestCaseNonHiddenGrade,
     VariableValue=VariableValue,
-    MapValue=MapValue,
-    KeyValuePair=KeyValuePair,
-    BinaryTreeValue=BinaryTreeValue,
-    NodeId=NodeId,
-    BinaryTreeNodeValue=BinaryTreeNodeValue,
-    SinglyLinkedListValue=SinglyLinkedListValue,
-    SinglyLinkedListNodeValue=SinglyLinkedListNodeValue,
-    DoublyLinkedListValue=DoublyLinkedListValue,
-    DoublyLinkedListNodeValue=DoublyLinkedListNodeValue,
-    ExceptionV2=ExceptionV2,
-    RecordedTestCaseUpdate=RecordedTestCaseUpdate,
-    ProblemId=ProblemId,
-    ProblemInfoV2=ProblemInfoV2,
-    ProblemDescription=ProblemDescription,
-    ProblemDescriptionBoard=ProblemDescriptionBoard,
-    Language=Language,
-    CustomFiles=CustomFiles,
-    BasicCustomFiles=BasicCustomFiles,
-    NonVoidFunctionSignature=NonVoidFunctionSignature,
-    Parameter=Parameter,
-    ParameterId=ParameterId,
-    VariableType=VariableType,
-    ListType=ListType,
     MapType=MapType,
-    Files=Files,
-    FileInfoV2=FileInfoV2,
-    BasicTestCaseTemplate=BasicTestCaseTemplate,
-    TestCaseTemplateId=TestCaseTemplateId,
-    TestCaseImplementationDescription=TestCaseImplementationDescription,
-    TestCaseImplementationDescriptionBoard=TestCaseImplementationDescriptionBoard,
-    GeneratedFiles=GeneratedFiles,
-    TestCaseTemplate=TestCaseTemplate,
-    TestCaseImplementation=TestCaseImplementation,
-    TestCaseFunction=TestCaseFunction,
-    TestCaseWithActualResultImplementation=TestCaseWithActualResultImplementation,
-    NonVoidFunctionDefinition=NonVoidFunctionDefinition,
-    FunctionImplementationForMultipleLanguages=FunctionImplementationForMultipleLanguages,
-    FunctionImplementation=FunctionImplementation,
-    AssertCorrectnessCheck=AssertCorrectnessCheck,
-    DeepEqualityCorrectnessCheck=DeepEqualityCorrectnessCheck,
-    VoidFunctionDefinitionThatTakesActualResult=VoidFunctionDefinitionThatTakesActualResult,
-    VoidFunctionDefinition=VoidFunctionDefinition,
-    TestCaseV2=TestCaseV2,
-    TestCaseMetadata=TestCaseMetadata,
-    TestCaseImplementationReference=TestCaseImplementationReference,
-    TestCaseExpects=TestCaseExpects,
-)
-_SubmissionStatusV2.Workspace.update_forward_refs(
-    WorkspaceSubmissionUpdate=WorkspaceSubmissionUpdate,
-    WorkspaceSubmissionUpdateInfo=WorkspaceSubmissionUpdateInfo,
-    RunningSubmissionState=RunningSubmissionState,
-    WorkspaceRunDetails=WorkspaceRunDetails,
-    ExceptionV2=ExceptionV2,
-    ExceptionInfo=ExceptionInfo,
-    WorkspaceTracedUpdate=WorkspaceTracedUpdate,
-    ErrorInfo=ErrorInfo,
-    CompileError=CompileError,
-    RuntimeError=RuntimeError,
-    InternalError=InternalError,
+    MapValue=MapValue,
+    VariableType=VariableType,
+    KeyValuePair=KeyValuePair,
+    ListType=ListType,
 )
 SubmissionStatusV2.update_forward_refs()

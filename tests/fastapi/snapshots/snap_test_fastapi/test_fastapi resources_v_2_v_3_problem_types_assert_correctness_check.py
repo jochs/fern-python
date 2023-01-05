@@ -7,15 +7,10 @@ import typing
 import pydantic
 import typing_extensions
 
-from .....commons.types.language import Language
 from .....commons.types.list_type import ListType
 from .....commons.types.map_type import MapType
 from .....commons.types.variable_type import VariableType
 from .deep_equality_correctness_check import DeepEqualityCorrectnessCheck
-from .function_implementation import FunctionImplementation
-from .function_implementation_for_multiple_languages import FunctionImplementationForMultipleLanguages
-from .parameter import Parameter
-from .parameter_id import ParameterId
 from .void_function_definition_that_takes_actual_result import VoidFunctionDefinitionThatTakesActualResult
 
 T_Result = typing.TypeVar("T_Result")
@@ -114,15 +109,5 @@ class _AssertCorrectnessCheck:
             frozen = True
 
 
-_AssertCorrectnessCheck.DeepEquality.update_forward_refs(ParameterId=ParameterId)
-_AssertCorrectnessCheck.Custom.update_forward_refs(
-    Parameter=Parameter,
-    ParameterId=ParameterId,
-    VariableType=VariableType,
-    ListType=ListType,
-    MapType=MapType,
-    FunctionImplementationForMultipleLanguages=FunctionImplementationForMultipleLanguages,
-    Language=Language,
-    FunctionImplementation=FunctionImplementation,
-)
+_AssertCorrectnessCheck.Custom.update_forward_refs(VariableType=VariableType, MapType=MapType, ListType=ListType)
 AssertCorrectnessCheck.update_forward_refs()

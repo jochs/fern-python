@@ -8,7 +8,6 @@ import pydantic
 import typing_extensions
 
 from .compile_error import CompileError as submission_compile_error_CompileError
-from .exception_info import ExceptionInfo
 from .internal_error import InternalError as submission_internal_error_InternalError
 from .runtime_error import RuntimeError as submission_runtime_error_RuntimeError
 
@@ -120,7 +119,4 @@ class _ErrorInfo:
             frozen = True
 
 
-_ErrorInfo.CompileError.update_forward_refs()
-_ErrorInfo.RuntimeError.update_forward_refs()
-_ErrorInfo.InternalError.update_forward_refs(ExceptionInfo=ExceptionInfo)
 ErrorInfo.update_forward_refs()

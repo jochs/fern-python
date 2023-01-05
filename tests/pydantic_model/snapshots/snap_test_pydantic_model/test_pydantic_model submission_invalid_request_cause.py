@@ -7,12 +7,9 @@ import typing
 import pydantic
 import typing_extensions
 
-from ..commons.language import Language
-from ..commons.problem_id import ProblemId
 from .custom_test_cases_unsupported import (
     CustomTestCasesUnsupported as submission_custom_test_cases_unsupported_CustomTestCasesUnsupported,
 )
-from .submission_id import SubmissionId
 from .submission_id_not_found import SubmissionIdNotFound as submission_submission_id_not_found_SubmissionIdNotFound
 from .unexpected_language_error import UnexpectedLanguageError
 
@@ -170,7 +167,4 @@ class _InvalidRequestCause:
             frozen = True
 
 
-_InvalidRequestCause.SubmissionIdNotFound.update_forward_refs(SubmissionId=SubmissionId)
-_InvalidRequestCause.CustomTestCasesUnsupported.update_forward_refs(ProblemId=ProblemId, SubmissionId=SubmissionId)
-_InvalidRequestCause.UnexpectedLanguage.update_forward_refs(Language=Language)
 InvalidRequestCause.update_forward_refs()

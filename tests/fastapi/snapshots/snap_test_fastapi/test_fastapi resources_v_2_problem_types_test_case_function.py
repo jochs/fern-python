@@ -7,21 +7,11 @@ import typing
 import pydantic
 import typing_extensions
 
-from ....commons.types.language import Language
 from ....commons.types.list_type import ListType
 from ....commons.types.map_type import MapType
 from ....commons.types.variable_type import VariableType
-from .assert_correctness_check import AssertCorrectnessCheck
-from .deep_equality_correctness_check import DeepEqualityCorrectnessCheck
-from .function_implementation import FunctionImplementation
-from .function_implementation_for_multiple_languages import FunctionImplementationForMultipleLanguages
-from .non_void_function_definition import NonVoidFunctionDefinition
-from .non_void_function_signature import NonVoidFunctionSignature
-from .parameter import Parameter
-from .parameter_id import ParameterId
 from .test_case_with_actual_result_implementation import TestCaseWithActualResultImplementation
 from .void_function_definition import VoidFunctionDefinition
-from .void_function_definition_that_takes_actual_result import VoidFunctionDefinitionThatTakesActualResult
 
 T_Result = typing.TypeVar("T_Result")
 
@@ -118,29 +108,6 @@ class _TestCaseFunction:
             frozen = True
 
 
-_TestCaseFunction.WithActualResult.update_forward_refs(
-    NonVoidFunctionDefinition=NonVoidFunctionDefinition,
-    NonVoidFunctionSignature=NonVoidFunctionSignature,
-    Parameter=Parameter,
-    ParameterId=ParameterId,
-    VariableType=VariableType,
-    ListType=ListType,
-    MapType=MapType,
-    FunctionImplementationForMultipleLanguages=FunctionImplementationForMultipleLanguages,
-    Language=Language,
-    FunctionImplementation=FunctionImplementation,
-    AssertCorrectnessCheck=AssertCorrectnessCheck,
-    DeepEqualityCorrectnessCheck=DeepEqualityCorrectnessCheck,
-    VoidFunctionDefinitionThatTakesActualResult=VoidFunctionDefinitionThatTakesActualResult,
-)
-_TestCaseFunction.Custom.update_forward_refs(
-    Parameter=Parameter,
-    ParameterId=ParameterId,
-    VariableType=VariableType,
-    ListType=ListType,
-    MapType=MapType,
-    FunctionImplementationForMultipleLanguages=FunctionImplementationForMultipleLanguages,
-    Language=Language,
-    FunctionImplementation=FunctionImplementation,
-)
+_TestCaseFunction.WithActualResult.update_forward_refs(VariableType=VariableType, MapType=MapType, ListType=ListType)
+_TestCaseFunction.Custom.update_forward_refs(VariableType=VariableType, MapType=MapType, ListType=ListType)
 TestCaseFunction.update_forward_refs()

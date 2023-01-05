@@ -7,13 +7,9 @@ import typing
 import pydantic
 import typing_extensions
 
-from .binary_tree_node_value import BinaryTreeNodeValue
 from .binary_tree_value import BinaryTreeValue as commons_binary_tree_value_BinaryTreeValue
-from .doubly_linked_list_node_value import DoublyLinkedListNodeValue
 from .doubly_linked_list_value import DoublyLinkedListValue as commons_doubly_linked_list_value_DoublyLinkedListValue
 from .key_value_pair import KeyValuePair
-from .node_id import NodeId
-from .singly_linked_list_node_value import SinglyLinkedListNodeValue
 from .singly_linked_list_value import SinglyLinkedListValue as commons_singly_linked_list_value_SinglyLinkedListValue
 
 T_Result = typing.TypeVar("T_Result")
@@ -320,22 +316,6 @@ class _VariableValue:
 
 
 _VariableValue.MapValue.update_forward_refs(
-    KeyValuePair=KeyValuePair,
-    VariableValue=VariableValue,
-    MapValue=commons_map_value_MapValue,
-    BinaryTreeValue=commons_binary_tree_value_BinaryTreeValue,
-    NodeId=NodeId,
-    BinaryTreeNodeValue=BinaryTreeNodeValue,
-    SinglyLinkedListValue=commons_singly_linked_list_value_SinglyLinkedListValue,
-    SinglyLinkedListNodeValue=SinglyLinkedListNodeValue,
-    DoublyLinkedListValue=commons_doubly_linked_list_value_DoublyLinkedListValue,
-    DoublyLinkedListNodeValue=DoublyLinkedListNodeValue,
-)
-_VariableValue.BinaryTreeValue.update_forward_refs(NodeId=NodeId, BinaryTreeNodeValue=BinaryTreeNodeValue)
-_VariableValue.SinglyLinkedListValue.update_forward_refs(
-    NodeId=NodeId, SinglyLinkedListNodeValue=SinglyLinkedListNodeValue
-)
-_VariableValue.DoublyLinkedListValue.update_forward_refs(
-    NodeId=NodeId, DoublyLinkedListNodeValue=DoublyLinkedListNodeValue
+    MapValue=commons_map_value_MapValue, VariableValue=VariableValue, KeyValuePair=KeyValuePair
 )
 VariableValue.update_forward_refs()

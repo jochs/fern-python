@@ -27,7 +27,7 @@ class FernAwarePydanticModel:
 
     When generating a Pydantic model, certain type hints need to be
     imported below the class to avoid issues with circular references. For each
-    type hint. we need the original TypeReference to determine if that's
+    type hint, we need the original TypeReference to determine if that's
     necessary. To ensure the imports are done correctly, the non-unsafe
     methods in the class take TypeReference and handle converting the
     TypeReference to a TypeHint.

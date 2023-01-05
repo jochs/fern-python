@@ -224,6 +224,4 @@ class _SubmissionResponse:
             frozen = True
 
 
-_SubmissionResponse.ServerErrored.update_forward_refs()
-_SubmissionResponse.Terminated.update_forward_refs()
 SubmissionResponse.update_forward_refs()
