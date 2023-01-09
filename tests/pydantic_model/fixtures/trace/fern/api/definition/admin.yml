@@ -2,7 +2,11 @@ imports:
   submission: submission.yml
   problemV2: v2/problem.yml
 
-types: {}
+types:
+  Test:
+    union:
+      and: boolean
+      or: boolean
 
 services:
   http:

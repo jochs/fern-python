@@ -34,8 +34,8 @@ class ObjectGenerator(AbstractTypeGenerator):
         ) as pydantic_model:
             for property in self._object.properties:
                 pydantic_model.add_field(
-                    name=property.name.name.snake_case.safe_name,
-                    pascal_case_field_name=property.name.name.pascal_case.safe_name,
+                    name=property.name.name.snake_case.unsafe_name,
+                    pascal_case_field_name=property.name.name.pascal_case.unsafe_name,
                     type_reference=property.value_type,
                     json_field_name=property.name.wire_value,
                     description=property.docs,

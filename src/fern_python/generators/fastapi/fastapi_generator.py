@@ -92,7 +92,11 @@ class FastApiGenerator(AbstractGenerator):
                 request_body = endpoint.request_body.get_as_union()
                 if request_body.type == "inlinedRequestBody":
                     with SourceFileGenerator.generate(
-                        project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
+                        project=project,
+                        filepath=context.get_filepath_for_inlined_request(
+                            service_name=service.name, request=request_body
+                        ),
+                        generator_exec_wrapper=generator_exec_wrapper,
                     ) as source_file:
                         InlinedRequestGenerator(context=context, request=request_body).generate(
                             source_file=source_file,

@@ -253,7 +253,7 @@ class EndpointGenerator:
         )
 
     def _get_method_name(self) -> str:
-        return self._endpoint.name.get_as_name().snake_case.safe_name
+        return self._endpoint.name.get_as_name().snake_case.unsafe_name
 
     def _get_reference_to_method_on_cls(self) -> str:
         return f"cls.{self._get_method_name()}"

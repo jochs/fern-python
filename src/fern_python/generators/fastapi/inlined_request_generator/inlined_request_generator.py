@@ -17,7 +17,7 @@ class InlinedRequestGenerator:
     ) -> None:
         with PydanticModel(
             source_file=source_file,
-            name=self._request.name.pascal_case.safe_name,
+            name=self._request.name.pascal_case.unsafe_name,
             base_models=[
                 self._context.pydantic_generator_context.get_class_reference_for_type_name(extension)
                 for extension in self._request.extends
@@ -26,8 +26,8 @@ class InlinedRequestGenerator:
             for property in self._request.properties:
                 pydantic_model.add_field(
                     PydanticField(
-                        name=property.name.name.snake_case.safe_name,
-                        pascal_case_field_name=property.name.name.pascal_case.safe_name,
+                        name=property.name.name.snake_case.unsafe_name,
+                        pascal_case_field_name=property.name.name.pascal_case.unsafe_name,
                         type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                             property.value_type
                         ),

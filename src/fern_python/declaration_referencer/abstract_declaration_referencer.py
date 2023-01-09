@@ -49,7 +49,7 @@ class AbstractDeclarationReferencer(ABC, Generic[T]):
         fern_filepath_parts = fern_filepath.get_as_list()
         return self._filepath_creator.generate_filepath_prefix() + tuple(
             Filepath.DirectoryFilepathPart(
-                module_name=fern_filepath_part.snake_case.safe_name,
+                module_name=fern_filepath_part.snake_case.unsafe_name,
                 export_strategy=ExportStrategy.EXPORT_AS_NAMESPACE
                 if i < len(fern_filepath_parts) - 1
                 else ExportStrategy.EXPORT_ALL,

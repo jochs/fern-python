@@ -8,15 +8,7 @@ T_Result = typing.TypeVar("T_Result")
 
 class MigrationStatus(str, enum.Enum):
     RUNNING = "RUNNING"
-    """
-    The migration is running
-    """
-
     FAILED = "FAILED"
-    """
-    The migration is failed
-    """
-
     FINISHED = "FINISHED"
 
     def visit(

@@ -81,7 +81,7 @@ class FernHTTPExceptionGenerator:
             error_discriminant = self._get_error_discriminant()
             body_pydantic_model.add_field(
                 PydanticField(
-                    name=error_discriminant.name.snake_case.safe_name,
+                    name=error_discriminant.name.snake_case.unsafe_name,
                     type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
                     json_field_name=error_discriminant.wire_value,
                     pascal_case_field_name=error_discriminant.name.pascal_case.unsafe_name,
@@ -113,7 +113,7 @@ class FernHTTPExceptionGenerator:
                     name=self._get_error_content_field_name(),
                     type_hint=AST.TypeHint.optional(AST.TypeHint.any()),
                     json_field_name=self._get_content_property().wire_value,
-                    pascal_case_field_name=self._get_content_property().name.pascal_case.safe_name,
+                    pascal_case_field_name=self._get_content_property().name.pascal_case.unsafe_name,
                 )
             )
             return body_pydantic_model.to_reference()
@@ -131,10 +131,10 @@ class FernHTTPExceptionGenerator:
         )
 
     def _get_error_instance_id_field_name(self) -> str:
-        return self._context.ir.constants.error_instance_id_key.name.snake_case.safe_name
+        return self._context.ir.constants.error_instance_id_key.name.snake_case.unsafe_name
 
     def _get_error_content_field_name(self) -> str:
-        return self._get_content_property().name.snake_case.safe_name
+        return self._get_content_property().name.snake_case.unsafe_name
 
     def _get_content_property(self) -> NameAndWireValue:
         error_discrimination_strategy = self._context.ir.error_discrimination_strategy.get_as_union()
@@ -155,7 +155,7 @@ class FernHTTPExceptionGenerator:
                     class_=reference_to_body,
                     kwargs=[
                         (
-                            self._get_error_discriminant().name.snake_case.safe_name,
+                            self._get_error_discriminant().name.snake_case.unsafe_name,
                             AST.Expression("self." + self.FernHTTPException.NAME_MEMBER),
                         ),
                         (

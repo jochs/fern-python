@@ -12,7 +12,7 @@ from ...commons.types.problem_id import ProblemId
 
 class UpdatePlaylistRequest(pydantic.BaseModel):
     name: str
-    problems: typing.List[ProblemId] = pydantic.Field(description=("The problems that make up the playlist.\n"))
+    problems: typing.List[ProblemId]
 
     class Partial(typing_extensions.TypedDict):
         name: typing_extensions.NotRequired[str]
@@ -203,5 +203,4 @@ class UpdatePlaylistRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid

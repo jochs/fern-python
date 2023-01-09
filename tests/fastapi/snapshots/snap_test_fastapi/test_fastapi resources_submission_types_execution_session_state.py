@@ -13,9 +13,7 @@ from .execution_session_status import ExecutionSessionStatus
 
 class ExecutionSessionState(pydantic.BaseModel):
     last_time_contacted: typing.Optional[str] = pydantic.Field(alias="lastTimeContacted")
-    session_id: str = pydantic.Field(
-        alias="sessionId", description=("The auto-generated session id. Formatted as a uuid.\n")
-    )
+    session_id: str = pydantic.Field(alias="sessionId")
     is_warm_instance: bool = pydantic.Field(alias="isWarmInstance")
     aws_task_id: typing.Optional[str] = pydantic.Field(alias="awsTaskId")
     language: Language

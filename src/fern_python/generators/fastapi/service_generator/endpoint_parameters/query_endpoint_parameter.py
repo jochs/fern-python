@@ -41,4 +41,4 @@ class QueryEndpointParameter(EndpointParameter):
 
     @staticmethod
     def get_variable_name_of_query_parameter(query_parameter: ir_types.QueryParameter) -> str:
-        return query_parameter.name.name.snake_case.safe_name
+        return query_parameter.name.name.snake_case.unsafe_name

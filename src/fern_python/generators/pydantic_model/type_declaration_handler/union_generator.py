@@ -81,8 +81,8 @@ class UnionGenerator(AbstractTypeGenerator):
                     if shape.properties_type == "singleProperty":
                         internal_pydantic_model_for_single_union_type.add_field(
                             PydanticField(
-                                name=shape.name.name.snake_case.safe_name,
-                                pascal_case_field_name=shape.name.name.pascal_case.safe_name,
+                                name=shape.name.name.snake_case.unsafe_name,
+                                pascal_case_field_name=shape.name.name.pascal_case.unsafe_name,
                                 json_field_name=shape.name.wire_value,
                                 type_hint=self._context.get_type_hint_for_type_reference(type_reference=shape.type),
                             )
@@ -271,13 +271,13 @@ class UnionGenerator(AbstractTypeGenerator):
     ) -> PydanticField:
         return PydanticField(
             name=self._get_discriminant_attr_name(),
-            pascal_case_field_name=self._union.discriminant.name.pascal_case.safe_name,
+            pascal_case_field_name=self._union.discriminant.name.pascal_case.unsafe_name,
             type_hint=AST.TypeHint.literal(self._get_discriminant_value_for_single_union_type(single_union_type)),
             json_field_name=self._union.discriminant.wire_value,
         )
 
     def _get_discriminant_attr_name(self) -> str:
-        return self._union.discriminant.name.snake_case.safe_name
+        return self._union.discriminant.name.snake_case.unsafe_name
 
     def _get_discriminant_value_for_single_union_type(
         self,
@@ -291,4 +291,4 @@ def assert_never(arg: Never) -> Never:
 
 
 def get_field_name_for_single_property(property: ir_types.SingleUnionTypeProperty) -> str:
-    return property.name.name.snake_case.safe_name
+    return property.name.name.snake_case.unsafe_name

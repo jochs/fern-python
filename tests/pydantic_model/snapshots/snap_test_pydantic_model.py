@@ -12,9 +12,7 @@ snapshots['test_pydantic_model __init__'] = FileSnapshot('snap_test_pydantic_mod
 
 snapshots['test_pydantic_model admin___init__'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model admin___init__.py')
 
-snapshots['test_pydantic_model admin_store_traced_test_case_request'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model admin_store_traced_test_case_request.py')
-
-snapshots['test_pydantic_model admin_store_traced_workspace_request'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model admin_store_traced_workspace_request.py')
+snapshots['test_pydantic_model admin_test'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model admin_test.py')
 
 snapshots['test_pydantic_model commons___init__'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model commons___init__.py')
 
@@ -73,8 +71,7 @@ snapshots['test_pydantic_model commons_variable_value'] = FileSnapshot('snap_tes
 snapshots['test_pydantic_model filepaths'] = [
     '__init__.py',
     'admin/__init__.py',
-    'admin/store_traced_test_case_request.py',
-    'admin/store_traced_workspace_request.py',
+    'admin/test.py',
     'commons/__init__.py',
     'commons/binary_tree_node_and_tree_value.py',
     'commons/binary_tree_node_value.py',
@@ -119,7 +116,6 @@ snapshots['test_pydantic_model filepaths'] = [
     'problem/create_problem_request.py',
     'problem/create_problem_response.py',
     'problem/generic_create_problem_error.py',
-    'problem/get_default_starter_files_request.py',
     'problem/get_default_starter_files_response.py',
     'problem/problem_description.py',
     'problem/problem_description_board.py',
@@ -329,8 +325,6 @@ snapshots['test_pydantic_model problem_create_problem_request'] = FileSnapshot('
 snapshots['test_pydantic_model problem_create_problem_response'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model problem_create_problem_response.py')
 
 snapshots['test_pydantic_model problem_generic_create_problem_error'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model problem_generic_create_problem_error.py')
-
-snapshots['test_pydantic_model problem_get_default_starter_files_request'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model problem_get_default_starter_files_request.py')
 
 snapshots['test_pydantic_model problem_get_default_starter_files_response'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model problem_get_default_starter_files_response.py')
 

@@ -32,8 +32,8 @@ class InlinedRequestDeclarationReferencer(FastApiDeclarationReferencer[ServiceNa
     ) -> Filepath:
         return Filepath(
             directories=self._service_declaration_handler.get_filepath(name=name.service_name).directories,
-            file=Filepath.FilepathPart(module_name=name.request.name.snake_case.safe_name),
+            file=Filepath.FilepathPart(module_name=name.request.name.snake_case.unsafe_name),
         )
 
     def get_class_name(self, *, name: ServiceNameAndInlinedRequestBody) -> str:
-        return name.request.name.pascal_case.safe_name
+        return name.request.name.pascal_case.unsafe_name
