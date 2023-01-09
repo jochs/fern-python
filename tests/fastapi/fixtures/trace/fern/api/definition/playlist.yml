@@ -52,6 +52,7 @@ services:
             name: GetPlaylistsRequest
             query-parameters:
               limit: optional<integer>
+              otherField: string
 
         getPlaylist:
           docs: Returns a playlist

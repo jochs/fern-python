@@ -38,7 +38,9 @@ class AbstractPlaylistCrudService(AbstractFernService):
         ...
 
     @abc.abstractmethod
-    def get_playlists(self, *, service_param: int, limit: typing.Optional[int], auth: ApiAuth) -> typing.List[Playlist]:
+    def get_playlists(
+        self, *, service_param: int, limit: typing.Optional[int], other_field: str, auth: ApiAuth
+    ) -> typing.List[Playlist]:
         """
         Returns the user's playlists
         """
@@ -131,6 +133,8 @@ class AbstractPlaylistCrudService(AbstractFernService):
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             elif parameter_name == "limit":
                 new_parameters.append(parameter.replace(default=fastapi.Query(default=None)))
+            elif parameter_name == "other_field":
+                new_parameters.append(parameter.replace(default=fastapi.Query(default=..., alias="otherField")))
             elif parameter_name == "auth":
                 new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
