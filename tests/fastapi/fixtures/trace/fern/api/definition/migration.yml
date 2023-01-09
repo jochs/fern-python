@@ -1,10 +1,8 @@
 types:
   MigrationStatus:
     enum:
-      - value: RUNNING
-        docs: The migration is running
-      - value: FAILED
-        docs: The migration is failed
+      - RUNNING
+      - FAILED
       - FINISHED
   Migration:
     properties:
