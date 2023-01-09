@@ -40,6 +40,7 @@ from .playlist import (
     PlaylistId,
     PlaylistIdNotFoundError,
     PlaylistIdNotFoundErrorBody,
+    ReservedKeywordEnum,
     UnauthorizedError,
     UpdatePlaylistRequest,
 )
@@ -217,6 +218,7 @@ __all__ = [
     "RecordedResponseNotification",
     "RecordedTestCaseUpdate",
     "RecordingResponseNotification",
+    "ReservedKeywordEnum",
     "RunningResponse",
     "RunningSubmissionState",
     "RuntimeError",

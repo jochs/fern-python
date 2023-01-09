@@ -110,6 +110,7 @@ snapshots['test_pydantic_model filepaths'] = [
     'playlist/playlist_create_request.py',
     'playlist/playlist_id.py',
     'playlist/playlist_id_not_found_error_body.py',
+    'playlist/reserved_keyword_enum.py',
     'playlist/update_playlist_request.py',
     'problem/__init__.py',
     'problem/create_problem_error.py',
@@ -313,6 +314,8 @@ snapshots['test_pydantic_model playlist_playlist_create_request'] = FileSnapshot
 snapshots['test_pydantic_model playlist_playlist_id'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model playlist_playlist_id.py')
 
 snapshots['test_pydantic_model playlist_playlist_id_not_found_error_body'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model playlist_playlist_id_not_found_error_body.py')
+
+snapshots['test_pydantic_model playlist_reserved_keyword_enum'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model playlist_reserved_keyword_enum.py')
 
 snapshots['test_pydantic_model playlist_update_playlist_request'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model playlist_update_playlist_request.py')
 

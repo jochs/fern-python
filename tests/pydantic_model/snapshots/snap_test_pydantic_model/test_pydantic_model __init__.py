@@ -32,7 +32,14 @@ from .commons import (
 )
 from .lang_server import LangServerRequest, LangServerResponse
 from .migration import Migration, MigrationStatus
-from .playlist import Playlist, PlaylistCreateRequest, PlaylistId, PlaylistIdNotFoundErrorBody, UpdatePlaylistRequest
+from .playlist import (
+    Playlist,
+    PlaylistCreateRequest,
+    PlaylistId,
+    PlaylistIdNotFoundErrorBody,
+    ReservedKeywordEnum,
+    UpdatePlaylistRequest,
+)
 from .problem import (
     CreateProblemError,
     CreateProblemRequest,
@@ -194,6 +201,7 @@ __all__ = [
     "RecordedResponseNotification",
     "RecordedTestCaseUpdate",
     "RecordingResponseNotification",
+    "ReservedKeywordEnum",
     "RunningResponse",
     "RunningSubmissionState",
     "RuntimeError",
