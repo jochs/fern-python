@@ -142,7 +142,7 @@ reference = "fern-dev"
 
 [[package]]
 name = "fern-fern-ir-model"
-version = "0.0.805"
+version = "0.0.811"
 description = ""
 category = "main"
 optional = false
@@ -635,7 +635,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "39bfae0ae725823fedb028095c4e3ce09942a730551d39f827b9c411cdac2ca2"
+content-hash = "70324d81b5302147d7f470b39e72aa3810aaa8042206aaaa5fb2eb5595d5fe04"
 
 [metadata.files]
 attrs = [
@@ -783,8 +783,8 @@ fern-fern-generator-exec = [
     {file = "fern_fern_generator_exec-0.3.0-py3-none-any.whl", hash = "sha256:02406f828b38c6ed176a26bcd19344c53ac27b76ea79ebefb04ffecc594baf69"},
 ]
 fern-fern-ir-model = [
-    {file = "fern_fern_ir_model-0.0.805-py3-none-any.whl", hash = "sha256:953b5381cbb7688e94086ad0b90e91c006882ef6902366b5fe446e1b6a3650a2"},
-    {file = "fern_fern_ir_model-0.0.805.tar.gz", hash = "sha256:2f0cd0740b0b00d361dd49c245a1646c0b0929b9b659ec80c11b7fd782ea47c2"},
+    {file = "fern_fern_ir_model-0.0.811-py3-none-any.whl", hash = "sha256:e504798302e5dc162b0e971f46aa3fd977934243288fe660d3e950f345eb47cf"},
+    {file = "fern_fern_ir_model-0.0.811.tar.gz", hash = "sha256:5013f631ad1ce45d9fe60956e75fbbb394c36f47895179b8086cbfa57e423500"},
 ]
 filelock = [
     {file = "filelock-3.9.0-py3-none-any.whl", hash = "sha256:f58d535af89bb9ad5cd4df046f741f8553a418c01a7856bf0d173bbc9f6bd16d"},
