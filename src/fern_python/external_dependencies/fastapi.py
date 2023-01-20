@@ -106,9 +106,9 @@ class FastAPI:
         )
 
     @staticmethod
-    def Query(*, is_optional: bool, variable_name: str, wire_value: str) -> AST.Expression:
+    def Query(*, default: AST.Expression, variable_name: str, wire_value: str) -> AST.Expression:
         kwargs: List[Tuple[str, AST.Expression]] = []
-        kwargs.append(("default", AST.Expression(AST.TypeHint.none() if is_optional else "...")))
+        kwargs.append(("default", default))
         if variable_name != wire_value:
             kwargs.append(("alias", AST.Expression(AST.CodeWriter(f'"{wire_value}"'))))
         return AST.Expression(
