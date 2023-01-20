@@ -25,9 +25,9 @@ class QueryEndpointParameter(EndpointParameter):
         value_type = self._query_parameter.value_type.get_as_union()
         is_optional = value_type.type == "container" and value_type.container.get_as_union().type == "optional"
         return FastAPI.Query(
-            default=AST.Expression(
-                ("[]" if self._query_parameter.allow_multiple else AST.TypeHint.none()) if is_optional else "..."
-            ),
+            default=AST.Expression("[]" if self._query_parameter.allow_multiple else AST.TypeHint.none())
+            if is_optional
+            else None,
             variable_name=self.get_name(),
             wire_value=self._query_parameter.name.wire_value,
         )
