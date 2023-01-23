@@ -169,7 +169,7 @@ class EndpointGenerator:
                     writer.write("status_code=")
                     writer.write_node(AST.TypeHint(Starlette.HTTP_204_NO_CONTENT))
                     writer.write_line(",")
-                writer.write(f"description={class_declaration.name}.{self._get_init_method_name()}.__doc__")
+                writer.write(f"description={class_declaration.name}.{self._get_method_name()}.__doc__")
                 writer.write_line(",")
                 writer.write("**")
                 default_tag = ".".join(

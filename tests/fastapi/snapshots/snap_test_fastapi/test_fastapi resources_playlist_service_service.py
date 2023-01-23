@@ -125,7 +125,7 @@ class AbstractPlaylistCrudService(AbstractFernService):
         router.post(
             path="/v2/playlist/{service_param}/create",
             response_model=Playlist,
-            description=AbstractPlaylistCrudService.__init_create_playlist.__doc__,
+            description=AbstractPlaylistCrudService.create_playlist.__doc__,
             **get_route_args(cls.create_playlist, default_tag="playlist"),
         )(wrapper)
 
@@ -173,7 +173,7 @@ class AbstractPlaylistCrudService(AbstractFernService):
         router.get(
             path="/v2/playlist/{service_param}/all",
             response_model=typing.List[Playlist],
-            description=AbstractPlaylistCrudService.__init_get_playlists.__doc__,
+            description=AbstractPlaylistCrudService.get_playlists.__doc__,
             **get_route_args(cls.get_playlists, default_tag="playlist"),
         )(wrapper)
 
@@ -213,7 +213,7 @@ class AbstractPlaylistCrudService(AbstractFernService):
         router.get(
             path="/v2/playlist/{service_param}/{playlist_id}",
             response_model=Playlist,
-            description=AbstractPlaylistCrudService.__init_get_playlist.__doc__,
+            description=AbstractPlaylistCrudService.get_playlist.__doc__,
             **get_route_args(cls.get_playlist, default_tag="playlist"),
         )(wrapper)
 
@@ -257,7 +257,7 @@ class AbstractPlaylistCrudService(AbstractFernService):
         router.put(
             path="/v2/playlist/{service_param}/{playlist_id}",
             response_model=typing.Optional[Playlist],
-            description=AbstractPlaylistCrudService.__init_update_playlist.__doc__,
+            description=AbstractPlaylistCrudService.update_playlist.__doc__,
             **get_route_args(cls.update_playlist, default_tag="playlist"),
         )(wrapper)
 
@@ -297,6 +297,6 @@ class AbstractPlaylistCrudService(AbstractFernService):
         router.delete(
             path="/v2/playlist/{service_param}/{playlist_id}",
             status_code=starlette.status.HTTP_204_NO_CONTENT,
-            description=AbstractPlaylistCrudService.__init_delete_playlist.__doc__,
+            description=AbstractPlaylistCrudService.delete_playlist.__doc__,
             **get_route_args(cls.delete_playlist, default_tag="playlist"),
         )(wrapper)
