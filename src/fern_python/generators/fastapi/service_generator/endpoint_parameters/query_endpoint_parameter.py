@@ -46,9 +46,7 @@ class QueryEndpointParameter(EndpointParameter):
                 return AST.TypeHint.optional(
                     AST.TypeHint.list(convert_to_singular_type(self._context, contaner_type.optional))
                 )
-            if contaner_type.type == "list":
-                return AST.TypeHint.list(convert_to_singular_type(self._context, contaner_type.list))
-        return convert_to_singular_type(self._context, self._query_parameter.value_type)
+        return AST.TypeHint.list(convert_to_singular_type(self._context, self._query_parameter.value_type))
 
     @staticmethod
     def get_variable_name_of_query_parameter(query_parameter: ir_types.QueryParameter) -> str:
