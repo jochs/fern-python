@@ -139,15 +139,15 @@ class AbstractPlaylistCrudService(AbstractFernService):
             elif parameter_name == "service_param":
                 new_parameters.append(parameter.replace(default=fastapi.Path(...)))
             elif parameter_name == "limit":
-                new_parameters.append(parameter.replace(default=fastapi.Query(default=...)))
+                new_parameters.append(parameter.replace(default=fastapi.Query(default=None)))
             elif parameter_name == "other_field":
                 new_parameters.append(parameter.replace(default=fastapi.Query(default=..., alias="otherField")))
             elif parameter_name == "optional_multiple_field":
                 new_parameters.append(
-                    parameter.replace(default=fastapi.Query(default=..., alias="optionalMultipleField"))
+                    parameter.replace(default=fastapi.Query(default=None, alias="optionalMultipleField"))
                 )
             elif parameter_name == "multiple_field":
-                new_parameters.append(parameter.replace(default=fastapi.Query(default=..., alias="multipleField")))
+                new_parameters.append(parameter.replace(default=fastapi.Query(default=[], alias="multipleField")))
             elif parameter_name == "auth":
                 new_parameters.append(parameter.replace(default=fastapi.Depends(FernAuth)))
             else:
