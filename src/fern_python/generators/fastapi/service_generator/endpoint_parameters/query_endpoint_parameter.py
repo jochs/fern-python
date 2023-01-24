@@ -39,20 +39,16 @@ class QueryEndpointParameter(EndpointParameter):
         )
 
     def get_list_wrapped_type_hint(self) -> AST.TypeHint:
-        return AST.TypeHint.list(
-            convert_to_singular_type(
-                self._context,
-                self._unwrap_optional_if_present(),
-            )
-        )
-
-    def _unwrap_optional_if_present(self) -> ir_types.TypeReference:
         query_param_type = self._query_parameter.value_type.get_as_union()
         if query_param_type.type == "container":
             contaner_type = query_param_type.container.get_as_union()
             if contaner_type.type == "optional":
-                return contaner_type.optional
-        return self._query_parameter.value_type
+                return AST.TypeHint.optional(
+                    AST.TypeHint.list(convert_to_singular_type(self._context, contaner_type.optional))
+                )
+            if contaner_type.type == "list":
+                return AST.TypeHint.list(convert_to_singular_type(self._context, contaner_type.list))
+        return convert_to_singular_type(self._context, self._query_parameter.value_type)
 
     @staticmethod
     def get_variable_name_of_query_parameter(query_parameter: ir_types.QueryParameter) -> str:

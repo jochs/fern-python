@@ -44,8 +44,8 @@ class AbstractPlaylistCrudService(AbstractFernService):
         service_param: int,
         limit: typing.Optional[int],
         other_field: str,
-        optional_multiple_field: typing.List[str],
-        multiple_field: typing.List[str],
+        optional_multiple_field: typing.Optional[typing.List[str]],
+        multiple_field: str,
         auth: ApiAuth,
     ) -> typing.List[Playlist]:
         """
