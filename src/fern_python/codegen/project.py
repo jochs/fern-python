@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+import concurrent.futures
 import os
 from dataclasses import dataclass
+from glob import glob
+from pathlib import Path
 from types import TracebackType
 from typing import Optional, Set, Type
+
+import black
 
 from fern_python.codegen.pyproject_toml import PyProjectToml, PyProjectTomlPackageConfig
 
@@ -82,6 +87,14 @@ class Project:
 
     def finish(self) -> None:
         self._module_manager.write_modules(filepath=self._project_filepath)
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count() or 1) as executor:
+            results = [
+                executor.submit(_format_file, Path(path))
+                for path in glob(os.path.join(self._project_filepath, "**/*.py"), recursive=True)
+            ]
+            concurrent.futures.wait(results)
+
         if self._publish_config is not None:
             # generate pyproject.toml
             py_project_toml = PyProjectToml(
@@ -107,3 +120,14 @@ class Project:
         exctb: Optional[TracebackType],
     ) -> None:
         self.finish()
+
+
+def _format_file(path: Path) -> None:
+    print(f"Formatting {path}")
+    black.format_file_in_place(
+        src=path,
+        fast=True,
+        # todo read their config?
+        mode=black.FileMode(magic_trailing_comma=False, line_length=120),
+        write_back=black.WriteBack.YES,
+    )

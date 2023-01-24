@@ -35,6 +35,7 @@ class SourceFileGenerator:
 
     @staticmethod
     def _log_generating_file_update(*, filepath: Filepath, generator_exec_wrapper: GeneratorExecWrapper) -> None:
+        print(f"Generating {filepath}")
         generator_exec_wrapper.send_update(
             GeneratorUpdate.factory.log(LogUpdate(level=LogLevel.DEBUG, message=f"Generating {filepath}"))
         )
