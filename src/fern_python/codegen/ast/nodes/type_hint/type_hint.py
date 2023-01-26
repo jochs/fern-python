@@ -23,7 +23,7 @@ class TypeHint(AstNode):
             and self._type.import_ is not None
             and self._type.import_.module == Module.built_in("typing")
             and (
-                self._type.qualified_name_excluding_import == ("datetime",)
+                self._type.qualified_name_excluding_import == ("Optional",)
                 or self._type.import_.named_import == "Optional"
             )
         )
