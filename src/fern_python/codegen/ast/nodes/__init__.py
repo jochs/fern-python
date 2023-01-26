@@ -13,10 +13,10 @@ from .declarations import (
 from .docstring import Docstring
 from .expressions import (
     ClassInstantiation,
+    DictionaryInstantiation,
     Expression,
     ExpressionSpread,
     FunctionInvocation,
-    DictionaryInstantiation,
 )
 from .reference_node import ReferenceNode
 from .type_hint import TypeHint

@@ -15,6 +15,7 @@ from .nodes import (
     CodeWriter,
     CodeWriterFunction,
     Declaration,
+    DictionaryInstantiation,
     Docstring,
     Expression,
     ExpressionSpread,
@@ -26,7 +27,6 @@ from .nodes import (
     TypeAliasDeclaration,
     TypeHint,
     VariableDeclaration,
-    DictionaryInstantiation,
 )
 from .references import (
     ClassReference,
