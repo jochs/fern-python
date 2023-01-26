@@ -194,6 +194,14 @@ class CoreUtilities:
             )
         )
 
+    def get_serialize_datetime(self) -> AST.Reference:
+        return AST.Reference(
+            qualified_name_excluding_import=(),
+            import_=AST.ReferenceImport(
+                module=AST.Module.local(*self._module_path, "datetime_utils"), named_import="serialize_datetime"
+            ),
+        )
+
     def BearerToken(self) -> AST.ClassReference:
         return AST.ClassReference(
             qualified_name_excluding_import=(),
