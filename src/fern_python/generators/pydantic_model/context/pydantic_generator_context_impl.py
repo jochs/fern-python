@@ -10,21 +10,23 @@ from .pydantic_generator_context import (
     PydanticGeneratorContext,
 )
 from .type_reference_to_type_hint_converter import TypeReferenceToTypeHintConverter
+from generator_exec.resources import GeneratorConfig
 
 
 class PydanticGeneratorContextImpl(PydanticGeneratorContext):
     def __init__(
         self,
-        intermediate_representation: ir_types.IntermediateRepresentation,
+        ir: ir_types.IntermediateRepresentation,
         type_declaration_referencer: AbstractDeclarationReferencer[ir_types.DeclaredTypeName],
+        generator_config: GeneratorConfig,
     ):
+        super().__init__(ir=ir, generator_config=generator_config)
         self._type_reference_to_type_hint_converter = TypeReferenceToTypeHintConverter(
             type_declaration_referencer=type_declaration_referencer,
         )
 
         self._type_name_to_declaration = {
-            HashableDeclaredTypeName.of(declaration.name): declaration
-            for declaration in intermediate_representation.types
+            HashableDeclaredTypeName.of(declaration.name): declaration for declaration in ir.types
         }
 
         self._type_declaration_referencer = type_declaration_referencer

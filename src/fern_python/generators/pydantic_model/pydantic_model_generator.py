@@ -28,11 +28,12 @@ class PydanticModelGenerator(AbstractGenerator):
             custom_config=custom_config,
             project=project,
             context=PydanticGeneratorContextImpl(
-                intermediate_representation=ir,
+                ir=ir,
                 type_declaration_referencer=TypeDeclarationReferencer(
                     generator_config=generator_config,
                     ir=ir,
                 ),
+                generator_config=generator_config,
             ),
         )
 
