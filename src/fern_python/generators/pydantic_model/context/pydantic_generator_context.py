@@ -5,12 +5,14 @@ from dataclasses import dataclass
 from typing import Callable, Optional, Set, Tuple
 
 import fern.ir.pydantic as ir_types
-
 from generator_exec.resources import GeneratorConfig
 
 from fern_python.codegen import AST, Filepath
+from fern_python.generators.pydantic_model.pydantic_filepath_creator import (
+    PydanticFilepathCreator,
+)
+
 from ..core_utilities import CoreUtilities
-from fern_python.generators.pydantic_model.pydantic_filepath_creator import PydanticFilepathCreator
 
 
 class PydanticGeneratorContext(ABC):

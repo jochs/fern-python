@@ -1,6 +1,7 @@
 from typing import Callable, Optional, Set
 
 import fern.ir.pydantic as ir_types
+from generator_exec.resources import GeneratorConfig
 
 from fern_python.codegen import AST, Filepath
 from fern_python.declaration_referencer import AbstractDeclarationReferencer
@@ -10,7 +11,6 @@ from .pydantic_generator_context import (
     PydanticGeneratorContext,
 )
 from .type_reference_to_type_hint_converter import TypeReferenceToTypeHintConverter
-from generator_exec.resources import GeneratorConfig
 
 
 class PydanticGeneratorContextImpl(PydanticGeneratorContext):
