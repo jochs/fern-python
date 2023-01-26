@@ -26,6 +26,7 @@ from .nodes import (
     TypeAliasDeclaration,
     TypeHint,
     VariableDeclaration,
+    DictionaryInstantiation,
 )
 from .references import (
     ClassReference,
@@ -70,4 +71,5 @@ __all__ = [
     "FunctionSignature",
     "Docstring",
     "AstNodeMetadata",
+    "DictionaryInstantiation",
 ]

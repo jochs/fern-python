@@ -16,6 +16,7 @@ from .expressions import (
     Expression,
     ExpressionSpread,
     FunctionInvocation,
+    DictionaryInstantiation,
 )
 from .reference_node import ReferenceNode
 from .type_hint import TypeHint
@@ -40,4 +41,5 @@ __all__ = [
     "ReferenceNode",
     "FunctionSignature",
     "Docstring",
+    "DictionaryInstantiation",
 ]
