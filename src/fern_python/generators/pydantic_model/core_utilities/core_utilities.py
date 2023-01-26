@@ -22,7 +22,7 @@ class CoreUtilities:
                 directories=self.filepath,
                 file=Filepath.FilepathPart(module_name="datetime_utils"),
             ),
-            exports=set(),
+            exports={"serialize_datetime"},
         )
 
     def _copy_file_to_project(
