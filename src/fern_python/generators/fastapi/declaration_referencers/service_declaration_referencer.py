@@ -18,5 +18,9 @@ class ServiceDeclarationReferencer(FastApiDeclarationReferencer[ir_types.http.De
         )
 
     def get_class_name(self, *, name: ir_types.DeclaredServiceName) -> str:
-        last_part = name.fern_filepath.all_parts[-1]
-        return f"Abstract{last_part.pascal_case.unsafe_name if last_part is not None else 'Root'}Service"
+        joined_path = (
+            "".join([part.pascal_case.unsafe_name for part in name.fern_filepath.all_parts])
+            if len(name.fern_filepath.all_parts) > 0
+            else "Root"
+        )
+        return f"Abstract{joined_path}Service"

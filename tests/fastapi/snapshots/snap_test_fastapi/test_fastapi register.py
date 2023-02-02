@@ -15,17 +15,11 @@ from .resources.admin.service.service import AbstractAdminService
 from .resources.homepage.service.service import AbstractHomepageService
 from .resources.migration.service.service import AbstractMigrationService
 from .resources.playlist.service.service import AbstractPlaylistService
-from .resources.problem.service.service import (
-    AbstractProblemService as resources_problem_service_service_AbstractProblemService,
-)
+from .resources.problem.service.service import AbstractProblemService
 from .resources.submission.service.service import AbstractSubmissionService
 from .resources.sysprop.service.service import AbstractSyspropService
-from .resources.v_2.resources.problem.service.service import (
-    AbstractProblemService as resources_v_2_resources_problem_service_service_AbstractProblemService,
-)
-from .resources.v_2.resources.v_3.resources.problem.service.service import (
-    AbstractProblemService as resources_v_2_resources_v_3_resources_problem_service_service_AbstractProblemService,
-)
+from .resources.v_2.resources.problem.service.service import AbstractV2ProblemService
+from .resources.v_2.resources.v_3.resources.problem.service.service import AbstractV2V3ProblemService
 from .resources.v_2.service.service import AbstractV2Service
 
 
@@ -36,11 +30,11 @@ def register(
     homepage: AbstractHomepageService,
     migration: AbstractMigrationService,
     playlist: AbstractPlaylistService,
-    problem: resources_problem_service_service_AbstractProblemService,
+    problem: AbstractProblemService,
     submission: AbstractSubmissionService,
     sysprop: AbstractSyspropService,
-    v_2_problem: resources_v_2_resources_problem_service_service_AbstractProblemService,
-    v_2_v_3_problem: resources_v_2_resources_v_3_resources_problem_service_service_AbstractProblemService,
+    v_2_problem: AbstractV2ProblemService,
+    v_2_v_3_problem: AbstractV2V3ProblemService,
     v_2: AbstractV2Service
 ) -> None:
     app.include_router(__register_service(admin))
