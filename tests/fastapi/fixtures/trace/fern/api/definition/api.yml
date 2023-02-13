@@ -1,6 +1,6 @@
 name: my-api
 auth: bearer
-headers: 
+headers:
   X-Random-Header: optional<string>
 error-discrimination:
   strategy: property

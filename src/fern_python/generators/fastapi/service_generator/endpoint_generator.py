@@ -10,11 +10,11 @@ from ..context import FastApiGeneratorContext
 from .endpoint_parameters import (
     AuthEndpointParameter,
     EndpointParameter,
+    HeaderEndpointParameter,
     InlinedRequestEndpointParameter,
     PathEndpointParameter,
     QueryEndpointParameter,
     ReferencedRequestEndpointParameter,
-    HeaderEndpointParameter,
 )
 
 
