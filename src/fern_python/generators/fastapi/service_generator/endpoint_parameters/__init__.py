@@ -2,6 +2,7 @@ from .auth_endpoint_parameter import AuthEndpointParameter
 from .endpoint_parameter import EndpointParameter
 from .path_endpoint_parameter import PathEndpointParameter
 from .query_endpoint_parameter import QueryEndpointParameter
+from .header_endpoint_paramter import HeaderEndpointParameter
 from .request import (
     InlinedRequestEndpointParameter,
     ReferencedRequestEndpointParameter,
@@ -16,4 +17,5 @@ __all__ = [
     "RequestEndpointParameter",
     "InlinedRequestEndpointParameter",
     "ReferencedRequestEndpointParameter",
+    "HeaderEndpointParameter"
 ]
