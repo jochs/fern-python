@@ -79,6 +79,7 @@ class WriterImpl(AST.Writer):
             import isort
 
             try:
+                print("Formatting: " + self._filepath)
                 self._content = isort.code(self._content, quiet=True)
                 self._content = black.format_file_contents(
                     self._content,
