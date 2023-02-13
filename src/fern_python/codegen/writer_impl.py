@@ -86,7 +86,10 @@ class WriterImpl(AST.Writer):
                     # todo read their config?
                     mode=black.FileMode(magic_trailing_comma=False, line_length=120),
                 )
-            except:  # noqa: E722
+            except black.report.NothingChanged:
+                pass
+            except Exception as e:
+                print("Failed to format " + self._filepath, e)
                 # write to disk even if the the formatting failed
                 pass
 
