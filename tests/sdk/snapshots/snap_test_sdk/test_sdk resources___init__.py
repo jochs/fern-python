@@ -36,8 +36,10 @@ from .playlist import (
     Playlist,
     PlaylistCreateRequest,
     PlaylistId,
+    PlaylistIdNotFoundError,
     PlaylistIdNotFoundErrorBody,
     ReservedKeywordEnum,
+    UnauthorizedError,
     UpdatePlaylistRequest,
 )
 from .problem import (
@@ -192,6 +194,7 @@ __all__ = [
     "Playlist",
     "PlaylistCreateRequest",
     "PlaylistId",
+    "PlaylistIdNotFoundError",
     "PlaylistIdNotFoundErrorBody",
     "ProblemDescription",
     "ProblemDescriptionBoard",
@@ -246,6 +249,7 @@ __all__ = [
     "TraceResponsesPageV2",
     "TracedFile",
     "TracedTestCase",
+    "UnauthorizedError",
     "UnexpectedLanguageError",
     "UpdatePlaylistRequest",
     "UpdateProblemResponse",

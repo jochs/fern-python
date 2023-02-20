@@ -24,12 +24,21 @@ class CoreUtilities:
             ),
             exports={"serialize_datetime"},
         )
+        self._copy_file_to_project(
+            project=project,
+            relative_filepath_on_disk="api_error.py",
+            filepath_in_project=Filepath(
+                directories=self.filepath,
+                file=Filepath.FilepathPart(module_name="api_error"),
+            ),
+            exports={"ApiError"},
+        )
 
     def _copy_file_to_project(
         self, *, project: Project, relative_filepath_on_disk: str, filepath_in_project: Filepath, exports: Set[str]
     ) -> None:
         source = (
-            os.path.join(os.path.dirname(__file__), "../../../../../core_utilities/pydantic")
+            os.path.join(os.path.dirname(__file__), "../../../../../core_utilities/sdk")
             if "PYTEST_CURRENT_TEST" in os.environ
             else "/assets/core_utilities"
         )
@@ -45,5 +54,13 @@ class CoreUtilities:
             qualified_name_excluding_import=(),
             import_=AST.ReferenceImport(
                 module=AST.Module.local(*self._module_path, "datetime_utils"), named_import="serialize_datetime"
+            ),
+        )
+
+    def get_api_error(self) -> AST.Reference:
+        return AST.Reference(
+            qualified_name_excluding_import=(),
+            import_=AST.ReferenceImport(
+                module=AST.Module.local(*self._module_path, "api_error"), named_import="ApiError"
             ),
         )

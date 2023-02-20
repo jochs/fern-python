@@ -1,6 +1,7 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 import fern.ir.pydantic as ir_types
+from fern_python.codegen.filepath import Filepath
 from generator_exec.resources import GeneratorConfig
 
 from fern_python.generators.pydantic_model import PydanticGeneratorContextImpl
@@ -27,3 +28,11 @@ class SdkGeneratorContext(ABC):
             generator_config=generator_config,
         )
         self.core_utilities = CoreUtilities(filepath_creator=self.filepath_creator)
+
+    @abstractmethod
+    def get_filepath_for_error(self, error_name: ir_types.DeclaredErrorName) -> Filepath:
+        ...
+
+    @abstractmethod
+    def get_class_name_for_error(self, error_name: ir_types.DeclaredErrorName) -> str:
+        ...

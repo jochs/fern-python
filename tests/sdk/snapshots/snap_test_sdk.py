@@ -10,8 +10,17 @@ snapshots = Snapshot()
 
 snapshots['test_sdk __init__'] = FileSnapshot('snap_test_sdk/test_sdk __init__.py')
 
+snapshots['test_sdk core___init__'] = FileSnapshot('snap_test_sdk/test_sdk core___init__.py')
+
+snapshots['test_sdk core_api_error'] = FileSnapshot('snap_test_sdk/test_sdk core_api_error.py')
+
+snapshots['test_sdk core_datetime_utils'] = FileSnapshot('snap_test_sdk/test_sdk core_datetime_utils.py')
+
 snapshots['test_sdk filepaths'] = [
     '__init__.py',
+    'core/__init__.py',
+    'core/api_error.py',
+    'core/datetime_utils.py',
     'resources/__init__.py',
     'resources/admin/__init__.py',
     'resources/admin/types/__init__.py',
@@ -53,6 +62,9 @@ snapshots['test_sdk filepaths'] = [
     'resources/migration/types/migration.py',
     'resources/migration/types/migration_status.py',
     'resources/playlist/__init__.py',
+    'resources/playlist/errors/__init__.py',
+    'resources/playlist/errors/playlist_id_not_found_error.py',
+    'resources/playlist/errors/unauthorized_error.py',
     'resources/playlist/types/__init__.py',
     'resources/playlist/types/playlist.py',
     'resources/playlist/types/playlist_create_request.py',
@@ -328,6 +340,12 @@ snapshots['test_sdk resources_migration_types_migration'] = FileSnapshot('snap_t
 snapshots['test_sdk resources_migration_types_migration_status'] = FileSnapshot('snap_test_sdk/test_sdk resources_migration_types_migration_status.py')
 
 snapshots['test_sdk resources_playlist___init__'] = FileSnapshot('snap_test_sdk/test_sdk resources_playlist___init__.py')
+
+snapshots['test_sdk resources_playlist_errors___init__'] = FileSnapshot('snap_test_sdk/test_sdk resources_playlist_errors___init__.py')
+
+snapshots['test_sdk resources_playlist_errors_playlist_id_not_found_error'] = FileSnapshot('snap_test_sdk/test_sdk resources_playlist_errors_playlist_id_not_found_error.py')
+
+snapshots['test_sdk resources_playlist_errors_unauthorized_error'] = FileSnapshot('snap_test_sdk/test_sdk resources_playlist_errors_unauthorized_error.py')
 
 snapshots['test_sdk resources_playlist_types___init__'] = FileSnapshot('snap_test_sdk/test_sdk resources_playlist_types___init__.py')
 

@@ -1,4 +1,5 @@
 import fern.ir.pydantic as ir_types
+from fern_python.generators.sdk.context.sdk_generator_context import SdkGeneratorContext
 from generator_exec.resources.config import GeneratorConfig
 
 from fern_python.cli.abstract_generator import AbstractGenerator
@@ -8,9 +9,11 @@ from fern_python.generators.pydantic_model import (
     PydanticModelCustomConfig,
     PydanticModelGenerator,
 )
-from fern_python.generators.sdk.context.sdk_generator_context import SdkGeneratorContext
+from fern_python.generators.sdk.context.sdk_generator_context_impl import SDkGeneratorContextImpl
 
 from .custom_config import SDKCustomConfig
+from .error_generator.error_generator import ErrorGenerator
+from fern_python.source_file_generator import SourceFileGenerator
 
 
 class SdkGenerator(AbstractGenerator):
@@ -38,7 +41,7 @@ class SdkGenerator(AbstractGenerator):
             skip_formatting=custom_config.skip_formatting,
         )
 
-        context = SdkGeneratorContext(ir=ir, generator_config=generator_config)
+        context = SDkGeneratorContextImpl(ir=ir, generator_config=generator_config)
 
         PydanticModelGenerator().generate_types(
             generator_exec_wrapper=generator_exec_wrapper,
@@ -48,40 +51,40 @@ class SdkGenerator(AbstractGenerator):
             context=context.pydantic_generator_context,
         )
 
-    #     for service in ir.services:
-    #         self._generate_service(
-    #             context=context,
-    #             ir=ir,
-    #             generator_exec_wrapper=generator_exec_wrapper,
-    #             service=service,
-    #             project=project,
-    #         )
+        #     for service in ir.services:
+        #         self._generate_service(
+        #             context=context,
+        #             ir=ir,
+        #             generator_exec_wrapper=generator_exec_wrapper,
+        #             service=service,
+        #             project=project,
+        #         )
 
-    #     for error in ir.errors:
-    #         self._generate_error(
-    #             context=context,
-    #             ir=ir,
-    #             generator_exec_wrapper=generator_exec_wrapper,
-    #             error=error,
-    #             project=project,
-    #         )
+        for error in ir.errors:
+            self._generate_error(
+                context=context,
+                ir=ir,
+                generator_exec_wrapper=generator_exec_wrapper,
+                error=error,
+                project=project,
+            )
 
-    #     SecurityFileGenerator(context=context).generate_security_file(
-    #         project=project,
-    #         generator_exec_wrapper=generator_exec_wrapper,
-    #     )
+        #     SecurityFileGenerator(context=context).generate_security_file(
+        #         project=project,
+        #         generator_exec_wrapper=generator_exec_wrapper,
+        #     )
 
-    #     RegisterFileGenerator(context=context).generate_registry_file(
-    #         project=project,
-    #         generator_exec_wrapper=generator_exec_wrapper,
-    #     )
+        #     RegisterFileGenerator(context=context).generate_registry_file(
+        #         project=project,
+        #         generator_exec_wrapper=generator_exec_wrapper,
+        #     )
 
-    #     FernHTTPExceptionGenerator(context=context).generate(
-    #         project=project,
-    #         generator_exec_wrapper=generator_exec_wrapper,
-    #     )
+        #     FernHTTPExceptionGenerator(context=context).generate(
+        #         project=project,
+        #         generator_exec_wrapper=generator_exec_wrapper,
+        #     )
 
-    #     context.core_utilities.copy_to_project(project=project)
+        context.core_utilities.copy_to_project(project=project)
 
     # def _generate_service(
     #     self,
@@ -116,16 +119,16 @@ class SdkGenerator(AbstractGenerator):
     #                         source_file=source_file,
     #                     )
 
-    # def _generate_error(
-    #     self,
-    #     context: FastApiGeneratorContext,
-    #     ir: ir_types.IntermediateRepresentation,
-    #     generator_exec_wrapper: GeneratorExecWrapper,
-    #     error: ir_types.ErrorDeclaration,
-    #     project: Project,
-    # ) -> None:
-    #     filepath = context.get_filepath_for_error(error.name)
-    #     with SourceFileGenerator.generate(
-    #         project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
-    #     ) as source_file:
-    #         ErrorGenerator(context=context, error=error).generate(source_file=source_file)
+    def _generate_error(
+        self,
+        context: SdkGeneratorContext,
+        ir: ir_types.IntermediateRepresentation,
+        generator_exec_wrapper: GeneratorExecWrapper,
+        error: ir_types.ErrorDeclaration,
+        project: Project,
+    ) -> None:
+        filepath = context.get_filepath_for_error(error.name)
+        with SourceFileGenerator.generate(
+            project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
+        ) as source_file:
+            ErrorGenerator(context=context, error=error).generate(source_file=source_file)
