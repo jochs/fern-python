@@ -1,9 +1,12 @@
 import fern.ir.pydantic as ir_types
-from fern_python.codegen.filepath import Filepath
 from generator_exec.resources import GeneratorConfig
 
+from fern_python.codegen.filepath import Filepath
+
+from ..type_declaration_handler.error_declaration_referencer import (
+    ErrorDeclarationReferencer,
+)
 from .sdk_generator_context import SdkGeneratorContext
-from ..type_declaration_handler.error_declaration_referencer import ErrorDeclarationReferencer
 
 
 class SDkGeneratorContextImpl(SdkGeneratorContext):

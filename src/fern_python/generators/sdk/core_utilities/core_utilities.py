@@ -57,8 +57,8 @@ class CoreUtilities:
             ),
         )
 
-    def get_api_error(self) -> AST.Reference:
-        return AST.Reference(
+    def get_api_error(self) -> AST.ClassReference:
+        return AST.ClassReference(
             qualified_name_excluding_import=(),
             import_=AST.ReferenceImport(
                 module=AST.Module.local(*self._module_path, "api_error"), named_import="ApiError"

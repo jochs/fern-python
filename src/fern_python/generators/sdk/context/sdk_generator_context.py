@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
 import fern.ir.pydantic as ir_types
-from fern_python.codegen.filepath import Filepath
 from generator_exec.resources import GeneratorConfig
 
+from fern_python.codegen.filepath import Filepath
 from fern_python.generators.pydantic_model import PydanticGeneratorContextImpl
 
 from ..core_utilities.core_utilities import CoreUtilities

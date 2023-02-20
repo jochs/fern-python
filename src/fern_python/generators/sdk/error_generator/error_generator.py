@@ -1,4 +1,4 @@
-from ast import Expression
+
 import fern.ir.pydantic as ir_types
 
 from fern_python.codegen import AST, SourceFile
@@ -40,7 +40,7 @@ class ErrorGenerator:
                         else [
                             AST.FunctionParameter(
                                 name=ErrorGenerator._STATUS_CODE_PARAMETER_NAME,
-                                type_hint=AST.TypeHint.literal(self._error.status_code),
+                                type_hint=AST.TypeHint.literal(AST.Expression(str(self._error.status_code))),
                             ),
                         ],
                     ),
