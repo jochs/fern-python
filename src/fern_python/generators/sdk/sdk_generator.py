@@ -62,7 +62,7 @@ class SdkGenerator(AbstractGenerator):
         #             project=project,
         #         )
 
-        for error in ir.errors:
+        for _, error in ir.errors.items():
             self._generate_error(
                 context=context,
                 ir=ir,
