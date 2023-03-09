@@ -29,16 +29,20 @@ class FernHTTPExceptionGenerator:
                 constructor=self._get_constructor(),
             )
             reference_to_class = source_file.add_class_declaration(class_declaration)
-            reference_to_body = self._construct_pydantic_model(
-                source_file=source_file, exception_class=reference_to_class
-            )
-            class_declaration.add_method(
-                declaration=AST.FunctionDeclaration(
-                    name="to_json_response",
-                    signature=AST.FunctionSignature(return_type=AST.TypeHint(FastAPI.JSONResponse.REFERENCE)),
-                    body=self._create_json_response_body_writer(reference_to_body=reference_to_body),
+            error_discrimination_strategy = self._context.ir.error_discrimination_strategy.get_as_union()
+            if error_discrimination_strategy.type == "property":
+                reference_to_body = self._construct_pydantic_model(
+                    source_file=source_file, exception_class=reference_to_class
                 )
-            )
+                class_declaration.add_method(
+                    declaration=AST.FunctionDeclaration(
+                        name="to_json_response",
+                        signature=AST.FunctionSignature(return_type=AST.TypeHint(FastAPI.JSONResponse.REFERENCE)),
+                        body=self._create_json_response_body_writer(reference_to_body=reference_to_body),
+                    )
+                )
+            else:
+                raise Exception("Status code errors are unsupported")
 
     def _get_constructor(self) -> AST.ClassConstructor:
         return AST.ClassConstructor(
