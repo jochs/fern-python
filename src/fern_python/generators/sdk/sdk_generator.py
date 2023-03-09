@@ -53,6 +53,11 @@ class SdkGenerator(AbstractGenerator):
             context=context.pydantic_generator_context,
         )
 
+        environments_present = ir.environments is not None
+
+        if environments_present: 
+            
+
         #     for service in ir.services:
         #         self._generate_service(
         #             context=context,
@@ -88,38 +93,28 @@ class SdkGenerator(AbstractGenerator):
 
         context.core_utilities.copy_to_project(project=project)
 
-    # def _generate_service(
-    #     self,
-    #     context: FastApiGeneratorContext,
-    #     ir: ir_types.IntermediateRepresentation,
-    #     generator_exec_wrapper: GeneratorExecWrapper,
-    #     service: ir_types.HttpService,
-    #     project: Project,
-    # ) -> None:
-    #     filepath = context.get_filepath_for_service(service.name)
-    #     with SourceFileGenerator.generate(
-    #         project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
-    #     ) as source_file:
-    #         ServiceGenerator(context=context, service=service).generate(source_file=source_file)
+    def _generate_environments(
+        self,
+        context: SdkGeneratorContext,
+        environments: ir_types.Environments,
+        generator_exec_wrapper: GeneratorExecWrapper,
+        project: Project,
+    ) -> None:
+        filepath = context.filepath_creator.generate_filepath_prefix() + ""
+        with SourceFileGenerator.generate(
+            project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
+        ) as source_file:
+            ErrorGenerator(context=context, error=error).generate(source_file=source_file)
 
-    #     for endpoint in service.endpoints:
-    #         if endpoint.request_body is not None:
-    #             request_body = endpoint.request_body.get_as_union()
-    #             if request_body.type == "inlinedRequestBody":
-    #                 with SourceFileGenerator.generate(
-    #                     project=project,
-    #                     filepath=context.get_filepath_for_inlined_request(
-    #                         service_name=service.name, request=request_body
-    #                     ),
-    #                     generator_exec_wrapper=generator_exec_wrapper,
-    #                 ) as source_file:
-    #                     InlinedRequestGenerator(
-    #                         context=context,
-    #                         request=request_body,
-    #                         pydantic_model_custom_config=self._pydantic_model_custom_config,
-    #                     ).generate(
-    #                         source_file=source_file,
-    #                     )
+    def _generate_service(
+        self,
+        context: SdkGeneratorContext,
+        ir: ir_types.IntermediateRepresentation,
+        generator_exec_wrapper: GeneratorExecWrapper,
+        service: ir_types.HttpService,
+        project: Project,
+    ) -> None:
+        pass
 
     def _generate_error(
         self,
