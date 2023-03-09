@@ -1,4 +1,4 @@
-from fern import NameAndWireValue
+from fern import ErrorDiscriminationByPropertyStrategy, NameAndWireValue
 
 from fern_python.codegen import AST, LocalClassReference, Project, SourceFile
 from fern_python.external_dependencies import FastAPI
@@ -32,17 +32,13 @@ class FernHTTPExceptionGenerator:
             error_discrimination_strategy = self._context.ir.error_discrimination_strategy.get_as_union()
             if error_discrimination_strategy.type == "property":
                 reference_to_body = self._construct_pydantic_model(
-                    source_file=source_file,
-                    error_discriminant=error_discrimination_strategy.discriminant,
-                    exception_class=reference_to_class,
+                    source_file=source_file, exception_class=reference_to_class
                 )
                 class_declaration.add_method(
                     declaration=AST.FunctionDeclaration(
                         name="to_json_response",
                         signature=AST.FunctionSignature(return_type=AST.TypeHint(FastAPI.JSONResponse.REFERENCE)),
-                        body=self._create_json_response_body_writer(
-                            error_discrimination_strategy.discriminant, reference_to_body=reference_to_body
-                        ),
+                        body=self._create_json_response_body_writer(reference_to_body=reference_to_body),
                     )
                 )
             else:
@@ -85,13 +81,14 @@ class FernHTTPExceptionGenerator:
         writer.write_line(f"self.{self.FernHTTPException.CONTENT_MEMBER} = {self.FernHTTPException.CONTENT_MEMBER}")
 
     def _construct_pydantic_model(
-        self, source_file: SourceFile, error_discriminant: NameAndWireValue, exception_class: LocalClassReference
+        self, source_file: SourceFile, exception_class: LocalClassReference
     ) -> AST.ClassReference:
         with PydanticModel(
             source_file=source_file,
             parent=exception_class,
             name=FernHTTPExceptionGenerator._BODY_CLASS_NAME,
         ) as body_pydantic_model:
+            error_discriminant = self._get_error_discriminant()
             body_pydantic_model.add_field(
                 PydanticField(
                     name=error_discriminant.name.snake_case.unsafe_name,
@@ -131,6 +128,18 @@ class FernHTTPExceptionGenerator:
             )
             return body_pydantic_model.to_reference()
 
+    def _get_error_discriminant(self) -> NameAndWireValue:
+        def get_error_discriminant(property_strategy: ErrorDiscriminationByPropertyStrategy) -> NameAndWireValue:
+            return property_strategy.discriminant
+
+        def raise_status_code_unsupported() -> NameAndWireValue:
+            raise Exception("status code errors are unsupported")
+
+        return self._context.ir.error_discrimination_strategy.visit(
+            property=get_error_discriminant,
+            status_code=raise_status_code_unsupported,
+        )
+
     def _get_error_instance_id_field_name(self) -> str:
         return self._context.ir.constants.error_instance_id_key.name.snake_case.unsafe_name
 
@@ -145,9 +154,7 @@ class FernHTTPExceptionGenerator:
             )
         return error_discrimination_strategy.content_property
 
-    def _create_json_response_body_writer(
-        self, error_discriminant: NameAndWireValue, reference_to_body: AST.ClassReference
-    ) -> AST.CodeWriter:
+    def _create_json_response_body_writer(self, reference_to_body: AST.ClassReference) -> AST.CodeWriter:
         def write_body(writer: AST.NodeWriter) -> None:
             BODY_VARIABLE_NAME = "body"
             CONTENT_VARIABLE_NAME = "content"
@@ -158,7 +165,7 @@ class FernHTTPExceptionGenerator:
                     class_=reference_to_body,
                     kwargs=[
                         (
-                            error_discriminant.name.snake_case.unsafe_name,
+                            self._get_error_discriminant().name.snake_case.unsafe_name,
                             AST.Expression("self." + self.FernHTTPException.NAME_MEMBER),
                         ),
                         (
