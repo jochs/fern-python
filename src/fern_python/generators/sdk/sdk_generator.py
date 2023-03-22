@@ -10,13 +10,14 @@ from fern_python.generators.pydantic_model import (
 )
 from fern_python.generators.sdk.context.sdk_generator_context import SdkGeneratorContext
 from fern_python.generators.sdk.context.sdk_generator_context_impl import (
-    SDkGeneratorContextImpl,
+    SdkGeneratorContextImpl,
 )
 from fern_python.source_file_generator import SourceFileGenerator
 
 from .custom_config import SDKCustomConfig
 from .environment_generator.environment_generator import EnvironmentGenerator
 from .error_generator.error_generator import ErrorGenerator
+from .service_generator.service_generator import ServiceGenerator
 
 
 class SdkGenerator(AbstractGenerator):
@@ -42,7 +43,7 @@ class SdkGenerator(AbstractGenerator):
             skip_formatting=custom_config.skip_formatting,
         )
 
-        context = SDkGeneratorContextImpl(
+        context = SdkGeneratorContextImpl(
             ir=ir,
             generator_config=generator_config,
             client_class_name=custom_config.client_class_name
@@ -65,14 +66,17 @@ class SdkGenerator(AbstractGenerator):
                 project=project,
             )
 
-        for service in ir.services.values():
-            self._generate_service(
-                context=context,
-                ir=ir,
-                generator_exec_wrapper=generator_exec_wrapper,
-                service=service,
-                project=project,
-            )
+        for subpackage_id in ir.subpackages.keys():
+            subpackage = ir.subpackages[subpackage_id]
+            if subpackage.has_endpoints_in_tree:
+                self._generate_subpackage_service(
+                    context=context,
+                    ir=ir,
+                    generator_exec_wrapper=generator_exec_wrapper,
+                    subpackage_id=subpackage_id,
+                    subpackage=subpackage,
+                    project=project,
+                )
 
         for error in ir.errors.values():
             self._generate_error(
@@ -98,15 +102,24 @@ class SdkGenerator(AbstractGenerator):
         ) as source_file:
             EnvironmentGenerator(context=context, environments=environments).generate(source_file=source_file)
 
-    def _generate_service(
+    def _generate_subpackage_service(
         self,
         context: SdkGeneratorContext,
         ir: ir_types.IntermediateRepresentation,
         generator_exec_wrapper: GeneratorExecWrapper,
-        service: ir_types.HttpService,
+        subpackage_id: ir_types.SubpackageId,
+        subpackage: ir_types.Subpackage,
         project: Project,
     ) -> None:
-        pass
+        filepath = context.get_filepath_for_subpackage_service(subpackage_id)
+        with SourceFileGenerator.generate(
+            project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
+        ) as source_file:
+            ServiceGenerator(
+                context=context,
+                package=subpackage,
+                class_name=context.get_class_name_of_subpackage_service(subpackage_id),
+            ).generate(source_file=source_file)
 
     def _generate_error(
         self,

@@ -240,11 +240,13 @@ from .resources import (
     WorkspaceTracedUpdate,
     admin,
     commons,
+    homepage,
     lang_server,
     migration,
     playlist,
     problem,
     submission,
+    sysprop,
     v_2,
 )
 
@@ -488,10 +490,12 @@ __all__ = [
     "WorkspaceTracedUpdate",
     "admin",
     "commons",
+    "homepage",
     "lang_server",
     "migration",
     "playlist",
     "problem",
     "submission",
+    "sysprop",
     "v_2",
 ]
