@@ -26,7 +26,7 @@ class PydanticGeneratorContextImpl(PydanticGeneratorContext):
         )
 
         self._type_name_to_declaration = {
-            HashableDeclaredTypeName.of(declaration.name): declaration for _, declaration in ir.types.items()
+            HashableDeclaredTypeName.of(declaration.name): declaration for declaration in ir.types.values()
         }
 
         self._type_declaration_referencer = type_declaration_referencer

@@ -15,6 +15,7 @@ from fern_python.generators.sdk.context.sdk_generator_context_impl import (
 from fern_python.source_file_generator import SourceFileGenerator
 
 from .custom_config import SDKCustomConfig
+from .environment_generator.environment_generator import EnvironmentGenerator
 from .error_generator.error_generator import ErrorGenerator
 
 
@@ -37,13 +38,16 @@ class SdkGenerator(AbstractGenerator):
     ) -> None:
         custom_config = SDKCustomConfig.parse_obj(generator_config.custom_config or {})
         self._pydantic_model_custom_config = PydanticModelCustomConfig(
-            forbid_extra_fields=False,
-            wrapped_aliases=False,
-            include_validators=False,
+            wrapped_aliases=custom_config.wrapped_aliases,
             skip_formatting=custom_config.skip_formatting,
         )
 
-        context = SDkGeneratorContextImpl(ir=ir, generator_config=generator_config)
+        context = SDkGeneratorContextImpl(
+            ir=ir,
+            generator_config=generator_config,
+            client_class_name=custom_config.client_class_name
+            or (pascalCase(generator_config.organization) + pascalCase(generator_config.workspace_name)),
+        )
 
         PydanticModelGenerator().generate_types(
             generator_exec_wrapper=generator_exec_wrapper,
@@ -53,21 +57,24 @@ class SdkGenerator(AbstractGenerator):
             context=context.pydantic_generator_context,
         )
 
-        environments_present = ir.environments is not None
+        if ir.environments is not None:
+            self._generate_environments(
+                context=context,
+                environments=ir.environments.environments,
+                generator_exec_wrapper=generator_exec_wrapper,
+                project=project,
+            )
 
-        if environments_present: 
-            
+        for service in ir.services.values():
+            self._generate_service(
+                context=context,
+                ir=ir,
+                generator_exec_wrapper=generator_exec_wrapper,
+                service=service,
+                project=project,
+            )
 
-        #     for service in ir.services:
-        #         self._generate_service(
-        #             context=context,
-        #             ir=ir,
-        #             generator_exec_wrapper=generator_exec_wrapper,
-        #             service=service,
-        #             project=project,
-        #         )
-
-        for _, error in ir.errors.items():
+        for error in ir.errors.values():
             self._generate_error(
                 context=context,
                 ir=ir,
@@ -75,21 +82,6 @@ class SdkGenerator(AbstractGenerator):
                 error=error,
                 project=project,
             )
-
-        #     SecurityFileGenerator(context=context).generate_security_file(
-        #         project=project,
-        #         generator_exec_wrapper=generator_exec_wrapper,
-        #     )
-
-        #     RegisterFileGenerator(context=context).generate_registry_file(
-        #         project=project,
-        #         generator_exec_wrapper=generator_exec_wrapper,
-        #     )
-
-        #     FernHTTPExceptionGenerator(context=context).generate(
-        #         project=project,
-        #         generator_exec_wrapper=generator_exec_wrapper,
-        #     )
 
         context.core_utilities.copy_to_project(project=project)
 
@@ -100,11 +92,11 @@ class SdkGenerator(AbstractGenerator):
         generator_exec_wrapper: GeneratorExecWrapper,
         project: Project,
     ) -> None:
-        filepath = context.filepath_creator.generate_filepath_prefix() + ""
+        filepath = context.get_filepath_for_environments_enum()
         with SourceFileGenerator.generate(
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
-            ErrorGenerator(context=context, error=error).generate(source_file=source_file)
+            EnvironmentGenerator(context=context, environments=environments).generate(source_file=source_file)
 
     def _generate_service(
         self,
@@ -129,3 +121,7 @@ class SdkGenerator(AbstractGenerator):
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
             ErrorGenerator(context=context, error=error).generate(source_file=source_file)
+
+
+def pascalCase(x: str) -> str:
+    return "".join(char for char in x.title() if not x.isspace())

@@ -7,10 +7,10 @@ from fern_python.codegen.filepath import Filepath
 from fern_python.generators.pydantic_model import PydanticGeneratorContextImpl
 
 from ..core_utilities.core_utilities import CoreUtilities
-from ..sdk_filepath_creator import SdkFilepathCreator
-from ..type_declaration_handler.type_declaration_referencer import (
+from ..declaration_referencers.type_declaration_referencer import (
     TypeDeclarationReferencer,
 )
+from ..sdk_filepath_creator import SdkFilepathCreator
 
 
 class SdkGeneratorContext(ABC):
@@ -35,4 +35,8 @@ class SdkGeneratorContext(ABC):
 
     @abstractmethod
     def get_class_name_for_error(self, error_name: ir_types.DeclaredErrorName) -> str:
+        ...
+
+    @abstractmethod
+    def get_filepath_for_environments_enum(self) -> Filepath:
         ...
