@@ -6,6 +6,6 @@ from ....core.api_error import ApiError
 
 
 class UnauthorizedError(ApiError):
-    def __init__(self, status_code: typing_extensions.Literal[]):
-        super().__init__(status_code)
+    def __init__(self, status_code: typing_extensions.Literal[401]):
+        super().__init__(status_code=status_code)
         self.status_code = status_code

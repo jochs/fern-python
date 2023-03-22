@@ -8,6 +8,6 @@ from ..types.playlist_id_not_found_error_body import PlaylistIdNotFoundErrorBody
 
 class PlaylistIdNotFoundError(ApiError):
     def __init__(self, status_code: typing_extensions.Literal[404], body: PlaylistIdNotFoundErrorBody):
-        super().__init__(status_code, body)
+        super().__init__(status_code=status_code, body=body)
         self.status_code = status_code
         self.body = body

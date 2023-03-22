@@ -2,13 +2,11 @@
 
 from __future__ import annotations
 
-import datetime as dt
 import typing
 
 import pydantic
 import typing_extensions
 
-from ....core.datetime_utils import serialize_datetime
 from ...commons.types.key_value_pair import KeyValuePair
 from ...commons.types.list_type import ListType
 from ...commons.types.map_type import MapType
@@ -18,65 +16,25 @@ from ...commons.types.variable_value import VariableValue
 from .test_submission_status_v_2 import TestSubmissionStatusV2
 from .workspace_submission_status_v_2 import WorkspaceSubmissionStatusV2
 
-T_Result = typing.TypeVar("T_Result")
 
-
-class _Factory:
-    def test(self, value: TestSubmissionStatusV2) -> SubmissionStatusV2:
-        return SubmissionStatusV2(__root__=_SubmissionStatusV2.Test(**dict(value), type="test"))
-
-    def workspace(self, value: WorkspaceSubmissionStatusV2) -> SubmissionStatusV2:
-        return SubmissionStatusV2(__root__=_SubmissionStatusV2.Workspace(**dict(value), type="workspace"))
-
-
-class SubmissionStatusV2(pydantic.BaseModel):
-    factory: typing.ClassVar[_Factory] = _Factory()
-
-    def get_as_union(self) -> typing.Union[_SubmissionStatusV2.Test, _SubmissionStatusV2.Workspace]:
-        return self.__root__
-
-    def visit(
-        self,
-        test: typing.Callable[[TestSubmissionStatusV2], T_Result],
-        workspace: typing.Callable[[WorkspaceSubmissionStatusV2], T_Result],
-    ) -> T_Result:
-        if self.__root__.type == "test":
-            return test(self.__root__)
-        if self.__root__.type == "workspace":
-            return workspace(self.__root__)
-
-    __root__: typing_extensions.Annotated[
-        typing.Union[_SubmissionStatusV2.Test, _SubmissionStatusV2.Workspace], pydantic.Field(discriminator="type")
-    ]
-
-    def json(self, **kwargs: typing.Any) -> str:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
-        return super().json(**kwargs_with_defaults)
-
-    def dict(self, **kwargs: typing.Any) -> typing.Dict[str, typing.Any]:
-        kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
-        return super().dict(**kwargs_with_defaults)
+class SubmissionStatusV2_Test(TestSubmissionStatusV2):
+    type: typing_extensions.Literal["test"]
 
     class Config:
         frozen = True
-        json_encoders = {dt.datetime: serialize_datetime}
 
 
-class _SubmissionStatusV2:
-    class Test(TestSubmissionStatusV2):
-        type: typing_extensions.Literal["test"]
+class SubmissionStatusV2_Workspace(WorkspaceSubmissionStatusV2):
+    type: typing_extensions.Literal["workspace"]
 
-        class Config:
-            frozen = True
-
-    class Workspace(WorkspaceSubmissionStatusV2):
-        type: typing_extensions.Literal["workspace"]
-
-        class Config:
-            frozen = True
+    class Config:
+        frozen = True
 
 
-_SubmissionStatusV2.Test.update_forward_refs(
+SubmissionStatusV2 = typing_extensions.Annotated[
+    typing.Union[SubmissionStatusV2_Test, SubmissionStatusV2_Workspace], pydantic.Field(discriminator="type")
+]
+SubmissionStatusV2_Test.update_forward_refs(
     KeyValuePair=KeyValuePair,
     ListType=ListType,
     MapType=MapType,
@@ -84,4 +42,3 @@ _SubmissionStatusV2.Test.update_forward_refs(
     VariableType=VariableType,
     VariableValue=VariableValue,
 )
-SubmissionStatusV2.update_forward_refs()

@@ -1,0 +1,6 @@
+class ServiceGenerator:
+    def __init__(self):
+        ...
+
+    def generate(self) -> None:
+        ...

@@ -1,4 +1,3 @@
-
 import fern.ir.pydantic as ir_types
 
 from fern_python.codegen import AST, SourceFile
@@ -50,12 +49,12 @@ class ErrorGenerator:
         )
 
     def _write_constructor_body(self, writer: AST.NodeWriter) -> None:
-        params = (
-            [ErrorGenerator._STATUS_CODE_PARAMETER_NAME, ErrorGenerator._BODY_PARAMETER_NAME]
-            if self._error.type is not None
-            else [ErrorGenerator._STATUS_CODE_PARAMETER_NAME]
+        writer.write_node(
+            self._context.core_utilities.instantiate_api_error_from_subclass(
+                status_code=AST.Expression(ErrorGenerator._STATUS_CODE_PARAMETER_NAME),
+                body=AST.Expression(ErrorGenerator._BODY_PARAMETER_NAME) if self._error.type is not None else None,
+            )
         )
-        writer.write_line(f"super().__init__({','.join(params)})")
         writer.write_line(
             f"self.{ErrorGenerator._STATUS_CODE_PARAMETER_NAME} = {ErrorGenerator._STATUS_CODE_PARAMETER_NAME}"
         )

@@ -1,5 +1,5 @@
 import os
-from typing import Set
+from typing import Optional, Set
 
 from fern_python.codegen import AST, Filepath, Project
 from fern_python.source_file_generator import SourceFileGenerator
@@ -64,3 +64,18 @@ class CoreUtilities:
                 module=AST.Module.local(*self._module_path, "api_error"), named_import="ApiError"
             ),
         )
+
+    def instantiate_api_error_from_subclass(
+        self, *, status_code: Optional[AST.Expression], body: Optional[AST.Expression]
+    ) -> AST.AstNode:
+        def _write(writer: AST.NodeWriter) -> None:
+            writer.write("super().__init__(")
+            if status_code is not None:
+                writer.write("status_code=")
+                writer.write_node(status_code)
+            if body is not None:
+                writer.write(", body=")
+                writer.write_node(body)
+            writer.write_line(")")
+
+        return AST.CodeWriter(code_writer=_write)
