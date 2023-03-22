@@ -13,12 +13,12 @@ class SubpackageServiceDeclarationReferencer(SdkDeclarationReferencer[ir_types.S
             )
             + (
                 Filepath.DirectoryFilepathPart(
-                    module_name="service",
+                    module_name="client",
                     export_strategy=ExportStrategy(export_all=True),
                 ),
             ),
-            file=Filepath.FilepathPart(module_name=name.name.snake_case.unsafe_name),
+            file=Filepath.FilepathPart(module_name="client"),
         )
 
     def get_class_name(self, *, name: ir_types.Subpackage) -> str:
-        return name.name.pascal_case.safe_name
+        return "Client"
