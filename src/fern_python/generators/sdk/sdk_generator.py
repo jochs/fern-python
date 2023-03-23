@@ -14,10 +14,10 @@ from fern_python.generators.sdk.context.sdk_generator_context_impl import (
 )
 from fern_python.source_file_generator import SourceFileGenerator
 
+from .client_generator.client_generator import ClientGenerator
 from .custom_config import SDKCustomConfig
 from .environment_generator.environment_generator import EnvironmentGenerator
 from .error_generator.error_generator import ErrorGenerator
-from .service_generator.service_generator import ServiceGenerator
 
 
 class SdkGenerator(AbstractGenerator):
@@ -69,7 +69,7 @@ class SdkGenerator(AbstractGenerator):
         for subpackage_id in ir.subpackages.keys():
             subpackage = ir.subpackages[subpackage_id]
             if subpackage.has_endpoints_in_tree:
-                self._generate_subpackage_service(
+                self._generate_subpackage_client(
                     context=context,
                     ir=ir,
                     generator_exec_wrapper=generator_exec_wrapper,
@@ -102,7 +102,7 @@ class SdkGenerator(AbstractGenerator):
         ) as source_file:
             EnvironmentGenerator(context=context, environments=environments).generate(source_file=source_file)
 
-    def _generate_subpackage_service(
+    def _generate_subpackage_client(
         self,
         context: SdkGeneratorContext,
         ir: ir_types.IntermediateRepresentation,
@@ -115,7 +115,7 @@ class SdkGenerator(AbstractGenerator):
         with SourceFileGenerator.generate(
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
-            ServiceGenerator(
+            ClientGenerator(
                 context=context,
                 package=subpackage,
                 class_name=context.get_class_name_of_subpackage_service(subpackage_id),

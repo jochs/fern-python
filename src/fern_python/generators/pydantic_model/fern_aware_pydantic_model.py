@@ -61,7 +61,7 @@ class FernAwarePydanticModel:
         self._pydantic_model.add_json_encoder(
             key=AST.Expression(
                 AST.ClassReference(
-                    import_=AST.ReferenceImport(module=AST.Module.built_in("datetime"), alias="dt"),
+                    import_=AST.ReferenceImport(module=AST.Module.built_in(("datetime",)), alias="dt"),
                     qualified_name_excluding_import=("datetime",),
                 )
             ),
