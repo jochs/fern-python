@@ -156,7 +156,7 @@ reference = "fern-prod"
 
 [[package]]
 name = "filelock"
-version = "3.10.3"
+version = "3.10.4"
 description = "A platform independent file lock."
 category = "dev"
 optional = false
@@ -181,7 +181,7 @@ pyflakes = ">=2.5.0,<2.6.0"
 
 [[package]]
 name = "identify"
-version = "2.5.21"
+version = "2.5.22"
 description = "File identification library for Python"
 category = "dev"
 optional = false
@@ -725,16 +725,16 @@ fern-fern-ir-model = [
     {file = "fern_fern_ir_model-0.0.1284.tar.gz", hash = "sha256:52dc7eca451aa4676a48716dded67b75e45f2bf62d46eff1432bc3727566e100"},
 ]
 filelock = [
-    {file = "filelock-3.10.3-py3-none-any.whl", hash = "sha256:99d6282f732410d44242ca02aa49835cf5473e2dd4d6734a2a785c8889dc191e"},
-    {file = "filelock-3.10.3.tar.gz", hash = "sha256:a26bfa34d26293e04886dff13fa8dd0c8c6e1a786b723c689755fe8939297410"},
+    {file = "filelock-3.10.4-py3-none-any.whl", hash = "sha256:6d332dc5c896f18ba93a21d987155e97c434a96d3fe4042ca70d0b3b46e3b470"},
+    {file = "filelock-3.10.4.tar.gz", hash = "sha256:9fc1734dbddcdcd4aaa02c160dd94db5272b92dfa859b44ec8df28e160b751f0"},
 ]
 flake8 = [
     {file = "flake8-5.0.4-py2.py3-none-any.whl", hash = "sha256:7a1cf6b73744f5806ab95e526f6f0d8c01c66d7bbe349562d22dfca20610b248"},
     {file = "flake8-5.0.4.tar.gz", hash = "sha256:6fbe320aad8d6b95cec8b8e47bc933004678dc63095be98528b7bdd2a9f510db"},
 ]
 identify = [
-    {file = "identify-2.5.21-py2.py3-none-any.whl", hash = "sha256:69edcaffa8e91ae0f77d397af60f148b6b45a8044b2cc6d99cafa5b04793ff00"},
-    {file = "identify-2.5.21.tar.gz", hash = "sha256:7671a05ef9cfaf8ff63b15d45a91a1147a03aaccb2976d4e9bd047cbbc508471"},
+    {file = "identify-2.5.22-py2.py3-none-any.whl", hash = "sha256:f0faad595a4687053669c112004178149f6c326db71ee999ae4636685753ad2f"},
+    {file = "identify-2.5.22.tar.gz", hash = "sha256:f7a93d6cf98e29bd07663c60728e7a4057615068d7a639d132dc883b2d54d31e"},
 ]
 idna = [
     {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},

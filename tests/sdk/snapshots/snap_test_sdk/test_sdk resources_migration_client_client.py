@@ -3,9 +3,10 @@
 import typing
 import urllib
 
+import httpx
 import pydantic
-import requests
 
+from ....core.remove_none_from_headers import remove_none_from_headers
 from ..types.migration import Migration
 
 
@@ -15,9 +16,11 @@ class Client:
         self.x_random_header = x_random_header
 
     def get_attempted_migrations(self, *, admin_key_header: str) -> typing.List[Migration]:
-        _response = requests.request(
+        _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "migration-info/all"),
-            headers={"X-Random-Header": self.x_random_header, "admin-key-header": admin_key_header},
+            headers=remove_none_from_headers(
+                {"X-Random-Header": self.x_random_header, "admin-key-header": admin_key_header}
+            ),
         )
         return pydantic.parse_obj_as(typing.List[Migration], _response)  # type: ignore

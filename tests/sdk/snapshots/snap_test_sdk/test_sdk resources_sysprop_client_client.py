@@ -3,9 +3,10 @@
 import typing
 import urllib
 
+import httpx
 import pydantic
-import requests
 
+from ....core.remove_none_from_headers import remove_none_from_headers
 from ...commons.types.language import Language
 
 
@@ -15,18 +16,18 @@ class Client:
         self.x_random_header = x_random_header
 
     def set_num_warm_instances(self, *, language: Language, num_warm_instances: int) -> None:
-        _response = requests.request(
+        _response = httpx.request(
             "PUT",
             urllib.parse.urljoin(
                 f"{self._environment}/", f"sysprop/num-warm-instances/{language}/{num_warm_instances}"
             ),
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )
 
     def get_num_warm_instances(self) -> typing.Dict[Language, int]:
-        _response = requests.request(
+        _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "sysprop/num-warm-instances"),
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )
         return pydantic.parse_obj_as(typing.Dict[Language, int], _response)  # type: ignore

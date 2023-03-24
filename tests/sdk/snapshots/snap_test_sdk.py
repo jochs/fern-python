@@ -16,11 +16,17 @@ snapshots['test_sdk core_api_error'] = FileSnapshot('snap_test_sdk/test_sdk core
 
 snapshots['test_sdk core_datetime_utils'] = FileSnapshot('snap_test_sdk/test_sdk core_datetime_utils.py')
 
+snapshots['test_sdk core_jsonable_encoder'] = FileSnapshot('snap_test_sdk/test_sdk core_jsonable_encoder.py')
+
+snapshots['test_sdk core_remove_none_from_headers'] = FileSnapshot('snap_test_sdk/test_sdk core_remove_none_from_headers.py')
+
 snapshots['test_sdk filepaths'] = [
     '__init__.py',
     'core/__init__.py',
     'core/api_error.py',
     'core/datetime_utils.py',
+    'core/jsonable_encoder.py',
+    'core/remove_none_from_headers.py',
     'resources/__init__.py',
     'resources/admin/__init__.py',
     'resources/admin/client/__init__.py',

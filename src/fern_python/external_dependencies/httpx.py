@@ -1,44 +1,33 @@
-from enum import Enum
 from typing import List, Optional, Tuple
 
 from fern_python.codegen import AST
 
-REQUESTS_MODULE = AST.Module.built_in(
-    ("requests",),
-    types_package=AST.Dependency(
-        name="types-requests",
-        version="2.28.11.16",
+HTTPX_MODULE = AST.Module.external(
+    module_path=("httpx",),
+    dependency=AST.Dependency(
+        name="httpx",
+        version="0.23.3",
     ),
 )
 
 
-class HttpMethod(Enum):
-    GET = "GET"
-    POST = "POST"
-    PUT = "PUT"
-    DELETE = "DELETE"
-    PATCH = "PATCH"
-
-
-class Requests:
+class HttpX:
     @staticmethod
     def make_request(
         *,
         url: AST.Expression,
-        method: HttpMethod,
+        method: str,
         query_parameters: List[Tuple[str, AST.Expression]],
         request_body: Optional[AST.Expression],
-        headers: List[Tuple[str, AST.Expression]],
+        headers: Optional[AST.Expression],
         response_variable_name: str,
     ) -> AST.Expression:
         def write(writer: AST.NodeWriter) -> None:
             writer.write(f"{response_variable_name} = ")
             writer.write_reference(
-                AST.ClassReference(
-                    qualified_name_excluding_import=(), import_=AST.ReferenceImport(module=REQUESTS_MODULE)
-                )
+                AST.ClassReference(qualified_name_excluding_import=(), import_=AST.ReferenceImport(module=HTTPX_MODULE))
             )
-            writer.write(f'.request("{method.value}", ')
+            writer.write(f'.request("{method}", ')
             writer.write_node(url)
             writer.write(", ")
             with writer.indent():
@@ -58,16 +47,10 @@ class Requests:
                     writer.write_node(request_body)
                     writer.write_line(",")
 
-                if len(headers) > 0:
-                    writer.write("headers={")
-
-                    for i, (header_key, header_value) in enumerate(headers):
-                        if i > 0:
-                            writer.write(", ")
-                        writer.write(f'"{header_key}": ')
-                        writer.write_node(header_value)
-
-                    writer.write_line("},")
+                if headers is not None:
+                    writer.write("headers=")
+                    writer.write_node(headers)
+                    writer.write_line(",")
 
             writer.write_line(")")
 

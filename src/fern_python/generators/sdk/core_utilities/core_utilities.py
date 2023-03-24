@@ -33,6 +33,24 @@ class CoreUtilities:
             ),
             exports={"ApiError"},
         )
+        self._copy_file_to_project(
+            project=project,
+            relative_filepath_on_disk="jsonable_encoder.py",
+            filepath_in_project=Filepath(
+                directories=self.filepath,
+                file=Filepath.FilepathPart(module_name="jsonable_encoder"),
+            ),
+            exports={"jsonable_encoder"},
+        )
+        self._copy_file_to_project(
+            project=project,
+            relative_filepath_on_disk="remove_none_from_headers.py",
+            filepath_in_project=Filepath(
+                directories=self.filepath,
+                file=Filepath.FilepathPart(module_name="remove_none_from_headers"),
+            ),
+            exports={"remove_none_from_headers"},
+        )
 
     def _copy_file_to_project(
         self, *, project: Project, relative_filepath_on_disk: str, filepath_in_project: Filepath, exports: Set[str]
@@ -47,14 +65,6 @@ class CoreUtilities:
             path_on_disk=os.path.join(source, relative_filepath_on_disk),
             filepath_in_project=filepath_in_project,
             exports=exports,
-        )
-
-    def get_serialize_datetime(self) -> AST.Reference:
-        return AST.Reference(
-            qualified_name_excluding_import=(),
-            import_=AST.ReferenceImport(
-                module=AST.Module.local(*self._module_path, "datetime_utils"), named_import="serialize_datetime"
-            ),
         )
 
     def get_api_error(self) -> AST.ClassReference:
@@ -79,3 +89,17 @@ class CoreUtilities:
             writer.write_line(")")
 
         return AST.CodeWriter(code_writer=_write)
+
+    def remove_none_from_headers(self, headers: AST.Expression) -> AST.Expression:
+        return AST.Expression(
+            AST.FunctionInvocation(
+                function_definition=AST.Reference(
+                    qualified_name_excluding_import=(),
+                    import_=AST.ReferenceImport(
+                        module=AST.Module.local(*self._module_path, "remove_none_from_headers"),
+                        named_import="remove_none_from_headers",
+                    ),
+                ),
+                args=[headers],
+            )
+        )

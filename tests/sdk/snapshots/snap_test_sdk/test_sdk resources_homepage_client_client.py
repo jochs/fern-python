@@ -3,9 +3,10 @@
 import typing
 import urllib
 
+import httpx
 import pydantic
-import requests
 
+from ....core.remove_none_from_headers import remove_none_from_headers
 from ...commons.types.problem_id import ProblemId
 
 
@@ -15,17 +16,17 @@ class Client:
         self.x_random_header = x_random_header
 
     def get_homepage_problems(self) -> typing.List[ProblemId]:
-        _response = requests.request(
+        _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"),
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )
         return pydantic.parse_obj_as(typing.List[ProblemId], _response)  # type: ignore
 
     def set_homepage_problems(self, *, request: typing.List[ProblemId]) -> None:
-        _response = requests.request(
+        _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"),
             json=request,
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )

@@ -89,7 +89,7 @@ def run_snapshot_test(
             "fastapi=0.92.0",
             "pydantic=1.10.5",
             "mypy=1.0.1",
-            "types-requests=2.28.11.16",
+            "httpx=0.23.3",
         ]
     )
     run_command_in_output_directory(["poetry", "run", "mypy", "."])

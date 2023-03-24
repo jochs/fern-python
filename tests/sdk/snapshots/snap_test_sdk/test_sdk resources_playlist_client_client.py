@@ -3,9 +3,10 @@
 import typing
 import urllib
 
+import httpx
 import pydantic
-import requests
 
+from ....core.remove_none_from_headers import remove_none_from_headers
 from ..types.playlist import Playlist
 from ..types.playlist_create_request import PlaylistCreateRequest
 from ..types.playlist_id import PlaylistId
@@ -18,11 +19,11 @@ class Client:
         self.x_random_header = x_random_header
 
     def create_playlist(self, *, service_param: int, request: PlaylistCreateRequest) -> Playlist:
-        _response = requests.request(
+        _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/create"),
             json=request,
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )
         return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
 
@@ -36,7 +37,7 @@ class Client:
         optional_multiple_field: typing.Optional[str],
         multiple_field: str,
     ) -> typing.List[Playlist]:
-        _response = requests.request(
+        _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/all"),
             params={
@@ -46,32 +47,32 @@ class Client:
                 "optionalMultipleField": optional_multiple_field,
                 "multipleField": multiple_field,
             },
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )
         return pydantic.parse_obj_as(typing.List[Playlist], _response)  # type: ignore
 
     def get_playlist(self, *, service_param: int, playlist_id: PlaylistId) -> Playlist:
-        _response = requests.request(
+        _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/{playlist_id}"),
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )
         return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
 
     def update_playlist(
         self, *, service_param: int, playlist_id: PlaylistId, request: typing.Optional[UpdatePlaylistRequest]
     ) -> typing.Optional[Playlist]:
-        _response = requests.request(
+        _response = httpx.request(
             "PUT",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/{playlist_id}"),
             json=request,
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )
         return pydantic.parse_obj_as(typing.Optional[Playlist], _response)  # type: ignore
 
     def delete_playlist(self, *, service_param: int, playlist_id: PlaylistId) -> None:
-        _response = requests.request(
+        _response = httpx.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/{playlist_id}"),
-            headers={"X-Random-Header": self.x_random_header},
+            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
         )

@@ -4,7 +4,7 @@ import fern.ir.pydantic as ir_types
 from typing_extensions import Never
 
 from fern_python.codegen import AST, SourceFile
-from fern_python.external_dependencies import HttpMethod, Pydantic, Requests, UrlLib
+from fern_python.external_dependencies import HttpX, Pydantic, UrlLib
 
 from ..context.sdk_generator_context import SdkGeneratorContext
 from .request_body_parameters import (
@@ -181,17 +181,19 @@ class ClientGenerator:
     ) -> AST.CodeWriter:
         def write(writer: AST.NodeWriter) -> None:
             writer.write_node(
-                Requests.make_request(
-                    url=UrlLib.urljoin(
+                HttpX.make_request(
+                    url=AST.Expression(f"self.{ClientGenerator.ENVIRONMENT_MEMBER_NAME}")
+                    if is_endpoint_path_empty(endpoint)
+                    else UrlLib.urljoin(
                         AST.Expression(f"self.{ClientGenerator.ENVIRONMENT_MEMBER_NAME}"),
                         self._get_path_for_endpoint(endpoint),
                     ),
                     method=endpoint.method.visit(
-                        get=lambda: HttpMethod.GET,
-                        post=lambda: HttpMethod.POST,
-                        put=lambda: HttpMethod.PUT,
-                        patch=lambda: HttpMethod.PATCH,
-                        delete=lambda: HttpMethod.DELETE,
+                        get=lambda: "GET",
+                        post=lambda: "POST",
+                        put=lambda: "PUT",
+                        patch=lambda: "PATCH",
+                        delete=lambda: "DELETE",
                     ),
                     query_parameters=[
                         (
@@ -313,7 +315,7 @@ class ClientGenerator:
         *,
         service: ir_types.HttpService,
         endpoint: ir_types.HttpEndpoint,
-    ) -> List[Tuple[str, AST.Expression]]:
+    ) -> Optional[AST.Expression]:
         headers: List[Tuple[str, AST.Expression]] = []
 
         for header in self._context.ir.headers:
@@ -331,8 +333,29 @@ class ClientGenerator:
                     AST.Expression(self._get_header_parameter_name(header)),
                 ),
             )
-        return headers
+
+        if len(headers) == 0:
+            return None
+
+        def write_headers_dict(writer: AST.NodeWriter) -> None:
+            writer.write("{")
+
+            for i, (header_key, header_value) in enumerate(headers):
+                if i > 0:
+                    writer.write(", ")
+                writer.write(f'"{header_key}": ')
+                writer.write_node(header_value)
+
+            writer.write_line("},")
+
+        return self._context.core_utilities.remove_none_from_headers(
+            AST.Expression(AST.CodeWriter(write_headers_dict)),
+        )
 
 
 def raise_file_upload_not_supported(request: ir_types.FileUploadRequest) -> Never:
     raise RuntimeError("File upload is not supported")
+
+
+def is_endpoint_path_empty(endpoint: ir_types.HttpEndpoint) -> bool:
+    return len(endpoint.full_path.head) == 0 and len(endpoint.full_path.parts) == 0
