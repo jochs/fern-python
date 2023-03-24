@@ -12,26 +12,37 @@ from ..types.get_execution_session_state_response import GetExecutionSessionStat
 
 
 class Client:
-    def __init__(self, *, environment: str):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
         self._environment = environment
+        self.x_random_header = x_random_header
 
     def create_execution_session(self, *, language: Language) -> ExecutionSessionResponse:
         _response = requests.request(
-            "POST", urllib.parse.urljoin(f"{self._environment}/", f"sessions/create-session/{language}")
+            "POST",
+            urllib.parse.urljoin(f"{self._environment}/", f"sessions/create-session/{language}"),
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(ExecutionSessionResponse, _response)  # type: ignore
 
     def get_execution_session(self, *, session_id: str) -> typing.Optional[ExecutionSessionResponse]:
-        _response = requests.request("GET", urllib.parse.urljoin(f"{self._environment}/", f"sessions/{session_id}"))
+        _response = requests.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", f"sessions/{session_id}"),
+            headers={"X-Random-Header": self.x_random_header},
+        )
         return pydantic.parse_obj_as(typing.Optional[ExecutionSessionResponse], _response)  # type: ignore
 
     def stop_execution_session(self, *, session_id: str) -> None:
         _response = requests.request(
-            "DELETE", urllib.parse.urljoin(f"{self._environment}/", f"sessions/stop/{session_id}")
+            "DELETE",
+            urllib.parse.urljoin(f"{self._environment}/", f"sessions/stop/{session_id}"),
+            headers={"X-Random-Header": self.x_random_header},
         )
 
     def get_execution_sessions_state(self) -> GetExecutionSessionStateResponse:
         _response = requests.request(
-            "GET", urllib.parse.urljoin(f"{self._environment}/", "sessions/execution-sessions-state")
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", "sessions/execution-sessions-state"),
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(GetExecutionSessionStateResponse, _response)  # type: ignore

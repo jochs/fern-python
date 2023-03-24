@@ -10,9 +10,14 @@ from ..types.migration import Migration
 
 
 class Client:
-    def __init__(self, *, environment: str):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
         self._environment = environment
+        self.x_random_header = x_random_header
 
-    def get_attempted_migrations(self) -> typing.List[Migration]:
-        _response = requests.request("GET", urllib.parse.urljoin(f"{self._environment}/", "migration-info/all"))
+    def get_attempted_migrations(self, *, admin_key_header: str) -> typing.List[Migration]:
+        _response = requests.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", "migration-info/all"),
+            headers={"X-Random-Header": self.x_random_header, "admin-key-header": admin_key_header},
+        )
         return pydantic.parse_obj_as(typing.List[Migration], _response)  # type: ignore

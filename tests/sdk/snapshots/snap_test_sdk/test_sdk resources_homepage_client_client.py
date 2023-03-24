@@ -10,14 +10,22 @@ from ...commons.types.problem_id import ProblemId
 
 
 class Client:
-    def __init__(self, *, environment: str):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
         self._environment = environment
+        self.x_random_header = x_random_header
 
     def get_homepage_problems(self) -> typing.List[ProblemId]:
-        _response = requests.request("GET", urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"))
+        _response = requests.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"),
+            headers={"X-Random-Header": self.x_random_header},
+        )
         return pydantic.parse_obj_as(typing.List[ProblemId], _response)  # type: ignore
 
     def set_homepage_problems(self, *, request: typing.List[ProblemId]) -> None:
         _response = requests.request(
-            "POST", urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"), json=request
+            "POST",
+            urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"),
+            json=request,
+            headers={"X-Random-Header": self.x_random_header},
         )

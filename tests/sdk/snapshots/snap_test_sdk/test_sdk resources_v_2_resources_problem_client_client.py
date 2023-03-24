@@ -12,22 +12,31 @@ from ..types.problem_info_v_2 import ProblemInfoV2
 
 
 class Client:
-    def __init__(self, *, environment: str):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
         self._environment = environment
+        self.x_random_header = x_random_header
 
     def get_lightweight_problems(self) -> typing.List[LightweightProblemInfoV2]:
         _response = requests.request(
-            "GET", urllib.parse.urljoin(f"{self._environment}/", "problems-v2/lightweight-problem-info")
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", "problems-v2/lightweight-problem-info"),
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(typing.List[LightweightProblemInfoV2], _response)  # type: ignore
 
     def get_problems(self) -> typing.List[ProblemInfoV2]:
-        _response = requests.request("GET", urllib.parse.urljoin(f"{self._environment}/", "problems-v2/problem-info"))
+        _response = requests.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", "problems-v2/problem-info"),
+            headers={"X-Random-Header": self.x_random_header},
+        )
         return pydantic.parse_obj_as(typing.List[ProblemInfoV2], _response)  # type: ignore
 
     def get_latest_problem(self, *, problem_id: ProblemId) -> ProblemInfoV2:
         _response = requests.request(
-            "GET", urllib.parse.urljoin(f"{self._environment}/", f"problems-v2/problem-info/{problem_id}")
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", f"problems-v2/problem-info/{problem_id}"),
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore
 
@@ -37,5 +46,6 @@ class Client:
             urllib.parse.urljoin(
                 f"{self._environment}/", f"problems-v2/problem-info/{problem_id}/version/{problem_version}"
             ),
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore

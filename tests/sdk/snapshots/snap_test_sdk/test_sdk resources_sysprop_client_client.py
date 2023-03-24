@@ -10,8 +10,9 @@ from ...commons.types.language import Language
 
 
 class Client:
-    def __init__(self, *, environment: str):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
         self._environment = environment
+        self.x_random_header = x_random_header
 
     def set_num_warm_instances(self, *, language: Language, num_warm_instances: int) -> None:
         _response = requests.request(
@@ -19,8 +20,13 @@ class Client:
             urllib.parse.urljoin(
                 f"{self._environment}/", f"sysprop/num-warm-instances/{language}/{num_warm_instances}"
             ),
+            headers={"X-Random-Header": self.x_random_header},
         )
 
     def get_num_warm_instances(self) -> typing.Dict[Language, int]:
-        _response = requests.request("GET", urllib.parse.urljoin(f"{self._environment}/", "sysprop/num-warm-instances"))
+        _response = requests.request(
+            "GET",
+            urllib.parse.urljoin(f"{self._environment}/", "sysprop/num-warm-instances"),
+            headers={"X-Random-Header": self.x_random_header},
+        )
         return pydantic.parse_obj_as(typing.Dict[Language, int], _response)  # type: ignore

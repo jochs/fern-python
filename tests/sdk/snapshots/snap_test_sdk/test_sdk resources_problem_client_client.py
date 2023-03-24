@@ -16,24 +16,33 @@ from ..types.variable_type_and_name import VariableTypeAndName
 
 
 class Client:
-    def __init__(self, *, environment: str):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
         self._environment = environment
+        self.x_random_header = x_random_header
 
     def create_problem(self, *, request: CreateProblemRequest) -> CreateProblemResponse:
         _response = requests.request(
-            "POST", urllib.parse.urljoin(f"{self._environment}/", "problem-crud/create"), json=request
+            "POST",
+            urllib.parse.urljoin(f"{self._environment}/", "problem-crud/create"),
+            json=request,
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(CreateProblemResponse, _response)  # type: ignore
 
     def update_problem(self, *, problem_id: ProblemId, request: CreateProblemRequest) -> UpdateProblemResponse:
         _response = requests.request(
-            "POST", urllib.parse.urljoin(f"{self._environment}/", f"problem-crud/update/{problem_id}"), json=request
+            "POST",
+            urllib.parse.urljoin(f"{self._environment}/", f"problem-crud/update/{problem_id}"),
+            json=request,
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(UpdateProblemResponse, _response)  # type: ignore
 
     def delete_problem(self, *, problem_id: ProblemId) -> None:
         _response = requests.request(
-            "DELETE", urllib.parse.urljoin(f"{self._environment}/", f"problem-crud/delete/{problem_id}")
+            "DELETE",
+            urllib.parse.urljoin(f"{self._environment}/", f"problem-crud/delete/{problem_id}"),
+            headers={"X-Random-Header": self.x_random_header},
         )
 
     def get_default_starter_files(
@@ -43,5 +52,6 @@ class Client:
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", "problem-crud/default-starter-files"),
             json={"inputParams": input_params, "outputType": output_type, "methodName": method_name},
+            headers={"X-Random-Header": self.x_random_header},
         )
         return pydantic.parse_obj_as(GetDefaultStarterFilesResponse, _response)  # type: ignore

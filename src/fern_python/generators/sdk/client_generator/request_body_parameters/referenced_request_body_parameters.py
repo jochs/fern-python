@@ -4,7 +4,7 @@ import fern.ir.pydantic as ir_types
 
 from fern_python.codegen import AST
 
-from ..context.sdk_generator_context import SdkGeneratorContext
+from ...context.sdk_generator_context import SdkGeneratorContext
 from .abstract_request_body_parameters import AbstractRequestBodyParameters
 
 

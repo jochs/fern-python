@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import fern.ir.pydantic as ir_types
 from typing_extensions import Never
@@ -7,9 +7,11 @@ from fern_python.codegen import AST, SourceFile
 from fern_python.external_dependencies import HttpMethod, Pydantic, Requests, UrlLib
 
 from ..context.sdk_generator_context import SdkGeneratorContext
-from .abstract_request_body_parameters import AbstractRequestBodyParameters
-from .inlined_request_body_parameters import InlinedRequestBodyParameters
-from .referenced_request_body_parameters import ReferencedRequestBodyParameters
+from .request_body_parameters import (
+    AbstractRequestBodyParameters,
+    InlinedRequestBodyParameters,
+    ReferencedRequestBodyParameters,
+)
 
 
 class ClientGenerator:
@@ -34,6 +36,15 @@ class ClientGenerator:
                             if self._context.ir.environments is not None
                             else AST.TypeHint.str_(),
                         ),
+                    ]
+                    + [
+                        AST.FunctionParameter(
+                            name=self._get_header_constructor_parameter_name(header),
+                            type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                                header.value_type
+                            ),
+                        )
+                        for header in self._context.ir.headers
                     ]
                 ),
                 body=AST.CodeWriter(self._write_constructor_body),
@@ -72,7 +83,9 @@ class ClientGenerator:
                             else AST.TypeHint.none(),
                         ),
                         body=self._create_endpoint_body_writer(
-                            endpoint=endpoint, request_body_parameters=request_body_parameters
+                            service=service,
+                            endpoint=endpoint,
+                            request_body_parameters=request_body_parameters,
                         ),
                     )
                 )
@@ -87,6 +100,10 @@ class ClientGenerator:
         writer.write_line(
             f"self.{ClientGenerator.ENVIRONMENT_MEMBER_NAME} = {ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME}"
         )
+        for header in self._context.ir.headers:
+            member_name = self._get_header_private_member_name(header)
+            argument_name = self._get_header_constructor_parameter_name(header)
+            writer.write_line(f"self.{member_name} = {argument_name}")
 
     def _get_endpoint_parameters(
         self,
@@ -127,6 +144,17 @@ class ClientGenerator:
                     file_upload=raise_file_upload_not_supported,
                 )
             )
+
+        for header in service.headers + endpoint.headers:
+            parameters.append(
+                AST.FunctionParameter(
+                    name=self._get_header_parameter_name(header),
+                    type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                        header.value_type
+                    ),
+                ),
+            )
+
         return parameters
 
     def _get_path_parameter_name(self, path_parameter: ir_types.PathParameter) -> str:
@@ -135,9 +163,19 @@ class ClientGenerator:
     def _get_query_parameter_name(self, query_parameter: ir_types.QueryParameter) -> str:
         return query_parameter.name.name.snake_case.unsafe_name
 
+    def _get_header_parameter_name(self, header: ir_types.HttpHeader) -> str:
+        return header.name.name.snake_case.unsafe_name
+
+    def _get_header_private_member_name(self, header: ir_types.HttpHeader) -> str:
+        return header.name.name.snake_case.unsafe_name
+
+    def _get_header_constructor_parameter_name(self, header: ir_types.HttpHeader) -> str:
+        return header.name.name.snake_case.unsafe_name
+
     def _create_endpoint_body_writer(
         self,
         *,
+        service: ir_types.HttpService,
         endpoint: ir_types.HttpEndpoint,
         request_body_parameters: Optional[AbstractRequestBodyParameters],
     ) -> AST.CodeWriter:
@@ -166,6 +204,7 @@ class ClientGenerator:
                     if request_body_parameters is not None
                     else None,
                     response_variable_name=ClientGenerator.RESPONSE_VARIABLE,
+                    headers=self._get_headers_for_endpoint(service=service, endpoint=endpoint),
                 )
             )
             if endpoint.response is not None:
@@ -268,6 +307,31 @@ class ClientGenerator:
             if path_parameter.name.original_name == path_parameter_name:
                 return path_parameter
         raise RuntimeError("Path parameter does not exist: " + path_parameter_name)
+
+    def _get_headers_for_endpoint(
+        self,
+        *,
+        service: ir_types.HttpService,
+        endpoint: ir_types.HttpEndpoint,
+    ) -> List[Tuple[str, AST.Expression]]:
+        headers: List[Tuple[str, AST.Expression]] = []
+
+        for header in self._context.ir.headers:
+            headers.append(
+                (
+                    header.name.wire_value,
+                    AST.Expression(f"self.{self._get_header_private_member_name(header)}"),
+                ),
+            )
+
+        for header in service.headers + endpoint.headers:
+            headers.append(
+                (
+                    header.name.wire_value,
+                    AST.Expression(self._get_header_parameter_name(header)),
+                ),
+            )
+        return headers
 
 
 def raise_file_upload_not_supported(request: ir_types.FileUploadRequest) -> Never:

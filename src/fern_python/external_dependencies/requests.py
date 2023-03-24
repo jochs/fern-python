@@ -28,6 +28,7 @@ class Requests:
         method: HttpMethod,
         query_parameters: List[Tuple[str, AST.Expression]],
         request_body: Optional[AST.Expression],
+        headers: List[Tuple[str, AST.Expression]],
         response_variable_name: str,
     ) -> AST.Expression:
         def write(writer: AST.NodeWriter) -> None:
@@ -50,12 +51,24 @@ class Requests:
                         writer.write(f'"{query_parameter_key}": ')
                         writer.write_node(query_parameter_value)
 
-                    writer.write_line("}")
+                    writer.write_line("},")
 
                 if request_body is not None:
                     writer.write("json=")
                     writer.write_node(request_body)
-                    writer.write_line()
+                    writer.write_line(",")
+
+                if len(headers) > 0:
+                    writer.write("headers={")
+
+                    for i, (header_key, header_value) in enumerate(headers):
+                        if i > 0:
+                            writer.write(", ")
+                        writer.write(f'"{header_key}": ')
+                        writer.write_node(header_value)
+
+                    writer.write_line("},")
+
             writer.write_line(")")
 
         return AST.Expression(AST.CodeWriter(write))
