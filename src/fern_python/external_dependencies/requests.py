@@ -24,6 +24,7 @@ class Requests:
     @staticmethod
     def make_request(
         *,
+        url: AST.Expression,
         method: HttpMethod,
         query_parameters: List[Tuple[str, AST.Expression]],
         request_body: Optional[AST.Expression],
@@ -36,7 +37,9 @@ class Requests:
                     qualified_name_excluding_import=(), import_=AST.ReferenceImport(module=REQUESTS_MODULE)
                 )
             )
-            writer.write_line(f'.request("{method.value}", "",')
+            writer.write(f'.request("{method.value}", ')
+            writer.write_node(url)
+            writer.write(", ")
             with writer.indent():
                 if len(query_parameters) > 0:
                     writer.write("params={")

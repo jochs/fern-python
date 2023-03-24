@@ -2,4 +2,4 @@
 
 class Client:
     def __init__(self, *, environment: str):
-        ...
+        self._environment = environment

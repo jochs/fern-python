@@ -43,4 +43,4 @@ class EnvironmentGenerator:
             )
 
     def visit_multi_base_url(self, multi_base_url_environments: ir_types.MultipleBaseUrlsEnvironments) -> None:
-        raise Exception("multiple_base_url_environments are unsupported!")
+        raise Exception("multiple_base_url_environments are unsupported")

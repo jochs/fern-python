@@ -4,7 +4,7 @@ import fern.ir.pydantic as ir_types
 from typing_extensions import Never
 
 from fern_python.codegen import AST, SourceFile
-from fern_python.external_dependencies import HttpMethod, Pydantic, Requests
+from fern_python.external_dependencies import HttpMethod, Pydantic, Requests, UrlLib
 
 from ..context.sdk_generator_context import SdkGeneratorContext
 from .abstract_request_body_parameters import AbstractRequestBodyParameters
@@ -84,7 +84,9 @@ class ClientGenerator:
 
     def _write_constructor_body(self, writer: AST.NodeWriter) -> None:
         self._context.ir.services
-        writer.write_line("...")
+        writer.write_line(
+            f"self.{ClientGenerator.ENVIRONMENT_MEMBER_NAME} = {ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME}"
+        )
 
     def _get_endpoint_parameters(
         self,
@@ -142,6 +144,10 @@ class ClientGenerator:
         def write(writer: AST.NodeWriter) -> None:
             writer.write_node(
                 Requests.make_request(
+                    url=UrlLib.urljoin(
+                        AST.Expression(f"self.{ClientGenerator.ENVIRONMENT_MEMBER_NAME}"),
+                        self._get_path_for_endpoint(endpoint),
+                    ),
                     method=endpoint.method.visit(
                         get=lambda: HttpMethod.GET,
                         post=lambda: HttpMethod.POST,
@@ -225,6 +231,43 @@ class ClientGenerator:
                 ),
             )
         ]
+
+    def _get_path_for_endpoint(self, endpoint: ir_types.HttpEndpoint) -> AST.Expression:
+        # remove leading slash so that urljoin concatenates
+        head = endpoint.full_path.head.lstrip("/")
+
+        if len(endpoint.full_path.parts) == 0:
+            return AST.Expression(f'"{head}"')
+
+        def write(writer: AST.NodeWriter) -> None:
+            writer.write('f"')
+            writer.write(head)
+            for part in endpoint.full_path.parts:
+                writer.write("{")
+                writer.write(
+                    self._get_path_parameter_name(
+                        self._get_path_parameter_from_name(
+                            endpoint=endpoint,
+                            path_parameter_name=part.path_parameter,
+                        ),
+                    )
+                )
+                writer.write("}")
+                writer.write(part.tail)
+            writer.write('"')
+
+        return AST.Expression(AST.CodeWriter(write))
+
+    def _get_path_parameter_from_name(
+        self,
+        *,
+        endpoint: ir_types.HttpEndpoint,
+        path_parameter_name: str,
+    ) -> ir_types.PathParameter:
+        for path_parameter in endpoint.all_path_parameters:
+            if path_parameter.name.original_name == path_parameter_name:
+                return path_parameter
+        raise RuntimeError("Path parameter does not exist: " + path_parameter_name)
 
 
 def raise_file_upload_not_supported(request: ir_types.FileUploadRequest) -> Never:

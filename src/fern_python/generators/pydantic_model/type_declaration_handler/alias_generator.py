@@ -109,4 +109,4 @@ class AliasGenerator(AbstractTypeGenerator):
         )
 
     def visit_literal(self, wrapped_type: ir_types.Literal) -> str:
-        raise Exception("Literals are not supported!")
+        raise Exception("Literals are not supported")
