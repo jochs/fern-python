@@ -11,16 +11,21 @@ from ..types.migration import Migration
 
 
 class Client:
-    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header
+        self._token = token
 
     def get_attempted_migrations(self, *, admin_key_header: str) -> typing.List[Migration]:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "migration-info/all"),
             headers=remove_none_from_headers(
-                {"X-Random-Header": self.x_random_header, "admin-key-header": admin_key_header}
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "admin-key-header": admin_key_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
             ),
         )
         return pydantic.parse_obj_as(typing.List[Migration], _response)  # type: ignore

@@ -11,15 +11,21 @@ from ...commons.types.problem_id import ProblemId
 
 
 class Client:
-    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header
+        self._token = token
 
     def get_homepage_problems(self) -> typing.List[ProblemId]:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(typing.List[ProblemId], _response)  # type: ignore
 
@@ -28,5 +34,10 @@ class Client:
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", "homepage-problems"),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )

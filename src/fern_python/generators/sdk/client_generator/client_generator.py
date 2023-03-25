@@ -17,7 +17,17 @@ from .request_body_parameters import (
 class ClientGenerator:
     ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME = "environment"
     ENVIRONMENT_MEMBER_NAME = "_environment"
+
     RESPONSE_VARIABLE = "_response"
+
+    TOKEN_CONSTRUCTOR_PARAMETER_NAME = "token"
+    TOKEN_MEMBER_NAME = "_token"
+
+    USERNAME_CONSTRUCTOR_PARAMETER_NAME = "username"
+    USERNAME_MEMBER_NAME = "_username"
+
+    PASSWORD_CONSTRUCTOR_PARAMETER_NAME = "password"
+    PASSWORD_MEMBER_NAME = "_password"
 
     def __init__(self, context: SdkGeneratorContext, package: ir_types.Package, class_name: str):
         self._context = context
@@ -29,23 +39,7 @@ class ClientGenerator:
             name=self._class_name,
             constructor=AST.ClassConstructor(
                 signature=AST.FunctionSignature(
-                    named_parameters=[
-                        AST.FunctionParameter(
-                            name=ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME,
-                            type_hint=AST.TypeHint(self._context.get_reference_to_environments_enum())
-                            if self._context.ir.environments is not None
-                            else AST.TypeHint.str_(),
-                        ),
-                    ]
-                    + [
-                        AST.FunctionParameter(
-                            name=self._get_header_constructor_parameter_name(header),
-                            type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
-                                header.value_type
-                            ),
-                        )
-                        for header in self._context.ir.headers
-                    ]
+                    named_parameters=self._get_constructor_parameters(),
                 ),
                 body=AST.CodeWriter(self._write_constructor_body),
             ),
@@ -95,14 +89,87 @@ class ClientGenerator:
             should_export=False,
         )
 
+    def _get_constructor_parameters(self) -> List[AST.FunctionParameter]:
+        parameters: List[AST.FunctionParameter] = []
+
+        parameters.append(
+            AST.FunctionParameter(
+                name=ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME,
+                type_hint=AST.TypeHint(self._context.get_reference_to_environments_enum())
+                if self._context.ir.environments is not None
+                else AST.TypeHint.str_(),
+            )
+        )
+
+        for header in self._context.ir.headers:
+            parameters.append(
+                AST.FunctionParameter(
+                    name=self._get_header_constructor_parameter_name(header),
+                    type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                        header.value_type
+                    ),
+                )
+            )
+
+        for header_auth_scheme in self._get_header_auth_schemes():
+            parameters.append(
+                AST.FunctionParameter(
+                    name=self._get_auth_scheme_header_private_member_name(header_auth_scheme),
+                    type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                        header_auth_scheme.value_type
+                    ),
+                )
+            )
+
+        if self._has_bearer_auth():
+            parameters.append(
+                AST.FunctionParameter(
+                    name=ClientGenerator.TOKEN_CONSTRUCTOR_PARAMETER_NAME,
+                    type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
+                )
+            )
+
+        if self._has_basic_auth():
+            parameters.extend(
+                [
+                    AST.FunctionParameter(
+                        name=ClientGenerator.USERNAME_CONSTRUCTOR_PARAMETER_NAME,
+                        type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
+                    ),
+                    AST.FunctionParameter(
+                        name=ClientGenerator.PASSWORD_CONSTRUCTOR_PARAMETER_NAME,
+                        type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
+                    ),
+                ]
+            )
+
+        return parameters
+
     def _write_constructor_body(self, writer: AST.NodeWriter) -> None:
         self._context.ir.services
         writer.write_line(
             f"self.{ClientGenerator.ENVIRONMENT_MEMBER_NAME} = {ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME}"
         )
+
         for header in self._context.ir.headers:
             member_name = self._get_header_private_member_name(header)
             argument_name = self._get_header_constructor_parameter_name(header)
+            writer.write_line(f"self.{member_name} = {argument_name}")
+
+        if self._has_bearer_auth():
+            writer.write_line(
+                f"self.{ClientGenerator.TOKEN_MEMBER_NAME} = {ClientGenerator.TOKEN_CONSTRUCTOR_PARAMETER_NAME}"
+            )
+        if self._has_basic_auth():
+            writer.write_line(
+                f"self.{ClientGenerator.USERNAME_MEMBER_NAME} = {ClientGenerator.USERNAME_CONSTRUCTOR_PARAMETER_NAME}"
+            )
+            writer.write_line(
+                f"self.{ClientGenerator.PASSWORD_MEMBER_NAME} = {ClientGenerator.PASSWORD_CONSTRUCTOR_PARAMETER_NAME}"
+            )
+        for header_auth_scheme in self._get_header_auth_schemes():
+            member_name = self._get_auth_scheme_header_private_member_name(header_auth_scheme)
+            argument_name = self._get_auth_scheme_header_constructor_parameter_name(header_auth_scheme)
             writer.write_line(f"self.{member_name} = {argument_name}")
 
     def _get_endpoint_parameters(
@@ -172,6 +239,12 @@ class ClientGenerator:
     def _get_header_constructor_parameter_name(self, header: ir_types.HttpHeader) -> str:
         return header.name.name.snake_case.unsafe_name
 
+    def _get_auth_scheme_header_constructor_parameter_name(self, header: ir_types.HeaderAuthScheme) -> str:
+        return header.name.name.snake_case.unsafe_name
+
+    def _get_auth_scheme_header_private_member_name(self, header: ir_types.HeaderAuthScheme) -> str:
+        return header.name.name.snake_case.unsafe_name
+
     def _create_endpoint_body_writer(
         self,
         *,
@@ -207,6 +280,7 @@ class ClientGenerator:
                     else None,
                     response_variable_name=ClientGenerator.RESPONSE_VARIABLE,
                     headers=self._get_headers_for_endpoint(service=service, endpoint=endpoint),
+                    auth=self._get_httpx_auth_for_request(),
                 )
             )
             if endpoint.response is not None:
@@ -334,6 +408,24 @@ class ClientGenerator:
                 ),
             )
 
+        if self._has_bearer_auth():
+            headers.append(
+                (
+                    "Authorization",
+                    AST.Expression(
+                        f'f"Bearer {{self.{ClientGenerator.TOKEN_MEMBER_NAME}}}" if self.{ClientGenerator.TOKEN_MEMBER_NAME} is not None else None'  # noqa: E501
+                    ),
+                )
+            )
+
+        for header_auth_scheme in self._get_header_auth_schemes():
+            headers.append(
+                (
+                    header.name.wire_value,
+                    AST.Expression(f"self.{self._get_auth_scheme_header_private_member_name(header_auth_scheme)}"),
+                ),
+            )
+
         if len(headers) == 0:
             return None
 
@@ -341,15 +433,41 @@ class ClientGenerator:
             writer.write("{")
 
             for i, (header_key, header_value) in enumerate(headers):
-                if i > 0:
-                    writer.write(", ")
                 writer.write(f'"{header_key}": ')
                 writer.write_node(header_value)
+                writer.write(", ")
 
             writer.write_line("},")
 
         return self._context.core_utilities.remove_none_from_headers(
             AST.Expression(AST.CodeWriter(write_headers_dict)),
+        )
+
+    def _has_bearer_auth(self) -> bool:
+        for scheme in self._context.ir.auth.schemes:
+            if scheme.get_as_union().type == "bearer":
+                return True
+        return False
+
+    def _has_basic_auth(self) -> bool:
+        for scheme in self._context.ir.auth.schemes:
+            if scheme.get_as_union().type == "basic":
+                return True
+        return False
+
+    def _get_header_auth_schemes(self) -> List[ir_types.HeaderAuthScheme]:
+        header_auth_schemes: List[ir_types.HeaderAuthScheme] = []
+        for scheme in self._context.ir.auth.schemes:
+            scheme_member = scheme.get_as_union()
+            if scheme_member.type == "header":
+                header_auth_schemes.append(scheme_member)
+        return header_auth_schemes
+
+    def _get_httpx_auth_for_request(self) -> Optional[AST.Expression]:
+        if not self._has_basic_auth():
+            return None
+        return AST.Expression(
+            f"(self.{ClientGenerator.USERNAME_MEMBER_NAME}, self.{ClientGenerator.PASSWORD_MEMBER_NAME})"
         )
 
 

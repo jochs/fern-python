@@ -13,15 +13,21 @@ from ..types.problem_info_v_2 import ProblemInfoV2
 
 
 class Client:
-    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header
+        self._token = token
 
     def get_lightweight_problems(self) -> typing.List[LightweightProblemInfoV2]:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "problems-v2/lightweight-problem-info"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(typing.List[LightweightProblemInfoV2], _response)  # type: ignore
 
@@ -29,7 +35,12 @@ class Client:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "problems-v2/problem-info"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(typing.List[ProblemInfoV2], _response)  # type: ignore
 
@@ -37,7 +48,12 @@ class Client:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", f"problems-v2/problem-info/{problem_id}"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore
 
@@ -47,6 +63,11 @@ class Client:
             urllib.parse.urljoin(
                 f"{self._environment}/", f"problems-v2/problem-info/{problem_id}/version/{problem_version}"
             ),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore

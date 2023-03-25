@@ -11,9 +11,10 @@ from ...commons.types.language import Language
 
 
 class Client:
-    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header
+        self._token = token
 
     def set_num_warm_instances(self, *, language: Language, num_warm_instances: int) -> None:
         _response = httpx.request(
@@ -21,13 +22,23 @@ class Client:
             urllib.parse.urljoin(
                 f"{self._environment}/", f"sysprop/num-warm-instances/{language}/{num_warm_instances}"
             ),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def get_num_warm_instances(self) -> typing.Dict[Language, int]:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "sysprop/num-warm-instances"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(typing.Dict[Language, int], _response)  # type: ignore

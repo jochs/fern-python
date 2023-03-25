@@ -13,15 +13,21 @@ from ..types.get_execution_session_state_response import GetExecutionSessionStat
 
 
 class Client:
-    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header
+        self._token = token
 
     def create_execution_session(self, *, language: Language) -> ExecutionSessionResponse:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"sessions/create-session/{language}"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(ExecutionSessionResponse, _response)  # type: ignore
 
@@ -29,7 +35,12 @@ class Client:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", f"sessions/{session_id}"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(typing.Optional[ExecutionSessionResponse], _response)  # type: ignore
 
@@ -37,13 +48,23 @@ class Client:
         _response = httpx.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._environment}/", f"sessions/stop/{session_id}"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def get_execution_sessions_state(self) -> GetExecutionSessionStateResponse:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", "sessions/execution-sessions-state"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(GetExecutionSessionStateResponse, _response)  # type: ignore

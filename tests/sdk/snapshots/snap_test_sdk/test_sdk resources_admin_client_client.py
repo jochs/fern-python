@@ -19,16 +19,22 @@ from ...v_2.resources.problem.types.test_case_id import TestCaseId
 
 
 class Client:
-    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header
+        self._token = token
 
     def update_test_submission_status(self, *, submission_id: SubmissionId, request: TestSubmissionStatus) -> None:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-test-submission-status/{submission_id}"),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def send_test_submission_update(self, *, submission_id: SubmissionId, request: TestSubmissionUpdate) -> None:
@@ -36,7 +42,12 @@ class Client:
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-test-submission-status-v2/{submission_id}"),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def update_workspace_submission_status(
@@ -46,7 +57,12 @@ class Client:
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-workspace-submission-status/{submission_id}"),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def send_workspace_submission_update(
@@ -58,7 +74,12 @@ class Client:
                 f"{self._environment}/", f"admin/store-workspace-submission-status-v2/{submission_id}"
             ),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def store_traced_test_case(
@@ -75,7 +96,12 @@ class Client:
                 f"{self._environment}/", f"admin/store-test-trace/submission/{submission_id}/testCase/{test_case_id}"
             ),
             json={"result": result, "traceResponses": trace_responses},
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def store_traced_test_case_v_2(
@@ -87,7 +113,12 @@ class Client:
                 f"{self._environment}/", f"admin/store-test-trace-v2/submission/{submission_id}/testCase/{test_case_id}"
             ),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def store_traced_workspace(
@@ -101,7 +132,12 @@ class Client:
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-workspace-trace/submission/{submission_id}"),
             json={"workspaceRunDetails": workspace_run_details, "traceResponses": trace_responses},
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
 
     def store_traced_workspace_v_2(self, *, submission_id: SubmissionId, request: typing.List[TraceResponseV2]) -> None:
@@ -109,5 +145,10 @@ class Client:
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-workspace-trace-v2/submission/{submission_id}"),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )

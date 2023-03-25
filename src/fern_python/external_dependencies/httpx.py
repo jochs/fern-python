@@ -20,6 +20,7 @@ class HttpX:
         query_parameters: List[Tuple[str, AST.Expression]],
         request_body: Optional[AST.Expression],
         headers: Optional[AST.Expression],
+        auth: Optional[AST.Expression],
         response_variable_name: str,
     ) -> AST.Expression:
         def write(writer: AST.NodeWriter) -> None:
@@ -50,6 +51,11 @@ class HttpX:
                 if headers is not None:
                     writer.write("headers=")
                     writer.write_node(headers)
+                    writer.write_line(",")
+
+                if auth is not None:
+                    writer.write("auth=")
+                    writer.write_node(auth)
                     writer.write_line(",")
 
             writer.write_line(")")

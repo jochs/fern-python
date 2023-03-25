@@ -14,16 +14,22 @@ from ..types.update_playlist_request import UpdatePlaylistRequest
 
 
 class Client:
-    def __init__(self, *, environment: str, x_random_header: typing.Optional[str]):
+    def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header
+        self._token = token
 
     def create_playlist(self, *, service_param: int, request: PlaylistCreateRequest) -> Playlist:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/create"),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
 
@@ -47,7 +53,12 @@ class Client:
                 "optionalMultipleField": optional_multiple_field,
                 "multipleField": multiple_field,
             },
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(typing.List[Playlist], _response)  # type: ignore
 
@@ -55,7 +66,12 @@ class Client:
         _response = httpx.request(
             "GET",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/{playlist_id}"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
 
@@ -66,7 +82,12 @@ class Client:
             "PUT",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/{playlist_id}"),
             json=request,
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
         return pydantic.parse_obj_as(typing.Optional[Playlist], _response)  # type: ignore
 
@@ -74,5 +95,10 @@ class Client:
         _response = httpx.request(
             "DELETE",
             urllib.parse.urljoin(f"{self._environment}/", f"v2/playlist/{service_param}/{playlist_id}"),
-            headers=remove_none_from_headers({"X-Random-Header": self.x_random_header}),
+            headers=remove_none_from_headers(
+                {
+                    "X-Random-Header": self.x_random_header,
+                    "Authorization": f"Bearer {self._token}" if self._token is not None else None,
+                }
+            ),
         )
