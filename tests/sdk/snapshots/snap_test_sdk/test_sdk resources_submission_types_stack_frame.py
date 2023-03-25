@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .scope import Scope
@@ -14,11 +13,6 @@ class StackFrame(pydantic.BaseModel):
     method_name: str = pydantic.Field(alias="methodName")
     line_number: int = pydantic.Field(alias="lineNumber")
     scopes: typing.List[Scope]
-
-    class Partial(typing_extensions.TypedDict):
-        method_name: typing_extensions.NotRequired[str]
-        line_number: typing_extensions.NotRequired[int]
-        scopes: typing_extensions.NotRequired[typing.List[Scope]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

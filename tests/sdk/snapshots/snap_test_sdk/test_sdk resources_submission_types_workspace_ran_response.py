@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .submission_id import SubmissionId
@@ -14,10 +13,6 @@ from .workspace_run_details import WorkspaceRunDetails
 class WorkspaceRanResponse(pydantic.BaseModel):
     submission_id: SubmissionId = pydantic.Field(alias="submissionId")
     run_details: WorkspaceRunDetails = pydantic.Field(alias="runDetails")
-
-    class Partial(typing_extensions.TypedDict):
-        submission_id: typing_extensions.NotRequired[SubmissionId]
-        run_details: typing_extensions.NotRequired[WorkspaceRunDetails]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

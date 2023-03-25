@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .workspace_submission_update_info import WorkspaceSubmissionUpdateInfo
@@ -13,10 +12,6 @@ from .workspace_submission_update_info import WorkspaceSubmissionUpdateInfo
 class WorkspaceSubmissionUpdate(pydantic.BaseModel):
     update_time: dt.datetime = pydantic.Field(alias="updateTime")
     update_info: WorkspaceSubmissionUpdateInfo = pydantic.Field(alias="updateInfo")
-
-    class Partial(typing_extensions.TypedDict):
-        update_time: typing_extensions.NotRequired[dt.datetime]
-        update_info: typing_extensions.NotRequired[WorkspaceSubmissionUpdateInfo]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

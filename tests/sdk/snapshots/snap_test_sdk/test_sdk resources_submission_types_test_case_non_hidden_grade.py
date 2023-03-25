@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.variable_value import VariableValue
@@ -16,12 +15,6 @@ class TestCaseNonHiddenGrade(pydantic.BaseModel):
     actual_result: typing.Optional[VariableValue] = pydantic.Field(alias="actualResult")
     exception: typing.Optional[ExceptionV2]
     stdout: str
-
-    class Partial(typing_extensions.TypedDict):
-        passed: typing_extensions.NotRequired[bool]
-        actual_result: typing_extensions.NotRequired[typing.Optional[VariableValue]]
-        exception: typing_extensions.NotRequired[typing.Optional[ExceptionV2]]
-        stdout: typing_extensions.NotRequired[str]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

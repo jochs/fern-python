@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ........core.datetime_utils import serialize_datetime
 from .assert_correctness_check import AssertCorrectnessCheck
@@ -14,10 +13,6 @@ from .non_void_function_definition import NonVoidFunctionDefinition
 class TestCaseWithActualResultImplementation(pydantic.BaseModel):
     get_actual_result: NonVoidFunctionDefinition = pydantic.Field(alias="getActualResult")
     assert_correctness_check: AssertCorrectnessCheck = pydantic.Field(alias="assertCorrectnessCheck")
-
-    class Partial(typing_extensions.TypedDict):
-        get_actual_result: typing_extensions.NotRequired[NonVoidFunctionDefinition]
-        assert_correctness_check: typing_extensions.NotRequired[AssertCorrectnessCheck]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

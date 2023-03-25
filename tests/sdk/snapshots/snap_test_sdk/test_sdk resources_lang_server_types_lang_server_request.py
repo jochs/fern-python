@@ -4,16 +4,12 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 
 
 class LangServerRequest(pydantic.BaseModel):
     request: typing.Any
-
-    class Partial(typing_extensions.TypedDict):
-        request: typing_extensions.NotRequired[typing.Any]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

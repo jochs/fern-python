@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.language import Language
@@ -13,10 +12,6 @@ from ...commons.types.language import Language
 class UnexpectedLanguageError(pydantic.BaseModel):
     expected_language: Language = pydantic.Field(alias="expectedLanguage")
     actual_language: Language = pydantic.Field(alias="actualLanguage")
-
-    class Partial(typing_extensions.TypedDict):
-        expected_language: typing_extensions.NotRequired[Language]
-        actual_language: typing_extensions.NotRequired[Language]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

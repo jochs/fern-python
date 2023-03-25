@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .execution_session_status import ExecutionSessionStatus
@@ -14,10 +13,6 @@ from .submission_id import SubmissionId
 class BuildingExecutorResponse(pydantic.BaseModel):
     submission_id: SubmissionId = pydantic.Field(alias="submissionId")
     status: ExecutionSessionStatus
-
-    class Partial(typing_extensions.TypedDict):
-        submission_id: typing_extensions.NotRequired[SubmissionId]
-        status: typing_extensions.NotRequired[ExecutionSessionStatus]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

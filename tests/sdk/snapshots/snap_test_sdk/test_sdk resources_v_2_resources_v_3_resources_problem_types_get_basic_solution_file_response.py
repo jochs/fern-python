@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ........core.datetime_utils import serialize_datetime
 from .......commons.types.language import Language
@@ -13,9 +12,6 @@ from .file_info_v_2 import FileInfoV2
 
 class GetBasicSolutionFileResponse(pydantic.BaseModel):
     solution_file_by_language: typing.Dict[Language, FileInfoV2] = pydantic.Field(alias="solutionFileByLanguage")
-
-    class Partial(typing_extensions.TypedDict):
-        solution_file_by_language: typing_extensions.NotRequired[typing.Dict[Language, FileInfoV2]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

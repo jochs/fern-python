@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ........core.datetime_utils import serialize_datetime
 from .function_signature import FunctionSignature
@@ -12,9 +11,6 @@ from .function_signature import FunctionSignature
 
 class GetFunctionSignatureRequest(pydantic.BaseModel):
     function_signature: FunctionSignature = pydantic.Field(alias="functionSignature")
-
-    class Partial(typing_extensions.TypedDict):
-        function_signature: typing_extensions.NotRequired[FunctionSignature]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

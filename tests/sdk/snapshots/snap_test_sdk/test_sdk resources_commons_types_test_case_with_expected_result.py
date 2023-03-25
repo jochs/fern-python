@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .test_case import TestCase
@@ -14,10 +13,6 @@ from .variable_value import VariableValue
 class TestCaseWithExpectedResult(pydantic.BaseModel):
     test_case: TestCase = pydantic.Field(alias="testCase")
     expected_result: VariableValue = pydantic.Field(alias="expectedResult")
-
-    class Partial(typing_extensions.TypedDict):
-        test_case: typing_extensions.NotRequired[TestCase]
-        expected_result: typing_extensions.NotRequired[VariableValue]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

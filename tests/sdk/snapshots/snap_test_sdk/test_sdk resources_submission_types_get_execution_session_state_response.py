@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .execution_session_state import ExecutionSessionState
@@ -14,11 +13,6 @@ class GetExecutionSessionStateResponse(pydantic.BaseModel):
     states: typing.Dict[str, ExecutionSessionState]
     num_warming_instances: typing.Optional[int] = pydantic.Field(alias="numWarmingInstances")
     warming_session_ids: typing.List[str] = pydantic.Field(alias="warmingSessionIds")
-
-    class Partial(typing_extensions.TypedDict):
-        states: typing_extensions.NotRequired[typing.Dict[str, ExecutionSessionState]]
-        num_warming_instances: typing_extensions.NotRequired[typing.Optional[int]]
-        warming_session_ids: typing_extensions.NotRequired[typing.List[str]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

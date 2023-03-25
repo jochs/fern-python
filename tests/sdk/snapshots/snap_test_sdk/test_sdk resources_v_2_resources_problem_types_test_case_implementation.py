@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ......core.datetime_utils import serialize_datetime
 from .test_case_function import TestCaseFunction
@@ -14,10 +13,6 @@ from .test_case_implementation_description import TestCaseImplementationDescript
 class TestCaseImplementation(pydantic.BaseModel):
     description: TestCaseImplementationDescription
     function: TestCaseFunction
-
-    class Partial(typing_extensions.TypedDict):
-        description: typing_extensions.NotRequired[TestCaseImplementationDescription]
-        function: typing_extensions.NotRequired[TestCaseFunction]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

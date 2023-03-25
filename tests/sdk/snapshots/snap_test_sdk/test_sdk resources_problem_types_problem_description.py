@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .problem_description_board import ProblemDescriptionBoard
@@ -12,9 +11,6 @@ from .problem_description_board import ProblemDescriptionBoard
 
 class ProblemDescription(pydantic.BaseModel):
     boards: typing.List[ProblemDescriptionBoard]
-
-    class Partial(typing_extensions.TypedDict):
-        boards: typing_extensions.NotRequired[typing.List[ProblemDescriptionBoard]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

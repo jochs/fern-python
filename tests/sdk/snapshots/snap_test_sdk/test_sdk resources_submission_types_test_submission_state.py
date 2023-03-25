@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.problem_id import ProblemId
@@ -17,12 +16,6 @@ class TestSubmissionState(pydantic.BaseModel):
     default_test_cases: typing.List[TestCase] = pydantic.Field(alias="defaultTestCases")
     custom_test_cases: typing.List[TestCase] = pydantic.Field(alias="customTestCases")
     status: TestSubmissionStatus
-
-    class Partial(typing_extensions.TypedDict):
-        problem_id: typing_extensions.NotRequired[ProblemId]
-        default_test_cases: typing_extensions.NotRequired[typing.List[TestCase]]
-        custom_test_cases: typing_extensions.NotRequired[typing.List[TestCase]]
-        status: typing_extensions.NotRequired[TestSubmissionStatus]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

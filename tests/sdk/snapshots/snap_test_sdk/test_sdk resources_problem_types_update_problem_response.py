@@ -4,16 +4,12 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 
 
 class UpdateProblemResponse(pydantic.BaseModel):
     problem_version: int = pydantic.Field(alias="problemVersion")
-
-    class Partial(typing_extensions.TypedDict):
-        problem_version: typing_extensions.NotRequired[int]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

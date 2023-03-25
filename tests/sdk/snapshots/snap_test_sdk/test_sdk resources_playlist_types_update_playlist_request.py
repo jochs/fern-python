@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.problem_id import ProblemId
@@ -13,10 +12,6 @@ from ...commons.types.problem_id import ProblemId
 class UpdatePlaylistRequest(pydantic.BaseModel):
     name: str
     problems: typing.List[ProblemId] = pydantic.Field(description=("The problems that make up the playlist.\n"))
-
-    class Partial(typing_extensions.TypedDict):
-        name: typing_extensions.NotRequired[str]
-        problems: typing_extensions.NotRequired[typing.List[ProblemId]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

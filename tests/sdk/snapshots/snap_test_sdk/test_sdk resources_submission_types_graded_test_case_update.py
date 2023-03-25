@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...v_2.resources.problem.types.test_case_id import TestCaseId
@@ -14,10 +13,6 @@ from .test_case_grade import TestCaseGrade
 class GradedTestCaseUpdate(pydantic.BaseModel):
     test_case_id: TestCaseId = pydantic.Field(alias="testCaseId")
     grade: TestCaseGrade
-
-    class Partial(typing_extensions.TypedDict):
-        test_case_id: typing_extensions.NotRequired[TestCaseId]
-        grade: typing_extensions.NotRequired[TestCaseGrade]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

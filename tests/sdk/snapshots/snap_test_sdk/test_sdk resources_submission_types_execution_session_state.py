@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.language import Language
@@ -20,14 +19,6 @@ class ExecutionSessionState(pydantic.BaseModel):
     aws_task_id: typing.Optional[str] = pydantic.Field(alias="awsTaskId")
     language: Language
     status: ExecutionSessionStatus
-
-    class Partial(typing_extensions.TypedDict):
-        last_time_contacted: typing_extensions.NotRequired[typing.Optional[str]]
-        session_id: typing_extensions.NotRequired[str]
-        is_warm_instance: typing_extensions.NotRequired[bool]
-        aws_task_id: typing_extensions.NotRequired[typing.Optional[str]]
-        language: typing_extensions.NotRequired[Language]
-        status: typing_extensions.NotRequired[ExecutionSessionStatus]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

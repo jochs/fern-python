@@ -6,7 +6,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 
@@ -19,10 +18,6 @@ class ListType(pydantic.BaseModel):
             "Whether this list is fixed-size (for languages that supports fixed-size lists). Defaults to false.\n"
         ),
     )
-
-    class Partial(typing_extensions.TypedDict):
-        value_type: typing_extensions.NotRequired[VariableType]
-        is_fixed_length: typing_extensions.NotRequired[typing.Optional[bool]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

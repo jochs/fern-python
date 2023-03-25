@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .exception_info import ExceptionInfo
@@ -12,9 +11,6 @@ from .exception_info import ExceptionInfo
 
 class InternalError(pydantic.BaseModel):
     exception_info: ExceptionInfo = pydantic.Field(alias="exceptionInfo")
-
-    class Partial(typing_extensions.TypedDict):
-        exception_info: typing_extensions.NotRequired[ExceptionInfo]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

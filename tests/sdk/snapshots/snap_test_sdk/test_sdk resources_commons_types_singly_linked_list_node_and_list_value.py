@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .node_id import NodeId
@@ -14,10 +13,6 @@ from .singly_linked_list_value import SinglyLinkedListValue
 class SinglyLinkedListNodeAndListValue(pydantic.BaseModel):
     node_id: NodeId = pydantic.Field(alias="nodeId")
     full_list: SinglyLinkedListValue = pydantic.Field(alias="fullList")
-
-    class Partial(typing_extensions.TypedDict):
-        node_id: typing_extensions.NotRequired[NodeId]
-        full_list: typing_extensions.NotRequired[SinglyLinkedListValue]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

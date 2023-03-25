@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .binary_tree_node_value import BinaryTreeNodeValue
@@ -14,10 +13,6 @@ from .node_id import NodeId
 class BinaryTreeValue(pydantic.BaseModel):
     root: typing.Optional[NodeId]
     nodes: typing.Dict[NodeId, BinaryTreeNodeValue]
-
-    class Partial(typing_extensions.TypedDict):
-        root: typing_extensions.NotRequired[typing.Optional[NodeId]]
-        nodes: typing_extensions.NotRequired[typing.Dict[NodeId, BinaryTreeNodeValue]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

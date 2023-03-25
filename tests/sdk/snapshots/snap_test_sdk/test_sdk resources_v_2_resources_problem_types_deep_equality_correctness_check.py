@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ......core.datetime_utils import serialize_datetime
 from .parameter_id import ParameterId
@@ -12,9 +11,6 @@ from .parameter_id import ParameterId
 
 class DeepEqualityCorrectnessCheck(pydantic.BaseModel):
     expected_value_parameter_id: ParameterId = pydantic.Field(alias="expectedValueParameterId")
-
-    class Partial(typing_extensions.TypedDict):
-        expected_value_parameter_id: typing_extensions.NotRequired[ParameterId]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

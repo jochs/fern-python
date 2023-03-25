@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .stack_frame import StackFrame
@@ -13,10 +12,6 @@ from .stack_frame import StackFrame
 class StackInformation(pydantic.BaseModel):
     num_stack_frames: int = pydantic.Field(alias="numStackFrames")
     top_stack_frame: typing.Optional[StackFrame] = pydantic.Field(alias="topStackFrame")
-
-    class Partial(typing_extensions.TypedDict):
-        num_stack_frames: typing_extensions.NotRequired[int]
-        top_stack_frame: typing_extensions.NotRequired[typing.Optional[StackFrame]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

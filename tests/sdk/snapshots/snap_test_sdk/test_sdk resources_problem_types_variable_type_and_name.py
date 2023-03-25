@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.variable_type import VariableType
@@ -13,10 +12,6 @@ from ...commons.types.variable_type import VariableType
 class VariableTypeAndName(pydantic.BaseModel):
     variable_type: VariableType = pydantic.Field(alias="variableType")
     name: str
-
-    class Partial(typing_extensions.TypedDict):
-        variable_type: typing_extensions.NotRequired[VariableType]
-        name: typing_extensions.NotRequired[str]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

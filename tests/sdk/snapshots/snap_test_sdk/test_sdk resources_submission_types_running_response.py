@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .running_submission_state import RunningSubmissionState
@@ -14,10 +13,6 @@ from .submission_id import SubmissionId
 class RunningResponse(pydantic.BaseModel):
     submission_id: SubmissionId = pydantic.Field(alias="submissionId")
     state: RunningSubmissionState
-
-    class Partial(typing_extensions.TypedDict):
-        submission_id: typing_extensions.NotRequired[SubmissionId]
-        state: typing_extensions.NotRequired[RunningSubmissionState]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

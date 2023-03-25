@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ......core.datetime_utils import serialize_datetime
 from .....commons.types.language import Language
@@ -13,9 +12,6 @@ from .function_implementation import FunctionImplementation
 
 class FunctionImplementationForMultipleLanguages(pydantic.BaseModel):
     code_by_language: typing.Dict[Language, FunctionImplementation] = pydantic.Field(alias="codeByLanguage")
-
-    class Partial(typing_extensions.TypedDict):
-        code_by_language: typing_extensions.NotRequired[typing.Dict[Language, FunctionImplementation]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

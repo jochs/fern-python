@@ -6,16 +6,12 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 
 
 class DebugMapValue(pydantic.BaseModel):
     key_value_pairs: typing.List[DebugKeyValuePairs] = pydantic.Field(alias="keyValuePairs")
-
-    class Partial(typing_extensions.TypedDict):
-        key_value_pairs: typing_extensions.NotRequired[typing.List[DebugKeyValuePairs]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

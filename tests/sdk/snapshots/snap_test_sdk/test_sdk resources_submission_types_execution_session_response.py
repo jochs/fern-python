@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from ...commons.types.language import Language
@@ -16,12 +15,6 @@ class ExecutionSessionResponse(pydantic.BaseModel):
     execution_session_url: typing.Optional[str] = pydantic.Field(alias="executionSessionUrl")
     language: Language
     status: ExecutionSessionStatus
-
-    class Partial(typing_extensions.TypedDict):
-        session_id: typing_extensions.NotRequired[str]
-        execution_session_url: typing_extensions.NotRequired[typing.Optional[str]]
-        language: typing_extensions.NotRequired[Language]
-        status: typing_extensions.NotRequired[ExecutionSessionStatus]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

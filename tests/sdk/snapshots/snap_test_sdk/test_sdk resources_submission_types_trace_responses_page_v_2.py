@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .trace_response_v_2 import TraceResponseV2
@@ -18,10 +17,6 @@ class TraceResponsesPageV2(pydantic.BaseModel):
         )
     )
     trace_responses: typing.List[TraceResponseV2] = pydantic.Field(alias="traceResponses")
-
-    class Partial(typing_extensions.TypedDict):
-        offset: typing_extensions.NotRequired[typing.Optional[int]]
-        trace_responses: typing_extensions.NotRequired[typing.List[TraceResponseV2]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

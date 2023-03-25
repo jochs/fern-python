@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .test_case_result_with_stdout import TestCaseResultWithStdout
@@ -13,10 +12,6 @@ from .test_case_result_with_stdout import TestCaseResultWithStdout
 class TracedTestCase(pydantic.BaseModel):
     result: TestCaseResultWithStdout
     trace_responses_size: int = pydantic.Field(alias="traceResponsesSize")
-
-    class Partial(typing_extensions.TypedDict):
-        result: typing_extensions.NotRequired[TestCaseResultWithStdout]
-        trace_responses_size: typing_extensions.NotRequired[int]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

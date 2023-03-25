@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ......core.datetime_utils import serialize_datetime
 from .parameter import Parameter
@@ -12,9 +11,6 @@ from .parameter import Parameter
 
 class VoidFunctionSignature(pydantic.BaseModel):
     parameters: typing.List[Parameter]
-
-    class Partial(typing_extensions.TypedDict):
-        parameters: typing_extensions.NotRequired[typing.List[Parameter]]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}

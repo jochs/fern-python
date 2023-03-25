@@ -4,7 +4,6 @@ import datetime as dt
 import typing
 
 import pydantic
-import typing_extensions
 
 from ....core.datetime_utils import serialize_datetime
 from .migration_status import MigrationStatus
@@ -13,10 +12,6 @@ from .migration_status import MigrationStatus
 class Migration(pydantic.BaseModel):
     name: str
     status: MigrationStatus
-
-    class Partial(typing_extensions.TypedDict):
-        name: typing_extensions.NotRequired[str]
-        status: typing_extensions.NotRequired[MigrationStatus]
 
     def json(self, **kwargs: typing.Any) -> str:
         kwargs_with_defaults: typing.Any = {"by_alias": True, "exclude_unset": True, **kwargs}
