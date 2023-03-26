@@ -259,73 +259,73 @@ from .map_value import MapValue as resources_commons_types_map_value_MapValue  #
 
 class _VariableValue:
     class IntegerValue(pydantic.BaseModel):
-        type: typing_extensions.Literal["integerValue"]
+        type: typing_extensions.Literal["integerValue"] = "integerValue"
         value: int
 
         class Config:
             frozen = True
 
     class BooleanValue(pydantic.BaseModel):
-        type: typing_extensions.Literal["booleanValue"]
+        type: typing_extensions.Literal["booleanValue"] = "booleanValue"
         value: bool
 
         class Config:
             frozen = True
 
     class DoubleValue(pydantic.BaseModel):
-        type: typing_extensions.Literal["doubleValue"]
+        type: typing_extensions.Literal["doubleValue"] = "doubleValue"
         value: float
 
         class Config:
             frozen = True
 
     class StringValue(pydantic.BaseModel):
-        type: typing_extensions.Literal["stringValue"]
+        type: typing_extensions.Literal["stringValue"] = "stringValue"
         value: str
 
         class Config:
             frozen = True
 
     class CharValue(pydantic.BaseModel):
-        type: typing_extensions.Literal["charValue"]
+        type: typing_extensions.Literal["charValue"] = "charValue"
         value: str
 
         class Config:
             frozen = True
 
     class MapValue(resources_commons_types_map_value_MapValue):
-        type: typing_extensions.Literal["mapValue"]
+        type: typing_extensions.Literal["mapValue"] = "mapValue"
 
         class Config:
             frozen = True
 
     class ListValue(pydantic.BaseModel):
-        type: typing_extensions.Literal["listValue"]
+        type: typing_extensions.Literal["listValue"] = "listValue"
         value: typing.List[VariableValue]
 
         class Config:
             frozen = True
 
     class BinaryTreeValue(resources_commons_types_binary_tree_value_BinaryTreeValue):
-        type: typing_extensions.Literal["binaryTreeValue"]
+        type: typing_extensions.Literal["binaryTreeValue"] = "binaryTreeValue"
 
         class Config:
             frozen = True
 
     class SinglyLinkedListValue(resources_commons_types_singly_linked_list_value_SinglyLinkedListValue):
-        type: typing_extensions.Literal["singlyLinkedListValue"]
+        type: typing_extensions.Literal["singlyLinkedListValue"] = "singlyLinkedListValue"
 
         class Config:
             frozen = True
 
     class DoublyLinkedListValue(resources_commons_types_doubly_linked_list_value_DoublyLinkedListValue):
-        type: typing_extensions.Literal["doublyLinkedListValue"]
+        type: typing_extensions.Literal["doublyLinkedListValue"] = "doublyLinkedListValue"
 
         class Config:
             frozen = True
 
     class NullValue(pydantic.BaseModel):
-        type: typing_extensions.Literal["nullValue"]
+        type: typing_extensions.Literal["nullValue"] = "nullValue"
 
         class Config:
             frozen = True

@@ -94,14 +94,14 @@ class CreateProblemResponse(pydantic.BaseModel):
 
 class _CreateProblemResponse:
     class Success(pydantic.BaseModel):
-        type: typing_extensions.Literal["success"]
+        type: typing_extensions.Literal["success"] = "success"
         value: ProblemId
 
         class Config:
             frozen = True
 
     class Error(pydantic.BaseModel):
-        type: typing_extensions.Literal["error"]
+        type: typing_extensions.Literal["error"] = "error"
         value: CreateProblemError
 
         class Config:

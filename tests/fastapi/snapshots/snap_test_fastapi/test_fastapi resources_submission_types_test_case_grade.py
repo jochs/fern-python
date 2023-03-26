@@ -97,13 +97,13 @@ class TestCaseGrade(pydantic.BaseModel):
 
 class _TestCaseGrade:
     class Hidden(TestCaseHiddenGrade):
-        type: typing_extensions.Literal["hidden"]
+        type: typing_extensions.Literal["hidden"] = "hidden"
 
         class Config:
             frozen = True
 
     class NonHidden(TestCaseNonHiddenGrade):
-        type: typing_extensions.Literal["nonHidden"]
+        type: typing_extensions.Literal["nonHidden"] = "nonHidden"
 
         class Config:
             frozen = True

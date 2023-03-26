@@ -114,14 +114,14 @@ class TestCaseImplementationDescriptionBoard(pydantic.BaseModel):
 
 class _TestCaseImplementationDescriptionBoard:
     class Html(pydantic.BaseModel):
-        type: typing_extensions.Literal["html"]
+        type: typing_extensions.Literal["html"] = "html"
         value: str
 
         class Config:
             frozen = True
 
     class ParamId(pydantic.BaseModel):
-        type: typing_extensions.Literal["paramId"]
+        type: typing_extensions.Literal["paramId"] = "paramId"
         value: ParameterId
 
         class Config:

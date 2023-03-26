@@ -134,19 +134,19 @@ class FunctionSignature(pydantic.BaseModel):
 
 class _FunctionSignature:
     class Void(VoidFunctionSignature):
-        type: typing_extensions.Literal["void"]
+        type: typing_extensions.Literal["void"] = "void"
 
         class Config:
             frozen = True
 
     class NonVoid(NonVoidFunctionSignature):
-        type: typing_extensions.Literal["nonVoid"]
+        type: typing_extensions.Literal["nonVoid"] = "nonVoid"
 
         class Config:
             frozen = True
 
     class VoidThatTakesActualResult(VoidFunctionSignatureThatTakesActualResult):
-        type: typing_extensions.Literal["voidThatTakesActualResult"]
+        type: typing_extensions.Literal["voidThatTakesActualResult"] = "voidThatTakesActualResult"
 
         class Config:
             frozen = True

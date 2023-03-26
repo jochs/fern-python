@@ -105,19 +105,19 @@ class ErrorInfo(pydantic.BaseModel):
 
 class _ErrorInfo:
     class CompileError(resources_submission_types_compile_error_CompileError):
-        type: typing_extensions.Literal["compileError"]
+        type: typing_extensions.Literal["compileError"] = "compileError"
 
         class Config:
             frozen = True
 
     class RuntimeError(resources_submission_types_runtime_error_RuntimeError):
-        type: typing_extensions.Literal["runtimeError"]
+        type: typing_extensions.Literal["runtimeError"] = "runtimeError"
 
         class Config:
             frozen = True
 
     class InternalError(resources_submission_types_internal_error_InternalError):
-        type: typing_extensions.Literal["internalError"]
+        type: typing_extensions.Literal["internalError"] = "internalError"
 
         class Config:
             frozen = True

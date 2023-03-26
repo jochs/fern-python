@@ -100,13 +100,13 @@ class AssertCorrectnessCheck(pydantic.BaseModel):
 
 class _AssertCorrectnessCheck:
     class DeepEquality(DeepEqualityCorrectnessCheck):
-        type: typing_extensions.Literal["deepEquality"]
+        type: typing_extensions.Literal["deepEquality"] = "deepEquality"
 
         class Config:
             frozen = True
 
     class Custom(VoidFunctionDefinitionThatTakesActualResult):
-        type: typing_extensions.Literal["custom"]
+        type: typing_extensions.Literal["custom"] = "custom"
 
         class Config:
             frozen = True

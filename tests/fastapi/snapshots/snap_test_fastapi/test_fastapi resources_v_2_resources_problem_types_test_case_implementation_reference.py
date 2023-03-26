@@ -119,14 +119,14 @@ class TestCaseImplementationReference(pydantic.BaseModel):
 
 class _TestCaseImplementationReference:
     class TemplateId(pydantic.BaseModel):
-        type: typing_extensions.Literal["templateId"]
+        type: typing_extensions.Literal["templateId"] = "templateId"
         value: TestCaseTemplateId
 
         class Config:
             frozen = True
 
     class Implementation(TestCaseImplementation):
-        type: typing_extensions.Literal["implementation"]
+        type: typing_extensions.Literal["implementation"] = "implementation"
 
         class Config:
             frozen = True

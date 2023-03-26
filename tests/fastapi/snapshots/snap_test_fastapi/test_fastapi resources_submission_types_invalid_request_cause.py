@@ -157,7 +157,7 @@ class InvalidRequestCause(pydantic.BaseModel):
 
 class _InvalidRequestCause:
     class SubmissionIdNotFound(resources_submission_types_submission_id_not_found_SubmissionIdNotFound):
-        type: typing_extensions.Literal["submissionIdNotFound"]
+        type: typing_extensions.Literal["submissionIdNotFound"] = "submissionIdNotFound"
 
         class Config:
             frozen = True
@@ -165,13 +165,13 @@ class _InvalidRequestCause:
     class CustomTestCasesUnsupported(
         resources_submission_types_custom_test_cases_unsupported_CustomTestCasesUnsupported
     ):
-        type: typing_extensions.Literal["customTestCasesUnsupported"]
+        type: typing_extensions.Literal["customTestCasesUnsupported"] = "customTestCasesUnsupported"
 
         class Config:
             frozen = True
 
     class UnexpectedLanguage(UnexpectedLanguageError):
-        type: typing_extensions.Literal["unexpectedLanguage"]
+        type: typing_extensions.Literal["unexpectedLanguage"] = "unexpectedLanguage"
 
         class Config:
             frozen = True

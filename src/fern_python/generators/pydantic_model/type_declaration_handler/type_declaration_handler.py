@@ -71,7 +71,7 @@ class TypeDeclarationHandler:
                     source_file=self._source_file,
                     docs=self._declaration.docs,
                 )
-                if self._custom_config.include_union_visitors
+                if self._custom_config.include_union_utils
                 else SimpleDiscriminatedUnionGenerator(
                     name=self._declaration.name,
                     union=union,

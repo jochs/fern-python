@@ -102,13 +102,13 @@ class SubmissionStatusV2(pydantic.BaseModel):
 
 class _SubmissionStatusV2:
     class Test(TestSubmissionStatusV2):
-        type: typing_extensions.Literal["test"]
+        type: typing_extensions.Literal["test"] = "test"
 
         class Config:
             frozen = True
 
     class Workspace(WorkspaceSubmissionStatusV2):
-        type: typing_extensions.Literal["workspace"]
+        type: typing_extensions.Literal["workspace"] = "workspace"
 
         class Config:
             frozen = True

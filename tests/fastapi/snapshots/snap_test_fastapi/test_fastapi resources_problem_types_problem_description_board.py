@@ -131,21 +131,21 @@ class ProblemDescriptionBoard(pydantic.BaseModel):
 
 class _ProblemDescriptionBoard:
     class Html(pydantic.BaseModel):
-        type: typing_extensions.Literal["html"]
+        type: typing_extensions.Literal["html"] = "html"
         value: str
 
         class Config:
             frozen = True
 
     class Variable(pydantic.BaseModel):
-        type: typing_extensions.Literal["variable"]
+        type: typing_extensions.Literal["variable"] = "variable"
         value: VariableValue
 
         class Config:
             frozen = True
 
     class TestCaseId(pydantic.BaseModel):
-        type: typing_extensions.Literal["testCaseId"]
+        type: typing_extensions.Literal["testCaseId"] = "testCaseId"
         value: str
 
         class Config:

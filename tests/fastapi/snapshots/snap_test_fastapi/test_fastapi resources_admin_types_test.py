@@ -77,14 +77,14 @@ class Test(pydantic.BaseModel):
 
 class _Test:
     class And(pydantic.BaseModel):
-        type: typing_extensions.Literal["and"]
+        type: typing_extensions.Literal["and"] = "and"
         value: bool
 
         class Config:
             frozen = True
 
     class Or(pydantic.BaseModel):
-        type: typing_extensions.Literal["or"]
+        type: typing_extensions.Literal["or"] = "or"
         value: bool
 
         class Config:
