@@ -11,7 +11,7 @@ from ....core.remove_none_from_headers import remove_none_from_headers
 from ...commons.types.problem_id import ProblemId
 
 
-class Client:
+class HomepageClient:
     def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header

@@ -1,12 +1,10 @@
 from fern_python.codegen import AST
 
-STARLETTE_MODULE = AST.Module.built_in(("urllib",))
+URL_LIB_MODULE = AST.Module.built_in(("urllib",))
 
 
 def _export(*name: str) -> AST.ClassReference:
-    return AST.ClassReference(
-        qualified_name_excluding_import=name, import_=AST.ReferenceImport(module=STARLETTE_MODULE)
-    )
+    return AST.ClassReference(qualified_name_excluding_import=name, import_=AST.ReferenceImport(module=URL_LIB_MODULE))
 
 
 class UrlLib:

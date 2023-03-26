@@ -17,7 +17,7 @@ from ..types.playlist_id_not_found_error_body import PlaylistIdNotFoundErrorBody
 from ..types.update_playlist_request import UpdatePlaylistRequest
 
 
-class Client:
+class PlaylistClient:
     def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header

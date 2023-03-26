@@ -21,4 +21,4 @@ class SubpackageServiceDeclarationReferencer(SdkDeclarationReferencer[ir_types.S
         )
 
     def get_class_name(self, *, name: ir_types.Subpackage) -> str:
-        return "Client"
+        return name.name.pascal_case.unsafe_name + "Client"

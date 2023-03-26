@@ -13,7 +13,7 @@ from ..types.execution_session_response import ExecutionSessionResponse
 from ..types.get_execution_session_state_response import GetExecutionSessionStateResponse
 
 
-class Client:
+class SubmissionClient:
     def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header

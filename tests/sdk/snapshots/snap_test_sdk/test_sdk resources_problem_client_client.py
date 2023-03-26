@@ -17,7 +17,7 @@ from ..types.update_problem_response import UpdateProblemResponse
 from ..types.variable_type_and_name import VariableTypeAndName
 
 
-class Client:
+class ProblemClient:
     def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header

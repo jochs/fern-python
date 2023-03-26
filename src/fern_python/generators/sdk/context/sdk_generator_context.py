@@ -55,5 +55,9 @@ class SdkGeneratorContext(ABC):
         ...
 
     @abstractmethod
+    def get_reference_to_subpackage_service(self, subpackage_id: ir_types.SubpackageId) -> AST.ClassReference:
+        ...
+
+    @abstractmethod
     def get_class_name_of_subpackage_service(self, subpackage_id: ir_types.SubpackageId) -> str:
         ...

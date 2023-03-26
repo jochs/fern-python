@@ -19,7 +19,7 @@ from ...submission.types.workspace_submission_update import WorkspaceSubmissionU
 from ...v_2.resources.problem.types.test_case_id import TestCaseId
 
 
-class Client:
+class AdminClient:
     def __init__(self, *, environment: str, x_random_header: typing.Optional[str], token: typing.Optional[str]):
         self._environment = environment
         self.x_random_header = x_random_header

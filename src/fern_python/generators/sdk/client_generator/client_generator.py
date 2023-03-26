@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 import fern.ir.pydantic as ir_types
 from typing_extensions import Never
 
 from fern_python.codegen import AST, SourceFile
-from fern_python.external_dependencies import HttpX, Pydantic, UrlLib
+from fern_python.external_dependencies import Functools, HttpX, Pydantic, UrlLib
 
 from ..context.sdk_generator_context import SdkGeneratorContext
 from .request_body_parameters import (
@@ -12,6 +13,13 @@ from .request_body_parameters import (
     InlinedRequestBodyParameters,
     ReferencedRequestBodyParameters,
 )
+
+
+@dataclass
+class ConstructorParameter:
+    constructor_parameter_name: str
+    private_member_name: str
+    type_hint: AST.TypeHint
 
 
 class ClientGenerator:
@@ -40,7 +48,10 @@ class ClientGenerator:
             name=self._class_name,
             constructor=AST.ClassConstructor(
                 signature=AST.FunctionSignature(
-                    named_parameters=self._get_constructor_parameters(),
+                    named_parameters=[
+                        AST.FunctionParameter(name=param.constructor_parameter_name, type_hint=param.type_hint)
+                        for param in self._get_constructor_parameters()
+                    ],
                 ),
                 body=AST.CodeWriter(self._write_constructor_body),
             ),
@@ -85,17 +96,31 @@ class ClientGenerator:
                     )
                 )
 
+        for subpackage_id in self._package.subpackages:
+            subpackage = self._context.ir.subpackages[subpackage_id]
+            class_declaration.add_method(
+                AST.FunctionDeclaration(
+                    name=subpackage.name.snake_case.unsafe_name,
+                    signature=AST.FunctionSignature(
+                        return_type=AST.TypeHint(self._context.get_reference_to_subpackage_service(subpackage_id))
+                    ),
+                    body=self._write_subpackage_getter(subpackage_id),
+                    decorators=[Functools.cached_property()],
+                )
+            )
+
         source_file.add_class_declaration(
             declaration=class_declaration,
             should_export=False,
         )
 
-    def _get_constructor_parameters(self) -> List[AST.FunctionParameter]:
-        parameters: List[AST.FunctionParameter] = []
+    def _get_constructor_parameters(self) -> List[ConstructorParameter]:
+        parameters: List[ConstructorParameter] = []
 
         parameters.append(
-            AST.FunctionParameter(
-                name=ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME,
+            ConstructorParameter(
+                constructor_parameter_name=ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME,
+                private_member_name=ClientGenerator.ENVIRONMENT_MEMBER_NAME,
                 type_hint=AST.TypeHint(self._context.get_reference_to_environments_enum())
                 if self._context.ir.environments is not None
                 else AST.TypeHint.str_(),
@@ -104,8 +129,9 @@ class ClientGenerator:
 
         for header in self._context.ir.headers:
             parameters.append(
-                AST.FunctionParameter(
-                    name=self._get_header_constructor_parameter_name(header),
+                ConstructorParameter(
+                    constructor_parameter_name=self._get_header_constructor_parameter_name(header),
+                    private_member_name=self._get_header_private_member_name(header),
                     type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                         header.value_type
                     ),
@@ -114,8 +140,9 @@ class ClientGenerator:
 
         for header_auth_scheme in self._get_header_auth_schemes():
             parameters.append(
-                AST.FunctionParameter(
-                    name=self._get_auth_scheme_header_private_member_name(header_auth_scheme),
+                ConstructorParameter(
+                    constructor_parameter_name=self._get_auth_scheme_header_private_member_name(header_auth_scheme),
+                    private_member_name=self._get_auth_scheme_header_private_member_name(header_auth_scheme),
                     type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                         header_auth_scheme.value_type
                     ),
@@ -124,8 +151,9 @@ class ClientGenerator:
 
         if self._has_bearer_auth():
             parameters.append(
-                AST.FunctionParameter(
-                    name=ClientGenerator.TOKEN_CONSTRUCTOR_PARAMETER_NAME,
+                ConstructorParameter(
+                    constructor_parameter_name=ClientGenerator.TOKEN_CONSTRUCTOR_PARAMETER_NAME,
+                    private_member_name=ClientGenerator.TOKEN_MEMBER_NAME,
                     type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
                 )
             )
@@ -133,12 +161,14 @@ class ClientGenerator:
         if self._has_basic_auth():
             parameters.extend(
                 [
-                    AST.FunctionParameter(
-                        name=ClientGenerator.USERNAME_CONSTRUCTOR_PARAMETER_NAME,
+                    ConstructorParameter(
+                        constructor_parameter_name=ClientGenerator.USERNAME_CONSTRUCTOR_PARAMETER_NAME,
+                        private_member_name=ClientGenerator.USERNAME_MEMBER_NAME,
                         type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
                     ),
-                    AST.FunctionParameter(
-                        name=ClientGenerator.PASSWORD_CONSTRUCTOR_PARAMETER_NAME,
+                    ConstructorParameter(
+                        constructor_parameter_name=ClientGenerator.PASSWORD_CONSTRUCTOR_PARAMETER_NAME,
+                        private_member_name=ClientGenerator.PASSWORD_MEMBER_NAME,
                         type_hint=AST.TypeHint.optional(AST.TypeHint.str_()),
                     ),
                 ]
@@ -147,31 +177,8 @@ class ClientGenerator:
         return parameters
 
     def _write_constructor_body(self, writer: AST.NodeWriter) -> None:
-        self._context.ir.services
-        writer.write_line(
-            f"self.{ClientGenerator.ENVIRONMENT_MEMBER_NAME} = {ClientGenerator.ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME}"
-        )
-
-        for header in self._context.ir.headers:
-            member_name = self._get_header_private_member_name(header)
-            argument_name = self._get_header_constructor_parameter_name(header)
-            writer.write_line(f"self.{member_name} = {argument_name}")
-
-        if self._has_bearer_auth():
-            writer.write_line(
-                f"self.{ClientGenerator.TOKEN_MEMBER_NAME} = {ClientGenerator.TOKEN_CONSTRUCTOR_PARAMETER_NAME}"
-            )
-        if self._has_basic_auth():
-            writer.write_line(
-                f"self.{ClientGenerator.USERNAME_MEMBER_NAME} = {ClientGenerator.USERNAME_CONSTRUCTOR_PARAMETER_NAME}"
-            )
-            writer.write_line(
-                f"self.{ClientGenerator.PASSWORD_MEMBER_NAME} = {ClientGenerator.PASSWORD_CONSTRUCTOR_PARAMETER_NAME}"
-            )
-        for header_auth_scheme in self._get_header_auth_schemes():
-            member_name = self._get_auth_scheme_header_private_member_name(header_auth_scheme)
-            argument_name = self._get_auth_scheme_header_constructor_parameter_name(header_auth_scheme)
-            writer.write_line(f"self.{member_name} = {argument_name}")
+        for param in self._get_constructor_parameters():
+            writer.write_line(f"self.{param.private_member_name} = {param.constructor_parameter_name}")
 
     def _get_endpoint_parameters(
         self,
@@ -535,6 +542,22 @@ class ClientGenerator:
         return AST.Expression(
             f"(self.{ClientGenerator.USERNAME_MEMBER_NAME}, self.{ClientGenerator.PASSWORD_MEMBER_NAME})"
         )
+
+    def _write_subpackage_getter(self, subpackage_id: ir_types.SubpackageId) -> AST.CodeWriter:
+        def write(writer: AST.NodeWriter) -> None:
+            writer.write("return ")
+            writer.write_node(
+                AST.ClassInstantiation(
+                    class_=self._context.get_reference_to_subpackage_service(subpackage_id),
+                    kwargs=[
+                        (param.constructor_parameter_name, AST.Expression(f"self.{param.private_member_name}"))
+                        for param in self._get_constructor_parameters()
+                    ],
+                )
+            )
+            writer.write_line()
+
+        return AST.CodeWriter(write)
 
 
 def raise_file_upload_not_supported(request: ir_types.FileUploadRequest) -> Never:
