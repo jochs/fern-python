@@ -47,8 +47,8 @@ class Client:
         limit: typing.Optional[int],
         other_field: str,
         multi_line_docs: str,
-        optional_multiple_field: typing.Optional[str],
-        multiple_field: str,
+        optional_multiple_field: typing.Union[typing.Optional[str], typing.List[str]],
+        multiple_field: typing.Union[str, typing.List[str]],
     ) -> typing.List[Playlist]:
         _response = httpx.request(
             "GET",

@@ -192,12 +192,22 @@ class ClientGenerator:
             )
 
         for query_parameter in endpoint.query_parameters:
+            query_parameter_type_hint = self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                query_parameter.value_type
+            )
             parameters.append(
                 AST.FunctionParameter(
                     name=self._get_query_parameter_name(query_parameter),
-                    type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
-                        query_parameter.value_type
-                    ),
+                    type_hint=AST.TypeHint.union(
+                        query_parameter_type_hint,
+                        AST.TypeHint.list(
+                            self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                                unwrap_optional_type(query_parameter.value_type)
+                            )
+                        ),
+                    )
+                    if query_parameter.allow_multiple
+                    else query_parameter_type_hint,
                 ),
             )
 
@@ -533,3 +543,12 @@ def raise_file_upload_not_supported(request: ir_types.FileUploadRequest) -> Neve
 
 def is_endpoint_path_empty(endpoint: ir_types.HttpEndpoint) -> bool:
     return len(endpoint.full_path.head) == 0 and len(endpoint.full_path.parts) == 0
+
+
+def unwrap_optional_type(type_reference: ir_types.TypeReference) -> ir_types.TypeReference:
+    type_as_union = type_reference.get_as_union()
+    if type_as_union.type == "container":
+        container_as_union = type_as_union.container.get_as_union()
+        if container_as_union.type == "optional":
+            return unwrap_optional_type(container_as_union.optional)
+    return type_reference
