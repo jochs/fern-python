@@ -328,7 +328,7 @@ class ClientGenerator:
 
         return self._context.ir.error_discrimination_strategy.visit(
             status_code=lambda: f"{ClientGenerator.RESPONSE_VARIABLE}.status_code == {error_declaration.status_code}",
-            property=lambda strategy: f'{ClientGenerator.RESPONSE_JSON_VARIABLE}["{strategy.discriminant.wire_value}"] == {error_declaration.discriminant_value.wire_value}',  # noqa: E501
+            property=lambda strategy: f'{ClientGenerator.RESPONSE_JSON_VARIABLE}["{strategy.discriminant.wire_value}"] == "{error_declaration.discriminant_value.wire_value}"',  # noqa: E501
         )
 
     def _get_reference_to_error_body(self, error: ir_types.DeclaredErrorName) -> List[AST.Expression]:
