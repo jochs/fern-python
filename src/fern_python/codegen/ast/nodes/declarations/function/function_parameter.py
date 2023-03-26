@@ -6,13 +6,17 @@ from ...type_hint import TypeHint
 
 
 class FunctionParameter(AstNode):
-    def __init__(self, name: str, type_hint: Optional[TypeHint] = None, initializer: Optional[Expression] = None):
+    def __init__(
+        self,
+        *,
+        name: str,
+        type_hint: Optional[TypeHint] = None,
+        initializer: Optional[Expression] = None,
+    ):
         self.name = name
         self.type_hint = type_hint
         if initializer is not None:
             self.initializer = initializer
-        elif type_hint is not None and TypeHint.is_optional(type_hint):
-            self.initializer = Expression(TypeHint.none())
 
     def get_metadata(self) -> AstNodeMetadata:
         metadata = AstNodeMetadata()

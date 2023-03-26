@@ -49,7 +49,7 @@ class ClientGenerator:
             constructor=AST.ClassConstructor(
                 signature=AST.FunctionSignature(
                     named_parameters=[
-                        AST.FunctionParameter(name=param.constructor_parameter_name, type_hint=param.type_hint)
+                        AST.NamedFunctionParameter(name=param.constructor_parameter_name, type_hint=param.type_hint)
                         for param in self._get_constructor_parameters()
                     ],
                 ),
@@ -195,15 +195,15 @@ class ClientGenerator:
         *,
         service: ir_types.HttpService,
         endpoint: ir_types.HttpEndpoint,
-    ) -> List[AST.FunctionParameter]:
-        parameters: List[AST.FunctionParameter] = []
+    ) -> List[AST.NamedFunctionParameter]:
+        parameters: List[AST.NamedFunctionParameter] = []
 
         for query_parameter in endpoint.query_parameters:
             query_parameter_type_hint = self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                 query_parameter.value_type
             )
             parameters.append(
-                AST.FunctionParameter(
+                AST.NamedFunctionParameter(
                     name=self._get_query_parameter_name(query_parameter),
                     type_hint=AST.TypeHint.union(
                         query_parameter_type_hint,
@@ -232,7 +232,7 @@ class ClientGenerator:
 
         for header in service.headers + endpoint.headers:
             parameters.append(
-                AST.FunctionParameter(
+                AST.NamedFunctionParameter(
                     name=self._get_header_parameter_name(header),
                     type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                         header.value_type
@@ -371,11 +371,11 @@ class ClientGenerator:
 
     def _get_parameters_for_inlined_request_body(
         self, inlined_request_body: ir_types.InlinedRequestBody
-    ) -> List[AST.FunctionParameter]:
-        parameters: List[AST.FunctionParameter] = []
+    ) -> List[AST.NamedFunctionParameter]:
+        parameters: List[AST.NamedFunctionParameter] = []
         for property in self._get_all_properties_for_inlined_request_body(inlined_request_body):
             parameters.append(
-                AST.FunctionParameter(
+                AST.NamedFunctionParameter(
                     name=property.name.name.snake_case.unsafe_name,
                     type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                         property.value_type
@@ -408,11 +408,11 @@ class ClientGenerator:
         *,
         endpoint: ir_types.HttpEndpoint,
         referenced_request_body: ir_types.HttpRequestBodyReference,
-    ) -> List[AST.FunctionParameter]:
+    ) -> List[AST.NamedFunctionParameter]:
         if endpoint.sdk_request is None:
             raise RuntimeError("Request body is referenced by SDKRequestBody is not defined")
         return [
-            AST.FunctionParameter(
+            AST.NamedFunctionParameter(
                 name=endpoint.sdk_request.request_parameter_name.snake_case.unsafe_name,
                 type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                     referenced_request_body.request_body_type
