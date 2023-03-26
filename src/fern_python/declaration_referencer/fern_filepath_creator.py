@@ -17,21 +17,22 @@ class FernFilepathCreator(ABC):
     def generate_filepath_prefix(self) -> Tuple[Filepath.DirectoryFilepathPart, ...]:
         return self._generator_config.output.mode.visit(
             download_files=lambda: EMPTY_DIRECTORIES,
-            publish=lambda x: (
-                (
-                    Filepath.DirectoryFilepathPart(
-                        module_name=self._ir.api_name.snake_case.unsafe_name,
-                        export_strategy=ExportStrategy(export_all=True),
-                    ),
-                )
-                + tuple(
-                    Filepath.DirectoryFilepathPart(
-                        module_name=folder_name,
-                        export_strategy=ExportStrategy(export_all=True),
-                    )
-                    for folder_name in self._get_folders_inside_src()
-                )
+            publish=lambda x: self._get_filepath_prefix_for_published_package(),
+            github=lambda x: self._get_filepath_prefix_for_published_package(),
+        )
+
+    def _get_filepath_prefix_for_published_package(self) -> Tuple[Filepath.DirectoryFilepathPart, ...]:
+        return (
+            Filepath.DirectoryFilepathPart(
+                module_name=self._ir.api_name.snake_case.unsafe_name,
+                export_strategy=ExportStrategy(export_all=True),
             ),
+        ) + tuple(
+            Filepath.DirectoryFilepathPart(
+                module_name=folder_name,
+                export_strategy=ExportStrategy(export_all=True),
+            )
+            for folder_name in self._get_folders_inside_src()
         )
 
     @abstractmethod

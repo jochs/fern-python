@@ -81,7 +81,16 @@ class ClientGenerator:
                     AST.FunctionDeclaration(
                         name=endpoint.name.get_as_name().snake_case.unsafe_name,
                         signature=AST.FunctionSignature(
-                            named_parameters=self._get_endpoint_parameters(service=service, endpoint=endpoint),
+                            parameters=[
+                                AST.FunctionParameter(
+                                    name=self._get_path_parameter_name(path_parameter),
+                                    type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                                        path_parameter.value_type
+                                    ),
+                                )
+                                for path_parameter in endpoint.all_path_parameters
+                            ],
+                            named_parameters=self._get_endpoint_named_parameters(service=service, endpoint=endpoint),
                             return_type=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                                 endpoint.response.response_body_type
                             )
@@ -181,23 +190,13 @@ class ClientGenerator:
         for param in self._get_constructor_parameters():
             writer.write_line(f"self.{param.private_member_name} = {param.constructor_parameter_name}")
 
-    def _get_endpoint_parameters(
+    def _get_endpoint_named_parameters(
         self,
         *,
         service: ir_types.HttpService,
         endpoint: ir_types.HttpEndpoint,
     ) -> List[AST.FunctionParameter]:
         parameters: List[AST.FunctionParameter] = []
-
-        for path_parameter in service.path_parameters + endpoint.path_parameters:
-            parameters.append(
-                AST.FunctionParameter(
-                    name=self._get_path_parameter_name(path_parameter),
-                    type_hint=self._context.pydantic_generator_context.get_type_hint_for_type_reference(
-                        path_parameter.value_type
-                    ),
-                ),
-            )
 
         for query_parameter in endpoint.query_parameters:
             query_parameter_type_hint = self._context.pydantic_generator_context.get_type_hint_for_type_reference(

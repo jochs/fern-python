@@ -131,7 +131,7 @@ wasmer-compiler-cranelift = ">=1.0.0"
 
 [[package]]
 name = "fern-fern-generator-exec-sdk"
-version = "0.0.179"
+version = "0.0.181"
 description = ""
 category = "main"
 optional = false
@@ -612,7 +612,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "42a7d8cad0209da65afd35fd4a3775e5431dbe5896d85d1d38ff5cfcebbee909"
+content-hash = "cd3b41d36df1965276f830a863c2090cc62b8ac4574376bc7425ff8f0cf7b9f0"
 
 [metadata.files]
 anyio = [
@@ -670,8 +670,8 @@ fastdiff = [
     {file = "fastdiff-0.3.0.tar.gz", hash = "sha256:4dfa09c47832a8c040acda3f1f55fc0ab4d666f0e14e6951e6da78d59acd945a"},
 ]
 fern-fern-generator-exec-sdk = [
-    {file = "fern_fern_generator_exec_sdk-0.0.179-py3-none-any.whl", hash = "sha256:2f47e09952579bedd601d4316622398c5aef440d3adc88f1e0db25ef39b79e8a"},
-    {file = "fern_fern_generator_exec_sdk-0.0.179.tar.gz", hash = "sha256:b660665cb8631416dab00d34d73e459460a88c3d62bdf66943c5e3f0c499883a"},
+    {file = "fern_fern_generator_exec_sdk-0.0.181-py3-none-any.whl", hash = "sha256:679bf214f79fb04282144432f60ade2b7561eb6bc78047699f0f1a21221c4c86"},
+    {file = "fern_fern_generator_exec_sdk-0.0.181.tar.gz", hash = "sha256:2c2d8660c6bc82c537b954f1595ceb6af8f90e5c8d6d4b4499da85bcecc1b86c"},
 ]
 fern-fern-ir-model = [
     {file = "fern_fern_ir_model-0.0.1284-py3-none-any.whl", hash = "sha256:f46b71926de667378aa4e16b2ec68b7702d949854b38beea3e5d41b2b1c85043"},

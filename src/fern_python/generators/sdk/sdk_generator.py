@@ -1,5 +1,3 @@
-import re
-
 import fern.ir.pydantic as ir_types
 from fern.generator_exec.sdk.resources.config import GeneratorConfig
 
@@ -15,6 +13,7 @@ from fern_python.generators.sdk.context.sdk_generator_context_impl import (
     SdkGeneratorContextImpl,
 )
 from fern_python.source_file_generator import SourceFileGenerator
+from fern_python.utils import pascal_case, snake_case
 
 from .client_generator.client_generator import ClientGenerator
 from .custom_config import SDKCustomConfig
@@ -169,15 +168,3 @@ class SdkGenerator(AbstractGenerator):
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
             ErrorGenerator(context=context, error=error).generate(source_file=source_file)
-
-
-def pascal_case(x: str) -> str:
-    return "".join(char for char in x.title() if not x.isspace())
-
-
-# https://stackoverflow.com/a/1176023/4238485
-snake_case_pattern = re.compile(r"(?<!^)(?=[A-Z])")
-
-
-def snake_case(x: str) -> str:
-    return snake_case_pattern.sub("_", x).lower()
