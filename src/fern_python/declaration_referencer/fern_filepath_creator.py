@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Tuple
+from typing import List, Tuple
 
 import fern.ir.pydantic as ir_types
-from generator_exec.resources import GeneratorConfig
+from fern.generator_exec.sdk.resources import GeneratorConfig
 
 from fern_python.codegen import ExportStrategy, Filepath
 
@@ -18,17 +18,22 @@ class FernFilepathCreator(ABC):
         return self._generator_config.output.mode.visit(
             download_files=lambda: EMPTY_DIRECTORIES,
             publish=lambda x: (
-                Filepath.DirectoryFilepathPart(
-                    module_name=self._ir.api_name.snake_case.unsafe_name,
-                    export_strategy=ExportStrategy(export_all=True),
-                ),
-                Filepath.DirectoryFilepathPart(
-                    module_name=self._get_generator_name_for_containing_folder(),
-                    export_strategy=ExportStrategy(export_all=True),
-                ),
+                (
+                    Filepath.DirectoryFilepathPart(
+                        module_name=self._ir.api_name.snake_case.unsafe_name,
+                        export_strategy=ExportStrategy(export_all=True),
+                    ),
+                )
+                + tuple(
+                    Filepath.DirectoryFilepathPart(
+                        module_name=folder_name,
+                        export_strategy=ExportStrategy(export_all=True),
+                    )
+                    for folder_name in self._get_folders_inside_src()
+                )
             ),
         )
 
     @abstractmethod
-    def _get_generator_name_for_containing_folder(self) -> str:
+    def _get_folders_inside_src(self) -> List[str]:
         ...

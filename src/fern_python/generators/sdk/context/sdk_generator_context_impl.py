@@ -1,5 +1,7 @@
+from typing import List
+
 import fern.ir.pydantic as ir_types
-from generator_exec.resources import GeneratorConfig
+from fern.generator_exec.sdk.resources import GeneratorConfig
 
 from fern_python.codegen import AST
 from fern_python.codegen.filepath import Filepath
@@ -20,8 +22,9 @@ class SdkGeneratorContextImpl(SdkGeneratorContext):
         ir: ir_types.IntermediateRepresentation,
         generator_config: GeneratorConfig,
         client_class_name: str,
+        folders_inside_src: List[str],
     ):
-        super().__init__(ir=ir, generator_config=generator_config)
+        super().__init__(ir=ir, generator_config=generator_config, folders_inside_src=folders_inside_src)
         self._error_declaration_referencer = ErrorDeclarationReferencer(filepath_creator=self.filepath_creator)
         self._environments_enum_declaration_referencer = EnvironmentsEnumDeclarationReferencer(
             filepath_creator=self.filepath_creator,

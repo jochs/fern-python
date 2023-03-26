@@ -3,8 +3,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 
 import fern.ir.pydantic as ir_types
-from generator_exec.resources import GeneratorConfig
-from generator_exec.resources.config import GeneratorPublishConfig
+from fern.generator_exec.sdk.resources import GeneratorConfig
+from fern.generator_exec.sdk.resources.config import GeneratorPublishConfig
 
 from fern_python.codegen.project import Project, PublishConfig
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper

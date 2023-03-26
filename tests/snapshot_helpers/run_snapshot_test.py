@@ -5,7 +5,7 @@ from glob import glob
 from pathlib import Path
 from typing import Any, Callable, List, Set
 
-from generator_exec.resources import config
+from fern.generator_exec.sdk.resources import config
 from snapshottest.file import FileSnapshot  # type: ignore
 from snapshottest.module import SnapshotTest  # type: ignore
 
@@ -34,6 +34,7 @@ def run_snapshot_test(
         organization="fern",
         custom_config=custom_config,
         environment=config.GeneratorEnvironment.factory.local(),
+        dry_run=True,
     )
 
     with open(path_to_config_json, "w") as f:
