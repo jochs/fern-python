@@ -4,6 +4,7 @@ import typing
 
 import httpx
 
+from ....core.api_error import ApiError
 from ....core.remove_none_from_headers import remove_none_from_headers
 
 
@@ -24,3 +25,5 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)

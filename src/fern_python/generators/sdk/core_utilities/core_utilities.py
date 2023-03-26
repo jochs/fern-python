@@ -67,7 +67,7 @@ class CoreUtilities:
             exports=exports,
         )
 
-    def get_api_error(self) -> AST.ClassReference:
+    def get_reference_to_api_error(self) -> AST.ClassReference:
         return AST.ClassReference(
             qualified_name_excluding_import=(),
             import_=AST.ReferenceImport(
@@ -75,16 +75,37 @@ class CoreUtilities:
             ),
         )
 
+    def instantiate_api_error(
+        self, *, status_code: Optional[AST.Expression], body: Optional[AST.Expression]
+    ) -> AST.AstNode:
+        return self._instantiate_api_error(
+            constructor=AST.Expression(self.get_reference_to_api_error()), status_code=status_code, body=body
+        )
+
     def instantiate_api_error_from_subclass(
         self, *, status_code: Optional[AST.Expression], body: Optional[AST.Expression]
     ) -> AST.AstNode:
+        return self._instantiate_api_error(
+            constructor=AST.Expression("super().__init__"), status_code=status_code, body=body
+        )
+
+    def _instantiate_api_error(
+        self,
+        *,
+        constructor: AST.Expression,
+        status_code: Optional[AST.Expression],
+        body: Optional[AST.Expression],
+    ) -> AST.AstNode:
         def _write(writer: AST.NodeWriter) -> None:
-            writer.write("super().__init__(")
+            writer.write_node(constructor)
+            writer.write("(")
             if status_code is not None:
                 writer.write("status_code=")
                 writer.write_node(status_code)
             if body is not None:
-                writer.write(", body=")
+                if status_code is not None:
+                    writer.write(", ")
+                writer.write("body=")
                 writer.write_node(body)
             writer.write_line(")")
 

@@ -48,3 +48,6 @@ class SdkGeneratorContextImpl(SdkGeneratorContext):
     def get_class_name_of_subpackage_service(self, subpackage_id: ir_types.SubpackageId) -> str:
         subpackage = self.ir.subpackages[subpackage_id]
         return self._subpackage_service_declaration_referencer.get_class_name(name=subpackage)
+
+    def get_reference_to_error(self, error_name: ir_types.DeclaredErrorName) -> AST.ClassReference:
+        return self._error_declaration_referencer.get_class_reference(name=error_name)

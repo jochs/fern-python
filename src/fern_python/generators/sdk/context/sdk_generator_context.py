@@ -39,6 +39,10 @@ class SdkGeneratorContext(ABC):
         ...
 
     @abstractmethod
+    def get_reference_to_error(self, error_name: ir_types.DeclaredErrorName) -> AST.ClassReference:
+        ...
+
+    @abstractmethod
     def get_filepath_for_environments_enum(self) -> Filepath:
         ...
 

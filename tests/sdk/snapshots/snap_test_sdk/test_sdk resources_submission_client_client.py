@@ -6,6 +6,7 @@ import urllib
 import httpx
 import pydantic
 
+from ....core.api_error import ApiError
 from ....core.remove_none_from_headers import remove_none_from_headers
 from ...commons.types.language import Language
 from ..types.execution_session_response import ExecutionSessionResponse
@@ -29,7 +30,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(ExecutionSessionResponse, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ExecutionSessionResponse, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_execution_session(self, *, session_id: str) -> typing.Optional[ExecutionSessionResponse]:
         _response = httpx.request(
@@ -42,7 +46,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(typing.Optional[ExecutionSessionResponse], _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.Optional[ExecutionSessionResponse], _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def stop_execution_session(self, *, session_id: str) -> None:
         _response = httpx.request(
@@ -55,6 +62,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_execution_sessions_state(self) -> GetExecutionSessionStateResponse:
         _response = httpx.request(
@@ -67,4 +76,7 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(GetExecutionSessionStateResponse, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(GetExecutionSessionStateResponse, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)

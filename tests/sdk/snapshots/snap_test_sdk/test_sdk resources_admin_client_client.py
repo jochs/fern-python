@@ -5,6 +5,7 @@ import urllib
 
 import httpx
 
+from ....core.api_error import ApiError
 from ....core.remove_none_from_headers import remove_none_from_headers
 from ...submission.types.submission_id import SubmissionId
 from ...submission.types.test_case_result_with_stdout import TestCaseResultWithStdout
@@ -36,6 +37,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def send_test_submission_update(self, *, submission_id: SubmissionId, request: TestSubmissionUpdate) -> None:
         _response = httpx.request(
@@ -49,6 +52,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update_workspace_submission_status(
         self, *, submission_id: SubmissionId, request: WorkspaceSubmissionStatus
@@ -64,6 +69,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def send_workspace_submission_update(
         self, *, submission_id: SubmissionId, request: WorkspaceSubmissionUpdate
@@ -81,6 +88,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_test_case(
         self,
@@ -103,6 +112,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_test_case_v_2(
         self, *, submission_id: SubmissionId, test_case_id: TestCaseId, request: typing.List[TraceResponseV2]
@@ -120,6 +131,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_workspace(
         self,
@@ -139,6 +152,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_workspace_v_2(self, *, submission_id: SubmissionId, request: typing.List[TraceResponseV2]) -> None:
         _response = httpx.request(
@@ -152,3 +167,5 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)

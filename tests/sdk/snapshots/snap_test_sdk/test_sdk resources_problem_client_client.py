@@ -6,6 +6,7 @@ import urllib
 import httpx
 import pydantic
 
+from ....core.api_error import ApiError
 from ....core.remove_none_from_headers import remove_none_from_headers
 from ...commons.types.problem_id import ProblemId
 from ...commons.types.variable_type import VariableType
@@ -34,7 +35,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(CreateProblemResponse, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(CreateProblemResponse, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update_problem(self, *, problem_id: ProblemId, request: CreateProblemRequest) -> UpdateProblemResponse:
         _response = httpx.request(
@@ -48,7 +52,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(UpdateProblemResponse, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(UpdateProblemResponse, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_problem(self, *, problem_id: ProblemId) -> None:
         _response = httpx.request(
@@ -61,6 +68,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_default_starter_files(
         self, *, input_params: typing.List[VariableTypeAndName], output_type: VariableType, method_name: str
@@ -76,4 +85,7 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(GetDefaultStarterFilesResponse, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(GetDefaultStarterFilesResponse, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)

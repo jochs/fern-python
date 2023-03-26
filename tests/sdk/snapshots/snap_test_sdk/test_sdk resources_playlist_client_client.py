@@ -6,10 +6,14 @@ import urllib
 import httpx
 import pydantic
 
+from ....core.api_error import ApiError
 from ....core.remove_none_from_headers import remove_none_from_headers
+from ..errors.playlist_id_not_found_error import PlaylistIdNotFoundError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..types.playlist import Playlist
 from ..types.playlist_create_request import PlaylistCreateRequest
 from ..types.playlist_id import PlaylistId
+from ..types.playlist_id_not_found_error_body import PlaylistIdNotFoundErrorBody
 from ..types.update_playlist_request import UpdatePlaylistRequest
 
 
@@ -31,7 +35,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_playlists(
         self,
@@ -60,7 +67,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(typing.List[Playlist], _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.List[Playlist], _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_playlist(self, *, service_param: int, playlist_id: PlaylistId) -> Playlist:
         _response = httpx.request(
@@ -73,7 +83,16 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(Playlist, _response)  # type: ignore
+        if _response_json["errorName"] == PlaylistIdNotFoundError:
+            raise PlaylistIdNotFoundError(
+                pydantic.parse_obj_as(PlaylistIdNotFoundErrorBody, _response_json[content])  # type: ignore
+            )
+        if _response_json["errorName"] == UnauthorizedError:
+            raise UnauthorizedError()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update_playlist(
         self, *, service_param: int, playlist_id: PlaylistId, request: typing.Optional[UpdatePlaylistRequest]
@@ -89,7 +108,14 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(typing.Optional[Playlist], _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.Optional[Playlist], _response)  # type: ignore
+        if _response_json["errorName"] == PlaylistIdNotFoundError:
+            raise PlaylistIdNotFoundError(
+                pydantic.parse_obj_as(PlaylistIdNotFoundErrorBody, _response_json[content])  # type: ignore
+            )
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_playlist(self, *, service_param: int, playlist_id: PlaylistId) -> None:
         _response = httpx.request(
@@ -102,3 +128,5 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)

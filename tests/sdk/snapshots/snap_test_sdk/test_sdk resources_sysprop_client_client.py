@@ -6,6 +6,7 @@ import urllib
 import httpx
 import pydantic
 
+from ....core.api_error import ApiError
 from ....core.remove_none_from_headers import remove_none_from_headers
 from ...commons.types.language import Language
 
@@ -29,6 +30,8 @@ class Client:
                 }
             ),
         )
+        _response_json = _response.json()
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_num_warm_instances(self) -> typing.Dict[Language, int]:
         _response = httpx.request(
@@ -41,4 +44,7 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(typing.Dict[Language, int], _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.Dict[Language, int], _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)

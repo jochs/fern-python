@@ -1,7 +1,7 @@
 import typing
 
 
-class ApiError:
+class ApiError(Exception):
     status_code: typing.Optional[int]
     body: typing.Any
 

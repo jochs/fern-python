@@ -6,6 +6,7 @@ import urllib
 import httpx
 import pydantic
 
+from ........core.api_error import ApiError
 from ........core.remove_none_from_headers import remove_none_from_headers
 from .......commons.types.problem_id import ProblemId
 from ..types.lightweight_problem_info_v_2 import LightweightProblemInfoV2
@@ -29,7 +30,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(typing.List[LightweightProblemInfoV2], _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.List[LightweightProblemInfoV2], _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_problems(self) -> typing.List[ProblemInfoV2]:
         _response = httpx.request(
@@ -42,7 +46,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(typing.List[ProblemInfoV2], _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(typing.List[ProblemInfoV2], _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_latest_problem(self, *, problem_id: ProblemId) -> ProblemInfoV2:
         _response = httpx.request(
@@ -55,7 +62,10 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_problem_version(self, *, problem_id: ProblemId, problem_version: int) -> ProblemInfoV2:
         _response = httpx.request(
@@ -70,4 +80,7 @@ class Client:
                 }
             ),
         )
-        return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore
+        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return pydantic.parse_obj_as(ProblemInfoV2, _response)  # type: ignore
+        raise ApiError(status_code=_response.status_code, body=_response_json)
