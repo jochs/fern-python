@@ -18,19 +18,19 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def stopped(self) -> WorkspaceSubmissionStatus:
-        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Stopped(type="stopped"))
+        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Stopped())
 
     def errored(self, value: ErrorInfo) -> WorkspaceSubmissionStatus:
-        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Errored(type="errored", value=value))
+        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Errored(value=value))
 
     def running(self, value: RunningSubmissionState) -> WorkspaceSubmissionStatus:
-        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Running(type="running", value=value))
+        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Running(value=value))
 
     def ran(self, value: WorkspaceRunDetails) -> WorkspaceSubmissionStatus:
-        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Ran(**dict(value), type="ran"))
+        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Ran(**dict(value)))
 
     def traced(self, value: WorkspaceRunDetails) -> WorkspaceSubmissionStatus:
-        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Traced(**dict(value), type="traced"))
+        return WorkspaceSubmissionStatus(__root__=_WorkspaceSubmissionStatus.Traced(**dict(value)))
 
 
 class WorkspaceSubmissionStatus(pydantic.BaseModel):

@@ -29,39 +29,37 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def building_executor(self, value: BuildingExecutorResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(
-            __root__=_CodeExecutionUpdate.BuildingExecutor(**dict(value), type="buildingExecutor")
-        )
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.BuildingExecutor(**dict(value)))
 
     def running(self, value: RunningResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Running(**dict(value), type="running"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Running(**dict(value)))
 
     def errored(self, value: ErroredResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Errored(**dict(value), type="errored"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Errored(**dict(value)))
 
     def stopped(self, value: StoppedResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Stopped(**dict(value), type="stopped"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Stopped(**dict(value)))
 
     def graded(self, value: GradedResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Graded(**dict(value), type="graded"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Graded(**dict(value)))
 
     def graded_v_2(self, value: GradedResponseV2) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.GradedV2(**dict(value), type="gradedV2"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.GradedV2(**dict(value)))
 
     def workspace_ran(self, value: WorkspaceRanResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.WorkspaceRan(**dict(value), type="workspaceRan"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.WorkspaceRan(**dict(value)))
 
     def recording(self, value: RecordingResponseNotification) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Recording(**dict(value), type="recording"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Recording(**dict(value)))
 
     def recorded(self, value: RecordedResponseNotification) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Recorded(**dict(value), type="recorded"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Recorded(**dict(value)))
 
     def invalid_request(self, value: InvalidRequestResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.InvalidRequest(**dict(value), type="invalidRequest"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.InvalidRequest(**dict(value)))
 
     def finished(self, value: FinishedResponse) -> CodeExecutionUpdate:
-        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Finished(**dict(value), type="finished"))
+        return CodeExecutionUpdate(__root__=_CodeExecutionUpdate.Finished(**dict(value)))
 
 
 class CodeExecutionUpdate(pydantic.BaseModel):

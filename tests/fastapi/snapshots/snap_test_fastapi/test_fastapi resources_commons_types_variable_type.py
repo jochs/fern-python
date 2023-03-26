@@ -15,34 +15,34 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def integer_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.IntegerType(type="integerType"))
+        return VariableType(__root__=_VariableType.IntegerType())
 
     def double_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.DoubleType(type="doubleType"))
+        return VariableType(__root__=_VariableType.DoubleType())
 
     def boolean_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.BooleanType(type="booleanType"))
+        return VariableType(__root__=_VariableType.BooleanType())
 
     def string_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.StringType(type="stringType"))
+        return VariableType(__root__=_VariableType.StringType())
 
     def char_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.CharType(type="charType"))
+        return VariableType(__root__=_VariableType.CharType())
 
     def list_type(self, value: resources_commons_types_list_type_ListType) -> VariableType:
-        return VariableType(__root__=_VariableType.ListType(**dict(value), type="listType"))
+        return VariableType(__root__=_VariableType.ListType(**dict(value)))
 
     def map_type(self, value: resources_commons_types_map_type_MapType) -> VariableType:
-        return VariableType(__root__=_VariableType.MapType(**dict(value), type="mapType"))
+        return VariableType(__root__=_VariableType.MapType(**dict(value)))
 
     def binary_tree_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.BinaryTreeType(type="binaryTreeType"))
+        return VariableType(__root__=_VariableType.BinaryTreeType())
 
     def singly_linked_list_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.SinglyLinkedListType(type="singlyLinkedListType"))
+        return VariableType(__root__=_VariableType.SinglyLinkedListType())
 
     def doubly_linked_list_type(self) -> VariableType:
-        return VariableType(__root__=_VariableType.DoublyLinkedListType(type="doublyLinkedListType"))
+        return VariableType(__root__=_VariableType.DoublyLinkedListType())
 
 
 class VariableType(pydantic.BaseModel):

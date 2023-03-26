@@ -20,10 +20,10 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def deep_equality(self, value: DeepEqualityCorrectnessCheck) -> AssertCorrectnessCheck:
-        return AssertCorrectnessCheck(__root__=_AssertCorrectnessCheck.DeepEquality(**dict(value), type="deepEquality"))
+        return AssertCorrectnessCheck(__root__=_AssertCorrectnessCheck.DeepEquality(**dict(value)))
 
     def custom(self, value: VoidFunctionDefinitionThatTakesActualResult) -> AssertCorrectnessCheck:
-        return AssertCorrectnessCheck(__root__=_AssertCorrectnessCheck.Custom(**dict(value), type="custom"))
+        return AssertCorrectnessCheck(__root__=_AssertCorrectnessCheck.Custom(**dict(value)))
 
 
 class AssertCorrectnessCheck(pydantic.BaseModel):

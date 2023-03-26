@@ -22,41 +22,41 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def integer_value(self, value: int) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.IntegerValue(type="integerValue", value=value))
+        return VariableValue(__root__=_VariableValue.IntegerValue(value=value))
 
     def boolean_value(self, value: bool) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.BooleanValue(type="booleanValue", value=value))
+        return VariableValue(__root__=_VariableValue.BooleanValue(value=value))
 
     def double_value(self, value: float) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.DoubleValue(type="doubleValue", value=value))
+        return VariableValue(__root__=_VariableValue.DoubleValue(value=value))
 
     def string_value(self, value: str) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.StringValue(type="stringValue", value=value))
+        return VariableValue(__root__=_VariableValue.StringValue(value=value))
 
     def char_value(self, value: str) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.CharValue(type="charValue", value=value))
+        return VariableValue(__root__=_VariableValue.CharValue(value=value))
 
     def map_value(self, value: resources_commons_types_map_value_MapValue) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.MapValue(**dict(value), type="mapValue"))
+        return VariableValue(__root__=_VariableValue.MapValue(**dict(value)))
 
     def list_value(self, value: typing.List[VariableValue]) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.ListValue(type="listValue", value=value))
+        return VariableValue(__root__=_VariableValue.ListValue(value=value))
 
     def binary_tree_value(self, value: resources_commons_types_binary_tree_value_BinaryTreeValue) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.BinaryTreeValue(**dict(value), type="binaryTreeValue"))
+        return VariableValue(__root__=_VariableValue.BinaryTreeValue(**dict(value)))
 
     def singly_linked_list_value(
         self, value: resources_commons_types_singly_linked_list_value_SinglyLinkedListValue
     ) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.SinglyLinkedListValue(**dict(value), type="singlyLinkedListValue"))
+        return VariableValue(__root__=_VariableValue.SinglyLinkedListValue(**dict(value)))
 
     def doubly_linked_list_value(
         self, value: resources_commons_types_doubly_linked_list_value_DoublyLinkedListValue
     ) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.DoublyLinkedListValue(**dict(value), type="doublyLinkedListValue"))
+        return VariableValue(__root__=_VariableValue.DoublyLinkedListValue(**dict(value)))
 
     def null_value(self) -> VariableValue:
-        return VariableValue(__root__=_VariableValue.NullValue(type="nullValue"))
+        return VariableValue(__root__=_VariableValue.NullValue())
 
 
 class VariableValue(pydantic.BaseModel):

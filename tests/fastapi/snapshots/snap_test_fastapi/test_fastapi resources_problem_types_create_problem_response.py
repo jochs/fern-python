@@ -17,10 +17,10 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def success(self, value: ProblemId) -> CreateProblemResponse:
-        return CreateProblemResponse(__root__=_CreateProblemResponse.Success(type="success", value=value))
+        return CreateProblemResponse(__root__=_CreateProblemResponse.Success(value=value))
 
     def error(self, value: CreateProblemError) -> CreateProblemResponse:
-        return CreateProblemResponse(__root__=_CreateProblemResponse.Error(type="error", value=value))
+        return CreateProblemResponse(__root__=_CreateProblemResponse.Error(value=value))
 
 
 class CreateProblemResponse(pydantic.BaseModel):

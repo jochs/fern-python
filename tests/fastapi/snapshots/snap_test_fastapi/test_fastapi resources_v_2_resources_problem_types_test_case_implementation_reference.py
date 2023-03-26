@@ -20,14 +20,10 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def template_id(self, value: TestCaseTemplateId) -> TestCaseImplementationReference:
-        return TestCaseImplementationReference(
-            __root__=_TestCaseImplementationReference.TemplateId(type="templateId", value=value)
-        )
+        return TestCaseImplementationReference(__root__=_TestCaseImplementationReference.TemplateId(value=value))
 
     def implementation(self, value: TestCaseImplementation) -> TestCaseImplementationReference:
-        return TestCaseImplementationReference(
-            __root__=_TestCaseImplementationReference.Implementation(**dict(value), type="implementation")
-        )
+        return TestCaseImplementationReference(__root__=_TestCaseImplementationReference.Implementation(**dict(value)))
 
 
 class TestCaseImplementationReference(pydantic.BaseModel):

@@ -17,12 +17,12 @@ T_Result = typing.TypeVar("T_Result")
 class _Factory:
     def html(self, value: str) -> TestCaseImplementationDescriptionBoard:
         return TestCaseImplementationDescriptionBoard(
-            __root__=_TestCaseImplementationDescriptionBoard.Html(type="html", value=value)
+            __root__=_TestCaseImplementationDescriptionBoard.Html(value=value)
         )
 
     def param_id(self, value: ParameterId) -> TestCaseImplementationDescriptionBoard:
         return TestCaseImplementationDescriptionBoard(
-            __root__=_TestCaseImplementationDescriptionBoard.ParamId(type="paramId", value=value)
+            __root__=_TestCaseImplementationDescriptionBoard.ParamId(value=value)
         )
 
 

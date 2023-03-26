@@ -23,23 +23,19 @@ class _Factory:
     def initialize_problem_request(
         self, value: resources_submission_types_initialize_problem_request_InitializeProblemRequest
     ) -> SubmissionRequest:
-        return SubmissionRequest(
-            __root__=_SubmissionRequest.InitializeProblemRequest(**dict(value), type="initializeProblemRequest")
-        )
+        return SubmissionRequest(__root__=_SubmissionRequest.InitializeProblemRequest(**dict(value)))
 
     def initialize_workspace_request(self) -> SubmissionRequest:
-        return SubmissionRequest(
-            __root__=_SubmissionRequest.InitializeWorkspaceRequest(type="initializeWorkspaceRequest")
-        )
+        return SubmissionRequest(__root__=_SubmissionRequest.InitializeWorkspaceRequest())
 
     def submit_v_2(self, value: SubmitRequestV2) -> SubmissionRequest:
-        return SubmissionRequest(__root__=_SubmissionRequest.SubmitV2(**dict(value), type="submitV2"))
+        return SubmissionRequest(__root__=_SubmissionRequest.SubmitV2(**dict(value)))
 
     def workspace_submit(self, value: WorkspaceSubmitRequest) -> SubmissionRequest:
-        return SubmissionRequest(__root__=_SubmissionRequest.WorkspaceSubmit(**dict(value), type="workspaceSubmit"))
+        return SubmissionRequest(__root__=_SubmissionRequest.WorkspaceSubmit(**dict(value)))
 
     def stop(self, value: StopRequest) -> SubmissionRequest:
-        return SubmissionRequest(__root__=_SubmissionRequest.Stop(**dict(value), type="stop"))
+        return SubmissionRequest(__root__=_SubmissionRequest.Stop(**dict(value)))
 
 
 class SubmissionRequest(pydantic.BaseModel):

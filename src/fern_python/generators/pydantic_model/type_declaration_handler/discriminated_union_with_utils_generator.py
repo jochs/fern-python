@@ -17,7 +17,7 @@ VISITOR_RETURN_TYPE = AST.GenericTypeVar(name="T_Result")
 BUILDER_ARGUMENT_NAME = "value"
 
 
-class DiscriminatedUnionWithVisitGenerator(AbstractTypeGenerator):
+class DiscriminatedUnionWithUtilsGenerator(AbstractTypeGenerator):
     def __init__(
         self,
         name: ir_types.DeclaredTypeName,
@@ -243,18 +243,12 @@ class DiscriminatedUnionWithVisitGenerator(AbstractTypeGenerator):
                     single_property=lambda property: no_expressions,
                     no_properties=lambda: no_expressions,
                 ),
-                kwargs=[
-                    (
-                        self._get_discriminant_attr_name(),
-                        self._get_discriminant_value_for_single_union_type(single_union_type),
-                    )
-                ]
-                + single_union_type.shape.visit(
-                    same_properties_as_object=lambda type_name: [],
+                kwargs=single_union_type.shape.visit(
+                    same_properties_as_object=lambda type_name: None,
                     single_property=lambda property: [
                         (get_field_name_for_single_property(property), AST.Expression(BUILDER_ARGUMENT_NAME))
                     ],
-                    no_properties=lambda: [],
+                    no_properties=lambda: None,
                 ),
             )
 

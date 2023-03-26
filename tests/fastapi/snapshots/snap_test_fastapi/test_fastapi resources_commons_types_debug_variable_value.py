@@ -19,49 +19,43 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def integer_value(self, value: int) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.IntegerValue(type="integerValue", value=value))
+        return DebugVariableValue(__root__=_DebugVariableValue.IntegerValue(value=value))
 
     def boolean_value(self, value: bool) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.BooleanValue(type="booleanValue", value=value))
+        return DebugVariableValue(__root__=_DebugVariableValue.BooleanValue(value=value))
 
     def double_value(self, value: float) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.DoubleValue(type="doubleValue", value=value))
+        return DebugVariableValue(__root__=_DebugVariableValue.DoubleValue(value=value))
 
     def string_value(self, value: str) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.StringValue(type="stringValue", value=value))
+        return DebugVariableValue(__root__=_DebugVariableValue.StringValue(value=value))
 
     def char_value(self, value: str) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.CharValue(type="charValue", value=value))
+        return DebugVariableValue(__root__=_DebugVariableValue.CharValue(value=value))
 
     def map_value(self, value: DebugMapValue) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.MapValue(**dict(value), type="mapValue"))
+        return DebugVariableValue(__root__=_DebugVariableValue.MapValue(**dict(value)))
 
     def list_value(self, value: typing.List[DebugVariableValue]) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.ListValue(type="listValue", value=value))
+        return DebugVariableValue(__root__=_DebugVariableValue.ListValue(value=value))
 
     def binary_tree_node_value(self, value: BinaryTreeNodeAndTreeValue) -> DebugVariableValue:
-        return DebugVariableValue(
-            __root__=_DebugVariableValue.BinaryTreeNodeValue(**dict(value), type="binaryTreeNodeValue")
-        )
+        return DebugVariableValue(__root__=_DebugVariableValue.BinaryTreeNodeValue(**dict(value)))
 
     def singly_linked_list_node_value(self, value: SinglyLinkedListNodeAndListValue) -> DebugVariableValue:
-        return DebugVariableValue(
-            __root__=_DebugVariableValue.SinglyLinkedListNodeValue(**dict(value), type="singlyLinkedListNodeValue")
-        )
+        return DebugVariableValue(__root__=_DebugVariableValue.SinglyLinkedListNodeValue(**dict(value)))
 
     def doubly_linked_list_node_value(self, value: DoublyLinkedListNodeAndListValue) -> DebugVariableValue:
-        return DebugVariableValue(
-            __root__=_DebugVariableValue.DoublyLinkedListNodeValue(**dict(value), type="doublyLinkedListNodeValue")
-        )
+        return DebugVariableValue(__root__=_DebugVariableValue.DoublyLinkedListNodeValue(**dict(value)))
 
     def undefined_value(self) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.UndefinedValue(type="undefinedValue"))
+        return DebugVariableValue(__root__=_DebugVariableValue.UndefinedValue())
 
     def null_value(self) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.NullValue(type="nullValue"))
+        return DebugVariableValue(__root__=_DebugVariableValue.NullValue())
 
     def generic_value(self, value: resources_commons_types_generic_value_GenericValue) -> DebugVariableValue:
-        return DebugVariableValue(__root__=_DebugVariableValue.GenericValue(**dict(value), type="genericValue"))
+        return DebugVariableValue(__root__=_DebugVariableValue.GenericValue(**dict(value)))
 
 
 class DebugVariableValue(pydantic.BaseModel):

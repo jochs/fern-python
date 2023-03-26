@@ -18,18 +18,16 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def stopped(self) -> TestSubmissionStatus:
-        return TestSubmissionStatus(__root__=_TestSubmissionStatus.Stopped(type="stopped"))
+        return TestSubmissionStatus(__root__=_TestSubmissionStatus.Stopped())
 
     def errored(self, value: ErrorInfo) -> TestSubmissionStatus:
-        return TestSubmissionStatus(__root__=_TestSubmissionStatus.Errored(type="errored", value=value))
+        return TestSubmissionStatus(__root__=_TestSubmissionStatus.Errored(value=value))
 
     def running(self, value: RunningSubmissionState) -> TestSubmissionStatus:
-        return TestSubmissionStatus(__root__=_TestSubmissionStatus.Running(type="running", value=value))
+        return TestSubmissionStatus(__root__=_TestSubmissionStatus.Running(value=value))
 
     def test_case_id_to_state(self, value: typing.Dict[str, SubmissionStatusForTestCase]) -> TestSubmissionStatus:
-        return TestSubmissionStatus(
-            __root__=_TestSubmissionStatus.TestCaseIdToState(type="testCaseIdToState", value=value)
-        )
+        return TestSubmissionStatus(__root__=_TestSubmissionStatus.TestCaseIdToState(value=value))
 
 
 class TestSubmissionStatus(pydantic.BaseModel):

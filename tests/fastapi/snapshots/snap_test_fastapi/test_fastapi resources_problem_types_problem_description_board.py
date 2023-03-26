@@ -16,13 +16,13 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def html(self, value: str) -> ProblemDescriptionBoard:
-        return ProblemDescriptionBoard(__root__=_ProblemDescriptionBoard.Html(type="html", value=value))
+        return ProblemDescriptionBoard(__root__=_ProblemDescriptionBoard.Html(value=value))
 
     def variable(self, value: VariableValue) -> ProblemDescriptionBoard:
-        return ProblemDescriptionBoard(__root__=_ProblemDescriptionBoard.Variable(type="variable", value=value))
+        return ProblemDescriptionBoard(__root__=_ProblemDescriptionBoard.Variable(value=value))
 
     def test_case_id(self, value: str) -> ProblemDescriptionBoard:
-        return ProblemDescriptionBoard(__root__=_ProblemDescriptionBoard.TestCaseId(type="testCaseId", value=value))
+        return ProblemDescriptionBoard(__root__=_ProblemDescriptionBoard.TestCaseId(value=value))
 
 
 class ProblemDescriptionBoard(pydantic.BaseModel):

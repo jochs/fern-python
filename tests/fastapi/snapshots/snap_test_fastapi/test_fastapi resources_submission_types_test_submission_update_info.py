@@ -22,26 +22,22 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def running(self, value: RunningSubmissionState) -> TestSubmissionUpdateInfo:
-        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Running(type="running", value=value))
+        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Running(value=value))
 
     def stopped(self) -> TestSubmissionUpdateInfo:
-        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Stopped(type="stopped"))
+        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Stopped())
 
     def errored(self, value: ErrorInfo) -> TestSubmissionUpdateInfo:
-        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Errored(type="errored", value=value))
+        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Errored(value=value))
 
     def graded_test_case(self, value: GradedTestCaseUpdate) -> TestSubmissionUpdateInfo:
-        return TestSubmissionUpdateInfo(
-            __root__=_TestSubmissionUpdateInfo.GradedTestCase(**dict(value), type="gradedTestCase")
-        )
+        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.GradedTestCase(**dict(value)))
 
     def recorded_test_case(self, value: RecordedTestCaseUpdate) -> TestSubmissionUpdateInfo:
-        return TestSubmissionUpdateInfo(
-            __root__=_TestSubmissionUpdateInfo.RecordedTestCase(**dict(value), type="recordedTestCase")
-        )
+        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.RecordedTestCase(**dict(value)))
 
     def finished(self) -> TestSubmissionUpdateInfo:
-        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Finished(type="finished"))
+        return TestSubmissionUpdateInfo(__root__=_TestSubmissionUpdateInfo.Finished())
 
 
 class TestSubmissionUpdateInfo(pydantic.BaseModel):

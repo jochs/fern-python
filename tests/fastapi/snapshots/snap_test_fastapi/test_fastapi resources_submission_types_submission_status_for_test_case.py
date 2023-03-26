@@ -21,13 +21,13 @@ T_Result = typing.TypeVar("T_Result")
 
 class _Factory:
     def graded(self, value: TestCaseResultWithStdout) -> SubmissionStatusForTestCase:
-        return SubmissionStatusForTestCase(__root__=_SubmissionStatusForTestCase.Graded(**dict(value), type="graded"))
+        return SubmissionStatusForTestCase(__root__=_SubmissionStatusForTestCase.Graded(**dict(value)))
 
     def graded_v_2(self, value: TestCaseGrade) -> SubmissionStatusForTestCase:
-        return SubmissionStatusForTestCase(__root__=_SubmissionStatusForTestCase.GradedV2(type="gradedV2", value=value))
+        return SubmissionStatusForTestCase(__root__=_SubmissionStatusForTestCase.GradedV2(value=value))
 
     def traced(self, value: TracedTestCase) -> SubmissionStatusForTestCase:
-        return SubmissionStatusForTestCase(__root__=_SubmissionStatusForTestCase.Traced(**dict(value), type="traced"))
+        return SubmissionStatusForTestCase(__root__=_SubmissionStatusForTestCase.Traced(**dict(value)))
 
 
 class SubmissionStatusForTestCase(pydantic.BaseModel):
