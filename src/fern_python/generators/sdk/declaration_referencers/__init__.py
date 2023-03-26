@@ -2,6 +2,7 @@ from .environments_enum_declaration_referencer import (
     EnvironmentsEnumDeclarationReferencer,
 )
 from .error_declaration_referencer import ErrorDeclarationReferencer
+from .root_client_declaration_referencer import RootClientDeclarationReferencer
 from .subpackage_service_declaration_referencer import (
     SubpackageServiceDeclarationReferencer,
 )
@@ -12,4 +13,5 @@ __all__ = [
     "ErrorDeclarationReferencer",
     "SubpackageServiceDeclarationReferencer",
     "TypeDeclarationReferencer",
+    "RootClientDeclarationReferencer",
 ]

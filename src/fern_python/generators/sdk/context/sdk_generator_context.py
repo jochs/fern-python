@@ -61,3 +61,11 @@ class SdkGeneratorContext(ABC):
     @abstractmethod
     def get_class_name_of_subpackage_service(self, subpackage_id: ir_types.SubpackageId) -> str:
         ...
+
+    @abstractmethod
+    def get_filepath_for_root_client(self) -> Filepath:
+        ...
+
+    @abstractmethod
+    def get_class_name_for_root_client(self) -> str:
+        ...

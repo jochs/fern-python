@@ -98,16 +98,17 @@ class ClientGenerator:
 
         for subpackage_id in self._package.subpackages:
             subpackage = self._context.ir.subpackages[subpackage_id]
-            class_declaration.add_method(
-                AST.FunctionDeclaration(
-                    name=subpackage.name.snake_case.unsafe_name,
-                    signature=AST.FunctionSignature(
-                        return_type=AST.TypeHint(self._context.get_reference_to_subpackage_service(subpackage_id))
-                    ),
-                    body=self._write_subpackage_getter(subpackage_id),
-                    decorators=[Functools.cached_property()],
+            if subpackage.has_endpoints_in_tree:
+                class_declaration.add_method(
+                    AST.FunctionDeclaration(
+                        name=subpackage.name.snake_case.unsafe_name,
+                        signature=AST.FunctionSignature(
+                            return_type=AST.TypeHint(self._context.get_reference_to_subpackage_service(subpackage_id))
+                        ),
+                        body=self._write_subpackage_getter(subpackage_id),
+                        decorators=[Functools.cached_property()],
+                    )
                 )
-            )
 
         source_file.add_class_declaration(
             declaration=class_declaration,

@@ -66,6 +66,13 @@ class SdkGenerator(AbstractGenerator):
                 project=project,
             )
 
+        self._generate_root_client(
+            context=context,
+            ir=ir,
+            generator_exec_wrapper=generator_exec_wrapper,
+            project=project,
+        )
+
         for subpackage_id in ir.subpackages.keys():
             subpackage = ir.subpackages[subpackage_id]
             if subpackage.has_endpoints_in_tree:
@@ -101,6 +108,24 @@ class SdkGenerator(AbstractGenerator):
             project=project, filepath=filepath, generator_exec_wrapper=generator_exec_wrapper
         ) as source_file:
             EnvironmentGenerator(context=context, environments=environments).generate(source_file=source_file)
+
+    def _generate_root_client(
+        self,
+        context: SdkGeneratorContext,
+        ir: ir_types.IntermediateRepresentation,
+        generator_exec_wrapper: GeneratorExecWrapper,
+        project: Project,
+    ) -> None:
+        with SourceFileGenerator.generate(
+            project=project,
+            filepath=context.get_filepath_for_root_client(),
+            generator_exec_wrapper=generator_exec_wrapper,
+        ) as source_file:
+            ClientGenerator(
+                context=context,
+                package=ir.root_package,
+                class_name=context.get_class_name_for_root_client(),
+            ).generate(source_file=source_file)
 
     def _generate_subpackage_client(
         self,

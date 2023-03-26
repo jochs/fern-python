@@ -10,6 +10,10 @@ snapshots = Snapshot()
 
 snapshots['test_sdk __init__'] = FileSnapshot('snap_test_sdk/test_sdk __init__.py')
 
+snapshots['test_sdk client___init__'] = FileSnapshot('snap_test_sdk/test_sdk client___init__.py')
+
+snapshots['test_sdk client_client'] = FileSnapshot('snap_test_sdk/test_sdk client_client.py')
+
 snapshots['test_sdk core___init__'] = FileSnapshot('snap_test_sdk/test_sdk core___init__.py')
 
 snapshots['test_sdk core_api_error'] = FileSnapshot('snap_test_sdk/test_sdk core_api_error.py')
@@ -22,6 +26,8 @@ snapshots['test_sdk core_remove_none_from_headers'] = FileSnapshot('snap_test_sd
 
 snapshots['test_sdk filepaths'] = [
     '__init__.py',
+    'client/__init__.py',
+    'client/client.py',
     'core/__init__.py',
     'core/api_error.py',
     'core/datetime_utils.py',
