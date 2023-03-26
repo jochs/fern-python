@@ -20,6 +20,7 @@ def run_snapshot_test(
     tmpdir: Path,
     cli: Callable[[str], None],
     custom_config: Any = None,
+    output_mode: config.OutputMode = config.OutputMode.factory.download_files(),
 ) -> None:
     path_to_fixture = os.path.join(os.path.dirname(filename_of_test), f"fixtures/{fixture_name}")
 
@@ -29,7 +30,7 @@ def run_snapshot_test(
 
     generator_config = config.GeneratorConfig(
         ir_filepath=path_to_ir,
-        output=config.GeneratorOutputConfig(path=path_to_output, mode=config.OutputMode.factory.download_files()),
+        output=config.GeneratorOutputConfig(path=path_to_output, mode=output_mode),
         workspace_name="ir",
         organization="fern",
         custom_config=custom_config,

@@ -15,8 +15,7 @@ class FunctionParameter(AstNode):
     ):
         self.name = name
         self.type_hint = type_hint
-        if initializer is not None:
-            self.initializer = initializer
+        self.initializer = initializer
 
     def get_metadata(self) -> AstNodeMetadata:
         metadata = AstNodeMetadata()
