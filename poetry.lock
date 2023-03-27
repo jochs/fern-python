@@ -31,6 +31,14 @@ tests = ["attrs[tests-no-zope]", "zope.interface"]
 tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy (>=0.971,<0.990)", "mypy (>=0.971,<0.990)", "pympler", "pympler", "pytest (>=4.3.0)", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-mypy-plugins", "pytest-xdist[psutil]", "pytest-xdist[psutil]"]
 
 [[package]]
+name = "backports-cached-property"
+version = "1.0.2"
+description = "cached_property() - computed once per instance, cached as attribute"
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+
+[[package]]
 name = "black"
 version = "22.12.0"
 description = "The uncompromising code formatter."
@@ -131,15 +139,17 @@ wasmer-compiler-cranelift = ">=1.0.0"
 
 [[package]]
 name = "fern-fern-generator-exec-sdk"
-version = "0.0.183"
+version = "0.0.185"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
+backports-cached_property = "1.0.2"
 httpx = "0.23.3"
 pydantic = ">=1.9.2,<2.0.0"
+types-backports = "0.1.3"
 
 [package.source]
 type = "legacy"
@@ -569,6 +579,14 @@ doc = ["mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1.1.2,<2.0.0)", "mkdocs-materi
 test = ["black (>=22.3.0,<23.0.0)", "coverage (>=5.2,<6.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.910)", "pytest (>=4.4.0,<5.4.0)", "pytest-cov (>=2.10.0,<3.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "pytest-xdist (>=1.32.0,<2.0.0)", "rich (>=10.11.0,<13.0.0)", "shellingham (>=1.3.0,<2.0.0)"]
 
 [[package]]
+name = "types-backports"
+version = "0.1.3"
+description = "Typing stubs for backports"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.5.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -612,7 +630,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "855afd41b8445809070957d53affce5b6dc30d80068f599adc6d5494a8a6995f"
+content-hash = "673ce31ebdf8786c756575e9cabf24805cc06a86131d1a529cf69bacb803466c"
 
 [metadata.files]
 anyio = [
@@ -622,6 +640,10 @@ anyio = [
 attrs = [
     {file = "attrs-22.2.0-py3-none-any.whl", hash = "sha256:29e95c7f6778868dbd49170f98f8818f78f3dc5e0e37c0b1f474e3561b240836"},
     {file = "attrs-22.2.0.tar.gz", hash = "sha256:c9227bfc2f01993c03f68db37d1d15c9690188323c067c641f1a35ca58185f99"},
+]
+backports-cached-property = [
+    {file = "backports.cached-property-1.0.2.tar.gz", hash = "sha256:9306f9eed6ec55fd156ace6bc1094e2c86fae5fb2bf07b6a9c00745c656e75dd"},
+    {file = "backports.cached_property-1.0.2-py3-none-any.whl", hash = "sha256:baeb28e1cd619a3c9ab8941431fe34e8490861fb998c6c4590693d50171db0cc"},
 ]
 black = [
     {file = "black-22.12.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9eedd20838bd5d75b80c9f5487dbcb06836a43833a37846cf1d8c1cc01cef59d"},
@@ -670,8 +692,8 @@ fastdiff = [
     {file = "fastdiff-0.3.0.tar.gz", hash = "sha256:4dfa09c47832a8c040acda3f1f55fc0ab4d666f0e14e6951e6da78d59acd945a"},
 ]
 fern-fern-generator-exec-sdk = [
-    {file = "fern_fern_generator_exec_sdk-0.0.183-py3-none-any.whl", hash = "sha256:d40ba4ea6d3f65368bd86b0f8928fd5cbcf7f12b8dabefbb9db4bc2f6210b223"},
-    {file = "fern_fern_generator_exec_sdk-0.0.183.tar.gz", hash = "sha256:b98908f6cf0bc95b3feb2f75681b83839dc61c1cb8a6aa7bce5f9b60eb818dfb"},
+    {file = "fern_fern_generator_exec_sdk-0.0.185-py3-none-any.whl", hash = "sha256:79c6c1bdd39e053ca1e9e5d524793c47042ca28f38cfb39dba96c73deadeefac"},
+    {file = "fern_fern_generator_exec_sdk-0.0.185.tar.gz", hash = "sha256:52e70eb2ee35b705b8c8cb2f2cdf8ab90aa844c726e3a77c2175dfb13476591b"},
 ]
 fern-fern-ir-model = [
     {file = "fern_fern_ir_model-0.0.1284-py3-none-any.whl", hash = "sha256:f46b71926de667378aa4e16b2ec68b7702d949854b38beea3e5d41b2b1c85043"},
@@ -905,6 +927,10 @@ tomli = [
 typer = [
     {file = "typer-0.6.1-py3-none-any.whl", hash = "sha256:54b19e5df18654070a82f8c2aa1da456a4ac16a2a83e6dcd9f170e291c56338e"},
     {file = "typer-0.6.1.tar.gz", hash = "sha256:2d5720a5e63f73eaf31edaa15f6ab87f35f0690f8ca233017d7d23d743a91d73"},
+]
+types-backports = [
+    {file = "types-backports-0.1.3.tar.gz", hash = "sha256:f4b7206c073df88d6200891e3d27506185fd60cda66fb289737b2fa92c0010cf"},
+    {file = "types_backports-0.1.3-py2.py3-none-any.whl", hash = "sha256:dafcd61848081503e738a7768872d1dd6c018401b4d2a1cfb608ea87ec9864b9"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"},
