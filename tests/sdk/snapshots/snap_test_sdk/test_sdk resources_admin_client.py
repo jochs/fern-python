@@ -2,10 +2,12 @@
 
 import typing
 import urllib
+from json.decoder import JSONDecodeError
 
 import httpx
 
 from ...core.api_error import ApiError
+from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
 from ..submission.types.submission_id import SubmissionId
 from ..submission.types.test_case_result_with_stdout import TestCaseResultWithStdout
@@ -31,7 +33,7 @@ class AdminClient:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-test-submission-status/{submission_id}"),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -39,14 +41,19 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def send_test_submission_update(self, submission_id: SubmissionId, *, request: TestSubmissionUpdate) -> None:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-test-submission-status-v2/{submission_id}"),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -54,7 +61,12 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update_workspace_submission_status(
@@ -63,7 +75,7 @@ class AdminClient:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-workspace-submission-status/{submission_id}"),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -71,7 +83,12 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def send_workspace_submission_update(
@@ -82,7 +99,7 @@ class AdminClient:
             urllib.parse.urljoin(
                 f"{self._environment}/", f"admin/store-workspace-submission-status-v2/{submission_id}"
             ),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -90,7 +107,12 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_test_case(
@@ -106,7 +128,7 @@ class AdminClient:
             urllib.parse.urljoin(
                 f"{self._environment}/", f"admin/store-test-trace/submission/{submission_id}/testCase/{test_case_id}"
             ),
-            json={"result": result, "traceResponses": trace_responses},
+            json=jsonable_encoder({"result": result, "traceResponses": trace_responses}),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -114,7 +136,12 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_test_case_v_2(
@@ -125,7 +152,7 @@ class AdminClient:
             urllib.parse.urljoin(
                 f"{self._environment}/", f"admin/store-test-trace-v2/submission/{submission_id}/testCase/{test_case_id}"
             ),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -133,7 +160,12 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_workspace(
@@ -146,7 +178,7 @@ class AdminClient:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-workspace-trace/submission/{submission_id}"),
-            json={"workspaceRunDetails": workspace_run_details, "traceResponses": trace_responses},
+            json=jsonable_encoder({"workspaceRunDetails": workspace_run_details, "traceResponses": trace_responses}),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -154,14 +186,19 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def store_traced_workspace_v_2(self, submission_id: SubmissionId, *, request: typing.List[TraceResponseV2]) -> None:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"admin/store-workspace-trace-v2/submission/{submission_id}"),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -169,5 +206,10 @@ class AdminClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)

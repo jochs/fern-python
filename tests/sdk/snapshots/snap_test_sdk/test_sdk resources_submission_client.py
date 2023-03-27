@@ -2,6 +2,7 @@
 
 import typing
 import urllib
+from json.decoder import JSONDecodeError
 
 import httpx
 import pydantic
@@ -32,9 +33,12 @@ class SubmissionClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(ExecutionSessionResponse, _response)  # type: ignore
+            return pydantic.parse_obj_as(ExecutionSessionResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_execution_session(self, session_id: str) -> typing.Optional[ExecutionSessionResponse]:
@@ -48,9 +52,12 @@ class SubmissionClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.Optional[ExecutionSessionResponse], _response)  # type: ignore
+            return pydantic.parse_obj_as(typing.Optional[ExecutionSessionResponse], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def stop_execution_session(self, session_id: str) -> None:
@@ -64,7 +71,12 @@ class SubmissionClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_execution_sessions_state(self) -> GetExecutionSessionStateResponse:
@@ -78,7 +90,10 @@ class SubmissionClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(GetExecutionSessionStateResponse, _response)  # type: ignore
+            return pydantic.parse_obj_as(GetExecutionSessionStateResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)

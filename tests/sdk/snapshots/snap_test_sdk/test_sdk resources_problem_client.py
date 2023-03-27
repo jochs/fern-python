@@ -2,11 +2,13 @@
 
 import typing
 import urllib
+from json.decoder import JSONDecodeError
 
 import httpx
 import pydantic
 
 from ...core.api_error import ApiError
+from ...core.jsonable_encoder import jsonable_encoder
 from ...core.remove_none_from_headers import remove_none_from_headers
 from ..commons.types.problem_id import ProblemId
 from ..commons.types.variable_type import VariableType
@@ -29,7 +31,7 @@ class ProblemClient:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", "problem-crud/create"),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -37,16 +39,19 @@ class ProblemClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(CreateProblemResponse, _response)  # type: ignore
+            return pydantic.parse_obj_as(CreateProblemResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def update_problem(self, problem_id: ProblemId, *, request: CreateProblemRequest) -> UpdateProblemResponse:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", f"problem-crud/update/{problem_id}"),
-            json=request,
+            json=jsonable_encoder(request),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -54,9 +59,12 @@ class ProblemClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(UpdateProblemResponse, _response)  # type: ignore
+            return pydantic.parse_obj_as(UpdateProblemResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def delete_problem(self, problem_id: ProblemId) -> None:
@@ -70,7 +78,12 @@ class ProblemClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        if 200 <= _response.status_code < 300:
+            return
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     def get_default_starter_files(
@@ -79,7 +92,7 @@ class ProblemClient:
         _response = httpx.request(
             "POST",
             urllib.parse.urljoin(f"{self._environment}/", "problem-crud/default-starter-files"),
-            json={"inputParams": input_params, "outputType": output_type, "methodName": method_name},
+            json=jsonable_encoder({"inputParams": input_params, "outputType": output_type, "methodName": method_name}),
             headers=remove_none_from_headers(
                 {
                     "X-Random-Header": self.x_random_header,
@@ -87,7 +100,10 @@ class ProblemClient:
                 }
             ),
         )
-        _response_json = _response.json()
+        try:
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(GetDefaultStarterFilesResponse, _response)  # type: ignore
+            return pydantic.parse_obj_as(GetDefaultStarterFilesResponse, _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
