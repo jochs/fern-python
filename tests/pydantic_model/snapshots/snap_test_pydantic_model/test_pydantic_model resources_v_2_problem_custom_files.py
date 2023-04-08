@@ -18,18 +18,10 @@ from .files import Files
 class CustomFiles_Basic(BasicCustomFiles):
     type: typing_extensions.Literal["basic"]
 
-    class Config:
-        frozen = True
-        orm_mode = True
-
 
 class CustomFiles_Custom(pydantic.BaseModel):
     type: typing_extensions.Literal["custom"]
     value: typing.Dict[Language, Files]
-
-    class Config:
-        frozen = True
-        orm_mode = True
 
 
 CustomFiles = typing_extensions.Annotated[

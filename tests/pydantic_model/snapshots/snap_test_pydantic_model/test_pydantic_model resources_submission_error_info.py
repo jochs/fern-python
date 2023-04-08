@@ -15,25 +15,13 @@ from .runtime_error import RuntimeError
 class ErrorInfo_CompileError(CompileError):
     type: typing_extensions.Literal["compileError"]
 
-    class Config:
-        frozen = True
-        orm_mode = True
-
 
 class ErrorInfo_RuntimeError(RuntimeError):
     type: typing_extensions.Literal["runtimeError"]
 
-    class Config:
-        frozen = True
-        orm_mode = True
-
 
 class ErrorInfo_InternalError(InternalError):
     type: typing_extensions.Literal["internalError"]
-
-    class Config:
-        frozen = True
-        orm_mode = True
 
 
 ErrorInfo = typing_extensions.Annotated[
