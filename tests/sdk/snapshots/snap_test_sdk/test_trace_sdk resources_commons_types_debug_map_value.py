@@ -22,6 +22,7 @@ class DebugMapValue(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        frozen = True
         allow_population_by_field_name = True
         json_encoders = {dt.datetime: serialize_datetime}
 

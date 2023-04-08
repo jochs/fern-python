@@ -14,15 +14,24 @@ class ProblemDescriptionBoard_Html(pydantic.BaseModel):
     type: typing_extensions.Literal["html"]
     value: str
 
+    class Config:
+        frozen = True
+
 
 class ProblemDescriptionBoard_Variable(pydantic.BaseModel):
     type: typing_extensions.Literal["variable"]
     value: VariableValue
 
+    class Config:
+        frozen = True
+
 
 class ProblemDescriptionBoard_TestCaseId(pydantic.BaseModel):
     type: typing_extensions.Literal["testCaseId"]
     value: str
+
+    class Config:
+        frozen = True
 
 
 ProblemDescriptionBoard = typing_extensions.Annotated[
