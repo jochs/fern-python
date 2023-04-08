@@ -20,6 +20,7 @@ class SubmissionStatusForTestCase_Graded(TestCaseResultWithStdout):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class SubmissionStatusForTestCase_GradedV2(pydantic.BaseModel):
@@ -28,6 +29,7 @@ class SubmissionStatusForTestCase_GradedV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class SubmissionStatusForTestCase_Traced(TracedTestCase):
@@ -35,6 +37,7 @@ class SubmissionStatusForTestCase_Traced(TracedTestCase):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 SubmissionStatusForTestCase = typing_extensions.Annotated[

@@ -125,6 +125,7 @@ class ProblemDescriptionBoard(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -136,6 +137,7 @@ class _ProblemDescriptionBoard:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Variable(pydantic.BaseModel):
         type: typing_extensions.Literal["variable"]
@@ -143,6 +145,7 @@ class _ProblemDescriptionBoard:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class TestCaseId(pydantic.BaseModel):
         type: typing_extensions.Literal["testCaseId"]
@@ -150,6 +153,7 @@ class _ProblemDescriptionBoard:
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 ProblemDescriptionBoard.update_forward_refs()

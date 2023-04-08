@@ -17,6 +17,7 @@ class ErrorInfo_CompileError(CompileError):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class ErrorInfo_RuntimeError(RuntimeError):
@@ -24,6 +25,7 @@ class ErrorInfo_RuntimeError(RuntimeError):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class ErrorInfo_InternalError(InternalError):
@@ -31,6 +33,7 @@ class ErrorInfo_InternalError(InternalError):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 ErrorInfo = typing_extensions.Annotated[

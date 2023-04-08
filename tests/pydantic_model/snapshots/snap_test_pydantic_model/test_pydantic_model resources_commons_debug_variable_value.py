@@ -21,6 +21,7 @@ class DebugVariableValue_IntegerValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_BooleanValue(pydantic.BaseModel):
@@ -29,6 +30,7 @@ class DebugVariableValue_BooleanValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_DoubleValue(pydantic.BaseModel):
@@ -37,6 +39,7 @@ class DebugVariableValue_DoubleValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_StringValue(pydantic.BaseModel):
@@ -45,6 +48,7 @@ class DebugVariableValue_StringValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_CharValue(pydantic.BaseModel):
@@ -53,6 +57,7 @@ class DebugVariableValue_CharValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_MapValue(DebugMapValue):
@@ -60,6 +65,7 @@ class DebugVariableValue_MapValue(DebugMapValue):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_ListValue(pydantic.BaseModel):
@@ -68,6 +74,7 @@ class DebugVariableValue_ListValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_BinaryTreeNodeValue(BinaryTreeNodeAndTreeValue):
@@ -75,6 +82,7 @@ class DebugVariableValue_BinaryTreeNodeValue(BinaryTreeNodeAndTreeValue):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_SinglyLinkedListNodeValue(SinglyLinkedListNodeAndListValue):
@@ -82,6 +90,7 @@ class DebugVariableValue_SinglyLinkedListNodeValue(SinglyLinkedListNodeAndListVa
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_DoublyLinkedListNodeValue(DoublyLinkedListNodeAndListValue):
@@ -89,6 +98,7 @@ class DebugVariableValue_DoublyLinkedListNodeValue(DoublyLinkedListNodeAndListVa
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_UndefinedValue(pydantic.BaseModel):
@@ -96,6 +106,7 @@ class DebugVariableValue_UndefinedValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_NullValue(pydantic.BaseModel):
@@ -103,6 +114,7 @@ class DebugVariableValue_NullValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class DebugVariableValue_GenericValue(GenericValue):
@@ -110,6 +122,7 @@ class DebugVariableValue_GenericValue(GenericValue):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 DebugVariableValue = typing_extensions.Annotated[

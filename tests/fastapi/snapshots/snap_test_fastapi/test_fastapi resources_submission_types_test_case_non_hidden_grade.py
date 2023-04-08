@@ -325,6 +325,7 @@ class TestCaseNonHiddenGrade(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}

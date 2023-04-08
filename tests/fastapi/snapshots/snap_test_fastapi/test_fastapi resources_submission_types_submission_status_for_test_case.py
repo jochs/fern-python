@@ -134,6 +134,7 @@ class SubmissionStatusForTestCase(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -144,6 +145,7 @@ class _SubmissionStatusForTestCase:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class GradedV2(pydantic.BaseModel):
         type: typing_extensions.Literal["gradedV2"]
@@ -151,12 +153,14 @@ class _SubmissionStatusForTestCase:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Traced(TracedTestCase):
         type: typing_extensions.Literal["traced"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 _SubmissionStatusForTestCase.Graded.update_forward_refs(

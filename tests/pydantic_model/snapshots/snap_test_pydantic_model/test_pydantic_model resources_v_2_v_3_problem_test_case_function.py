@@ -19,6 +19,7 @@ class TestCaseFunction_WithActualResult(TestCaseWithActualResultImplementation):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class TestCaseFunction_Custom(VoidFunctionDefinition):
@@ -26,6 +27,7 @@ class TestCaseFunction_Custom(VoidFunctionDefinition):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 TestCaseFunction = typing_extensions.Annotated[

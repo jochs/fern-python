@@ -85,6 +85,7 @@ class ExceptionV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -95,12 +96,14 @@ class _ExceptionV2:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Timeout(pydantic.BaseModel):
         type: typing_extensions.Literal["timeout"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 ExceptionV2.update_forward_refs()

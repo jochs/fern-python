@@ -92,6 +92,7 @@ class CustomFiles(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -102,6 +103,7 @@ class _CustomFiles:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Custom(pydantic.BaseModel):
         type: typing_extensions.Literal["custom"]
@@ -109,6 +111,7 @@ class _CustomFiles:
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 _CustomFiles.Basic.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)

@@ -16,6 +16,7 @@ class VariableType_IntegerType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_DoubleType(pydantic.BaseModel):
@@ -23,6 +24,7 @@ class VariableType_DoubleType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_BooleanType(pydantic.BaseModel):
@@ -30,6 +32,7 @@ class VariableType_BooleanType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_StringType(pydantic.BaseModel):
@@ -37,6 +40,7 @@ class VariableType_StringType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_CharType(pydantic.BaseModel):
@@ -44,6 +48,7 @@ class VariableType_CharType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_ListType(ListType):
@@ -51,6 +56,7 @@ class VariableType_ListType(ListType):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_MapType(MapType):
@@ -58,6 +64,7 @@ class VariableType_MapType(MapType):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_BinaryTreeType(pydantic.BaseModel):
@@ -65,6 +72,7 @@ class VariableType_BinaryTreeType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_SinglyLinkedListType(pydantic.BaseModel):
@@ -72,6 +80,7 @@ class VariableType_SinglyLinkedListType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class VariableType_DoublyLinkedListType(pydantic.BaseModel):
@@ -79,6 +88,7 @@ class VariableType_DoublyLinkedListType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 VariableType = typing_extensions.Annotated[

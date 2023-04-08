@@ -221,6 +221,7 @@ class VariableType(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -235,60 +236,70 @@ class _VariableType:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class DoubleType(pydantic.BaseModel):
         type: typing_extensions.Literal["doubleType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class BooleanType(pydantic.BaseModel):
         type: typing_extensions.Literal["booleanType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class StringType(pydantic.BaseModel):
         type: typing_extensions.Literal["stringType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class CharType(pydantic.BaseModel):
         type: typing_extensions.Literal["charType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class ListType(resources_commons_types_list_type_ListType):
         type: typing_extensions.Literal["listType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class MapType(resources_commons_types_map_type_MapType):
         type: typing_extensions.Literal["mapType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class BinaryTreeType(pydantic.BaseModel):
         type: typing_extensions.Literal["binaryTreeType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class SinglyLinkedListType(pydantic.BaseModel):
         type: typing_extensions.Literal["singlyLinkedListType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class DoublyLinkedListType(pydantic.BaseModel):
         type: typing_extensions.Literal["doublyLinkedListType"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 _VariableType.ListType.update_forward_refs(

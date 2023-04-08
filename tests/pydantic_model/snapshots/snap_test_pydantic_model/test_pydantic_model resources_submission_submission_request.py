@@ -18,6 +18,7 @@ class SubmissionRequest_InitializeProblemRequest(InitializeProblemRequest):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class SubmissionRequest_InitializeWorkspaceRequest(pydantic.BaseModel):
@@ -25,6 +26,7 @@ class SubmissionRequest_InitializeWorkspaceRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class SubmissionRequest_SubmitV2(SubmitRequestV2):
@@ -32,6 +34,7 @@ class SubmissionRequest_SubmitV2(SubmitRequestV2):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class SubmissionRequest_WorkspaceSubmit(WorkspaceSubmitRequest):
@@ -39,6 +42,7 @@ class SubmissionRequest_WorkspaceSubmit(WorkspaceSubmitRequest):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class SubmissionRequest_Stop(StopRequest):
@@ -46,6 +50,7 @@ class SubmissionRequest_Stop(StopRequest):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 SubmissionRequest = typing_extensions.Annotated[

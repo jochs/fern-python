@@ -71,6 +71,7 @@ class Test(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -82,6 +83,7 @@ class _Test:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Or(pydantic.BaseModel):
         type: typing_extensions.Literal["or"]
@@ -89,6 +91,7 @@ class _Test:
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 Test.update_forward_refs()

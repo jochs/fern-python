@@ -20,6 +20,8 @@ class PydanticModel:
         self,
         source_file: SourceFile,
         name: str,
+        frozen: bool,
+        orm_mode: bool,
         base_models: Sequence[AST.ClassReference] = None,
         parent: ClassParent = None,
         docstring: Optional[str] = None,
@@ -38,7 +40,8 @@ class PydanticModel:
         self._fields: List[PydanticField] = []
         self._forbid_extra_fields = forbid_extra_fields
         self._serialize_datetime = False
-        self.frozen = True
+        self.frozen = (frozen,)
+        self.orm_mode = (orm_mode,)
         self.name = name
         self.json_encoders: List[Tuple[AST.Expression, AST.Expression]] = []
 
@@ -257,6 +260,14 @@ class PydanticModel:
             config.add_class_var(
                 AST.VariableDeclaration(
                     name="frozen",
+                    initializer=AST.Expression("True"),
+                )
+            )
+
+        if self.orm_mode:
+            config.add_class_var(
+                AST.VariableDeclaration(
+                    name="orm_mode",
                     initializer=AST.Expression("True"),
                 )
             )

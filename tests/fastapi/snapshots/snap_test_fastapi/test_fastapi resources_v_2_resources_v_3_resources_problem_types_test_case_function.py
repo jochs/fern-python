@@ -93,6 +93,7 @@ class TestCaseFunction(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -103,12 +104,14 @@ class _TestCaseFunction:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Custom(VoidFunctionDefinition):
         type: typing_extensions.Literal["custom"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 _TestCaseFunction.WithActualResult.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)

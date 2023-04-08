@@ -19,6 +19,7 @@ class SubmissionTypeState_Test(TestSubmissionState):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class SubmissionTypeState_Workspace(WorkspaceSubmissionState):
@@ -26,6 +27,7 @@ class SubmissionTypeState_Workspace(WorkspaceSubmissionState):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 SubmissionTypeState = typing_extensions.Annotated[

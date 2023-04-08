@@ -113,6 +113,7 @@ class TestCaseImplementationReference(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -124,12 +125,14 @@ class _TestCaseImplementationReference:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Implementation(TestCaseImplementation):
         type: typing_extensions.Literal["implementation"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 _TestCaseImplementationReference.Implementation.update_forward_refs(

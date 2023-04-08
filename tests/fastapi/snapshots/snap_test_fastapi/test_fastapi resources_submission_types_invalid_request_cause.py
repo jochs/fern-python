@@ -151,6 +151,7 @@ class InvalidRequestCause(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -161,6 +162,7 @@ class _InvalidRequestCause:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class CustomTestCasesUnsupported(
         resources_submission_types_custom_test_cases_unsupported_CustomTestCasesUnsupported
@@ -169,12 +171,14 @@ class _InvalidRequestCause:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class UnexpectedLanguage(UnexpectedLanguageError):
         type: typing_extensions.Literal["unexpectedLanguage"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 InvalidRequestCause.update_forward_refs()

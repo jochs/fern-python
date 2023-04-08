@@ -99,6 +99,7 @@ class ActualResult(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -110,12 +111,14 @@ class _ActualResult:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Exception(ExceptionInfo):
         type: typing_extensions.Literal["exception"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class ExceptionV2(pydantic.BaseModel):
         type: typing_extensions.Literal["exceptionV2"]
@@ -123,6 +126,7 @@ class _ActualResult:
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 ActualResult.update_forward_refs()

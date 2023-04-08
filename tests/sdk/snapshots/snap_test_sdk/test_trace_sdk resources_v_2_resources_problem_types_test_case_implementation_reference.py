@@ -20,6 +20,7 @@ class TestCaseImplementationReference_TemplateId(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class TestCaseImplementationReference_Implementation(TestCaseImplementation):
@@ -27,6 +28,7 @@ class TestCaseImplementationReference_Implementation(TestCaseImplementation):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 TestCaseImplementationReference = typing_extensions.Annotated[

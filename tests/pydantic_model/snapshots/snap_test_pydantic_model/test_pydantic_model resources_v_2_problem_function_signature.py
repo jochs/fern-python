@@ -20,6 +20,7 @@ class FunctionSignature_Void(VoidFunctionSignature):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class FunctionSignature_NonVoid(NonVoidFunctionSignature):
@@ -27,6 +28,7 @@ class FunctionSignature_NonVoid(NonVoidFunctionSignature):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class FunctionSignature_VoidThatTakesActualResult(VoidFunctionSignatureThatTakesActualResult):
@@ -34,6 +36,7 @@ class FunctionSignature_VoidThatTakesActualResult(VoidFunctionSignatureThatTakes
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 FunctionSignature = typing_extensions.Annotated[

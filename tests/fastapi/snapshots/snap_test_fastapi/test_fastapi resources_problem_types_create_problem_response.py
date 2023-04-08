@@ -88,6 +88,7 @@ class CreateProblemResponse(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -99,6 +100,7 @@ class _CreateProblemResponse:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class Error(pydantic.BaseModel):
         type: typing_extensions.Literal["error"]
@@ -106,6 +108,7 @@ class _CreateProblemResponse:
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 CreateProblemResponse.update_forward_refs()

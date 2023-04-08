@@ -20,6 +20,7 @@ class CustomFiles_Basic(BasicCustomFiles):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class CustomFiles_Custom(pydantic.BaseModel):
@@ -28,6 +29,7 @@ class CustomFiles_Custom(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 CustomFiles = typing_extensions.Annotated[

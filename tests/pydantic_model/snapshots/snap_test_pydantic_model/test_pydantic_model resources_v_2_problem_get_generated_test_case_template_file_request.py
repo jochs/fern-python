@@ -171,4 +171,5 @@ class GetGeneratedTestCaseTemplateFileRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         json_encoders = {dt.datetime: serialize_datetime}

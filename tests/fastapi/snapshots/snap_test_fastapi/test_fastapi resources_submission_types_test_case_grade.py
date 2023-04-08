@@ -91,6 +91,7 @@ class TestCaseGrade(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -101,12 +102,14 @@ class _TestCaseGrade:
 
         class Config:
             frozen = True
+            orm_mode = True
 
     class NonHidden(TestCaseNonHiddenGrade):
         type: typing_extensions.Literal["nonHidden"]
 
         class Config:
             frozen = True
+            orm_mode = True
 
 
 _TestCaseGrade.NonHidden.update_forward_refs(KeyValuePair=KeyValuePair, MapValue=MapValue, VariableValue=VariableValue)

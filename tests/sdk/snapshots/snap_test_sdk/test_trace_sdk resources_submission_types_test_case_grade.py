@@ -19,6 +19,7 @@ class TestCaseGrade_Hidden(TestCaseHiddenGrade):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 class TestCaseGrade_NonHidden(TestCaseNonHiddenGrade):
@@ -26,6 +27,7 @@ class TestCaseGrade_NonHidden(TestCaseNonHiddenGrade):
 
     class Config:
         frozen = True
+        orm_mode = True
 
 
 TestCaseGrade = typing_extensions.Annotated[
