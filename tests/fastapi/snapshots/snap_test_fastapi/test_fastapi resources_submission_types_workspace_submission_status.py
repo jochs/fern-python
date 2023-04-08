@@ -158,8 +158,6 @@ class WorkspaceSubmissionStatus(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        frozen = True
-        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -168,39 +166,19 @@ class _WorkspaceSubmissionStatus:
     class Stopped(pydantic.BaseModel):
         type: typing_extensions.Literal["stopped"]
 
-        class Config:
-            frozen = True
-            orm_mode = True
-
     class Errored(pydantic.BaseModel):
         type: typing_extensions.Literal["errored"]
         value: ErrorInfo
-
-        class Config:
-            frozen = True
-            orm_mode = True
 
     class Running(pydantic.BaseModel):
         type: typing_extensions.Literal["running"]
         value: RunningSubmissionState
 
-        class Config:
-            frozen = True
-            orm_mode = True
-
     class Ran(WorkspaceRunDetails):
         type: typing_extensions.Literal["ran"]
 
-        class Config:
-            frozen = True
-            orm_mode = True
-
     class Traced(WorkspaceRunDetails):
         type: typing_extensions.Literal["traced"]
-
-        class Config:
-            frozen = True
-            orm_mode = True
 
 
 WorkspaceSubmissionStatus.update_forward_refs()

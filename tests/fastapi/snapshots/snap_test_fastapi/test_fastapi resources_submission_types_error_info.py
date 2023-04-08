@@ -98,8 +98,6 @@ class ErrorInfo(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        frozen = True
-        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -108,23 +106,11 @@ class _ErrorInfo:
     class CompileError(resources_submission_types_compile_error_CompileError):
         type: typing_extensions.Literal["compileError"]
 
-        class Config:
-            frozen = True
-            orm_mode = True
-
     class RuntimeError(resources_submission_types_runtime_error_RuntimeError):
         type: typing_extensions.Literal["runtimeError"]
 
-        class Config:
-            frozen = True
-            orm_mode = True
-
     class InternalError(resources_submission_types_internal_error_InternalError):
         type: typing_extensions.Literal["internalError"]
-
-        class Config:
-            frozen = True
-            orm_mode = True
 
 
 ErrorInfo.update_forward_refs()

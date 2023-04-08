@@ -93,8 +93,6 @@ class AssertCorrectnessCheck(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        frozen = True
-        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -103,16 +101,8 @@ class _AssertCorrectnessCheck:
     class DeepEquality(DeepEqualityCorrectnessCheck):
         type: typing_extensions.Literal["deepEquality"]
 
-        class Config:
-            frozen = True
-            orm_mode = True
-
     class Custom(VoidFunctionDefinitionThatTakesActualResult):
         type: typing_extensions.Literal["custom"]
-
-        class Config:
-            frozen = True
-            orm_mode = True
 
 
 _AssertCorrectnessCheck.Custom.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)

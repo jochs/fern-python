@@ -26,8 +26,6 @@ class FernHTTPException(abc.ABC, fastapi.HTTPException):
         content: typing.Optional[typing.Any]
 
         class Config:
-            frozen = True
-            orm_mode = True
             allow_population_by_field_name = True
 
     def to_json_response(self) -> fastapi.responses.JSONResponse:

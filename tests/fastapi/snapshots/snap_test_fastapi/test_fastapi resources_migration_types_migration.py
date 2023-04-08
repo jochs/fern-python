@@ -183,7 +183,5 @@ class Migration(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        frozen = True
-        orm_mode = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}

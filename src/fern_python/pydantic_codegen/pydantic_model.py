@@ -40,8 +40,8 @@ class PydanticModel:
         self._fields: List[PydanticField] = []
         self._forbid_extra_fields = forbid_extra_fields
         self._serialize_datetime = False
-        self.frozen = (frozen,)
-        self.orm_mode = (orm_mode,)
+        self._frozen = frozen
+        self._orm_mode = orm_mode
         self.name = name
         self.json_encoders: List[Tuple[AST.Expression, AST.Expression]] = []
 
@@ -256,7 +256,7 @@ class PydanticModel:
     def _add_config_class(self) -> None:
         config = AST.ClassDeclaration(name="Config")
 
-        if self.frozen:
+        if self._frozen:
             config.add_class_var(
                 AST.VariableDeclaration(
                     name="frozen",
@@ -264,7 +264,7 @@ class PydanticModel:
                 )
             )
 
-        if self.orm_mode:
+        if self._orm_mode:
             config.add_class_var(
                 AST.VariableDeclaration(
                     name="orm_mode",
