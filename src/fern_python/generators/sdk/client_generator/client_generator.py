@@ -335,10 +335,10 @@ class ClientGenerator:
             writer.write_node(
                 HttpX.make_request(
                     is_async=is_async,
-                    url=self._get_environment_as_str(service=service)
+                    url=self._get_environment_as_str(endpoint=endpoint)
                     if is_endpoint_path_empty(endpoint)
                     else UrlLibParse.urljoin(
-                        self._get_environment_as_str(service=service),
+                        self._get_environment_as_str(endpoint=endpoint),
                         self._get_path_for_endpoint(endpoint),
                     ),
                     method=endpoint.method.visit(
