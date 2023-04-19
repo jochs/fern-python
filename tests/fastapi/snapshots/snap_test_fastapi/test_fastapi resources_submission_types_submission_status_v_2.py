@@ -95,6 +95,7 @@ class SubmissionStatusV2(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -103,8 +104,14 @@ class _SubmissionStatusV2:
     class Test(TestSubmissionStatusV2):
         type: typing_extensions.Literal["test"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class Workspace(WorkspaceSubmissionStatusV2):
         type: typing_extensions.Literal["workspace"]
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 _SubmissionStatusV2.Test.update_forward_refs(

@@ -248,6 +248,7 @@ class VariableValue(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -261,40 +262,73 @@ class _VariableValue:
         type: typing_extensions.Literal["integerValue"]
         value: int
 
+        class Config:
+            allow_population_by_field_name = True
+
     class BooleanValue(pydantic.BaseModel):
         type: typing_extensions.Literal["booleanValue"]
         value: bool
+
+        class Config:
+            allow_population_by_field_name = True
 
     class DoubleValue(pydantic.BaseModel):
         type: typing_extensions.Literal["doubleValue"]
         value: float
 
+        class Config:
+            allow_population_by_field_name = True
+
     class StringValue(pydantic.BaseModel):
         type: typing_extensions.Literal["stringValue"]
         value: str
+
+        class Config:
+            allow_population_by_field_name = True
 
     class CharValue(pydantic.BaseModel):
         type: typing_extensions.Literal["charValue"]
         value: str
 
+        class Config:
+            allow_population_by_field_name = True
+
     class MapValue(resources_commons_types_map_value_MapValue):
         type: typing_extensions.Literal["mapValue"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class ListValue(pydantic.BaseModel):
         type: typing_extensions.Literal["listValue"]
         value: typing.List[VariableValue]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class BinaryTreeValue(resources_commons_types_binary_tree_value_BinaryTreeValue):
         type: typing_extensions.Literal["binaryTreeValue"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class SinglyLinkedListValue(resources_commons_types_singly_linked_list_value_SinglyLinkedListValue):
         type: typing_extensions.Literal["singlyLinkedListValue"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class DoublyLinkedListValue(resources_commons_types_doubly_linked_list_value_DoublyLinkedListValue):
         type: typing_extensions.Literal["doublyLinkedListValue"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class NullValue(pydantic.BaseModel):
         type: typing_extensions.Literal["nullValue"]
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 _VariableValue.MapValue.update_forward_refs(

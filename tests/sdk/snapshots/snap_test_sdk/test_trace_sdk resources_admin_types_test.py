@@ -14,6 +14,7 @@ class Test_And(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class Test_Or(pydantic.BaseModel):
@@ -22,6 +23,7 @@ class Test_Or(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 Test = typing_extensions.Annotated[typing.Union[Test_And, Test_Or], pydantic.Field(discriminator="type")]

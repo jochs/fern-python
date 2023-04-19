@@ -220,6 +220,7 @@ class VariableType(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -232,32 +233,62 @@ class _VariableType:
     class IntegerType(pydantic.BaseModel):
         type: typing_extensions.Literal["integerType"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class DoubleType(pydantic.BaseModel):
         type: typing_extensions.Literal["doubleType"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class BooleanType(pydantic.BaseModel):
         type: typing_extensions.Literal["booleanType"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class StringType(pydantic.BaseModel):
         type: typing_extensions.Literal["stringType"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class CharType(pydantic.BaseModel):
         type: typing_extensions.Literal["charType"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class ListType(resources_commons_types_list_type_ListType):
         type: typing_extensions.Literal["listType"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class MapType(resources_commons_types_map_type_MapType):
         type: typing_extensions.Literal["mapType"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class BinaryTreeType(pydantic.BaseModel):
         type: typing_extensions.Literal["binaryTreeType"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class SinglyLinkedListType(pydantic.BaseModel):
         type: typing_extensions.Literal["singlyLinkedListType"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class DoublyLinkedListType(pydantic.BaseModel):
         type: typing_extensions.Literal["doublyLinkedListType"]
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 _VariableType.ListType.update_forward_refs(

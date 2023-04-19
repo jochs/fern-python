@@ -18,6 +18,7 @@ class ActualResult_Value(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class ActualResult_Exception(ExceptionInfo):
@@ -25,6 +26,7 @@ class ActualResult_Exception(ExceptionInfo):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class ActualResult_ExceptionV2(pydantic.BaseModel):
@@ -33,6 +35,7 @@ class ActualResult_ExceptionV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 ActualResult = typing_extensions.Annotated[

@@ -20,6 +20,7 @@ class VariableValue_IntegerValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_BooleanValue(pydantic.BaseModel):
@@ -28,6 +29,7 @@ class VariableValue_BooleanValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_DoubleValue(pydantic.BaseModel):
@@ -36,6 +38,7 @@ class VariableValue_DoubleValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_StringValue(pydantic.BaseModel):
@@ -44,6 +47,7 @@ class VariableValue_StringValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_CharValue(pydantic.BaseModel):
@@ -52,6 +56,7 @@ class VariableValue_CharValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_MapValue(MapValue):
@@ -59,6 +64,7 @@ class VariableValue_MapValue(MapValue):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_ListValue(pydantic.BaseModel):
@@ -67,6 +73,7 @@ class VariableValue_ListValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_BinaryTreeValue(BinaryTreeValue):
@@ -74,6 +81,7 @@ class VariableValue_BinaryTreeValue(BinaryTreeValue):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_SinglyLinkedListValue(SinglyLinkedListValue):
@@ -81,6 +89,7 @@ class VariableValue_SinglyLinkedListValue(SinglyLinkedListValue):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_DoublyLinkedListValue(DoublyLinkedListValue):
@@ -88,6 +97,7 @@ class VariableValue_DoublyLinkedListValue(DoublyLinkedListValue):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class VariableValue_NullValue(pydantic.BaseModel):
@@ -95,6 +105,7 @@ class VariableValue_NullValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 VariableValue = typing_extensions.Annotated[

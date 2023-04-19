@@ -18,14 +18,23 @@ from .traced_test_case import TracedTestCase
 class SubmissionStatusForTestCase_Graded(TestCaseResultWithStdout):
     type: typing_extensions.Literal["graded"]
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class SubmissionStatusForTestCase_GradedV2(pydantic.BaseModel):
     type: typing_extensions.Literal["gradedV2"]
     value: TestCaseGrade
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class SubmissionStatusForTestCase_Traced(TracedTestCase):
     type: typing_extensions.Literal["traced"]
+
+    class Config:
+        allow_population_by_field_name = True
 
 
 SubmissionStatusForTestCase = typing_extensions.Annotated[

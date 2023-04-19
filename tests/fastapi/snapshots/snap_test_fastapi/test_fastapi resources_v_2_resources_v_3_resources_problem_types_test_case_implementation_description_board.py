@@ -107,6 +107,7 @@ class TestCaseImplementationDescriptionBoard(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -116,9 +117,15 @@ class _TestCaseImplementationDescriptionBoard:
         type: typing_extensions.Literal["html"]
         value: str
 
+        class Config:
+            allow_population_by_field_name = True
+
     class ParamId(pydantic.BaseModel):
         type: typing_extensions.Literal["paramId"]
         value: ParameterId
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 TestCaseImplementationDescriptionBoard.update_forward_refs()

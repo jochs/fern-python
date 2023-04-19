@@ -16,14 +16,23 @@ class ActualResult_Value(pydantic.BaseModel):
     type: typing_extensions.Literal["value"]
     value: VariableValue
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class ActualResult_Exception(ExceptionInfo):
     type: typing_extensions.Literal["exception"]
+
+    class Config:
+        allow_population_by_field_name = True
 
 
 class ActualResult_ExceptionV2(pydantic.BaseModel):
     type: typing_extensions.Literal["exceptionV2"]
     value: ExceptionV2
+
+    class Config:
+        allow_population_by_field_name = True
 
 
 ActualResult = typing_extensions.Annotated[

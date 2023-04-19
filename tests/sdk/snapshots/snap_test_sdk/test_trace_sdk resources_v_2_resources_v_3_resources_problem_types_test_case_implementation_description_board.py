@@ -16,6 +16,7 @@ class TestCaseImplementationDescriptionBoard_Html(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class TestCaseImplementationDescriptionBoard_ParamId(pydantic.BaseModel):
@@ -24,6 +25,7 @@ class TestCaseImplementationDescriptionBoard_ParamId(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 TestCaseImplementationDescriptionBoard = typing_extensions.Annotated[

@@ -182,6 +182,7 @@ class SubmissionResponse(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -190,22 +191,40 @@ class _SubmissionResponse:
     class ServerInitialized(pydantic.BaseModel):
         type: typing_extensions.Literal["serverInitialized"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class ProblemInitialized(pydantic.BaseModel):
         type: typing_extensions.Literal["problemInitialized"]
         value: ProblemId
 
+        class Config:
+            allow_population_by_field_name = True
+
     class WorkspaceInitialized(pydantic.BaseModel):
         type: typing_extensions.Literal["workspaceInitialized"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class ServerErrored(ExceptionInfo):
         type: typing_extensions.Literal["serverErrored"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class CodeExecutionUpdate(pydantic.BaseModel):
         type: typing_extensions.Literal["codeExecutionUpdate"]
         value: resources_submission_types_code_execution_update_CodeExecutionUpdate
 
+        class Config:
+            allow_population_by_field_name = True
+
     class Terminated(TerminatedResponse):
         type: typing_extensions.Literal["terminated"]
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 SubmissionResponse.update_forward_refs()

@@ -17,6 +17,7 @@ class WorkspaceSubmissionStatus_Stopped(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class WorkspaceSubmissionStatus_Errored(pydantic.BaseModel):
@@ -25,6 +26,7 @@ class WorkspaceSubmissionStatus_Errored(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class WorkspaceSubmissionStatus_Running(pydantic.BaseModel):
@@ -33,6 +35,7 @@ class WorkspaceSubmissionStatus_Running(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class WorkspaceSubmissionStatus_Ran(WorkspaceRunDetails):
@@ -40,6 +43,7 @@ class WorkspaceSubmissionStatus_Ran(WorkspaceRunDetails):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class WorkspaceSubmissionStatus_Traced(WorkspaceRunDetails):
@@ -47,6 +51,7 @@ class WorkspaceSubmissionStatus_Traced(WorkspaceRunDetails):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 WorkspaceSubmissionStatus = typing_extensions.Annotated[

@@ -20,26 +20,44 @@ class TestSubmissionUpdateInfo_Running(pydantic.BaseModel):
     type: typing_extensions.Literal["running"]
     value: RunningSubmissionState
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class TestSubmissionUpdateInfo_Stopped(pydantic.BaseModel):
     type: typing_extensions.Literal["stopped"]
+
+    class Config:
+        allow_population_by_field_name = True
 
 
 class TestSubmissionUpdateInfo_Errored(pydantic.BaseModel):
     type: typing_extensions.Literal["errored"]
     value: ErrorInfo
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class TestSubmissionUpdateInfo_GradedTestCase(GradedTestCaseUpdate):
     type: typing_extensions.Literal["gradedTestCase"]
+
+    class Config:
+        allow_population_by_field_name = True
 
 
 class TestSubmissionUpdateInfo_RecordedTestCase(RecordedTestCaseUpdate):
     type: typing_extensions.Literal["recordedTestCase"]
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class TestSubmissionUpdateInfo_Finished(pydantic.BaseModel):
     type: typing_extensions.Literal["finished"]
+
+    class Config:
+        allow_population_by_field_name = True
 
 
 TestSubmissionUpdateInfo = typing_extensions.Annotated[

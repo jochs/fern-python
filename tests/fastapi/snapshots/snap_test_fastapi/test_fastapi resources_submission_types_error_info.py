@@ -98,6 +98,7 @@ class ErrorInfo(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -106,11 +107,20 @@ class _ErrorInfo:
     class CompileError(resources_submission_types_compile_error_CompileError):
         type: typing_extensions.Literal["compileError"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class RuntimeError(resources_submission_types_runtime_error_RuntimeError):
         type: typing_extensions.Literal["runtimeError"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class InternalError(resources_submission_types_internal_error_InternalError):
         type: typing_extensions.Literal["internalError"]
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 ErrorInfo.update_forward_refs()

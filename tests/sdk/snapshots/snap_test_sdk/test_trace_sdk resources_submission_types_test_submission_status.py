@@ -17,6 +17,7 @@ class TestSubmissionStatus_Stopped(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class TestSubmissionStatus_Errored(pydantic.BaseModel):
@@ -25,6 +26,7 @@ class TestSubmissionStatus_Errored(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class TestSubmissionStatus_Running(pydantic.BaseModel):
@@ -33,6 +35,7 @@ class TestSubmissionStatus_Running(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 class TestSubmissionStatus_TestCaseIdToState(pydantic.BaseModel):
@@ -41,6 +44,7 @@ class TestSubmissionStatus_TestCaseIdToState(pydantic.BaseModel):
 
     class Config:
         frozen = True
+        allow_population_by_field_name = True
 
 
 TestSubmissionStatus = typing_extensions.Annotated[

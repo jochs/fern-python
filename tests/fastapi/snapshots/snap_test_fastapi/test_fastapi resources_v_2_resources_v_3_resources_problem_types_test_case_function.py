@@ -92,6 +92,7 @@ class TestCaseFunction(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -100,8 +101,14 @@ class _TestCaseFunction:
     class WithActualResult(TestCaseWithActualResultImplementation):
         type: typing_extensions.Literal["withActualResult"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class Custom(VoidFunctionDefinition):
         type: typing_extensions.Literal["custom"]
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 _TestCaseFunction.WithActualResult.update_forward_refs(ListType=ListType, MapType=MapType, VariableType=VariableType)

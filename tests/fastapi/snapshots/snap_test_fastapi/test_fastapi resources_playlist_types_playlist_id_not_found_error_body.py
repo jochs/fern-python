@@ -81,6 +81,7 @@ class PlaylistIdNotFoundErrorBody(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -89,6 +90,9 @@ class _PlaylistIdNotFoundErrorBody:
     class PlaylistId(pydantic.BaseModel):
         type: typing_extensions.Literal["playlistId"]
         value: resources_playlist_types_playlist_id_PlaylistId
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 PlaylistIdNotFoundErrorBody.update_forward_refs()

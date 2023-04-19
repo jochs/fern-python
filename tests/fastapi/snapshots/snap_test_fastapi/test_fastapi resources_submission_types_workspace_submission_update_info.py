@@ -191,6 +191,7 @@ class WorkspaceSubmissionUpdateInfo(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
+        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -200,24 +201,45 @@ class _WorkspaceSubmissionUpdateInfo:
         type: typing_extensions.Literal["running"]
         value: RunningSubmissionState
 
+        class Config:
+            allow_population_by_field_name = True
+
     class Ran(WorkspaceRunDetails):
         type: typing_extensions.Literal["ran"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class Stopped(pydantic.BaseModel):
         type: typing_extensions.Literal["stopped"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class Traced(pydantic.BaseModel):
         type: typing_extensions.Literal["traced"]
 
+        class Config:
+            allow_population_by_field_name = True
+
     class TracedV2(WorkspaceTracedUpdate):
         type: typing_extensions.Literal["tracedV2"]
+
+        class Config:
+            allow_population_by_field_name = True
 
     class Errored(pydantic.BaseModel):
         type: typing_extensions.Literal["errored"]
         value: ErrorInfo
 
+        class Config:
+            allow_population_by_field_name = True
+
     class Finished(pydantic.BaseModel):
         type: typing_extensions.Literal["finished"]
+
+        class Config:
+            allow_population_by_field_name = True
 
 
 WorkspaceSubmissionUpdateInfo.update_forward_refs()
