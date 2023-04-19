@@ -269,7 +269,6 @@ class DebugVariableValue(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -283,36 +282,21 @@ class _DebugVariableValue:
         type: typing_extensions.Literal["integerValue"]
         value: int
 
-        class Config:
-            allow_population_by_field_name = True
-
     class BooleanValue(pydantic.BaseModel):
         type: typing_extensions.Literal["booleanValue"]
         value: bool
-
-        class Config:
-            allow_population_by_field_name = True
 
     class DoubleValue(pydantic.BaseModel):
         type: typing_extensions.Literal["doubleValue"]
         value: float
 
-        class Config:
-            allow_population_by_field_name = True
-
     class StringValue(pydantic.BaseModel):
         type: typing_extensions.Literal["stringValue"]
         value: str
 
-        class Config:
-            allow_population_by_field_name = True
-
     class CharValue(pydantic.BaseModel):
         type: typing_extensions.Literal["charValue"]
         value: str
-
-        class Config:
-            allow_population_by_field_name = True
 
     class MapValue(DebugMapValue):
         type: typing_extensions.Literal["mapValue"]
@@ -323,9 +307,6 @@ class _DebugVariableValue:
     class ListValue(pydantic.BaseModel):
         type: typing_extensions.Literal["listValue"]
         value: typing.List[DebugVariableValue]
-
-        class Config:
-            allow_population_by_field_name = True
 
     class BinaryTreeNodeValue(BinaryTreeNodeAndTreeValue):
         type: typing_extensions.Literal["binaryTreeNodeValue"]
@@ -348,14 +329,8 @@ class _DebugVariableValue:
     class UndefinedValue(pydantic.BaseModel):
         type: typing_extensions.Literal["undefinedValue"]
 
-        class Config:
-            allow_population_by_field_name = True
-
     class NullValue(pydantic.BaseModel):
         type: typing_extensions.Literal["nullValue"]
-
-        class Config:
-            allow_population_by_field_name = True
 
     class GenericValue(resources_commons_types_generic_value_GenericValue):
         type: typing_extensions.Literal["genericValue"]

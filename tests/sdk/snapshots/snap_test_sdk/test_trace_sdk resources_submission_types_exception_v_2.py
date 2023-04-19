@@ -23,7 +23,6 @@ class ExceptionV2_Timeout(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 ExceptionV2 = typing_extensions.Annotated[

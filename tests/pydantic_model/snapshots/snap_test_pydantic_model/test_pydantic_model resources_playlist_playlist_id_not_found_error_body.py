@@ -14,9 +14,6 @@ class PlaylistIdNotFoundErrorBody_PlaylistId(pydantic.BaseModel):
     type: typing_extensions.Literal["playlistId"]
     value: PlaylistId
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 PlaylistIdNotFoundErrorBody = typing_extensions.Annotated[
     typing.Union[PlaylistIdNotFoundErrorBody_PlaylistId], pydantic.Field(discriminator="type")

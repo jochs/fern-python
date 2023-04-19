@@ -98,7 +98,6 @@ class ActualResult(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -107,9 +106,6 @@ class _ActualResult:
     class Value(pydantic.BaseModel):
         type: typing_extensions.Literal["value"]
         value: VariableValue
-
-        class Config:
-            allow_population_by_field_name = True
 
     class Exception(ExceptionInfo):
         type: typing_extensions.Literal["exception"]
@@ -120,9 +116,6 @@ class _ActualResult:
     class ExceptionV2(pydantic.BaseModel):
         type: typing_extensions.Literal["exceptionV2"]
         value: resources_submission_types_exception_v_2_ExceptionV2
-
-        class Config:
-            allow_population_by_field_name = True
 
 
 ActualResult.update_forward_refs()

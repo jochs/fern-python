@@ -16,7 +16,6 @@ class VariableType_IntegerType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableType_DoubleType(pydantic.BaseModel):
@@ -24,7 +23,6 @@ class VariableType_DoubleType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableType_BooleanType(pydantic.BaseModel):
@@ -32,7 +30,6 @@ class VariableType_BooleanType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableType_StringType(pydantic.BaseModel):
@@ -40,7 +37,6 @@ class VariableType_StringType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableType_CharType(pydantic.BaseModel):
@@ -48,7 +44,6 @@ class VariableType_CharType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableType_ListType(ListType):
@@ -72,7 +67,6 @@ class VariableType_BinaryTreeType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableType_SinglyLinkedListType(pydantic.BaseModel):
@@ -80,7 +74,6 @@ class VariableType_SinglyLinkedListType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableType_DoublyLinkedListType(pydantic.BaseModel):
@@ -88,7 +81,6 @@ class VariableType_DoublyLinkedListType(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 VariableType = typing_extensions.Annotated[

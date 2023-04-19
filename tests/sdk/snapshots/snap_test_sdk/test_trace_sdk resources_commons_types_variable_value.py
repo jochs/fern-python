@@ -20,7 +20,6 @@ class VariableValue_IntegerValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableValue_BooleanValue(pydantic.BaseModel):
@@ -29,7 +28,6 @@ class VariableValue_BooleanValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableValue_DoubleValue(pydantic.BaseModel):
@@ -38,7 +36,6 @@ class VariableValue_DoubleValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableValue_StringValue(pydantic.BaseModel):
@@ -47,7 +44,6 @@ class VariableValue_StringValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableValue_CharValue(pydantic.BaseModel):
@@ -56,7 +52,6 @@ class VariableValue_CharValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableValue_MapValue(MapValue):
@@ -73,7 +68,6 @@ class VariableValue_ListValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class VariableValue_BinaryTreeValue(BinaryTreeValue):
@@ -105,7 +99,6 @@ class VariableValue_NullValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 VariableValue = typing_extensions.Annotated[

@@ -17,7 +17,6 @@ class CreateProblemResponse_Success(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class CreateProblemResponse_Error(pydantic.BaseModel):
@@ -26,7 +25,6 @@ class CreateProblemResponse_Error(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 CreateProblemResponse = typing_extensions.Annotated[

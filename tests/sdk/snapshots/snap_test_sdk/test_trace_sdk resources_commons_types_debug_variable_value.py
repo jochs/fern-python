@@ -21,7 +21,6 @@ class DebugVariableValue_IntegerValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_BooleanValue(pydantic.BaseModel):
@@ -30,7 +29,6 @@ class DebugVariableValue_BooleanValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_DoubleValue(pydantic.BaseModel):
@@ -39,7 +37,6 @@ class DebugVariableValue_DoubleValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_StringValue(pydantic.BaseModel):
@@ -48,7 +45,6 @@ class DebugVariableValue_StringValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_CharValue(pydantic.BaseModel):
@@ -57,7 +53,6 @@ class DebugVariableValue_CharValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_MapValue(DebugMapValue):
@@ -74,7 +69,6 @@ class DebugVariableValue_ListValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_BinaryTreeNodeValue(BinaryTreeNodeAndTreeValue):
@@ -106,7 +100,6 @@ class DebugVariableValue_UndefinedValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_NullValue(pydantic.BaseModel):
@@ -114,7 +107,6 @@ class DebugVariableValue_NullValue(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class DebugVariableValue_GenericValue(GenericValue):

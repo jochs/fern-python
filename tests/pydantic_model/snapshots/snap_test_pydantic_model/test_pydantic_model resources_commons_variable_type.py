@@ -14,36 +14,21 @@ from .map_type import MapType
 class VariableType_IntegerType(pydantic.BaseModel):
     type: typing_extensions.Literal["integerType"]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableType_DoubleType(pydantic.BaseModel):
     type: typing_extensions.Literal["doubleType"]
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 class VariableType_BooleanType(pydantic.BaseModel):
     type: typing_extensions.Literal["booleanType"]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableType_StringType(pydantic.BaseModel):
     type: typing_extensions.Literal["stringType"]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableType_CharType(pydantic.BaseModel):
     type: typing_extensions.Literal["charType"]
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 class VariableType_ListType(ListType):
@@ -63,22 +48,13 @@ class VariableType_MapType(MapType):
 class VariableType_BinaryTreeType(pydantic.BaseModel):
     type: typing_extensions.Literal["binaryTreeType"]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableType_SinglyLinkedListType(pydantic.BaseModel):
     type: typing_extensions.Literal["singlyLinkedListType"]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableType_DoublyLinkedListType(pydantic.BaseModel):
     type: typing_extensions.Literal["doublyLinkedListType"]
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 VariableType = typing_extensions.Annotated[

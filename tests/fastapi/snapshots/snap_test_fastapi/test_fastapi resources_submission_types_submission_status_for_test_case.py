@@ -133,7 +133,6 @@ class SubmissionStatusForTestCase(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -148,9 +147,6 @@ class _SubmissionStatusForTestCase:
     class GradedV2(pydantic.BaseModel):
         type: typing_extensions.Literal["gradedV2"]
         value: TestCaseGrade
-
-        class Config:
-            allow_population_by_field_name = True
 
     class Traced(TracedTestCase):
         type: typing_extensions.Literal["traced"]

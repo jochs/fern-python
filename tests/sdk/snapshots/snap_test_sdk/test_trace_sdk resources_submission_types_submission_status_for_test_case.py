@@ -29,7 +29,6 @@ class SubmissionStatusForTestCase_GradedV2(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class SubmissionStatusForTestCase_Traced(TracedTestCase):

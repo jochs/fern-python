@@ -282,15 +282,13 @@ class PydanticModel:
                 )
             )
 
-        # this config only applies if the model has aliases. to apply
-        # conditionally, we'd have to check if this model (or any of the models
-        # it extends) has aliases.
-        config.add_class_var(
-            AST.VariableDeclaration(
-                name="allow_population_by_field_name",
-                initializer=AST.Expression("True"),
+        if self._has_aliases or len(self._base_models) > 0:
+            config.add_class_var(
+                AST.VariableDeclaration(
+                    name="allow_population_by_field_name",
+                    initializer=AST.Expression("True"),
+                )
             )
-        )
 
         if self._forbid_extra_fields:
             config.add_class_var(

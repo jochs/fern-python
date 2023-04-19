@@ -16,7 +16,6 @@ class PlaylistIdNotFoundErrorBody_PlaylistId(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 PlaylistIdNotFoundErrorBody = typing_extensions.Annotated[

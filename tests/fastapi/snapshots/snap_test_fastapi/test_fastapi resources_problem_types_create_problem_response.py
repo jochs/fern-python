@@ -87,7 +87,6 @@ class CreateProblemResponse(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -97,15 +96,9 @@ class _CreateProblemResponse:
         type: typing_extensions.Literal["success"]
         value: ProblemId
 
-        class Config:
-            allow_population_by_field_name = True
-
     class Error(pydantic.BaseModel):
         type: typing_extensions.Literal["error"]
         value: CreateProblemError
-
-        class Config:
-            allow_population_by_field_name = True
 
 
 CreateProblemResponse.update_forward_refs()

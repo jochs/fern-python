@@ -124,7 +124,6 @@ class ProblemDescriptionBoard(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -134,22 +133,13 @@ class _ProblemDescriptionBoard:
         type: typing_extensions.Literal["html"]
         value: str
 
-        class Config:
-            allow_population_by_field_name = True
-
     class Variable(pydantic.BaseModel):
         type: typing_extensions.Literal["variable"]
         value: VariableValue
 
-        class Config:
-            allow_population_by_field_name = True
-
     class TestCaseId(pydantic.BaseModel):
         type: typing_extensions.Literal["testCaseId"]
         value: str
-
-        class Config:
-            allow_population_by_field_name = True
 
 
 ProblemDescriptionBoard.update_forward_refs()

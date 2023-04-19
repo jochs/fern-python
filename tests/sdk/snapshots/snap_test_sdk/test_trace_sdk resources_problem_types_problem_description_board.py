@@ -16,7 +16,6 @@ class ProblemDescriptionBoard_Html(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class ProblemDescriptionBoard_Variable(pydantic.BaseModel):
@@ -25,7 +24,6 @@ class ProblemDescriptionBoard_Variable(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class ProblemDescriptionBoard_TestCaseId(pydantic.BaseModel):
@@ -34,7 +32,6 @@ class ProblemDescriptionBoard_TestCaseId(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 ProblemDescriptionBoard = typing_extensions.Annotated[

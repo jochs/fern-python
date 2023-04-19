@@ -23,9 +23,6 @@ class SubmissionRequest_InitializeProblemRequest(InitializeProblemRequest):
 class SubmissionRequest_InitializeWorkspaceRequest(pydantic.BaseModel):
     type: typing_extensions.Literal["initializeWorkspaceRequest"]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class SubmissionRequest_SubmitV2(SubmitRequestV2):
     type: typing_extensions.Literal["submitV2"]

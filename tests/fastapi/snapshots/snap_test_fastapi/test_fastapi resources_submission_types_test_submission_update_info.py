@@ -179,7 +179,6 @@ class TestSubmissionUpdateInfo(pydantic.BaseModel):
         return super().dict(**kwargs_with_defaults)
 
     class Config:
-        allow_population_by_field_name = True
         extra = pydantic.Extra.forbid
         json_encoders = {dt.datetime: serialize_datetime}
 
@@ -189,21 +188,12 @@ class _TestSubmissionUpdateInfo:
         type: typing_extensions.Literal["running"]
         value: RunningSubmissionState
 
-        class Config:
-            allow_population_by_field_name = True
-
     class Stopped(pydantic.BaseModel):
         type: typing_extensions.Literal["stopped"]
-
-        class Config:
-            allow_population_by_field_name = True
 
     class Errored(pydantic.BaseModel):
         type: typing_extensions.Literal["errored"]
         value: ErrorInfo
-
-        class Config:
-            allow_population_by_field_name = True
 
     class GradedTestCase(GradedTestCaseUpdate):
         type: typing_extensions.Literal["gradedTestCase"]
@@ -219,9 +209,6 @@ class _TestSubmissionUpdateInfo:
 
     class Finished(pydantic.BaseModel):
         type: typing_extensions.Literal["finished"]
-
-        class Config:
-            allow_population_by_field_name = True
 
 
 _TestSubmissionUpdateInfo.GradedTestCase.update_forward_refs(

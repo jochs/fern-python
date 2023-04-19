@@ -26,7 +26,6 @@ class SubmissionRequest_InitializeWorkspaceRequest(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class SubmissionRequest_SubmitV2(SubmitRequestV2):

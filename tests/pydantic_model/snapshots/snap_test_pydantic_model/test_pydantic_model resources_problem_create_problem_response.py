@@ -15,16 +15,10 @@ class CreateProblemResponse_Success(pydantic.BaseModel):
     type: typing_extensions.Literal["success"]
     value: ProblemId
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class CreateProblemResponse_Error(pydantic.BaseModel):
     type: typing_extensions.Literal["error"]
     value: CreateProblemError
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 CreateProblemResponse = typing_extensions.Annotated[

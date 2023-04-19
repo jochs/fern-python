@@ -18,7 +18,6 @@ class SubmissionResponse_ServerInitialized(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class SubmissionResponse_ProblemInitialized(pydantic.BaseModel):
@@ -27,7 +26,6 @@ class SubmissionResponse_ProblemInitialized(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class SubmissionResponse_WorkspaceInitialized(pydantic.BaseModel):
@@ -35,7 +33,6 @@ class SubmissionResponse_WorkspaceInitialized(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class SubmissionResponse_ServerErrored(ExceptionInfo):
@@ -52,7 +49,6 @@ class SubmissionResponse_CodeExecutionUpdate(pydantic.BaseModel):
 
     class Config:
         frozen = True
-        allow_population_by_field_name = True
 
 
 class SubmissionResponse_Terminated(TerminatedResponse):

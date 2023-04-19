@@ -18,40 +18,25 @@ class VariableValue_IntegerValue(pydantic.BaseModel):
     type: typing_extensions.Literal["integerValue"]
     value: int
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableValue_BooleanValue(pydantic.BaseModel):
     type: typing_extensions.Literal["booleanValue"]
     value: bool
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 class VariableValue_DoubleValue(pydantic.BaseModel):
     type: typing_extensions.Literal["doubleValue"]
     value: float
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableValue_StringValue(pydantic.BaseModel):
     type: typing_extensions.Literal["stringValue"]
     value: str
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class VariableValue_CharValue(pydantic.BaseModel):
     type: typing_extensions.Literal["charValue"]
     value: str
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 class VariableValue_MapValue(MapValue):
@@ -64,9 +49,6 @@ class VariableValue_MapValue(MapValue):
 class VariableValue_ListValue(pydantic.BaseModel):
     type: typing_extensions.Literal["listValue"]
     value: typing.List[VariableValue]
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 class VariableValue_BinaryTreeValue(BinaryTreeValue):
@@ -92,9 +74,6 @@ class VariableValue_DoublyLinkedListValue(DoublyLinkedListValue):
 
 class VariableValue_NullValue(pydantic.BaseModel):
     type: typing_extensions.Literal["nullValue"]
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 VariableValue = typing_extensions.Annotated[

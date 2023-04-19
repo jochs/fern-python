@@ -26,9 +26,6 @@ class CustomFiles_Custom(pydantic.BaseModel):
     type: typing_extensions.Literal["custom"]
     value: typing.Dict[Language, Files]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 CustomFiles = typing_extensions.Annotated[
     typing.Union[CustomFiles_Basic, CustomFiles_Custom], pydantic.Field(discriminator="type")

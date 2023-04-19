@@ -14,16 +14,10 @@ class TestCaseImplementationDescriptionBoard_Html(pydantic.BaseModel):
     type: typing_extensions.Literal["html"]
     value: str
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class TestCaseImplementationDescriptionBoard_ParamId(pydantic.BaseModel):
     type: typing_extensions.Literal["paramId"]
     value: ParameterId
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 TestCaseImplementationDescriptionBoard = typing_extensions.Annotated[

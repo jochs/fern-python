@@ -15,32 +15,20 @@ from .submission_status_for_test_case import SubmissionStatusForTestCase
 class TestSubmissionStatus_Stopped(pydantic.BaseModel):
     type: typing_extensions.Literal["stopped"]
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class TestSubmissionStatus_Errored(pydantic.BaseModel):
     type: typing_extensions.Literal["errored"]
     value: ErrorInfo
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 class TestSubmissionStatus_Running(pydantic.BaseModel):
     type: typing_extensions.Literal["running"]
     value: RunningSubmissionState
 
-    class Config:
-        allow_population_by_field_name = True
-
 
 class TestSubmissionStatus_TestCaseIdToState(pydantic.BaseModel):
     type: typing_extensions.Literal["testCaseIdToState"]
     value: typing.Dict[str, SubmissionStatusForTestCase]
-
-    class Config:
-        allow_population_by_field_name = True
 
 
 TestSubmissionStatus = typing_extensions.Annotated[
