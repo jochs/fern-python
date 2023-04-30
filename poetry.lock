@@ -222,14 +222,14 @@ reference = "fern-prod"
 
 [[package]]
 name = "fern-fern-ir-model"
-version = "0.0.1499"
+version = "0.0.1503"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "fern_fern_ir_model-0.0.1499-py3-none-any.whl", hash = "sha256:920862f946990b54fd8b6fd81c80bf017bc2233d93c82aa3d0680c208ef69735"},
-    {file = "fern_fern_ir_model-0.0.1499.tar.gz", hash = "sha256:07f8efe640ebca49b1fd1c49ced95b9bc1dd8075edb7a94aaa2a6856b1a53a4b"},
+    {file = "fern_fern_ir_model-0.0.1503-py3-none-any.whl", hash = "sha256:ed79f7c3d157db4aa7976c14c988da370f5bc4f602e3ec34a79c6b7be0d9c605"},
+    {file = "fern_fern_ir_model-0.0.1503.tar.gz", hash = "sha256:66153497209c96818ab478969c04aff3488f770a5f405ad2ef9d9a1a62bd3042"},
 ]
 
 [package.dependencies]
@@ -986,4 +986,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "02562c95d8e5a3ee146c949744963d2344e9d8d07694a0e6c6e709ecb3855f7f"
+content-hash = "6737adc23830364d31a13afaca83c4060818c1f9e9e76205a858d879e92d625d"
