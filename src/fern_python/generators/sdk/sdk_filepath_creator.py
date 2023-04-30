@@ -4,7 +4,7 @@ import fern.ir.resources as ir_types
 from fern.generator_exec.sdk.resources import GeneratorConfig
 
 from fern_python.codegen import ExportStrategy, Filepath
-from fern_python.declaration_referencer import FernFilepathCreator
+from fern_python.declaration_referencer.fern_filepath_creator import FernFilepathCreator
 
 from .custom_config import SDKCustomConfig
 
