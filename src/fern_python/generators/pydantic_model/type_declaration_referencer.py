@@ -21,17 +21,5 @@ class TypeDeclarationReferencer(AbstractDeclarationReferencer[ir_types.DeclaredT
             file=Filepath.FilepathPart(module_name=name.name.snake_case.unsafe_name),
         )
 
-    def _get_directories_for_fern_filepath(
-        self,
-        *,
-        fern_filepath: ir_types.FernFilepath,
-    ) -> Tuple[Filepath.DirectoryFilepathPart, ...]:
-        return (
-            Filepath.DirectoryFilepathPart(
-                module_name="resources",
-                export_strategy=ExportStrategy(export_all=True),
-            ),
-        ) + super()._get_directories_for_fern_filepath(fern_filepath=fern_filepath)
-
     def get_class_name(self, *, name: ir_types.DeclaredTypeName) -> str:
         return name.name.pascal_case.unsafe_name
