@@ -1,18 +1,12 @@
 from typing import Tuple
 
 import fern.ir.resources as ir_types
-from fern.generator_exec.sdk.resources import GeneratorConfig
 
 from fern_python.codegen import ExportStrategy, Filepath
 from fern_python.declaration_referencer import AbstractDeclarationReferencer
 
-from .pydantic_filepath_creator import PydanticFilepathCreator
-
 
 class TypeDeclarationReferencer(AbstractDeclarationReferencer[ir_types.DeclaredTypeName]):
-    def __init__(self, ir: ir_types.IntermediateRepresentation, generator_config: GeneratorConfig):
-        super().__init__(filepath_creator=PydanticFilepathCreator(ir=ir, generator_config=generator_config))
-
     def get_filepath(self, *, name: ir_types.DeclaredTypeName) -> Filepath:
         return Filepath(
             directories=self._get_directories_for_fern_filepath(
@@ -21,17 +15,22 @@ class TypeDeclarationReferencer(AbstractDeclarationReferencer[ir_types.DeclaredT
             file=Filepath.FilepathPart(module_name=name.name.snake_case.unsafe_name),
         )
 
-    def _get_directories_for_fern_filepath(
+    def _get_directories_for_fern_filepath_part(
         self,
         *,
-        fern_filepath: ir_types.FernFilepath,
+        fern_filepath_part: ir_types.Name,
+        export_strategy: ExportStrategy,
     ) -> Tuple[Filepath.DirectoryFilepathPart, ...]:
         return (
             Filepath.DirectoryFilepathPart(
                 module_name="resources",
                 export_strategy=ExportStrategy(export_all=True),
             ),
-        ) + super()._get_directories_for_fern_filepath(fern_filepath=fern_filepath)
+            Filepath.DirectoryFilepathPart(
+                module_name=fern_filepath_part.snake_case.unsafe_name,
+                export_strategy=export_strategy,
+            ),
+        )
 
     def get_class_name(self, *, name: ir_types.DeclaredTypeName) -> str:
         return name.name.pascal_case.unsafe_name
