@@ -1,4 +1,4 @@
-import fern.resources.ir as ir_types
+import fern.ir.resources as ir_types
 from fern.generator_exec.sdk.resources.config import GeneratorConfig
 from fern.generator_exec.sdk.resources.logging import (
     ErrorExitStatusUpdate,

@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Optional
 
-import fern.resources.ir as ir_types
+import fern.ir.resources as ir_types
 from fern.generator_exec.sdk.resources import GeneratorConfig
 from fern.generator_exec.sdk.resources.config import (
     GeneratorPublishConfig,
