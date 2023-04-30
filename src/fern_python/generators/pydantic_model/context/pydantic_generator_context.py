@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Callable, List, Optional, Set, Tuple
 
 import fern.ir.resources as ir_types
-from fern.generator_exec.sdk.resources import GeneratorConfig
+from fern.generator_exec.resources import GeneratorConfig
 
 from fern_python.codegen import AST, Filepath
 
