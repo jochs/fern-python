@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import pytest
 from fern.generator_exec.resources import config
 from snapshottest.module import SnapshotTest  # type: ignore
 
@@ -82,7 +81,6 @@ def test_publish_sdk(snapshot: SnapshotTest, tmpdir: Path) -> None:
     )
 
 
-@pytest.mark.only
 def test_github_sdk(snapshot: SnapshotTest, tmpdir: Path) -> None:
     run_snapshot_test(
         snapshot=snapshot,
