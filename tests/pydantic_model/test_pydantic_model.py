@@ -26,7 +26,7 @@ def test_publish_pydantic_model(snapshot: SnapshotTest, tmpdir: Path) -> None:
         tmpdir=tmpdir,
         cli=cli,
         filename_of_test=__file__,
-        custom_config={"include_validators": True},
+        custom_config={"include_validators": True, "include_union_utils": True},
         output_mode=config.OutputMode.factory.publish(
             config.GeneratorPublishConfig(
                 registries=config.GeneratorRegistriesConfig(

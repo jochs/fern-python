@@ -2,5 +2,6 @@
 
 from .movie import Movie
 from .movie_id import MovieId
+from .single_variant_union_type import SingleVariantUnionType
 
-__all__ = ["Movie", "MovieId"]
+__all__ = ["Movie", "MovieId", "SingleVariantUnionType"]
