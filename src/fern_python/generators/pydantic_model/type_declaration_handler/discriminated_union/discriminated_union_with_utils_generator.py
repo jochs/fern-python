@@ -157,15 +157,11 @@ class DiscriminatedUnionWithUtilsGenerator(AbstractTypeGenerator):
                             for type_name in forward_refed_types:
                                 external_pydantic_model.add_ghost_reference(type_name)
 
-            root_type = (
-                AST.TypeHint.union(
-                    *(
-                        AST.TypeHint(type=internal_single_union_type)
-                        for internal_single_union_type in internal_single_union_types
-                    ),
-                )
-                if len(internal_single_union_types) != 1
-                else AST.TypeHint(type=internal_single_union_types[0])
+            root_type = AST.TypeHint.union(
+                *(
+                    AST.TypeHint(type=internal_single_union_type)
+                    for internal_single_union_type in internal_single_union_types
+                ),
             )
 
             external_pydantic_model.add_method_unsafe(
@@ -234,8 +230,9 @@ class DiscriminatedUnionWithUtilsGenerator(AbstractTypeGenerator):
                         ],
                     )
                 )
-                if len(internal_single_union_types) != 1
-                else None,
+                # can't use discriminator without single variant pydantic models
+                # https://github.com/pydantic/pydantic/pull/3639
+                if len(internal_single_union_types) != 1 else None,
             )
 
     def _create_body_writer(

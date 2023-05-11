@@ -44,10 +44,6 @@ types:
         type: double
         docs: The rating scale is one to five stars
 
-  SingleVariantUnionType:
-    union:
-      foo: string
-
 errors:
   MovieNotFoundError:
     status-code: 404

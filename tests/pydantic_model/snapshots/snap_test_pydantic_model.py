@@ -15,8 +15,7 @@ snapshots['test_publish_pydantic_model filepaths'] = [
     'src/fern/api/resources/__init__.py',
     'src/fern/api/resources/movie/__init__.py',
     'src/fern/api/resources/movie/movie.py',
-    'src/fern/api/resources/movie/movie_id.py',
-    'src/fern/api/resources/movie/single_variant_union_type.py'
+    'src/fern/api/resources/movie/movie_id.py'
 ]
 
 snapshots['test_publish_pydantic_model src_fern_api___init__'] = FileSnapshot('snap_test_pydantic_model/test_publish_pydantic_model src_fern_api___init__.py')
@@ -32,8 +31,6 @@ snapshots['test_publish_pydantic_model src_fern_api_resources_movie___init__'] =
 snapshots['test_publish_pydantic_model src_fern_api_resources_movie_movie'] = FileSnapshot('snap_test_pydantic_model/test_publish_pydantic_model src_fern_api_resources_movie_movie.py')
 
 snapshots['test_publish_pydantic_model src_fern_api_resources_movie_movie_id'] = FileSnapshot('snap_test_pydantic_model/test_publish_pydantic_model src_fern_api_resources_movie_movie_id.py')
-
-snapshots['test_publish_pydantic_model src_fern_api_resources_movie_single_variant_union_type'] = FileSnapshot('snap_test_pydantic_model/test_publish_pydantic_model src_fern_api_resources_movie_single_variant_union_type.py')
 
 snapshots['test_pydantic_model __init__'] = FileSnapshot('snap_test_pydantic_model/test_pydantic_model __init__.py')
 
