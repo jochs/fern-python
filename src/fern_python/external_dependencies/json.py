@@ -16,3 +16,12 @@ class Json:
             ),
             qualified_name_excluding_import=(),
         )
+
+    @staticmethod
+    def loads(obj: AST.Expression) -> AST.FunctionInvocation:
+        return AST.FunctionInvocation(
+            function_definition=AST.ReferenceImport(
+                module=AST.Module.built_in(("json",), qualified_name_excluding_import="loads")
+            ),
+            args=[obj],
+        )
