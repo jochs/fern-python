@@ -1,6 +1,6 @@
-types: 
+types:
   StreamResponse:
-    properties: 
+    properties:
       id: string
       name: optional<string>
 
@@ -14,7 +14,7 @@ service:
       request:
         name: GenerateStreamRequestzs
         body:
-          properties: 
+          properties:
             num_events: integer
       response-stream:
         type: StreamResponse
