@@ -98,7 +98,7 @@ class AsyncHomepageClient:
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, body=_response.text)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[ProblemId], _response.json())  # type: ignore
+            return pydantic.parse_obj_as(typing.List[ProblemId], _response_json)  # type: ignore
         raise ApiError(status_code=_response.status_code, body=_response_json)
 
     async def set_homepage_problems(self, *, request: typing.List[ProblemId]) -> None:

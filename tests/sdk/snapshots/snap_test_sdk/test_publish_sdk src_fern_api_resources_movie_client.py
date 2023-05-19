@@ -30,7 +30,7 @@ class MovieClient:
             timeout=5,
         )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(Movie, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(Movie, _response.json())  # type: ignore
         if _response.status_code == 404:
             raise MovieNotFoundError(pydantic.parse_obj_as(MovieId, _response.json()))  # type: ignore
         try:
@@ -47,7 +47,7 @@ class MovieClient:
             timeout=5,
         )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[Movie], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[Movie], _response.json())  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:

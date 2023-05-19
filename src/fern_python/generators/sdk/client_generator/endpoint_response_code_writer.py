@@ -51,7 +51,9 @@ class EndpointResponseCodeWriter:
             )
         writer.write_line("return")
 
-    def _handle_success_json(self, *, writer: AST.NodeWriter, json_response: ir_types.JsonResponse) -> None:
+    def _handle_success_json(
+        self, *, writer: AST.NodeWriter, json_response: ir_types.JsonResponse, use_response_json: bool
+    ) -> None:
 
         writer.write("return ")
         writer.write_node(
@@ -60,9 +62,9 @@ class EndpointResponseCodeWriter:
                     json_response.response_body_type
                 ),
                 AST.Expression(
-                    f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.json()"
-                    if self._is_async
-                    else f"{EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}"
+                    f"{EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}"
+                    if use_response_json
+                    else f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.json()"
                 ),
             )
         )
@@ -75,7 +77,9 @@ class EndpointResponseCodeWriter:
                 writer.write_line("return")
             else:
                 self._endpoint.sdk_response.visit(
-                    json=lambda json_response: self._handle_success_json(writer=writer, json_response=json_response),
+                    json=lambda json_response: self._handle_success_json(
+                        writer=writer, json_response=json_response, use_response_json=False
+                    ),
                     maybe_streaming=raise_maybe_streaming_unsupported,
                     streaming=lambda stream_response: self._handle_success_stream(
                         writer=writer, stream_response=stream_response
@@ -134,7 +138,9 @@ class EndpointResponseCodeWriter:
                 writer.write_line("return")
             else:
                 self._endpoint.sdk_response.visit(
-                    json=lambda json_response: self._handle_success_json(writer=writer, json_response=json_response),
+                    json=lambda json_response: self._handle_success_json(
+                        writer=writer, json_response=json_response, use_response_json=True
+                    ),
                     maybe_streaming=raise_maybe_streaming_unsupported,
                     streaming=lambda stream_response: self._handle_success_stream(
                         writer=writer, stream_response=stream_response
