@@ -7,7 +7,9 @@ from typing_extensions import Never
 from fern_python.codegen import AST, SourceFile
 from fern_python.codegen.ast.nodes.code_writer.code_writer import CodeWriterFunction
 from fern_python.external_dependencies import HttpX, Json, UrlLibParse
-from fern_python.generators.sdk.client_generator.endpoint_response_code_writer import EndpointResponseCodeWriter
+from fern_python.generators.sdk.client_generator.endpoint_response_code_writer import (
+    EndpointResponseCodeWriter,
+)
 
 from ..context.sdk_generator_context import SdkGeneratorContext
 from ..environment_generators import (
