@@ -27,7 +27,7 @@ class MovieClient:
             "GET", urllib.parse.urljoin(f"{self._environment}/", f"movie/movie/{movie_id}"), timeout=60
         )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(Movie, _response.json())  # type: ignore
+            return pydantic.parse_obj_as(Movie, _response_json)  # type: ignore
         if _response.status_code == 404:
             raise MovieNotFoundError(pydantic.parse_obj_as(MovieId, _response.json()))  # type: ignore
         try:
@@ -39,7 +39,7 @@ class MovieClient:
     def get_all_movies(self) -> typing.List[Movie]:
         _response = httpx.request("GET", urllib.parse.urljoin(f"{self._environment}/", "movie/all-movies"), timeout=60)
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[Movie], _response.json())  # type: ignore
+            return pydantic.parse_obj_as(typing.List[Movie], _response_json)  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:
@@ -108,7 +108,7 @@ class AsyncMovieClient:
                 "GET", urllib.parse.urljoin(f"{self._environment}/", f"movie/movie/{movie_id}"), timeout=60
             )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(Movie, _response.json())  # type: ignore
+            return pydantic.parse_obj_as(Movie, _response_json)  # type: ignore
         if _response.status_code == 404:
             raise MovieNotFoundError(pydantic.parse_obj_as(MovieId, _response.json()))  # type: ignore
         try:
@@ -123,7 +123,7 @@ class AsyncMovieClient:
                 "GET", urllib.parse.urljoin(f"{self._environment}/", "movie/all-movies"), timeout=60
             )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[Movie], _response.json())  # type: ignore
+            return pydantic.parse_obj_as(typing.List[Movie], _response_json)  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:

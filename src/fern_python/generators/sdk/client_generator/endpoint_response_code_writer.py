@@ -61,7 +61,7 @@ class EndpointResponseCodeWriter:
                 self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                     json_response.response_body_type
                 ),
-                AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.json()"),
+                AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}"),
             )
         )
         writer.write_newline_if_last_line_not()
