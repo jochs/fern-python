@@ -47,8 +47,8 @@ class ClientGenerator:
     ENVIRONMENT_CONSTRUCTOR_PARAMETER_NAME = "environment"
     ENVIRONMENT_MEMBER_NAME = "_environment"
 
-    RESPONSE_VARIABLE = "_response"
-    RESPONSE_JSON_VARIABLE = "_response_json"
+    RESPONSE_VARIABLE = EndpointResponseCodeWriter.RESPONSE_VARIABLE
+    RESPONSE_JSON_VARIABLE = EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE
 
     TOKEN_CONSTRUCTOR_PARAMETER_NAME = "token"
     TOKEN_MEMBER_NAME = "_token"

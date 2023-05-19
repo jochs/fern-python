@@ -4,11 +4,13 @@ from typing_extensions import Never
 from fern_python.codegen import AST
 from fern_python.external_dependencies.json import Json
 from fern_python.external_dependencies.pydantic import Pydantic
-from fern_python.generators.sdk.client_generator.client_generator import ClientGenerator
 from fern_python.generators.sdk.context.sdk_generator_context import SdkGeneratorContext
 
 
 class EndpointResponseCodeWriter:
+    RESPONSE_VARIABLE = "_response"
+    RESPONSE_JSON_VARIABLE = "_response_json"
+
     def __init__(
         self,
         *,
@@ -39,7 +41,7 @@ class EndpointResponseCodeWriter:
         else:
             if self._is_async:
                 writer.write("async ")
-            writer.write_line(f"for text in {ClientGenerator.RESPONSE_VARIABLE}.iter_text(): ")
+            writer.write_line(f"for text in {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.iter_text(): ")
             with writer.indent():
                 writer.write("yield ")
                 writer.write_node(
@@ -47,7 +49,7 @@ class EndpointResponseCodeWriter:
                         self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                             stream_response.data_event_type
                         ),
-                        AST.Expression(Json.loads(AST.Expression(ClientGenerator.RESPONSE_VARIABLE))),
+                        AST.Expression(Json.loads(AST.Expression(EndpointResponseCodeWriter.RESPONSE_VARIABLE))),
                     )
                 )
             writer.write_line("return")
@@ -59,13 +61,13 @@ class EndpointResponseCodeWriter:
                 self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                     json_response.response_body_type
                 ),
-                AST.Expression(f"{ClientGenerator.RESPONSE_VARIABLE}.json()"),
+                AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.json()"),
             )
         )
         writer.write_newline_if_last_line_not()
 
     def _write_status_code_discriminated_response_handler(self, *, writer: AST.NodeWriter) -> None:
-        writer.write_line(f"if 200 <= {ClientGenerator.RESPONSE_VARIABLE}.status_code < 300:")
+        writer.write_line(f"if 200 <= {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.status_code < 300:")
         with writer.indent():
             if self._endpoint.sdk_response is None:
                 writer.write_line("return")
@@ -82,7 +84,9 @@ class EndpointResponseCodeWriter:
         for error in self._endpoint.errors.get_as_list():
             error_declaration = self._context.ir.errors[error.error.error_id]
 
-            writer.write_line(f"if {ClientGenerator.RESPONSE_VARIABLE}.status_code == {error_declaration.status_code}:")
+            writer.write_line(
+                f"if {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.status_code == {error_declaration.status_code}:"
+            )
             with writer.indent():
                 writer.write("raise ")
                 writer.write_node(
@@ -93,7 +97,7 @@ class EndpointResponseCodeWriter:
                                 self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                                     error_declaration.type
                                 ),
-                                AST.Expression(f"{ClientGenerator.RESPONSE_VARIABLE}.json()"),
+                                AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.json()"),
                             )
                         ]
                         if error_declaration.type is not None
@@ -107,8 +111,8 @@ class EndpointResponseCodeWriter:
         writer.write("raise ")
         writer.write_node(
             self._context.core_utilities.instantiate_api_error(
-                body=AST.Expression(ClientGenerator.RESPONSE_JSON_VARIABLE),
-                status_code=AST.Expression(f"{ClientGenerator.RESPONSE_VARIABLE}.status_code"),
+                body=AST.Expression(EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE),
+                status_code=AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.status_code"),
             )
         )
         writer.write_newline_if_last_line_not()
@@ -122,7 +126,7 @@ class EndpointResponseCodeWriter:
         if self._endpoint.response is not None:
             self._try_deserialize_json_response(writer=writer)
 
-        writer.write_line(f"if 200 <= {ClientGenerator.RESPONSE_VARIABLE}.status_code < 300:")
+        writer.write_line(f"if 200 <= {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.status_code < 300:")
         with writer.indent():
             if self._endpoint.sdk_response is None:
                 writer.write_line("return")
@@ -140,13 +144,15 @@ class EndpointResponseCodeWriter:
             self._try_deserialize_json_response(writer=writer)
 
         if len(self._endpoint.errors.get_as_list()) > 0:
-            writer.write_line(f'if "{strategy.discriminant.wire_value}" in {ClientGenerator.RESPONSE_JSON_VARIABLE}:')
+            writer.write_line(
+                f'if "{strategy.discriminant.wire_value}" in {EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}:'
+            )
             with writer.indent():
                 for error in self._endpoint.errors.get_as_list():
                     error_declaration = self._context.ir.errors[error.error.error_id]
 
                     writer.write_line(
-                        f'if {ClientGenerator.RESPONSE_JSON_VARIABLE}["{strategy.discriminant.wire_value}"] == "{error_declaration.discriminant_value.wire_value}":'
+                        f'if {EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}["{strategy.discriminant.wire_value}"] == "{error_declaration.discriminant_value.wire_value}":'
                     )
                     with writer.indent():
                         writer.write("raise ")
@@ -159,7 +165,7 @@ class EndpointResponseCodeWriter:
                                             error_declaration.type
                                         ),
                                         AST.Expression(
-                                            f'{ClientGenerator.RESPONSE_JSON_VARIABLE}["{strategy.content_property.wire_value}"]'
+                                            f'{EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}["{strategy.content_property.wire_value}"]'
                                         ),
                                     )
                                 ]
@@ -172,14 +178,16 @@ class EndpointResponseCodeWriter:
         writer.write("raise ")
         writer.write_node(
             self._context.core_utilities.instantiate_api_error(
-                body=AST.Expression(ClientGenerator.RESPONSE_JSON_VARIABLE),
-                status_code=AST.Expression(f"{ClientGenerator.RESPONSE_VARIABLE}.status_code"),
+                body=AST.Expression(EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE),
+                status_code=AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.status_code"),
             )
         )
         writer.write_newline_if_last_line_not()
 
     def _deserialize_json_response(self, *, writer: AST.NodeWriter) -> None:
-        writer.write_line(f"{ClientGenerator.RESPONSE_JSON_VARIABLE} = {ClientGenerator.RESPONSE_VARIABLE}.json()")
+        writer.write_line(
+            f"{EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE} = {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.json()"
+        )
 
     def _try_deserialize_json_response(self, *, writer: AST.NodeWriter) -> None:
         writer.write_line("try:")
@@ -192,8 +200,8 @@ class EndpointResponseCodeWriter:
             writer.write("raise ")
             writer.write_node(
                 self._context.core_utilities.instantiate_api_error(
-                    body=AST.Expression(f"{ClientGenerator.RESPONSE_VARIABLE}.text"),
-                    status_code=AST.Expression(f"{ClientGenerator.RESPONSE_VARIABLE}.status_code"),
+                    body=AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.text"),
+                    status_code=AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.status_code"),
                 )
             )
             writer.write_newline_if_last_line_not()
