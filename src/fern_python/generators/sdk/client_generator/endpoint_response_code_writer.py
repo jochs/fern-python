@@ -10,6 +10,7 @@ from fern_python.generators.sdk.context.sdk_generator_context import SdkGenerato
 class EndpointResponseCodeWriter:
     RESPONSE_VARIABLE = "_response"
     RESPONSE_JSON_VARIABLE = "_response_json"
+    STREAM_TEXT_VARIABLE = "_text"
 
     def __init__(
         self,
@@ -38,7 +39,9 @@ class EndpointResponseCodeWriter:
     def _handle_success_stream(self, *, writer: AST.NodeWriter, stream_response: ir_types.StreamingResponse) -> None:
         if self._is_async:
             writer.write("async ")
-        writer.write_line(f"for text in {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.iter_text(): ")
+        writer.write_line(
+            f"for {EndpointResponseCodeWriter.STREAM_TEXT_VARIABLE} in {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.{self._get_iter_text_method(is_async=self._is_async)}(): "
+        )
         with writer.indent():
             writer.write("yield ")
             writer.write_node(
@@ -46,10 +49,16 @@ class EndpointResponseCodeWriter:
                     self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                         stream_response.data_event_type
                     ),
-                    AST.Expression(Json.loads(AST.Expression(EndpointResponseCodeWriter.RESPONSE_VARIABLE))),
+                    AST.Expression(Json.loads(AST.Expression(EndpointResponseCodeWriter.STREAM_TEXT_VARIABLE))),
                 )
             )
         writer.write_line("return")
+
+    def _get_iter_text_method(self, *, is_async: bool) -> str:
+        if is_async:
+            return "aiter_text"
+        else:
+            return "iter_text"
 
     def _handle_success_json(
         self, *, writer: AST.NodeWriter, json_response: ir_types.JsonResponse, use_response_json: bool

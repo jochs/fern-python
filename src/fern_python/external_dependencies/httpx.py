@@ -101,7 +101,7 @@ class HttpX:
             writer.write(", ")
             with writer.indent():
                 add_request_params(writer=writer, reference_to_client=reference_to_client)
-            writer.write_line(f" as {response_variable_name}:")
+            writer.write_line(f") as {response_variable_name}:")
 
             with writer.indent():
                 response_code_writer.write(writer=writer)
@@ -134,7 +134,11 @@ class HttpX:
                 if is_streaming:
                     write_streaming_call(
                         writer=writer,
-                        reference_to_client=AST.Expression(HttpX._ASYNC_CLIENT_NAME),
+                        reference_to_client=AST.Expression(
+                            AST.ClassReference(
+                                qualified_name_excluding_import=(), import_=AST.ReferenceImport(module=HTTPX_MODULE)
+                            )
+                        ),
                     )
                 else:
                     write_non_streaming_call(

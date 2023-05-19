@@ -144,8 +144,8 @@ class ClientGenerator:
                                 endpoint=endpoint,
                                 request_body_parameters=request_body_parameters,
                             ),
-                            return_type=self._get_response_body_type(endpoint.response)
-                            if endpoint.response is not None
+                            return_type=self._get_response_body_type(endpoint.sdk_response, is_async)
+                            if endpoint.sdk_response is not None
                             else AST.TypeHint.none(),
                         ),
                         body=self._create_endpoint_body_writer(
@@ -710,13 +710,28 @@ class ClientGenerator:
         writer.write_node(AST.TypeHint.cast(AST.TypeHint.any(), AST.Expression("...")))
         writer.write_newline_if_last_line_not()
 
-    def _get_response_body_type(self, response: ir_types.HttpResponse) -> AST.TypeHint:
-        return response.visit(
+    def _get_response_body_type(self, sdk_response: ir_types.SdkResponse, is_async: bool) -> AST.TypeHint:
+        return sdk_response.visit(
+            maybe_streaming=raise_maybe_streaming_unsupported,
             file_download=raise_file_download_unsupported,
             json=lambda json_response: self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                 json_response.response_body_type
             ),
+            streaming=lambda stream_response: self._get_streaming_response_body_type(
+                stream_response=stream_response, is_async=is_async
+            ),
         )
+
+    def _get_streaming_response_body_type(
+        self, *, stream_response: ir_types.StreamingResponse, is_async: bool
+    ) -> AST.TypeHint:
+        streaming_data_event_type_hint = self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+            stream_response.data_event_type
+        )
+        if is_async:
+            return AST.TypeHint.async_iterator(streaming_data_event_type_hint)
+        else:
+            return AST.TypeHint.iterator(streaming_data_event_type_hint)
 
     def _is_header_literal(self, header: ir_types.HttpHeader) -> bool:
         return self._get_literal_header_value(header) is not None
@@ -765,3 +780,7 @@ def unwrap_optional_type(type_reference: ir_types.TypeReference) -> ir_types.Typ
 
 def raise_file_download_unsupported(file_download_response: ir_types.FileDownloadResponse) -> Never:
     raise RuntimeError("File download is not supported")
+
+
+def raise_maybe_streaming_unsupported(maybe_streaming_response: ir_types.MaybeStreamingResponse) -> Never:
+    raise RuntimeError("Maybe streaming is not supported")
