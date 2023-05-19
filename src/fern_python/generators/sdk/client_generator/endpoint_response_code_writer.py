@@ -37,31 +37,33 @@ class EndpointResponseCodeWriter:
 
     def _handle_success_stream(self, *, writer: AST.NodeWriter, stream_response: ir_types.StreamingResponse) -> None:
         if self._is_async:
-            pass
-        else:
-            if self._is_async:
-                writer.write("async ")
-            writer.write_line(f"for text in {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.iter_text(): ")
-            with writer.indent():
-                writer.write("yield ")
-                writer.write_node(
-                    Pydantic.parse_obj_as(
-                        self._context.pydantic_generator_context.get_type_hint_for_type_reference(
-                            stream_response.data_event_type
-                        ),
-                        AST.Expression(Json.loads(AST.Expression(EndpointResponseCodeWriter.RESPONSE_VARIABLE))),
-                    )
+            writer.write("async ")
+        writer.write_line(f"for text in {EndpointResponseCodeWriter.RESPONSE_VARIABLE}.iter_text(): ")
+        with writer.indent():
+            writer.write("yield ")
+            writer.write_node(
+                Pydantic.parse_obj_as(
+                    self._context.pydantic_generator_context.get_type_hint_for_type_reference(
+                        stream_response.data_event_type
+                    ),
+                    AST.Expression(Json.loads(AST.Expression(EndpointResponseCodeWriter.RESPONSE_VARIABLE))),
                 )
-            writer.write_line("return")
+            )
+        writer.write_line("return")
 
     def _handle_success_json(self, *, writer: AST.NodeWriter, json_response: ir_types.JsonResponse) -> None:
+
         writer.write("return ")
         writer.write_node(
             Pydantic.parse_obj_as(
                 self._context.pydantic_generator_context.get_type_hint_for_type_reference(
                     json_response.response_body_type
                 ),
-                AST.Expression(f"{EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}"),
+                AST.Expression(
+                    f"{EndpointResponseCodeWriter.RESPONSE_VARIABLE}.json()"
+                    if self._is_async
+                    else f"{EndpointResponseCodeWriter.RESPONSE_JSON_VARIABLE}"
+                ),
             )
         )
         writer.write_newline_if_last_line_not()

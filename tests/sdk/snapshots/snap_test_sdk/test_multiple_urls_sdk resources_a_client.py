@@ -91,7 +91,7 @@ class AsyncAClient:
                 "GET", urllib.parse.urljoin(f"{self._environment.server_a}/", f"movie/movie/{movie_id}"), timeout=60
             )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(Movie, _response_json)  # type: ignore
+            return pydantic.parse_obj_as(Movie, _response.json())  # type: ignore
         if _response.status_code == 404:
             raise MovieNotFoundError(pydantic.parse_obj_as(MovieId, _response.json()))  # type: ignore
         try:
@@ -106,7 +106,7 @@ class AsyncAClient:
                 "GET", urllib.parse.urljoin(f"{self._environment.server_b}/", "movie/all-movies"), timeout=60
             )
         if 200 <= _response.status_code < 300:
-            return pydantic.parse_obj_as(typing.List[Movie], _response_json)  # type: ignore
+            return pydantic.parse_obj_as(typing.List[Movie], _response.json())  # type: ignore
         try:
             _response_json = _response.json()
         except JSONDecodeError:
