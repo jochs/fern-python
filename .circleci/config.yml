@@ -49,13 +49,13 @@ jobs:
           command: |
             projectVersion=$(./scripts/git-version.sh)
             echo "$FERNAPI_DOCKER_HUB_PASSWORD" | docker login --username fernapi --password-stdin
-            docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/pydantic-model/Dockerfile -t fernapi/fern-fastapi-server:${projectVersion} . --push
+            docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/fastapi/Dockerfile -t fernapi/fern-fastapi-server:${projectVersion} . --push
       - run:
           name: Publish SDK Docker
           command: |
             projectVersion=$(./scripts/git-version.sh)
             echo "$FERNAPI_DOCKER_HUB_PASSWORD" | docker login --username fernapi --password-stdin
-            docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/pydantic-model/Dockerfile -t fernapi/fern-python-sdk:${projectVersion} . --push
+            docker buildx build --platform linux/amd64,linux/arm64 -f ./docker/sdk/Dockerfile -t fernapi/fern-python-sdk:${projectVersion} . --push
 
 workflows:
   build:
