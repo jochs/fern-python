@@ -36,7 +36,7 @@ jobs:
       - checkout
       - run:
           name: Setup Buildx
-          command: | 
+          command: |
             docker buildx create --name multiplatform --driver docker-container --bootstrap --use
       - run:
           name: Publish Pydantic Docker
