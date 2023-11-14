@@ -46,12 +46,6 @@ def test_generated_root_client_builder() -> None:
                     generated_environment=generated_environment,
                 ),
             ),
-            ConstructorParameter(
-                constructor_parameter_name="httpx_client",
-                type_hint=None,  # type: ignore
-                private_member_name=None,
-                instantiation=AST.Expression('httpx_client=httpx.Client()')
-            ),
         ],
     )
     generated_root_client = builder.build()
@@ -66,7 +60,6 @@ from acme.environments import AcmeEnvironments
 client = Acme(
     base_url="acme.io",
     environment=AcmeEnvironments.PRODUCTION,
-    httpx_client=httpx.Client(),
 )
 """
     )
@@ -81,7 +74,6 @@ from acme.environments import AcmeEnvironments
 client = AcmeAsync(
     base_url="acme.io",
     environment=AcmeEnvironments.PRODUCTION,
-    httpx_client=httpx.Client(),
 )
 """
     )
