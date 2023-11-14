@@ -81,4 +81,5 @@ __all__ = [
     "DictionaryInstantiation",
     "NamedFunctionParameter",
     "DependencyCompatibility",
+    "ConditionalExpression",
 ]

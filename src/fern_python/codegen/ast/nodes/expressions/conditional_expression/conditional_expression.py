@@ -1,4 +1,4 @@
-from .... import Expression
+from ..expression import Expression
 from ....ast_node import AstNode, AstNodeMetadata, NodeWriter
 
 

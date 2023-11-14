@@ -45,4 +45,5 @@ __all__ = [
     "Docstring",
     "DictionaryInstantiation",
     "NamedFunctionParameter",
+    "ConditionalExpression",
 ]
