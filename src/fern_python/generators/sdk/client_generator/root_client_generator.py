@@ -349,7 +349,7 @@ class RootClientGenerator:
                 (
                     ClientWrapperGenerator.HTTPX_CLIENT_MEMBER_NAME,
                     AST.Expression(
-                        ConditionalExpression(
+                        AST.ConditionalExpression(
                             left=AST.ClassInstantiation(
                                 HttpX.ASYNC_CLIENT if is_async else HttpX.CLIENT,
                                 kwargs=[

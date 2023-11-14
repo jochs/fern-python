@@ -14,6 +14,7 @@ from .declarations import (
 from .docstring import Docstring
 from .expressions import (
     ClassInstantiation,
+    ConditionalExpression,
     DictionaryInstantiation,
     Expression,
     ExpressionSpread,

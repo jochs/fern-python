@@ -19,6 +19,7 @@ from .nodes import (
     ClassMethodDecorator,
     CodeWriter,
     CodeWriterFunction,
+    ConditionalExpression,
     Declaration,
     DictionaryInstantiation,
     Docstring,
