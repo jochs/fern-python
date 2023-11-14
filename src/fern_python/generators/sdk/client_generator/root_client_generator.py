@@ -292,7 +292,9 @@ class RootClientGenerator:
         parameters.append(
             RootClientConstructorParameter(
                 constructor_parameter_name=RootClientGenerator.HTTPX_CLIENT_CONSTRUCTOR_PARAMETER_NAME,
-                type_hint=AST.TypeHint.optional(AST.TypeHint(httpx.HttpX.CLIENT)),
+                type_hint=AST.TypeHint.optional(AST.TypeHint(httpx.HttpX.CLIENT))
+                if not is_async
+                else AST.TypeHint.optional(AST.TypeHint(httpx.HttpX.ASYNC_CLIENT)),
                 private_member_name=None,
                 initializer=AST.Expression(AST.TypeHint.none()),
             )
@@ -373,7 +375,6 @@ class RootClientGenerator:
                     kwargs=client_wrapper_constructor_kwargs,
                 )
             )
-            writer.write_line(f"if {param.constructor_parameter_name} is not None:")
             writer.write_newline_if_last_line_not()
             for subpackage_id in self._package.subpackages:
                 subpackage = self._context.ir.subpackages[subpackage_id]

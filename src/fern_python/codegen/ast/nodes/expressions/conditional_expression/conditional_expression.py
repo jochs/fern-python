@@ -10,8 +10,13 @@ class ConditionalExpression(AstNode):
         self.test = test
         self.left = left
         self.right = right
+
     def get_metadata(self) -> AstNodeMetadata:
-        pass
+        metadata = AstNodeMetadata()
+        metadata.update(self.test.get_metadata())
+        metadata.update(self.left.get_metadata())
+        metadata.update(self.right.get_metadata())
+        return metadata
 
     def write(self, writer: NodeWriter) -> None:
         writer.write_node(self.left)
@@ -19,3 +24,4 @@ class ConditionalExpression(AstNode):
         writer.write_node(self.test)
         writer.write(" else ")
         writer.write_node(self.right)
+        writer.write_newline_if_last_line_not()
