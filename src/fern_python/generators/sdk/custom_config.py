@@ -4,12 +4,14 @@ import pydantic
 
 from fern_python.generators.pydantic_model import PydanticModelCustomConfig
 
+
 class SdkPydanticModelCustomConfig(PydanticModelCustomConfig):
     frozen: bool = True
     orm_mode: bool = False
     smart_union: bool = True
     include_union_utils: bool = False
     wrapped_aliases: bool = False
+
 
 class SDKCustomConfig(pydantic.BaseModel):
     skip_formatting: bool = False

@@ -9,7 +9,6 @@ from fern_python.codegen import Project
 from fern_python.codegen.filepath import Filepath
 from fern_python.generator_exec_wrapper import GeneratorExecWrapper
 from fern_python.generators.pydantic_model import (
-    PydanticModelCustomConfig,
     PydanticModelGenerator,
     SnippetRegistry,
 )
