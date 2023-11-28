@@ -81,7 +81,10 @@ class SdkGenerator(AbstractGenerator):
             orm_mode=False,
             frozen=True,
             smart_union=True,
-            version=custom_config.pydantic_version,
+            # SDK generator config only exposes base pydantic settings.
+            # To merge the base config into the final pydantic config, we need to
+            # cast BasePydanticModelCustomConfig to dict and unpack into kwargs
+            **custom_config.pydantic_config.dict(),
         )
 
         context = SdkGeneratorContextImpl(
