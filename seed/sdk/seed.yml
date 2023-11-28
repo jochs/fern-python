@@ -16,3 +16,7 @@ fixtures:
     - customConfig:
         include_union_utils: true
       outputFolder: union-utils
+    - customConfig:
+        pydantic_config:
+          version: v1
+      outputFolder: pydantic-v1
