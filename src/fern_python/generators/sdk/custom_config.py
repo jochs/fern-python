@@ -2,10 +2,11 @@ from typing import Literal, Optional, Union
 
 import pydantic
 
-from fern_python.external_dependencies import PydanticVersionCompatibility
+from ...external_dependencies.pydantic import PydanticVersionCompatibility
 
 
 class SDKCustomConfig(pydantic.BaseModel):
+    version: PydanticVersionCompatibility = PydanticVersionCompatibility.Both
     wrapped_aliases: bool = False
     skip_formatting: bool = False
     client_class_name: Optional[str] = None
@@ -15,4 +16,3 @@ class SDKCustomConfig(pydantic.BaseModel):
     package_name: Optional[str] = None
     timeout_in_seconds: Union[Literal["infinity"], int] = 60
     flat_layout: bool = False
-    version: PydanticVersionCompatibility = PydanticVersionCompatibility.Both
