@@ -2,6 +2,8 @@ from typing import Literal, Optional, Union
 
 import pydantic
 
+from fern_python.external_dependencies import PydanticVersionCompatibility
+
 
 class SDKCustomConfig(pydantic.BaseModel):
     wrapped_aliases: bool = False
@@ -13,3 +15,4 @@ class SDKCustomConfig(pydantic.BaseModel):
     package_name: Optional[str] = None
     timeout_in_seconds: Union[Literal["infinity"], int] = 60
     flat_layout: bool = False
+    version: PydanticVersionCompatibility = PydanticVersionCompatibility.Both

@@ -82,7 +82,7 @@ class SdkGenerator(AbstractGenerator):
             orm_mode=False,
             frozen=True,
             smart_union=True,
-            version=PydanticVersionCompatibility.Both,
+            version=custom_config.version,
         )
 
         context = SdkGeneratorContextImpl(
