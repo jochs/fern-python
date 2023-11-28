@@ -6,7 +6,7 @@
 
   <br/>
 
-# Python  Generator
+# Python Generator
 
 [![Contributors](https://img.shields.io/github/contributors/fern-api/fern-python.svg)](https://GitHub.com/dotnet/docs/graphs/contributors/)
 [![Pulls-opened](https://img.shields.io/github/issues-pr/fern-api/fern-python.svg)](https://GitHub.com/dotnet/docs/pulls?q=is%3Aissue+is%3Aopened)
@@ -64,6 +64,21 @@ groups:
 ### SDK Generator Configuration
 
 The Python SDK generator supports the following options:
+
+#### ✨ `pydantic_config.version`
+
+**Type:** "v1" or "v2" or "both"
+
+**Default:** "both"
+
+By default, the generator generates pydantic models that are v1 and v2 compatible.
+However you can override them to strictly for v1 or v2.
+
+```
+config:
+  pydantic_config:
+    version: v1 # or v2 or "both"
+```
 
 #### ✨ `timeout_in_seconds`
 
