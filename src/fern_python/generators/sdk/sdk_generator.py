@@ -81,7 +81,7 @@ class SdkGenerator(AbstractGenerator):
             orm_mode=False,
             frozen=True,
             smart_union=True,
-            version=custom_config.version,
+            version=custom_config.pydantic_version,
         )
 
         context = SdkGeneratorContextImpl(

@@ -6,7 +6,7 @@ from ...external_dependencies.pydantic import PydanticVersionCompatibility
 
 
 class SDKCustomConfig(pydantic.BaseModel):
-    version: PydanticVersionCompatibility = PydanticVersionCompatibility.Both
+    pydantic_version: PydanticVersionCompatibility = PydanticVersionCompatibility.Both
     wrapped_aliases: bool = False
     skip_formatting: bool = False
     client_class_name: Optional[str] = None
