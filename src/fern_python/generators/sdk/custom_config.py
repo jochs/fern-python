@@ -21,3 +21,6 @@ class SDKCustomConfig(pydantic.BaseModel):
     timeout_in_seconds: Union[Literal["infinity"], int] = 60
     flat_layout: bool = False
     pydantic_config: SdkPydanticModelCustomConfig = SdkPydanticModelCustomConfig()
+
+    class Config:
+        extra = pydantic.Extra.forbid
