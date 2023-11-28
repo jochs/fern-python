@@ -84,7 +84,13 @@ to get rid of timeouts.
 By default, the generator will concatenate your organization and API name to generate the
 name of the client class. You can customize it by overriding this value.
 
-#### ✨ `include_union_utils`
+#### ✨ `skip_formatting`
+
+**Type:** boolean
+
+**Default:** `true`
+
+#### ✨ `pydantic_config.include_union_utils`
 
 **Type:** boolean
 
@@ -116,16 +122,10 @@ shape.visit(
 )
 ```
 
-#### ✨ `skip_formatting`
-
-**Type:** boolean
-
-**Default:** `true`
-
 When enabled, the python generator will not run Black formatting in the generated code.
 Black is slow so this can potentially speed up code generation quite a bit.
 
-#### ✨ `wrapped_aliases`
+#### ✨ `pydantic_config.wrapped_aliases`
 
 **Type:** boolean
 
