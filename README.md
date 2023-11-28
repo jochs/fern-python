@@ -65,21 +65,6 @@ groups:
 
 The Python SDK generator supports the following options:
 
-#### ✨ `pydantic_config.version`
-
-**Type:** "v1" or "v2" or "both"
-
-**Default:** "both"
-
-By default, the generator generates pydantic models that are v1 and v2 compatible.
-However you can override them to strictly for v1 or v2.
-
-```
-config:
-  pydantic_config:
-    version: v1 # or v2 or "both"
-```
-
 #### ✨ `timeout_in_seconds`
 
 **Type:** integer
@@ -148,6 +133,21 @@ Black is slow so this can potentially speed up code generation quite a bit.
 
 When enabled, any alias types defined in your Fern Definition will be generated
 as an individual class.
+
+#### ✨ `pydantic_config.version`
+
+**Type:** "v1" or "v2" or "both"
+
+**Default:** "both"
+
+By default, the generator generates pydantic models that are v1 and v2 compatible.
+However you can override them to strictly for v1 or v2.
+
+```
+config:
+  pydantic_config:
+    version: v1 # or v2 or "both"
+```
 
 ### FastAPI Generator Configuration
 

@@ -78,9 +78,6 @@ class SdkGenerator(AbstractGenerator):
             wrapped_aliases=custom_config.wrapped_aliases,
             skip_formatting=custom_config.skip_formatting,
             include_union_utils=custom_config.include_union_utils,
-            orm_mode=False,
-            frozen=True,
-            smart_union=True,
             # SDK generator config only exposes base pydantic settings.
             # To merge the base config into the final pydantic config, we need to
             # cast BasePydanticModelCustomConfig to dict and unpack into kwargs

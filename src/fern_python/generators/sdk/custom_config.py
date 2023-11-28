@@ -17,4 +17,8 @@ class SDKCustomConfig(pydantic.BaseModel):
     package_name: Optional[str] = None
     timeout_in_seconds: Union[Literal["infinity"], int] = 60
     flat_layout: bool = False
-    pydantic_config: BasePydanticModelCustomConfig = BasePydanticModelCustomConfig()
+    pydantic_config: BasePydanticModelCustomConfig = BasePydanticModelCustomConfig(
+        frozen=True,
+        orm_mode=False,
+        smart_union=True,
+    )
