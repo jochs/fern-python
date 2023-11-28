@@ -74,15 +74,7 @@ class SdkGenerator(AbstractGenerator):
         if not custom_config.client_filename.endswith(".py"):
             raise RuntimeError("client_filename must end in .py")
 
-        self._pydantic_model_custom_config = PydanticModelCustomConfig(
-            wrapped_aliases=custom_config.wrapped_aliases,
-            skip_formatting=custom_config.skip_formatting,
-            include_union_utils=custom_config.include_union_utils,
-            # SDK generator config only exposes base pydantic settings.
-            # To merge the base config into the final pydantic config, we need to
-            # cast BasePydanticModelCustomConfig to dict and unpack into kwargs
-            **custom_config.pydantic_config.dict(),
-        )
+        self._pydantic_model_custom_config = custom_config.pydantic_config
 
         context = SdkGeneratorContextImpl(
             ir=ir,

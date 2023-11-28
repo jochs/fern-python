@@ -14,6 +14,8 @@ class Animal_Dog(Dog):
     animal: typing_extensions.Literal["dog"]
 
     class Config:
+        frozen = True
+        smart_union = True
         allow_population_by_field_name = True
 
 
@@ -21,6 +23,8 @@ class Animal_Cat(Cat):
     animal: typing_extensions.Literal["cat"]
 
     class Config:
+        frozen = True
+        smart_union = True
         allow_population_by_field_name = True
 
 
