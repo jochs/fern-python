@@ -1,7 +1,10 @@
 from typing import Literal, Optional, Union
-from fern_python.generators.pydantic_model.custom_config import BasePydanticModelCustomConfig
 
 import pydantic
+
+from fern_python.generators.pydantic_model.custom_config import (
+    BasePydanticModelCustomConfig,
+)
 
 
 class SDKCustomConfig(pydantic.BaseModel):
